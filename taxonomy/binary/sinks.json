@@ -1,0 +1,84 @@
+{
+  "command_injection": {
+    "symbols": ["system", "popen", "execve", "execl", "execlp", "execle",
+                "execv", "execvp", "execvpe", "wordexp", "popen64"],
+    "cwe": "CWE-78",
+    "severity": "critical",
+    "description": "OS command execution — immediate RCE if attacker-controlled"
+  },
+  "buffer_overflow_copy": {
+    "symbols": ["strcpy", "strcat", "sprintf", "vsprintf", "gets",
+                "wcscpy", "wcscat", "RtlCopyMemory", "RtlMoveMemory"],
+    "cwe": "CWE-120",
+    "severity": "critical",
+    "description": "Unbounded copy — overflow if source is attacker-controlled and longer than destination"
+  },
+  "memory_copy_sized": {
+    "symbols": ["memcpy", "memmove", "bcopy", "RtlCopyBytes", "RtlCopyMappedMemory",
+                "strncpy", "strncat", "snprintf", "vsnprintf"],
+    "cwe": "CWE-120",
+    "severity": "high",
+    "description": "Sized copy — overflow if size parameter is attacker-controlled or miscalculated",
+    "note": "snprintf/strncpy are safer but still dangerous if size comes from attacker"
+  },
+  "format_string": {
+    "symbols": ["printf", "fprintf", "sprintf", "snprintf", "syslog",
+                "vprintf", "vfprintf", "vsprintf", "vsnprintf",
+                "wprintf", "fwprintf", "swprintf", "err", "warn"],
+    "cwe": "CWE-134",
+    "severity": "high",
+    "description": "Format string — dangerous ONLY if format string itself is attacker-controlled",
+    "note": "printf(user_input) is vuln. printf(\"%s\", user_input) is safe."
+  },
+  "path_traversal": {
+    "symbols": ["open", "fopen", "access", "stat", "lstat", "unlink", "rename",
+                "mkdir", "rmdir", "chmod", "chown", "symlink", "link",
+                "open64", "fopen64", "creat"],
+    "cwe": "CWE-22",
+    "severity": "high",
+    "description": "File operations — path traversal if path is attacker-controlled without validation"
+  },
+  "sql_injection": {
+    "symbols": ["sqlite3_exec", "sqlite3_prepare", "mysql_query", "mysql_real_query",
+                "PQexec", "PQexecParams"],
+    "cwe": "CWE-89",
+    "severity": "high",
+    "description": "SQL execution — injection if query contains attacker-controlled strings"
+  },
+  "heap_management": {
+    "symbols": ["free", "realloc", "ExFreePool", "ExFreePoolWithTag",
+                "kfree", "vfree", "kmem_cache_free"],
+    "cwe": "CWE-416",
+    "severity": "high",
+    "description": "Heap free — UAF/double-free if pointer lifecycle is mismanaged",
+    "note": "Look for: free then use, double free, free of stack/global pointer"
+  },
+  "pool_allocation": {
+    "symbols": ["malloc", "calloc", "realloc", "ExAllocatePool", "ExAllocatePoolWithTag",
+                "ExAllocatePool2", "ExAllocatePool3", "kmalloc", "vmalloc", "kzalloc"],
+    "cwe": "CWE-190",
+    "severity": "high",
+    "description": "Allocation — integer overflow in size calculation leads to undersized buffer"
+  },
+  "type_confusion": {
+    "symbols": ["va_arg", "ioctl", "ObReferenceObjectByHandle"],
+    "cwe": "CWE-843",
+    "severity": "high",
+    "description": "Type confusion — wrong type interpretation of attacker-provided data"
+  },
+  "privilege_operations": {
+    "symbols": ["setuid", "setgid", "seteuid", "setreuid", "setresuid",
+                "SePrivilegeCheck", "AdjustTokenPrivileges", "ZwDuplicateObject"],
+    "cwe": "CWE-269",
+    "severity": "critical",
+    "description": "Privilege manipulation — escalation if attacker can influence parameters"
+  },
+  "kernel_write": {
+    "symbols": ["copy_to_user", "__copy_to_user", "put_user", "__put_user",
+                "MmMapIoSpace", "MmMapLockedPages", "ZwMapViewOfSection"],
+    "cwe": "CWE-123",
+    "severity": "critical",
+    "description": "Kernel write-to-user or memory mapping — info leak or arbitrary write",
+    "context": "kernel_driver"
+  }
+}

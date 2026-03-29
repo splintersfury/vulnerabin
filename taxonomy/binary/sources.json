@@ -1,0 +1,54 @@
+{
+  "network_input": {
+    "symbols": ["recv", "recvfrom", "recvmsg", "read", "SSL_read", "BIO_read", "PR_Read"],
+    "risk": "high",
+    "description": "Network socket input — fully attacker-controlled over the wire"
+  },
+  "cgi_input": {
+    "symbols": ["getenv"],
+    "env_vars": ["QUERY_STRING", "REQUEST_URI", "REQUEST_METHOD", "CONTENT_TYPE",
+                  "CONTENT_LENGTH", "HTTP_COOKIE", "HTTP_USER_AGENT", "HTTP_REFERER",
+                  "HTTP_HOST", "REMOTE_ADDR", "PATH_INFO", "SCRIPT_NAME", "SERVER_NAME"],
+    "risk": "high",
+    "description": "CGI environment variables — attacker-controlled HTTP request fields"
+  },
+  "stdin_input": {
+    "symbols": ["fgets", "gets", "scanf", "fscanf", "getline", "getdelim", "fread", "fgetc"],
+    "risk": "medium",
+    "description": "Standard input / file reading — attacker-controlled if reading from network pipe or uploaded file",
+    "note": "Check what fd/FILE* is being read from to determine if truly attacker-controlled"
+  },
+  "file_input": {
+    "symbols": ["fopen", "open", "open64", "freopen"],
+    "risk": "medium",
+    "description": "File open — attacker-controlled if path or content is from untrusted source"
+  },
+  "ipc_input": {
+    "symbols": ["msgrcv", "mq_receive", "shmget", "shmat", "mmap"],
+    "risk": "medium",
+    "description": "IPC mechanisms — attacker-controlled if shared with untrusted process"
+  },
+  "user_kernel_boundary": {
+    "symbols": ["copy_from_user", "__copy_from_user", "get_user", "__get_user",
+                 "strncpy_from_user", "strnlen_user", "clear_user"],
+    "risk": "high",
+    "description": "Linux kernel user-space input — attacker-controlled from userland",
+    "context": "kernel_driver"
+  },
+  "ioctl_input": {
+    "symbols": ["DeviceIoControl", "IRP_MJ_DEVICE_CONTROL", "IoGetCurrentIrpStackLocation"],
+    "risk": "high",
+    "description": "Windows IOCTL input buffer — attacker-controlled from userland",
+    "context": "windows_driver"
+  },
+  "argv": {
+    "symbols": ["main", "__libc_start_main"],
+    "risk": "low",
+    "description": "Command line arguments — attacker-controlled in some contexts (local privesc)"
+  },
+  "dbus_input": {
+    "symbols": ["dbus_message_get_args", "g_dbus_method_invocation_get_parameters"],
+    "risk": "medium",
+    "description": "D-Bus message input — attacker-controlled from local user"
+  }
+}

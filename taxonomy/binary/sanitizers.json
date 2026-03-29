@@ -1,0 +1,40 @@
+{
+  "length_checks": {
+    "symbols": ["strlen", "strnlen", "sizeof", "wcslen"],
+    "description": "Length measurement — indicates bounds checking may follow"
+  },
+  "safe_string_ops": {
+    "symbols": ["strncpy", "strncat", "snprintf", "strlcpy", "strlcat",
+                "StringCbCopy", "StringCchCopy", "StringCbCat", "StringCchCat",
+                "RtlStringCbCopyA", "RtlStringCbCopyW", "RtlStringCchCopyA"],
+    "description": "Bounded string operations — prevents simple overflow but check n parameter"
+  },
+  "safe_math": {
+    "symbols": ["RtlULongAdd", "RtlULongMult", "RtlSizeTAdd", "RtlSizeTMult",
+                "safe_add", "safe_mul", "__builtin_add_overflow", "__builtin_mul_overflow",
+                "check_add_overflow", "check_mul_overflow"],
+    "description": "Safe integer arithmetic — prevents integer overflow in size calculations"
+  },
+  "input_validation": {
+    "symbols": ["isdigit", "isalpha", "isalnum", "isprint", "isxdigit",
+                "atoi", "strtol", "strtoul", "sscanf"],
+    "description": "Input parsing/validation — narrows attacker input to expected types"
+  },
+  "path_sanitizers": {
+    "symbols": ["realpath", "basename", "dirname", "canonicalize_file_name"],
+    "description": "Path canonicalization — prevents traversal if combined with prefix check"
+  },
+  "memory_safety": {
+    "symbols": ["memset", "explicit_bzero", "SecureZeroMemory", "RtlSecureZeroMemory"],
+    "description": "Memory clearing — prevents info leaks from uninitialized buffers"
+  },
+  "access_control": {
+    "symbols": ["access", "stat", "getuid", "geteuid", "getgid",
+                "SeSinglePrivilegeCheck", "ExGetPreviousMode", "ProbeForRead", "ProbeForWrite"],
+    "description": "Access control checks — validates permissions before dangerous operations"
+  },
+  "error_handling": {
+    "symbols": ["__try", "__except", "setjmp", "longjmp", "sigaction"],
+    "description": "Exception/signal handling — may catch exploitation attempts"
+  }
+}

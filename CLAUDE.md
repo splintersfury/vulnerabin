@@ -40,15 +40,17 @@ Based on detected type:
 1. Run `python3 scripts/extract_electron.py <path>` to extract app.asar and index the codebase
 2. Read the output JSON — it lists all JS/TS files, BrowserWindow configs, preload scripts, IPC handlers
 
-**Native binaries (Sprint 3):**
+**Native binaries:**
 1. Run `python3 scripts/decomp.py <binary> --output engagements/<folder>/decomp/`
-2. Optionally run Kong for function renaming on stripped binaries
+2. Optionally run `python3 scripts/run_kong.py <binary> --output engagements/<folder>/kong/` for function renaming
 3. Run `python3 scripts/build_callgraph.py engagements/<folder>/decomp/function_index.json`
+4. Decompiled functions are in `engagements/<folder>/decomp/functions/` (one file per function)
 
-**Firmware (Sprint 5):**
-1. Extract filesystem with binwalk/unsquashfs
-2. Identify all ELF binaries, CGI endpoints, web interfaces
-3. Triage each binary individually
+**Firmware:**
+1. Run `python3 scripts/extract_firmware.py <firmware> --output engagements/<folder>/firmware/`
+2. Read the output — it lists priority targets (CGI endpoints, setuid binaries, daemons)
+3. For each priority target, run the native binary pipeline above
+4. Check credential findings in the output — hardcoded passwords in config files
 
 ### Phase 3: Triage
 Systematically analyze every file (Electron) or function (binary):
@@ -154,8 +156,23 @@ python3 scripts/acquire.py --target "<name>" --output-dir <path>
 # Extract Electron app
 python3 scripts/extract_electron.py <path-to-app-dir> --output-dir <path>
 
-# Build source-sink chains (when available)
+# Build source-sink chains (Electron)
 python3 scripts/build_chains.py <extracted-dir> --taxonomy taxonomy/electron/
+
+# Build source-sink chains (binary — from Ghidra function index)
+python3 scripts/build_chains.py <function_index.json> --taxonomy taxonomy/binary/ --type binary
+
+# Decompile a binary with Ghidra
+python3 scripts/decomp.py <binary> --output <output-dir>
+
+# Build call graph from Ghidra output
+python3 scripts/build_callgraph.py <function_index.json> --output <callgraph.json>
+
+# Run Kong for function renaming (optional, requires Kong installed)
+python3 scripts/run_kong.py <binary> --output <output-dir>
+
+# Extract firmware image
+python3 scripts/extract_firmware.py <firmware-image> --output <output-dir>
 ```
 
 ## Taxonomy Files

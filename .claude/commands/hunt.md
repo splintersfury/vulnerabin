@@ -38,8 +38,8 @@ python3 scripts/detect.py <extracted-path>
 
 Read the output. Branch based on type:
 - **electron**: Continue to Step 4a
-- **native_binary**: Tell user "Binary support coming in Sprint 3. For now, provide decompiled output in the engagement folder and I'll triage it directly."
-- **firmware**: Tell user "Firmware support coming in Sprint 5."
+- **native_binary**: Continue to Step 4b
+- **firmware** or **firmware_rootfs**: Continue to Step 4c
 - **unknown**: Ask user for more context about the target.
 
 ## Step 4a: Extract Electron App
@@ -57,6 +57,48 @@ Read the JSON output. Note:
 - Security misconfigurations
 
 Save the index to `engagements/<folder>/electron_index.json`.
+
+## Step 4b: Decompile Native Binary
+
+```bash
+python3 scripts/decomp.py <binary-path> --output engagements/<folder>/decomp/
+```
+
+Read the output. If successful:
+- Decompiled functions are in `engagements/<folder>/decomp/functions/` (one .c file per function)
+- Function index with call graph is at `engagements/<folder>/decomp/function_index.json`
+
+Optionally run Kong for function renaming (if stripped binary):
+```bash
+python3 scripts/run_kong.py <binary-path> --output engagements/<folder>/kong/
+```
+
+Build the call graph for chain analysis:
+```bash
+python3 scripts/build_callgraph.py engagements/<folder>/decomp/function_index.json --output engagements/<folder>/callgraph.json
+```
+
+Build source-to-sink chains:
+```bash
+python3 scripts/build_chains.py engagements/<folder>/decomp/function_index.json --taxonomy taxonomy/binary/ --type binary --output engagements/<folder>/chains.json
+```
+
+Then proceed to Step 5 (Triage) using `taxonomy/binary/` instead of `taxonomy/electron/`.
+For binary triage, read each function file in `decomp/functions/` and use `prompts/triage_binary.md`.
+
+## Step 4c: Extract Firmware
+
+```bash
+python3 scripts/extract_firmware.py <firmware-path> --output engagements/<folder>/firmware/
+```
+
+Read the output. It provides:
+- **priority_targets**: CGI endpoints, setuid binaries, network daemons — ranked by attack surface
+- **credential_findings**: Hardcoded passwords/keys found in config files
+- **rootfs_path**: Path to the extracted filesystem
+
+Present the priority targets to the user and ask which ones to analyze.
+For each selected target, run Step 4b (decompile) on it individually.
 
 ## Step 5: Triage
 
