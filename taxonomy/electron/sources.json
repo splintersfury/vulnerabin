@@ -1,0 +1,97 @@
+{
+  "ipc_main": {
+    "patterns": ["ipcMain.on(", "ipcMain.handle(", "ipcMain.once("],
+    "risk": "high",
+    "description": "Main process IPC handlers — renderer can send arbitrary data to these",
+    "cwe_relevant": ["CWE-94", "CWE-78", "CWE-22"]
+  },
+  "ipc_renderer": {
+    "patterns": ["ipcRenderer.send(", "ipcRenderer.invoke(", "ipcRenderer.sendSync("],
+    "risk": "medium",
+    "description": "Renderer-side IPC calls — track what data is sent to main process"
+  },
+  "protocol_handler": {
+    "patterns": [
+      "protocol.registerHttpProtocol(",
+      "protocol.registerFileProtocol(",
+      "protocol.handle(",
+      "protocol.registerStringProtocol(",
+      "protocol.registerBufferProtocol(",
+      "protocol.registerStreamProtocol("
+    ],
+    "risk": "high",
+    "description": "Custom protocol handlers receive URLs from OS — fully attacker-controlled"
+  },
+  "deep_link": {
+    "patterns": [
+      "app.setAsDefaultProtocolClient(",
+      "open-url",
+      "second-instance",
+      "app.on('open-url'",
+      "app.on('second-instance'"
+    ],
+    "risk": "high",
+    "description": "Deep links from external apps/websites — attacker-controlled URL"
+  },
+  "webview_message": {
+    "patterns": [
+      "webview.addEventListener('ipc-message'",
+      "<webview",
+      "webContents.on('ipc-message'"
+    ],
+    "risk": "medium",
+    "description": "Messages from embedded webviews"
+  },
+  "dom_input": {
+    "patterns": [
+      "document.location",
+      "window.location",
+      "document.URL",
+      "document.referrer",
+      "location.hash",
+      "location.search",
+      "URLSearchParams"
+    ],
+    "risk": "medium",
+    "description": "DOM-based input sources — attacker-controlled via navigation"
+  },
+  "network_response": {
+    "patterns": [
+      "fetch(",
+      "XMLHttpRequest",
+      "axios.",
+      "request(",
+      ".get(",
+      ".post(",
+      "WebSocket"
+    ],
+    "risk": "medium",
+    "description": "Network responses rendered in the app — MITM or malicious server"
+  },
+  "file_input": {
+    "patterns": [
+      "dialog.showOpenDialog",
+      "fs.readFile(",
+      "fs.readFileSync(",
+      "fs.createReadStream(",
+      "readFile("
+    ],
+    "risk": "medium",
+    "description": "File content loaded by user — malicious file scenarios"
+  },
+  "clipboard": {
+    "patterns": ["clipboard.readText(", "clipboard.readHTML(", "clipboard.read("],
+    "risk": "low",
+    "description": "Clipboard content — attacker needs prior clipboard poisoning"
+  },
+  "drag_drop": {
+    "patterns": ["drop", "dragover", "ondrop", "dataTransfer"],
+    "risk": "low",
+    "description": "Drag and drop events — limited attacker control"
+  },
+  "argv": {
+    "patterns": ["process.argv", "app.commandLine", "process.env"],
+    "risk": "low",
+    "description": "Command line arguments and environment variables"
+  }
+}

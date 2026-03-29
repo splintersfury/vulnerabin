@@ -1,0 +1,74 @@
+{
+  "nodeIntegration_enabled": {
+    "pattern": "nodeIntegration\\s*:\\s*true",
+    "severity": "critical",
+    "impact": "Renderer has full Node.js access — any XSS becomes immediate RCE via require('child_process')",
+    "default_secure": true,
+    "note": "Disabled by default since Electron 5. Finding this enabled is a strong signal."
+  },
+  "contextIsolation_disabled": {
+    "pattern": "contextIsolation\\s*:\\s*false",
+    "severity": "critical",
+    "impact": "Renderer JS can access preload script's scope — prototype pollution → RCE even without nodeIntegration",
+    "default_secure": true,
+    "note": "Enabled by default since Electron 12. Disabling it re-opens a major attack surface."
+  },
+  "webSecurity_disabled": {
+    "pattern": "webSecurity\\s*:\\s*false",
+    "severity": "high",
+    "impact": "Same-origin policy disabled — renderer can load arbitrary remote content, make cross-origin requests",
+    "default_secure": true
+  },
+  "sandbox_disabled": {
+    "pattern": "sandbox\\s*:\\s*false",
+    "severity": "high",
+    "impact": "Renderer process runs without OS sandbox — compromised renderer has broader OS access",
+    "default_secure": true,
+    "note": "Default changed to true in Electron 20."
+  },
+  "allowRunningInsecureContent": {
+    "pattern": "allowRunningInsecureContent\\s*:\\s*true",
+    "severity": "medium",
+    "impact": "HTTPS page can load HTTP scripts — MITM can inject JS into the renderer",
+    "default_secure": true
+  },
+  "experimentalFeatures": {
+    "pattern": "experimentalFeatures\\s*:\\s*true",
+    "severity": "low",
+    "impact": "Enables Chromium experimental features — may expose additional attack surface",
+    "default_secure": true
+  },
+  "enableRemoteModule": {
+    "pattern": "enableRemoteModule\\s*:\\s*true",
+    "severity": "high",
+    "impact": "Remote module allows renderer to call main process objects — RCE path from renderer",
+    "default_secure": true,
+    "note": "Deprecated and removed in Electron 14+. Finding it enabled suggests old/unmaintained code."
+  },
+  "allowpopups_webview": {
+    "pattern": "allowpopups",
+    "severity": "medium",
+    "impact": "Webview can open new windows — navigation hijacking if content is untrusted",
+    "context": "Only relevant on <webview> tags"
+  },
+  "webviewTag_enabled": {
+    "pattern": "webviewTag\\s*:\\s*true",
+    "severity": "medium",
+    "impact": "Enables <webview> tag in renderer — webviews have their own security context that may differ from main window",
+    "default_secure": true
+  },
+  "no_will_navigate_handler": {
+    "pattern": null,
+    "severity": "medium",
+    "impact": "Missing will-navigate handler — renderer can navigate to arbitrary URLs including file:// and javascript:",
+    "detection": "absence",
+    "note": "Detected by checking that BrowserWindow has NO will-navigate listener registered"
+  },
+  "no_window_open_handler": {
+    "pattern": null,
+    "severity": "medium",
+    "impact": "Missing setWindowOpenHandler — window.open() calls are not blocked or validated",
+    "detection": "absence",
+    "note": "Detected by checking that BrowserWindow has NO setWindowOpenHandler"
+  }
+}

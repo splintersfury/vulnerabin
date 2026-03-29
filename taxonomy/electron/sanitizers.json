@@ -1,0 +1,80 @@
+{
+  "dom_sanitizers": {
+    "patterns": [
+      "DOMPurify.sanitize(",
+      "sanitizeHtml(",
+      "xss(",
+      "escapeHtml(",
+      "escape-html",
+      "he.encode(",
+      "he.escape(",
+      "validator.escape("
+    ],
+    "description": "HTML/DOM sanitization libraries — breaks XSS chains"
+  },
+  "path_sanitizers": {
+    "patterns": [
+      "path.resolve(",
+      "path.normalize(",
+      "path.basename(",
+      "path.join(",
+      "realpath("
+    ],
+    "description": "Path normalization — may prevent traversal (check if result is validated against allowlist)",
+    "note": "path.join alone does NOT prevent traversal — must be combined with prefix check"
+  },
+  "url_validators": {
+    "patterns": [
+      "new URL(",
+      "url.parse(",
+      "URL.canParse(",
+      ".protocol ===",
+      ".protocol !=="
+    ],
+    "description": "URL parsing and protocol validation — breaks open redirect and protocol handler attacks"
+  },
+  "context_isolation": {
+    "patterns": [
+      "contextBridge.exposeInMainWorld(",
+      "contextIsolation: true"
+    ],
+    "description": "Electron context isolation — prevents renderer from accessing Node.js directly"
+  },
+  "csp": {
+    "patterns": [
+      "Content-Security-Policy",
+      "content-security-policy",
+      "session.defaultSession.webRequest.onHeadersReceived"
+    ],
+    "description": "Content Security Policy — restricts inline scripts, eval, and resource loading"
+  },
+  "input_validation": {
+    "patterns": [
+      "typeof .* === 'string'",
+      "typeof .* === 'number'",
+      "Number.isInteger(",
+      "Number.isFinite(",
+      "Array.isArray(",
+      "validator.",
+      "joi.",
+      "zod.",
+      "yup."
+    ],
+    "description": "Type checking and validation libraries — narrows attacker input"
+  },
+  "ipc_sender_validation": {
+    "patterns": [
+      "event.senderFrame",
+      "event.sender.getURL(",
+      "webContents.id"
+    ],
+    "description": "IPC sender verification — ensures messages come from expected origin"
+  },
+  "sandbox": {
+    "patterns": [
+      "sandbox: true",
+      "app.enableSandbox()"
+    ],
+    "description": "Renderer sandbox — limits OS-level access even if renderer is compromised"
+  }
+}

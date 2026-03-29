@@ -1,0 +1,157 @@
+{
+  "command_execution": {
+    "patterns": [
+      "child_process.exec(",
+      "child_process.execSync(",
+      "child_process.spawn(",
+      "child_process.spawnSync(",
+      "child_process.execFile(",
+      "child_process.execFileSync(",
+      "child_process.fork(",
+      "require('child_process')",
+      "require(\"child_process\")",
+      "import { exec",
+      "import { spawn"
+    ],
+    "cwe": "CWE-78",
+    "severity": "critical",
+    "description": "OS command execution — immediate RCE if attacker-controlled"
+  },
+  "code_evaluation": {
+    "patterns": [
+      "eval(",
+      "new Function(",
+      "setTimeout(string",
+      "setInterval(string",
+      "vm.runInNewContext(",
+      "vm.runInThisContext(",
+      "vm.createScript(",
+      "script.runInNewContext("
+    ],
+    "cwe": "CWE-94",
+    "severity": "critical",
+    "description": "Dynamic code evaluation — RCE if attacker-controlled string"
+  },
+  "shell_open": {
+    "patterns": [
+      "shell.openExternal(",
+      "shell.openPath(",
+      "shell.showItemInFolder("
+    ],
+    "cwe": "CWE-78",
+    "severity": "high",
+    "description": "Opens URL/file with OS handler — can launch executables, exfiltrate via URL"
+  },
+  "execute_javascript": {
+    "patterns": [
+      "webContents.executeJavaScript(",
+      "executeJavaScript(",
+      "webFrame.executeJavaScript("
+    ],
+    "cwe": "CWE-94",
+    "severity": "critical",
+    "description": "Injects JS into a webContents — XSS with full renderer privileges"
+  },
+  "html_injection": {
+    "patterns": [
+      "innerHTML",
+      "outerHTML",
+      "document.write(",
+      "document.writeln(",
+      "insertAdjacentHTML(",
+      "dangerouslySetInnerHTML"
+    ],
+    "cwe": "CWE-79",
+    "severity": "high",
+    "description": "DOM XSS — in Electron, XSS can escalate to RCE via preload/IPC"
+  },
+  "file_write": {
+    "patterns": [
+      "fs.writeFile(",
+      "fs.writeFileSync(",
+      "fs.createWriteStream(",
+      "fs.appendFile(",
+      "fs.appendFileSync(",
+      "fs.copyFile(",
+      "fs.rename("
+    ],
+    "cwe": "CWE-22",
+    "severity": "high",
+    "description": "File system write — arbitrary file write if path is attacker-controlled"
+  },
+  "file_delete": {
+    "patterns": [
+      "fs.unlink(",
+      "fs.unlinkSync(",
+      "fs.rmdir(",
+      "fs.rm(",
+      "fs.rmSync("
+    ],
+    "cwe": "CWE-22",
+    "severity": "high",
+    "description": "File deletion — DoS or security bypass if path attacker-controlled"
+  },
+  "navigation": {
+    "patterns": [
+      "loadURL(",
+      "loadFile(",
+      "window.open(",
+      "location.href",
+      "location.replace(",
+      "location.assign(",
+      "window.location"
+    ],
+    "cwe": "CWE-601",
+    "severity": "medium",
+    "description": "Navigation to attacker-controlled URL — phishing, content injection"
+  },
+  "sql_query": {
+    "patterns": [
+      "db.run(",
+      "db.exec(",
+      "db.prepare(",
+      "db.all(",
+      "db.get(",
+      "sequelize.query(",
+      "knex.raw(",
+      "connection.query("
+    ],
+    "cwe": "CWE-89",
+    "severity": "high",
+    "description": "SQL execution — injection if query built with attacker input"
+  },
+  "deserialization": {
+    "patterns": [
+      "JSON.parse(",
+      "unserialize(",
+      "deserialize(",
+      "pickle.",
+      "yaml.load("
+    ],
+    "cwe": "CWE-502",
+    "severity": "medium",
+    "description": "Deserialization — prototype pollution or code exec with crafted input"
+  },
+  "node_require": {
+    "patterns": [
+      "require(",
+      "import(",
+      "module.require("
+    ],
+    "cwe": "CWE-94",
+    "severity": "critical",
+    "note": "Only dangerous if argument is attacker-controlled. Common false positive — check context.",
+    "description": "Dynamic require — module loading with attacker-controlled path"
+  },
+  "native_addon": {
+    "patterns": [
+      ".node')",
+      ".node\")",
+      "process.dlopen(",
+      "ffi."
+    ],
+    "cwe": "CWE-426",
+    "severity": "high",
+    "description": "Native addon loading — DLL/SO hijacking if path controllable"
+  }
+}
