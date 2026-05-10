@@ -321,6 +321,7 @@ def cmd_refresh(args) -> int:
         print("could not import catalog_re_extract", file=sys.stderr)
         return 1
     mod = importlib.util.module_from_spec(spec)
+    sys.modules["catalog_re_extract"] = mod
     spec.loader.exec_module(mod)
 
     p, data = _load_binary(args.binary)
