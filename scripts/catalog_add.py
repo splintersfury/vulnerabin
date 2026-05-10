@@ -211,6 +211,69 @@ def cmd_source(args):
     print(f"+ {new_id}  derived_from={args.from_input}  {args.name}  ({path.name})")
 
 
+def cmd_feature(args):
+    """Append a new FEAT-* entry."""
+    path = yaml_path_for(args.binary)
+    data = load_yaml(path)
+    feats = data.setdefault("features", [])
+    new_id = next_id(feats, "FEAT")
+    entry = {
+        "id": new_id,
+        "slug": args.slug or "",
+        "name": args.name or "",
+        "description": args.description or "",
+        "status": args.status or "hypothesised",
+        "capabilities": [c.strip() for c in (args.capabilities or "").split(",") if c.strip()],
+        "sources": [c.strip() for c in (args.sources or "").split(",") if c.strip()],
+        "inputs": [c.strip() for c in (args.inputs or "").split(",") if c.strip()],
+        "implementation_anchors": [],
+        "cwe": [c.strip() for c in (args.cwe or "").split(",") if c.strip()],
+        "severity_ceiling": args.severity_ceiling or "",
+        "ux_strings": [],
+        "disabled_by_default": False,
+        "signal_sources": [{
+            "detector": "manual",
+            "detector_version": "1.0",
+            "evidence_type": "human",
+            "evidence_value": "vb-add feature",
+            "weight": 3,
+            "last_detected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        }],
+        "confidence": "medium",
+        "confirmed": True,
+        "rejected": False,
+        "user_observable": args.user_observable or "",
+        "notes": "",
+        "confirmation_review": {
+            "required": False,
+            "agent_id": "human",
+            "reviewed_by": "",
+            "verdict": "human-override",
+            "reviewed_at": "",
+            "artifact_path": "",
+            "trigger_reason": "manual-add",
+        },
+    }
+    feats.append(entry)
+    save_yaml(path, data)
+    print(new_id)
+
+
+def cmd_unreachable(args):
+    """Mark an (input, feature) cell as explicitly unreachable in the matrix."""
+    path = yaml_path_for(args.binary)
+    data = load_yaml(path)
+    cells = data.setdefault("matrix_overrides", [])
+    cells.append({
+        "input_id": args.input,
+        "feature_id": args.feature,
+        "state": "unreachable",
+        "reason": args.reason or "",
+    })
+    save_yaml(path, data)
+    print(f"marked {args.input} × {args.feature} unreachable")
+
+
 # ---------------------------------------------------------------------------
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -268,6 +331,27 @@ def main() -> int:
     p_src.add_argument("--function", help="containing function name")
     p_src.add_argument("--attacker-controlled", help="yes|yes_with_caveat|no", default="yes")
     p_src.set_defaults(func=cmd_source)
+
+    p_feat = sp.add_parser("feature", help="add a FEAT-* entry by hand")
+    p_feat.add_argument("--binary", required=True)
+    p_feat.add_argument("--slug", default="")
+    p_feat.add_argument("--name", default="")
+    p_feat.add_argument("--description", default="")
+    p_feat.add_argument("--status", default="")
+    p_feat.add_argument("--capabilities", default="")
+    p_feat.add_argument("--sources", default="")
+    p_feat.add_argument("--inputs", default="")
+    p_feat.add_argument("--cwe", default="")
+    p_feat.add_argument("--severity-ceiling", default="")
+    p_feat.add_argument("--user-observable", default="")
+    p_feat.set_defaults(func=cmd_feature)
+
+    p_unreach = sp.add_parser("unreachable", help="mark an inputs × features cell unreachable")
+    p_unreach.add_argument("--binary", required=True)
+    p_unreach.add_argument("--input", required=True)
+    p_unreach.add_argument("--feature", required=True)
+    p_unreach.add_argument("--reason", default="")
+    p_unreach.set_defaults(func=cmd_unreachable)
 
     args = ap.parse_args()
     args.func(args)
