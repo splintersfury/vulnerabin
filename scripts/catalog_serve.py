@@ -567,6 +567,61 @@ def healthz():
     return {"status": "ok", "binaries": len(collect_binaries()), "products": len(collect_products())}
 
 
+from pydantic import BaseModel
+
+
+class OverrideRequest(BaseModel):
+    direction: str  # "reject" | "confirm"
+    reason: str = ""
+    actor: str = "human"
+
+
+@app.post("/api/walk/{binary}/override/{feat_id}")
+def override_feature(binary: str, feat_id: str, req: OverrideRequest):
+    from datetime import datetime, timezone
+    cdir = Path(__file__).resolve().parent.parent / "catalog" / "binaries"
+    p = cdir / f"{binary}.yml"
+    if not p.exists():
+        raise HTTPException(status_code=404, detail=f"binary not found: {binary}")
+    data = yaml.safe_load(p.read_text()) or {}
+    target = None
+    for f in data.get("features") or []:
+        if f.get("id") == feat_id:
+            target = f
+            break
+    if target is None:
+        raise HTTPException(status_code=404, detail=f"feature not found: {feat_id}")
+
+    if req.direction == "reject":
+        target["confirmed"] = False
+        target["rejected"] = True
+        target["rejection_reason"] = req.reason or "human override"
+        target["rejected_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        action = "human-override-reject"
+    elif req.direction == "confirm":
+        target["confirmed"] = True
+        target["rejected"] = False
+        cr = target.setdefault("confirmation_review", {})
+        cr["verdict"] = "human-override"
+        cr["agent_id"] = "human"
+        cr["reviewed_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        action = "human-override-confirm"
+    else:
+        raise HTTPException(status_code=400, detail="direction must be 'reject' or 'confirm'")
+
+    history = data.setdefault("walk_state", {}).setdefault("history", [])
+    history.append({
+        "stage": "2c-features",
+        "action": action,
+        "at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "actor": req.actor,
+        "target": feat_id,
+        "reason": req.reason,
+    })
+    p.write_text(yaml.safe_dump(data, sort_keys=False))
+    return {"ok": True, "feat_id": feat_id, "new_state": req.direction}
+
+
 # ----- CLI entry -----
 
 
