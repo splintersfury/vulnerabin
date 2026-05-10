@@ -36,9 +36,22 @@ import json
 import re
 import sys
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 
 import yaml
+
+# Make sibling `feat_detectors` package importable. Guarded so repeated
+# imports of this module (e.g. via tests) don't grow sys.path unboundedly.
+_FEAT_DETECTORS_PATH = str(Path(__file__).resolve().parent)
+if _FEAT_DETECTORS_PATH not in sys.path:
+    sys.path.insert(0, _FEAT_DETECTORS_PATH)
+
+import feat_detectors  # noqa: E402
+# Force-import known tier packages so detectors self-register at module load.
+# Add new tier modules here as they are written.
+from feat_detectors.tier1_universal import exports as _exports_detector  # noqa: E402, F401
+from feat_detectors.base import DetectorContext  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 ENG = ROOT / "engagements"
@@ -753,16 +766,6 @@ def process_features(binary_yaml: dict, ctx) -> dict:
 
     Returns the modified binary_yaml.
     """
-    import sys
-    from pathlib import Path as _Path
-    from datetime import datetime, timezone
-
-    sys.path.insert(0, str(_Path(__file__).parent))
-    import feat_detectors
-    # Force-import known tier packages so they self-register on import.
-    # Add new tier modules here as they are written.
-    from feat_detectors.tier1_universal import exports as _exports  # noqa: F401
-
     platform = (binary_yaml.get("platform") or "").lower()
     binary_kind = (binary_yaml.get("binary_kind") or "").lower()
     detectors = feat_detectors.load_detectors(platform, binary_kind)
@@ -1055,7 +1058,6 @@ def process_one(eng_dir: Path, binary: str, decomp_dir: Path | None,
 
     # Run FEAT detector framework against the gathered context.
     try:
-        from feat_detectors.base import DetectorContext
         try:
             full_function_index = json.loads((decomp_dir / "function_index.json").read_text())
         except (OSError, json.JSONDecodeError):
@@ -1081,11 +1083,16 @@ def process_one(eng_dir: Path, binary: str, decomp_dir: Path | None,
         feat_yaml = process_features(feat_yaml, ctx)
         merged_features = feat_yaml.get("features") or []
         features_added = max(0, len(merged_features) - len(existing_yaml.get("features") or []))
-    except Exception as _feat_err:  # pragma: no cover - defensive
+    except (ImportError, OSError, AttributeError, ValueError) as _feat_err:
+        # Detector registry failed to load, decomp dir missing, or malformed
+        # input. Real bugs (TypeError, KeyError, etc.) are NOT swallowed —
+        # they propagate so they aren't silently masked.
+        import traceback
         merged_features = list(existing_yaml.get("features") or [])
         features_added = 0
+        print(f"[feat] detector pass skipped: {_feat_err}", file=sys.stderr)
         if verbose:
-            print(f"[feat] detector pass skipped: {_feat_err}", file=sys.stderr)
+            traceback.print_exc()
 
     summary = {
         "binary": binary,
