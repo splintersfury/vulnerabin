@@ -60,6 +60,17 @@ Before finalizing, challenge your own finding:
 4. Are you making assumptions about the attacker's capabilities?
 5. Would a defender argue this is "by design"?
 
+## Reverse Self-Critique: Assumption Audit (mandatory for SANITIZER/gate dismissals)
+
+If you are about to dismiss a finding because a security check blocks the chain, challenge the CHECK:
+1. What does the security check ACTUALLY verify vs what it ASSUMES?
+2. Does it check a file on disk that could be swapped? (TOCTOU via hardlink/symlink)
+3. Does it check a name/path that could be spoofed? (Process name/path manipulation)
+4. Does it read from shared memory that could change? (Double-fetch)
+5. Does it validate then re-use after a gap where state could change? (Handle recycling, race condition)
+6. Is the check applied on ALL code paths to the sensitive operation? (Alternate entry)
+Reference: `taxonomy/binary/assumption_attacks.json`, `prompts/vuln_patterns/toctou_assumption.md`
+
 ## Verdict
 
 - **CONFIRMED**: All ACID criteria satisfied with code evidence. High confidence.
