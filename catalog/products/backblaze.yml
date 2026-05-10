@@ -1,0 +1,73 @@
+product: backblaze
+display_name: Backblaze Online Backup (Windows)
+vendor: Backblaze
+description: >
+  Consumer cloud-backup client for Windows. Multi-process: a transmit daemon
+  (bztransmit), a restore client (bzrestore), and a server-side helper (bzserv)
+  that brokers operations. Engagement uncovered an NTFS-hardlink LPE (closed
+  Duplicate by Bugcrowd) and an unsigned-update execution chain.
+
+versions_seen:
+  - version: "10.x"
+    eng: backblaze-2026-04-08
+    seen: 2026-04-08
+
+binaries:
+  - bztransmit
+  - bzrestore
+  - bzserv
+  - install_backblaze.exe
+
+topology:
+  trust_zones:
+    SYSTEM:
+      - bzserv (broker)
+    Admin_or_user:
+      - bztransmit
+      - bzrestore
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  ipc_edges:
+    - { src: bztransmit, dst: bzserv (broker), via: local IPC }
+    - { src: bzrestore, dst: bzserv (broker), via: local IPC }
+
+  defenses:
+    bzserv:
+      - "elevated broker for backup operations; runs SYSTEM"
+      - "GAP: hardlink substitution on log/state file paths (F-003) — submitted but Duplicate"
+    auto_updater:
+      - "fetches update binary from vendor URL"
+      - "GAP: signature verification absent before exec — UP-001 confirmed (finding 002)"
+      - "GAP: malicious-server / MITM model — N-003 layered with UP-001"
+
+vulnerabilities:
+  - finding_ref: backblaze-2026-04-08/findings/001-hardlink-lpe.md
+    binary: bzserv
+    classes: [F-003]
+    severity: TBD
+    status: submitted_dropped
+    submission_ref: bugcrowd:Backblaze-v10 (Duplicate)
+  - finding_ref: backblaze-2026-04-08/findings/002-unsigned-update-execution-lpe.md
+    binary: bztransmit
+    classes: [UP-001, N-003]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: backblaze-2026-04-08/findings/003-restore-malicious-server.md
+    binary: bzrestore
+    classes: [N-003, N-004]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: backblaze-2026-04-08/findings/004-related-finding.md
+    binary: bzserv
+    classes: [F-003]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+
+open_angles:
+  - "auto-updater HTTPS cert pinning status not fully audited"
+  - "restore protocol payload-level fuzzing not performed"
+  - "bzserv broker IPC ACL not enumerated for I-002 surface"

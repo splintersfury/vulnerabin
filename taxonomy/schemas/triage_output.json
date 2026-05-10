@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Triage Output",
+  "description": "Schema for VulneraBin triage results. Every triage output MUST conform to this schema.",
+  "type": "object",
+  "required": ["target", "rating", "label", "reasoning"],
+  "properties": {
+    "target": {
+      "type": "string",
+      "description": "Function name (binary) or file path (Electron/source)"
+    },
+    "address": {
+      "type": "string",
+      "description": "Function address for binary targets (e.g., 0x00401000)"
+    },
+    "rating": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Exploitability rating: 1 (irrelevant) to 5 (source+sink, no sanitization)"
+    },
+    "label": {
+      "type": "string",
+      "enum": ["SOURCE", "SINK", "PASSTHROUGH", "SANITIZER", "IRRELEVANT"],
+      "description": "Classification of the function/file role in an attack chain"
+    },
+    "reasoning": {
+      "type": "string",
+      "description": "Step-by-step reasoning that led to this rating and label. Must explain what was observed, what it means, and what is uncertain. This field is MANDATORY."
+    },
+    "sources_found": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pattern", "line_approx"],
+        "properties": {
+          "pattern": { "type": "string", "description": "Function call or API pattern (e.g., recv, getenv, ipcMain.handle)" },
+          "symbol": { "type": "string", "description": "Resolved symbol name if available" },
+          "line_approx": { "type": "integer", "description": "Approximate line number" },
+          "variable": { "type": "string", "description": "Variable name that holds the attacker input" },
+          "channel": { "type": "string", "description": "IPC channel name (Electron)" },
+          "attacker_control": {
+            "type": "string",
+            "enum": ["full", "partial", "constrained", "unknown"],
+            "description": "Degree of attacker control over this input"
+          }
+        }
+      }
+    },
+    "sinks_found": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pattern", "line_approx", "cwe"],
+        "properties": {
+          "pattern": { "type": "string", "description": "Dangerous function or operation" },
+          "line_approx": { "type": "integer" },
+          "cwe": { "type": "string", "description": "CWE identifier (e.g., CWE-78)" },
+          "arg_source": { "type": "string", "description": "Which variable/parameter flows into the sink" }
+        }
+      }
+    },
+    "sanitizers_found": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pattern": { "type": "string" },
+          "line_approx": { "type": "integer" },
+          "effectiveness": {
+            "type": "string",
+            "enum": ["blocks_chain", "reduces_risk", "bypassable", "unknown"],
+            "description": "How effective is this sanitizer at stopping the attack"
+          }
+        }
+      }
+    },
+    "misconfigs_found": {
+      "type": "array",
+      "description": "Electron only: dangerous BrowserWindow settings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "setting": { "type": "string" },
+          "value": { "type": "string" },
+          "risk": { "type": "string" }
+        }
+      }
+    },
+    "chains": {
+      "type": "array",
+      "description": "Source-to-sink data flow chains identified",
+      "items": {
+        "type": "object",
+        "required": ["source", "sink", "sanitized"],
+        "properties": {
+          "source": { "type": "string" },
+          "sink": { "type": "string" },
+          "sanitized": { "type": "boolean" },
+          "flow": { "type": "string", "description": "Explicit data flow: A -> B -> C with transformations" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "data_flow": {
+      "type": "string",
+      "description": "Summary data flow string for binary targets"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-text observations"
+    }
+  }
+}

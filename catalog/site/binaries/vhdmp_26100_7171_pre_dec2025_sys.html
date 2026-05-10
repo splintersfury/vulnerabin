@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Vulnerabin · vhdmp_26100.7171_pre_dec2025.sys</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#131315",
+        background: "#0c0c0e",
+        "on-surface": "#e5e1e4",
+        "on-background": "#e5e1e4",
+        "on-surface-variant": "#c2c6d6",
+        "surface-container-lowest": "#0e0e10",
+        "surface-container-low": "#1b1b1d",
+        "surface-container": "#201f21",
+        "surface-container-high": "#2a2a2c",
+        "surface-container-highest": "#353437",
+        "surface-bright": "#39393b",
+        "surface-variant": "#353437",
+        outline: "#8c909f",
+        "outline-variant": "#424754",
+        primary: "#adc6ff",
+        "primary-fixed": "#d8e2ff",
+        "primary-fixed-dim": "#adc6ff",
+        "primary-container": "#4d8eff",
+        "on-primary": "#002e6a",
+        "on-primary-container": "#00285d",
+        secondary: "#4fdbc8",
+        "secondary-container": "#04b4a2",
+        tertiary: "#ffb786",
+        "tertiary-container": "#df7412",
+        error: "#ffb4ab",
+        "error-container": "#93000a",
+        "on-error": "#690005",
+        "on-error-container": "#ffdad6",
+        accent: "#3b82f6",
+        // Source-class group colors (matching taxonomy/binary/sources_v2.json groups)
+        "grp-F": "#fdd6d6",
+        "grp-F-stroke": "#c00",
+        "grp-I": "#fed9a3",
+        "grp-I-stroke": "#c80",
+        "grp-N": "#c5d3ff",
+        "grp-N-stroke": "#06c",
+        "grp-K": "#e0bdf2",
+        "grp-K-stroke": "#909",
+        "grp-U": "#bfeac6",
+        "grp-U-stroke": "#080",
+        "grp-T": "#cfd2d8",
+        "grp-T-stroke": "#555",
+        "grp-UP": "#fff0a3",
+        "grp-UP-stroke": "#aa0",
+        "grp-C": "#e9d4b8",
+        "grp-C-stroke": "#862",
+        "grp-E": "#a8d4ff",
+        "grp-E-stroke": "#069",
+        "grp-W": "#f4c5ff",
+        "grp-W-stroke": "#909",
+        "grp-CR": "#cccccc",
+        "grp-CR-stroke": "#333",
+      },
+      borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "9999px" },
+      spacing: { base: "4px", xs: "4px", sm: "8px", gutter: "12px", md: "16px", margin: "16px", lg: "24px", xl: "32px", unit: "4px" },
+      fontFamily: {
+        "ui-sans-md": ["Inter"], "ui-sans-sm": ["Inter"],
+        "data-mono-sm": ["JetBrains Mono"], "data-mono-md": ["JetBrains Mono"],
+        "code-block": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"],
+        "h1": ["Inter"], "h2": ["Inter"], "title-sm": ["Inter"],
+        "headline-md": ["Inter"], "display-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+      },
+      fontSize: {
+        "h1": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "h2": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "title-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+        "ui-sans-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+        "ui-sans-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+        "data-mono-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "data-mono-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+        "code-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "code-sm": ["11px", { lineHeight: "16px", fontWeight: "400" }],
+        "code-block": ["13px", { lineHeight: "22px", fontWeight: "400" }],
+        "label-caps": ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "700" }],
+        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+      },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a2c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #424754; }
+.bg-custom-surface { background-color: #16171d; }
+</style>
+</head>
+<body class="bg-background text-on-background font-ui-sans-md h-screen flex flex-col overflow-hidden">
+
+<!-- Top app bar -->
+<header class="bg-surface-container border-b border-outline-variant flex justify-between items-center w-full px-lg py-sm z-50 h-14 shrink-0">
+  <div class="flex items-center gap-md">
+    <a href="../index.html" class="text-h2 font-h1 tracking-tight text-primary">Vulnerabin</a>
+    <nav class="hidden md:flex items-center gap-sm ml-lg">
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../index.html">Products</a>
+      <a class="text-primary font-bold hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../binaries.html">Binaries</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../chains.html">Chains</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../pipeline.html">Pipeline</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../taxonomy.html">Taxonomy</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-sm">
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+  </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden">
+  <!-- Side nav -->
+  <aside class="bg-surface text-on-surface font-ui-sans-sm border-r border-outline-variant flex flex-col py-md space-y-unit shrink-0 w-60 h-full overflow-y-auto">
+    <div class="px-4 mb-4">
+      <div class="font-h2 text-h2 font-black text-primary leading-tight">Vulnerabin</div>
+      <div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">v0.5.0 · catalog</div>
+    </div>
+    <nav class="flex-1 space-y-unit">
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../index.html">
+        <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        <span class="font-body-sm">Products</span>
+      </a>
+      <a class="bg-surface-container-high text-primary border-l-2 border-primary hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../binaries.html">
+        <span class="material-symbols-outlined text-[18px]">memory</span>
+        <span class="font-body-sm">Binaries</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../chains.html">
+        <span class="material-symbols-outlined text-[18px]">timeline</span>
+        <span class="font-body-sm">Chains</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../pipeline.html">
+        <span class="material-symbols-outlined text-[18px]">trending_up</span>
+        <span class="font-body-sm">Pipeline</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../taxonomy.html">
+        <span class="material-symbols-outlined text-[18px]">hub</span>
+        <span class="font-body-sm">Taxonomy</span>
+      </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="https://github.com/anthropics/vulnerabin"><span class="material-symbols-outlined text-[16px]">menu_book</span><span class="font-body-sm">Docs</span></a>
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[16px]">dns</span><span class="font-body-sm">Status</span></a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col bg-background overflow-y-auto">
+    
+
+<!-- Breadcrumbs + header -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface sticky top-0 z-30">
+  <div class="flex items-center gap-sm font-data-mono-sm text-on-surface-variant mb-xs">
+    <a class="hover:text-primary" href="../index.html">Products</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    
+    <a class="hover:text-primary" href="../binaries.html">Binaries</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    
+    <span class="text-primary">vhdmp_26100.7171_pre_dec2025.sys</span>
+  </div>
+  <div class="flex justify-between items-start mt-sm">
+    <div>
+      <h1 class="font-data-mono-md text-primary text-[20px] font-bold tracking-tight">vhdmp_26100.7171_pre_dec2025.sys</h1>
+      <div class="text-ui-sans-sm text-on-surface-variant mt-xs">vhdmp_26100.7171_pre_dec2025.sys</div>
+      <div class="flex flex-wrap gap-xs mt-sm">
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span></span>
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded"></span>
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded">sys</span>
+        
+        
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded">kernel</span>
+        
+      </div>
+    </div>
+    <div class="flex gap-sm">
+      <a href="../../binaries/vhdmp_26100_7171_pre_dec2025_sys.yml" class="bg-surface-container border border-outline-variant text-on-surface font-title-sm text-title-sm px-3 py-1.5 rounded hover:bg-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">code</span>YAML</a>
+    </div>
+  </div>
+  
+  <p class="text-ui-sans-sm text-on-surface-variant mt-md max-w-3xl">(Auto-seeded; replace this description.) Catalogued in 1 engagement(s).</p>
+  
+</div>
+
+<div class="p-lg space-y-lg max-w-[1600px] mx-auto w-full">
+
+  <!-- Reverse engineering brief (the RE journey that PRECEDES sources/sinks) -->
+  
+
+  <!-- Capabilities (the BACKWARD view: what can this binary DO?) -->
+  
+
+  <!-- Coverage Matrix (the holistic view: inputs × capabilities) -->
+  
+
+  <!-- Coverage Gaps (the forcing function) -->
+  
+
+  <!-- Layer 1: Attack-surface map -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant flex justify-between items-center bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">account_tree</span>Layer 1 · Attack-Surface Map</h2>
+      <span class="text-data-mono-sm text-on-surface-variant">0 sources · 0 sinks</span>
+    </div>
+    <div class="p-lg bg-surface-container-lowest h-[460px] relative overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#e5e1e4 1px, transparent 1px); background-size: 16px 16px;"></div>
+
+      <!-- Legend -->
+      <div class="absolute bottom-sm right-sm bg-surface-container border border-outline-variant p-2 rounded font-data-mono-sm flex flex-col gap-1 z-10 shadow-lg max-h-[300px] overflow-y-auto">
+        <div class="text-on-surface text-[10px] uppercase font-bold mb-1">class group</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #fdd6d6"></span>F</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #fed9a3"></span>I</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #c5d3ff"></span>N</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #e0bdf2"></span>K</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #bfeac6"></span>U</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #cfd2d8"></span>T</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #fff0a3"></span>UP</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #e9d4b8"></span>C</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #a8d4ff"></span>E</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #f4c5ff"></span>W</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #cccccc"></span>CR</div>
+        
+      </div>
+
+      <!-- SVG edges (drawn first so they sit behind nodes) -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1000 460" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow" markerWidth="6" markerHeight="6" orient="auto" refX="5" refY="3" viewBox="0 0 6 6"><path d="M 0 0 L 6 3 L 0 6 z" fill="#8c909f"></path></marker>
+        </defs>
+        
+        
+        
+        
+      </svg>
+
+      <!-- Source nodes (left), binary (center), sink nodes (right) -->
+      <div class="absolute inset-0 flex justify-between items-center px-[40px]">
+        <div class="flex flex-col gap-md w-[200px]">
+          
+        </div>
+        <div class="bg-surface-container border-2 border-primary px-4 py-3 rounded flex flex-col items-center shadow-[0_0_30px_rgba(173,198,255,0.15)] z-10">
+          <div class="font-data-mono-md text-primary font-bold">vhdmp_26100.7171_pre_dec2025.sys</div>
+          
+          <div class="bg-error-container/20 text-error font-data-mono-sm px-2 rounded mt-1">kernel</div>
+        </div>
+        <div class="flex flex-col gap-md w-[220px]">
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Layer 2: Trust boundary -->
+  
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">security</span>Layer 2 · Trust Boundary & Process Model</h2>
+    </div>
+    <div class="p-lg grid grid-cols-1 lg:grid-cols-4 gap-md">
+      <div class="lg:col-span-3 bg-surface-container-lowest border border-surface-variant rounded p-md grid grid-rows-4 gap-sm relative overflow-hidden">
+        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: linear-gradient(#424754 1px, transparent 1px), linear-gradient(90deg, #424754 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <!-- SYSTEM zone -->
+        <div class="border border-dashed border-error/40 rounded p-sm relative bg-error/[0.03]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-error">SYSTEM</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            
+            
+            
+          </div>
+        </div>
+        <!-- Admin zone -->
+        <div class="border border-dashed border-tertiary/40 rounded p-sm relative bg-tertiary/[0.02]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-tertiary">Admin</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            
+          </div>
+        </div>
+        <!-- LoggedInUser zone -->
+        <div class="border border-dashed border-secondary/40 rounded p-sm relative bg-secondary/[0.02]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-secondary">loggedInUser</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            
+          </div>
+        </div>
+        <!-- Attacker zone -->
+        <div class="border border-dashed border-on-surface-variant rounded p-sm relative bg-surface-container/40">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-on-surface-variant">Standard user (attacker)</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            <div class="flex items-center gap-2 px-2 py-1 bg-on-surface-variant/10 border border-on-surface-variant rounded">
+              <div class="w-2 h-2 rounded-full bg-on-surface-variant"></div>
+              <span class="font-data-mono-sm text-on-surface-variant">(any standard-user process)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Side panel with process-model facts -->
+      <div class="bg-surface-container-low border border-surface-variant rounded p-md flex flex-col gap-md">
+        <div>
+          <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-1">Loaded by</div>
+          <div class="text-data-mono-sm text-on-surface"></div>
+        </div>
+        <div>
+          <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-1">Start trigger</div>
+          <div class="text-data-mono-sm text-on-surface"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-sm pt-sm border-t border-outline-variant">
+          <div>
+            <div class="text-data-mono-sm text-on-surface-variant uppercase mb-1">Impersonation</div>
+            <div class="text-data-mono-sm text-error">no</div>
+          </div>
+          <div>
+            <div class="text-data-mono-sm text-on-surface-variant uppercase mb-1">PPL</div>
+            <div class="text-data-mono-sm text-error">no</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Layer 3: Defense matrix -->
+  
+
+  <!-- Layer 5: Class coverage matrix -->
+  
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container flex justify-between items-center">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">grid_view</span>Layer 5 · Class Coverage Matrix</h2>
+      <div class="text-data-mono-sm text-on-surface-variant">
+        <span class="text-error">0</span> present ·
+        <span class="text-secondary">0</span> defense observed ·
+        <span class="text-on-surface-variant">0</span> not present ·
+        <span class="text-tertiary">7</span> unchecked
+      </div>
+    </div>
+    <div class="p-md space-y-md">
+      
+      <details open class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group I <span class="text-on-surface-variant">(1 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 1 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-006</span><div class="text-on-surface-variant text-[10px] mt-0.5">ALPC port (kernel)</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Implement an ALPC connection callback that validates caller via AlpcGetMessageAttribute + PsLookupProcessByProcessId checks.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Connection callback absent / validates wrong attribute</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the kernel-mode binary call IoCreateAlpcPort / NtAlpcCreatePort?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is a connection callback registered? Does it actually validate caller?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: do the message handlers perform privileged operations?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: can user-mode reach the port (NtAlpcConnectPort)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the port's security descriptor permissive?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+      <details  class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group K <span class="text-on-surface-variant">(6 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 6 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">K-001</span><div class="text-on-surface-variant text-[10px] mt-0.5">IOCTL input buffer (IRP_MJ_DEVICE_CONTROL)</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> IoCreateDeviceSecure with admin-only SDDL; SeAccessCheck per IOCTL; METHOD_BUFFERED default; ProbeForRead/ProbeForWrite for METHOD_NEITHER inside __try/__except; integer-overflow checks on...</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Length-field integer-overflow / underflow</li><li>TOCTOU on user pointer swap</li><li>Double-fetch (K-006 subclass)</li><li>MmMapLockedPages with user unmap mid-execution</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does DriverEntry set DriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL]?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: are any IOCTLs METHOD_NEITHER without ProbeForRead/Write?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the device object's SDDL permissive (not admin-only)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: are length fields used as buffer sizes without overflow checks?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the device reachable from low-priv (accesschk -e \Device\<name>)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">K-002</span><div class="text-on-surface-variant text-[10px] mt-0.5">FSCTL / minifilter port operation</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> SDDL on the port; per-message authentication; bounds-check input/output sizes; FltGetFilterFromName ACL check.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary call FltCreateCommunicationPort?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the port SDDL permissive?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: do the per-message handlers lack bounds checks?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: are user-mode FilterSendMessage callers unauthenticated?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: do messages drive privileged kernel operations?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">K-003</span><div class="text-on-surface-variant text-[10px] mt-0.5">WMI provider input</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Validate every WMI method input; refuse callers without admin token.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary call IoWMIRegistrationControl?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does it expose user-callable WMI methods (vs read-only data)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is method-level auth absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: do the methods drive privileged operations?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the GUID reachable from low-priv?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">K-004</span><div class="text-on-surface-variant text-[10px] mt-0.5">Object/process/image-load/registry callback</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Callbacks should be defensive (validate, return STATUS_ACCESS_DENIED on suspect ops); never operate on user data without validation.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary register ObRegisterCallbacks / PsSetCreateProcessNotifyRoutine / CmRegisterCallbackEx?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does the callback parse data from the triggering operation (e.g., reg key path, process command line)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is parsing missing bounds checks?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: can the callback be triggered by low-priv?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: does the callback perform mutation on kernel structures?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">K-005</span><div class="text-on-surface-variant text-[10px] mt-0.5">Non-IOCTL IRP (read/write/create)</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Same as K-001 for the relevant IRP_MJ_*</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does DriverEntry set MajorFunction[IRP_MJ_READ/WRITE/CREATE]?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: do these handlers process user data?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: are bounds checks absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the device's SDDL permissive?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the IRP user-reachable via ReadFile/WriteFile/CreateFile on the device?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">K-006</span><div class="text-on-surface-variant text-[10px] mt-0.5">Kernel-resident user-mapped buffer...</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Kernel-pool snapshot before validate-and-use: copy user buffer to kernel-allocated buffer first, then validate-and-operate on the kernel copy.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Vendor adds snapshot for METHOD_BUFFERED but missed METHOD_NEITHER paths</li><li>Snapshot for one syscall but not the IOCTL that reaches the same code</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the kernel binary call MmMapLockedPages / MmGetSystemAddressForMdlSafe / CcMapData with user-influenced data?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is a single field accessed multiple times within one handler (multi-fetch pattern)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the snapshot-into-kernel-pool defense absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: do the multi-read paths feed allocation size or pointer arithmetic?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: does scripts/multifetch_scan.py flag any candidates with confidence ≥ 2?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+    </div>
+  </section>
+  
+
+  <!-- Chains -->
+  
+
+</div>
+
+<!-- Tooltip element (populated on hover) -->
+<div id="vbn-tooltip" class="fixed pointer-events-none z-[100] bg-surface-container-high border border-outline-variant rounded p-sm font-data-mono-sm text-on-surface shadow-2xl hidden" style="max-width: 360px;"></div>
+
+<style>
+  .vbn-cov-row.vbn-hidden { display: none; }
+</style>
+
+<script>
+(function(){
+  // ----- Source/sink hover tooltips -----
+  const tooltip = document.getElementById('vbn-tooltip');
+  function showTooltip(ev, html) {
+    tooltip.innerHTML = html;
+    tooltip.classList.remove('hidden');
+    const x = ev.clientX + 16;
+    const y = ev.clientY + 16;
+    tooltip.style.left = (x + 380 > window.innerWidth ? window.innerWidth - 380 : x) + 'px';
+    tooltip.style.top = (y + 200 > window.innerHeight ? window.innerHeight - 220 : y) + 'px';
+  }
+  function hideTooltip() { tooltip.classList.add('hidden'); }
+
+  document.querySelectorAll('.vbn-source-node').forEach(node => {
+    node.addEventListener('mouseenter', (ev) => {
+      const name = node.dataset.name || '';
+      const via = node.dataset.via || '';
+      const fn = node.dataset.function || '';
+      const caveat = node.dataset.caveat || '';
+      const cls = node.dataset.classids || '';
+      let html = `<div class="font-bold text-primary mb-1">${cls}</div>`;
+      html += `<div class="text-on-surface mb-2">${name}</div>`;
+      if (via) html += `<div class="text-on-surface-variant"><span class="text-on-surface">via:</span> ${via}</div>`;
+      if (fn) html += `<div class="text-on-surface-variant"><span class="text-on-surface">function:</span> ${fn}</div>`;
+      if (caveat) html += `<div class="text-tertiary mt-1"><span class="text-on-surface">caveat:</span> ${caveat}</div>`;
+      showTooltip(ev, html);
+    });
+    node.addEventListener('mousemove', (ev) => {
+      const x = ev.clientX + 16;
+      const y = ev.clientY + 16;
+      tooltip.style.left = (x + 380 > window.innerWidth ? window.innerWidth - 380 : x) + 'px';
+      tooltip.style.top = (y + 200 > window.innerHeight ? window.innerHeight - 220 : y) + 'px';
+    });
+    node.addEventListener('mouseleave', hideTooltip);
+  });
+
+  document.querySelectorAll('.vbn-sink-node').forEach(node => {
+    node.addEventListener('mouseenter', (ev) => {
+      const name = node.dataset.name || '';
+      const cwe = node.dataset.cwe || '';
+      const fn = node.dataset.function || '';
+      const impact = node.dataset.impact || '';
+      let html = `<div class="font-bold text-error mb-1">${cwe}</div>`;
+      html += `<div class="text-on-surface mb-2">${name}</div>`;
+      if (fn) html += `<div class="text-on-surface-variant"><span class="text-on-surface">function:</span> ${fn}</div>`;
+      if (impact) html += `<div class="text-on-surface-variant"><span class="text-on-surface">impact:</span> ${impact}</div>`;
+      showTooltip(ev, html);
+    });
+    node.addEventListener('mousemove', (ev) => {
+      const x = ev.clientX + 16;
+      const y = ev.clientY + 16;
+      tooltip.style.left = (x + 380 > window.innerWidth ? window.innerWidth - 380 : x) + 'px';
+      tooltip.style.top = (y + 200 > window.innerHeight ? window.innerHeight - 220 : y) + 'px';
+    });
+    node.addEventListener('mouseleave', hideTooltip);
+  });
+})();
+</script>
+
+
+  </main>
+</div>
+</body>
+</html>

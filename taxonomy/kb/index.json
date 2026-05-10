@@ -1,0 +1,1091 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "bind9-2026-04-06/002-heap-overflow-rdata-audit",
+      "title": "Systematic Heap Overflow Audit of BIND 9 Rdata Parsers",
+      "file": "engagements/bind9-2026-04-06/findings/002-heap-overflow-rdata-audit.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "FALSE_POSITIVE",
+      "techniques": [
+        "integer_overflow",
+        "heap_overflow",
+        "buffer_overflow"
+      ],
+      "defenses_bypassed": [],
+      "summary": "",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.586505"
+    },
+    {
+      "id": "bind9-2026-04-06/004-sig0-async-uaf-rce",
+      "title": "Use-After-Free in SIG(0) Async Verification \u2192 Remote Code Execution",
+      "file": "engagements/bind9-2026-04-06/findings/004-sig0-async-uaf-rce.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-416"
+      ],
+      "verdict": "CONFIRMED",
+      "techniques": [
+        "use_after_free",
+        "race_condition"
+      ],
+      "defenses_bypassed": [
+        "**No stack canaries relevant** (this is a heap UAF, not stack overflow).",
+        "**TSIG on zone transfers:** Irrelevant \u2014 this affects the RESOLVER path (recursive queries), not zone transfers.",
+        "**Rate limiting:** `sig0checksquota` exists for inbound SIG(0) on server-side, but not for resolver processing responses from upstream."
+      ],
+      "summary": "A race condition in BIND 9's asynchronous SIG(0) signature verification allows a remote attacker to trigger a use-after-free in the resolver's response processing path. When `named` is configured as a recursive resolver, a malicious authoritative nameserver can send SIG(0)-signed responses that cause a heap use-after-free when a fetch timeout fires during the async cryptographic verification. Since `named` typically runs as root, this is a remote root code execution vulnerability.",
+      "acid": {
+        "a": "- **YES.** Any recursive resolver that queries a malicious authoritative server will receive the SIG(0)-signed response.\n- The attacker controls the SIG(0) key type and size (e.g., large RSA key = longer crypto = wider race window).\n- No authentication required \u2014 the attacker just needs their domain delegated to their nameserver.",
+        "c": "- **YES.** Traced from network input to freed memory dereference:\n  1. Attacker's DNS response with SIG(0) arrives at resolver\n  2. `resquery_response()` parses it, dispatches async SIG(0) check\n  3. Helper thread does crypto (attacker controls duration via key size)\n  4. Fetch timeout fires on event loop \u2192 query freed\n  5. Async callback arrives \u2192 dereferences freed query\n- No sanitization or validation breaks this chain.",
+        "i": "- **Use-after-free on heap object (`resquery_t`).** The freed `resquery_t` contains:\n  - `dns_message_t *rmessage` \u2014 pointer dereferenced for `->cc_ok`, `->flags`, `->tsig`, `->sig0`\n  - `dns_adbaddrinfo_t *addrinfo` \u2014 pointer dereferenced in cookie checks\n  - `fetchctx_t *fctx` \u2014 pointer to parent context, dereferenced throughout\n  - Function pointer dereferences through `rctx_done()` path\n- ISC memory allocator pools same-size allocations \u2192 **heap spray is feasible** to control freed memory co",
+        "d": "- **ASLR:** Present but ISC's jemalloc-based allocator has predictable slab layouts for same-size objects. Heap spray with controlled allocations can place attacker data in the freed slot.\n- **No stack canaries relevant** (this is a heap UAF, not stack overflow).\n- **No CFI/CET** on most BIND deployments.\n- **TSIG on zone transfers:** Irrelevant \u2014 this affects the RESOLVER path (recursive queries), not zone transfers.\n- **Rate limiting:** `sig0checksquota` exists for inbound SIG(0) on server-sid"
+      },
+      "ingested_at": "2026-04-08T22:29:59.587116"
+    },
+    {
+      "id": "bind9-2026-04-06/004-uaf-sig0-async-resquery",
+      "title": "Use-After-Free in SIG(0) Async Verification Race (resolver.c)",
+      "file": "engagements/bind9-2026-04-06/findings/004-uaf-sig0-async-resquery.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "LIKELY",
+      "techniques": [
+        "use_after_free"
+      ],
+      "defenses_bypassed": [],
+      "summary": "A use-after-free vulnerability exists in BIND 9's resolver when processing DNS responses signed with SIG(0). The asynchronous SIG(0) signature verification creates a window where the fetch context timeout can fire and destroy the query object before the verification callback runs, leading to the callback accessing freed memory.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.587621"
+    },
+    {
+      "id": "bind9-2026-04-06/005-uaf-validated-nextval-send",
+      "title": "Use-After-Free via nextval Send After fctx Completion (resolver.c)",
+      "file": "engagements/bind9-2026-04-06/findings/005-uaf-validated-nextval-send.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "FALSE_POSITIVE",
+      "techniques": [
+        "use_after_free",
+        "lock_ordering"
+      ],
+      "defenses_bypassed": [],
+      "summary": "In the `validated()` callback (resolver.c:5697), after completing validation and calling `fctx_success_unref()` or `fctx_failure_unref()`, the function proceeds to call `dns_validator_send(nextval)` on a validator that may have been canceled and destroyed during the `fctx__done()` flow.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.587946"
+    },
+    {
+      "id": "bind9-2026-04-06/006-uaf-validator-callback-insist-before-cancel",
+      "title": "INSIST Before Cancel Check in validator_callback_cname (validator.c)",
+      "file": "engagements/bind9-2026-04-06/findings/006-uaf-validator-callback-insist-before-cancel.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "FALSE_POSITIVE",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "In `validator_callback_cname()` (validator.c:782), an `INSIST` assertion fires BEFORE the cancellation check, accessing the parent validator's attributes. If the parent validator has been destroyed before this callback runs, this accesses freed memory. However, the parent validator has a reference held via `subvalidator->parent`, preventing premature destruction.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.588171"
+    },
+    {
+      "id": "bind9-2026-04-06/007-lock-discipline-fctx-done",
+      "title": "Asymmetric Lock Discipline in fctx__done() (resolver.c)",
+      "file": "engagements/bind9-2026-04-06/findings/007-lock-discipline-fctx-done.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "UNCERTAIN",
+      "techniques": [
+        "lock_ordering"
+      ],
+      "defenses_bypassed": [],
+      "summary": "`fctx__done()` at resolver.c:1794 has an asymmetric locking pattern: it only acquires `fctx->lock` when `result != ISC_R_SUCCESS` (line 1813), relying on callers to hold the lock for the success path. The early return at line 1817-1819 unconditionally calls `UNLOCK(&fctx->lock)`, which would invoke undefined behavior if reached on the success path when the caller did NOT hold the lock.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.588404"
+    },
+    {
+      "id": "bind9-2026-04-06/008-http2-null-deref-empty-sstreams",
+      "title": "NULL Pointer Dereference in HTTP/2 Server Data Callback (http.c)",
+      "file": "engagements/bind9-2026-04-06/findings/008-http2-null-deref-empty-sstreams.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "LIKELY",
+      "techniques": [
+        "null_deref",
+        "null_dereference"
+      ],
+      "defenses_bypassed": [],
+      "summary": "In `on_server_data_chunk_recv_callback()` (http.c:633), `ISC_LIST_HEAD(session->sstreams)` is dereferenced at line 636 without a NULL check. If all server streams have been closed (via RST_STREAM) before all data chunks are delivered, this is a NULL pointer dereference causing named to crash.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.588645"
+    },
+    {
+      "id": "bind9-2026-04-06/009-xfrin-diff-running-race",
+      "title": "TOCTOU Race in xfrin diff_running Flag (xfrin.c)",
+      "file": "engagements/bind9-2026-04-06/findings/009-xfrin-diff-running-race.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "FALSE_POSITIVE",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "The `diff_running` flag in `xfrin.c` is a plain `bool` (not atomic) accessed from both the event loop thread (where `xfrin_recv_done` runs) and the worker thread (where `axfr_apply` / `ixfr_apply` run). The flag is set to `true` on the event loop (line 425/716) and set to `false` on the worker thread completion callback (line 400/642). This is a data race.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.588864"
+    },
+    {
+      "id": "bind9-2026-04-06/010-sig0-oob-read-integer-underflow-chain",
+      "title": "SIG(0) Verification Path -- Integer Underflow OOB Read Chain Analysis",
+      "file": "engagements/bind9-2026-04-06/findings/010-sig0-oob-read-integer-underflow-chain.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "LIKELY",
+      "techniques": [
+        "buffer_overflow",
+        "deserialization"
+      ],
+      "defenses_bypassed": [],
+      "summary": "Full chain trace of the SIG(0) signature verification path in BIND 9, focused on the integer underflow at `lib/dns/dnssec.c:922` (`r.length -= sig.siglen`) and its potential for remote code execution. **The integer underflow is NOT directly triggerable from wire-format data** because `sig.siglen` is always derived from the same rdata as `r.length`, making the subtraction consistent. However, several related issues were identified.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.589560"
+    },
+    {
+      "id": "bind9-2026-04-06/013-dns-message-parse-heap-corruption-audit",
+      "title": "dns_message_parse Heap Corruption Audit",
+      "file": "engagements/bind9-2026-04-06/findings/013-dns-message-parse-heap-corruption-audit.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "FALSE_POSITIVE",
+      "confidence": "HIGH",
+      "techniques": [
+        "integer_overflow",
+        "heap_overflow",
+        "buffer_overflow",
+        "heap_corruption"
+      ],
+      "defenses_bypassed": [],
+      "summary": "Systematic audit of the BIND 9 DNS message parser for heap-based buffer overflow\nleading to remote code execution. Named runs as root; heap corruption in the parser\nis directly network-reachable from any DNS client.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.590151"
+    },
+    {
+      "id": "bind9-2026-04-06/tsig-tkey-rdata-triage",
+      "title": "TSIG/TKEY + RData Parser Triage -- BIND 9",
+      "file": "engagements/bind9-2026-04-06/findings/tsig-tkey-rdata-triage.md",
+      "engagement": "bind9-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "BIND 9",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "rating": 4,
+      "verdict": "LIKELY",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "",
+      "acid": {
+        "i": "Low-to-medium. Could cause assertion failures in downstream tostruct processing or unexpected behavior when the IPSECKEY is used for IPsec gateway lookups. The partial-write on error path is a code quality issue but likely caught at the message parsing level.\n\n---"
+      },
+      "ingested_at": "2026-04-08T22:29:59.590892"
+    },
+    {
+      "id": "cisco-secure-client-2026-03-30/001-integer-overflow-heap-overflow",
+      "title": "Integer Overflow in String Deserialization Leading to Heap Overflow",
+      "file": "engagements/cisco-secure-client-2026-03-30/findings/001-integer-overflow-heap-overflow.md",
+      "engagement": "cisco-secure-client-2026-03-30",
+      "engagement_date": "2026-03-30",
+      "target": "Cisco Secure Client - acsock64.sys",
+      "target_type": "native_binary",
+      "platform": "Windows x64 kernel driver (WDF)",
+      "cwes": [
+        "CWE-190",
+        "CWE-122"
+      ],
+      "verdict": "DYNAMICALLY_CONFIRMED",
+      "confidence": "HIGH",
+      "techniques": [
+        "integer_overflow",
+        "heap_overflow",
+        "buffer_overflow",
+        "deserialization",
+        "kernel_pool_overflow",
+        "ipc_auth_bypass"
+      ],
+      "defenses_bypassed": [
+        "**Stream bounds check**: BYPASSED via integer overflow in iVar3",
+        "**CFG**: Protects indirect calls, not data corruption",
+        "**KASLR**: Not needed for pool overflow attacks"
+      ],
+      "summary": "FUN_14001758c deserializes variable-length string arrays from the IOCTL input buffer. It reads a uint32 `count` from the stream, allocates `count + 1` bytes (for null terminator), then reads `count` bytes into the buffer. If `count = 0xFFFFFFFF`, the allocation wraps to 0 bytes (ExAllocatePoolWithTag returns a minimal ~16-byte allocation), but the subsequent read copies 0xFFFFFFFF bytes into it. This is a kernel pool heap overflow.",
+      "acid": {
+        "a": "**Source**: IOCTL to \\\\.\\csskfltr via DeviceIoControl.\n\nThe driver reads from `Irp->UserBuffer` (the OUTPUT buffer in DeviceIoControl). The input is a SRLZ-serialized stream. The attacker controls all values including:\n- The string count at param_1 + 0x4e (from FUN_140012098)\n- The string length values (local_38[0], also from FUN_140012098)\n- The string data blob (from FUN_140011e9c)\n\n**Attacker control**: FULL for the length value. Requires a handle to \\\\.\\csskfltr.\n\n**Access requirement**: The",
+        "c": "**Call chain to reach vulnerable code:**\n1. Attacker opens handle to \\\\.\\csskfltr\n2. Sends DeviceIoControl with crafted SRLZ buffer as **output buffer** (Irp->UserBuffer)\n3. FUN_140007340 (IRP_MJ_DEVICE_CONTROL at DriverObject+0xE0) receives IRP\n4. Reads buffer from `Irp->UserBuffer` (offset +0x18), size from IO_STACK_LOCATION\n5. Calls FUN_140007194 (plugin dispatcher)\n6. Dispatcher calls FUN_14001224c to validate SRLZ header (magic, version, checksum)\n7. Calls FUN_140010798 to read 4 typed uint",
+        "i": "- **Kernel pool heap overflow** with 0xFFFFFFFF bytes of data\n- Corrupts all adjacent pool allocations\n- Standard kernel pool exploitation (feng shui, overwrite pool headers)\n- **Impact: Arbitrary kernel code execution = full system compromise**\n- CVSS: 7.8-8.4 depending on device ACL",
+        "d": "1. **Stream bounds check**: BYPASSED via integer overflow in iVar3\n2. **Kernel pool hardening**: Pool cookies, guard pages on special pool\n3. **CFG**: Protects indirect calls, not data corruption\n4. **KASLR**: Not needed for pool overflow attacks"
+      },
+      "ingested_at": "2026-04-08T22:29:59.591378"
+    },
+    {
+      "id": "cisco-secure-client-2026-03-30/002-method-neither-arbitrary-kernel-write",
+      "title": "METHOD_NEITHER Arbitrary Kernel Write via Unvalidated Output Buffer",
+      "file": "engagements/cisco-secure-client-2026-03-30/findings/002-method-neither-arbitrary-kernel-write.md",
+      "engagement": "cisco-secure-client-2026-03-30",
+      "engagement_date": "2026-03-30",
+      "target": "Cisco Secure Client - acsock64.sys",
+      "target_type": "native_binary",
+      "platform": "Windows x64 kernel driver (WDF)",
+      "cwes": [
+        "CWE-782",
+        "CWE-787"
+      ],
+      "verdict": "CONFIRMED",
+      "techniques": [
+        "integer_overflow",
+        "heap_overflow",
+        "arbitrary_write",
+        "arbitrary_read",
+        "privilege_escalation"
+      ],
+      "defenses_bypassed": [],
+      "summary": "acsock64.sys uses METHOD_NEITHER for IOCTL 0x220003 and does not call ProbeForWrite on the output buffer (`Irp->UserBuffer`). An unprivileged user can pass a kernel-mode address as the output buffer, causing the driver to write a 4-byte value to an arbitrary kernel address. Writing 0x00000000 to `KTHREAD.PreviousMode` (offset 0x232) converts the calling thread to KernelMode, granting full kernel read/write via `NtReadVirtualMemory`/`NtWriteVirtualMemory`.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.594489"
+    },
+    {
+      "id": "nextcloud-desktop-2026-04-06/001-desktop-file-rce-linux",
+      "title": ".desktop File Sync = RCE on Click (Linux)",
+      "file": "engagements/nextcloud-desktop-2026-04-06/findings/001-desktop-file-rce-linux.md",
+      "engagement": "nextcloud-desktop-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "Nextcloud Desktop Client",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-434"
+      ],
+      "rating": 4,
+      "techniques": [
+        "desktop_file_exec"
+      ],
+      "defenses_bypassed": [
+        "`.desktop` is NOT in the sync exclude list",
+        "`invalidFilenameRx` defaults to `[\\\\:?*\"<>|]` \u2014 doesn't match `.desktop`"
+      ],
+      "summary": "A malicious Nextcloud server can sync a `.desktop` file to the user's sync folder. On Linux, `.desktop` files execute arbitrary commands when clicked in file managers (Nautilus, Dolphin, etc.). The sync exclude list (`sync-exclude.lst`) does NOT block `.desktop` files, and the `invalidFilenameRx` is server-controlled (can be set to empty).",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.594669"
+    },
+    {
+      "id": "nextcloud-desktop-2026-04-06/002-ssrf-direct-download-url",
+      "title": "SSRF via Server-Controlled Direct Download URL",
+      "file": "engagements/nextcloud-desktop-2026-04-06/findings/002-ssrf-direct-download-url.md",
+      "engagement": "nextcloud-desktop-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "Nextcloud Desktop Client",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-918"
+      ],
+      "rating": 4,
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "The server returns a `downloadURL` property in PROPFIND XML responses. The client uses this URL directly in a GET request (`propagatedownload.cpp:737`) via `QUrl::fromUserInput()` with NO validation of URL scheme or destination. A malicious server can redirect the client to any URL including `file://`, `http://attacker.com`, or internal network addresses.\n\nServer-controlled cookies (`directDownloadCookies`) are sent with the request, enabling data exfiltration.",
+      "acid": {
+        "i": "- SSRF from client to internal network\n- Data exfiltration via server-controlled Cookie header\n- Potential file:// protocol access depending on Qt QNAM behavior"
+      },
+      "ingested_at": "2026-04-08T22:29:59.594803"
+    },
+    {
+      "id": "nextcloud-desktop-2026-04-06/003-e2ee-integer-overflow",
+      "title": "Integer Type Mismatch in E2EE Streaming Decryptor",
+      "file": "engagements/nextcloud-desktop-2026-04-06/findings/003-e2ee-integer-overflow.md",
+      "engagement": "nextcloud-desktop-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "Nextcloud Desktop Client",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-190"
+      ],
+      "rating": 3,
+      "techniques": [
+        "integer_overflow",
+        "buffer_overflow"
+      ],
+      "defenses_bypassed": [],
+      "summary": "In `GETEncryptedFileJob::writeToDevice()` (propagatedownload.cpp:390), `_contentLength` is `qint64` (signed). Passed to `StreamingDecryptor` as `quint64` (unsigned). Server-controlled Content-Length that is negative wraps to a massive unsigned value, bypassing bounds checks in the decryptor.\n\nAt `clientsideencryption.cpp:2890`, `chunkSize - OCC::Constants::e2EeTagSize` can underflow if chunkSize < e2EeTagSize, leading to a massive memcpy in the OpenSSL decryption path \u2192 heap buffer overflow.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.594913"
+    },
+    {
+      "id": "nextcloud-desktop-2026-04-06/004-updater-path-injection-rce",
+      "title": "Updater Download Path Injection \u2192 RCE (Windows)",
+      "file": "engagements/nextcloud-desktop-2026-04-06/findings/004-updater-path-injection-rce.md",
+      "engagement": "nextcloud-desktop-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "Nextcloud Desktop Client",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-22",
+        "CWE-94"
+      ],
+      "rating": 5,
+      "techniques": [
+        "path_traversal",
+        "arbitrary_write"
+      ],
+      "defenses_bypassed": [],
+      "summary": "In `ocupdater.cpp:391`, the updater extracts the filename from the server-provided download URL with NO sanitization:\n```cpp\n_targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/')+1);\n```\n\nA malicious/compromised update server (or MITM) can set the download URL so the filename portion contains path traversal sequences. The downloaded file is then EXECUTED via `QProcess::startDetached` at line 211-232. For MSI files, it's passed to PowerShell+msiexec.",
+      "acid": {
+        "i": "Arbitrary file write + execution on Windows. Full RCE from a compromised update server or MITM on the update channel."
+      },
+      "ingested_at": "2026-04-08T22:29:59.595038"
+    },
+    {
+      "id": "swiss-post-evoting-2026-04-06/001-sendvote-race-duplicate-vote",
+      "title": "SendVote Missing Idempotence \u2014 Duplicate Vote via Race Condition",
+      "file": "engagements/swiss-post-evoting-2026-04-06/findings/001-sendvote-race-duplicate-vote.md",
+      "engagement": "swiss-post-evoting-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "Swiss Post E-Voting",
+      "target_type": "web_application",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-362",
+        "CWE-367"
+      ],
+      "techniques": [
+        "race_condition"
+      ],
+      "defenses_bypassed": [],
+      "summary": "`SendVoteController` lacks idempotence protection (unlike `ConfirmVoteController` which wraps in `IdempotenceService`). Two concurrent `sendVote` requests for the same voter both pass state validation before either commits the SENT transition. Both votes are forwarded to all 4 control components with different `correlationId` values, bypassing the `ExactlyOnceCommandExecutor` which keys on `correlationId`.",
+      "acid": {
+        "i": "A voter can cast two different votes. The second should be rejected but reaches control components due to the race window between state check and state save."
+      },
+      "ingested_at": "2026-04-08T22:29:59.595188"
+    },
+    {
+      "id": "swiss-post-evoting-2026-04-06/002-auth-attempt-counter-race",
+      "title": "Authentication Attempt Counter Race \u2014 Bypass 5-Attempt Lockout",
+      "file": "engagements/swiss-post-evoting-2026-04-06/findings/002-auth-attempt-counter-race.md",
+      "engagement": "swiss-post-evoting-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "Swiss Post E-Voting",
+      "target_type": "web_application",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-362"
+      ],
+      "rating": 4,
+      "techniques": [
+        "race_condition"
+      ],
+      "defenses_bypassed": [],
+      "summary": "The 5-attempt authentication lockout in `VerifyAuthenticationChallengeAlgorithm.java:90-92` uses a read-check-act pattern without pessimistic locking. The Argon2id computation (hundreds of milliseconds per attempt) creates a wide race window. Concurrent requests all read the same attempt counter before any increments it.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.595321"
+    },
+    {
+      "id": "swiss-post-evoting-2026-04-06/003-untrusted-server-aggregates-threshold-shares",
+      "title": "Untrusted Voting Server Aggregates Threshold Return Code Shares",
+      "file": "engagements/swiss-post-evoting-2026-04-06/findings/003-untrusted-server-aggregates-threshold-shares.md",
+      "engagement": "swiss-post-evoting-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "Swiss Post E-Voting",
+      "target_type": "web_application",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-345"
+      ],
+      "verdict": "LIKELY",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "The voting server (explicitly untrusted in the threat model) performs the final multiplication of long Choice Return Code shares from all 4 control components in `ExtractCRCAlgorithm.java:91-93`. A coalition of the voting server + 1 corrupt control component can substitute the corrupt CC's share to produce any desired product, forging return codes. The honest CCs' shares are visible to the voting server before aggregation, so it can compute the required corrupt share.",
+      "acid": {
+        "i": "If exploitable: Individual verifiability broken \u2014 voters cannot detect vote manipulation. \u20ac80K-150K bounty range.\nIf CMtable blocks it: Targeted denial of service against individual voters \u2014 lower severity but still reportable."
+      },
+      "ingested_at": "2026-04-08T22:29:59.595451"
+    },
+    {
+      "id": "swiss-post-evoting-2026-04-06/004-client-supplied-group-before-validation",
+      "title": "Client-Supplied Encryption Group Used Before Server Validation",
+      "file": "engagements/swiss-post-evoting-2026-04-06/findings/004-client-supplied-group-before-validation.md",
+      "engagement": "swiss-post-evoting-2026-04-06",
+      "engagement_date": "2026-04-06",
+      "target": "Swiss Post E-Voting",
+      "target_type": "web_application",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-20"
+      ],
+      "verdict": "UNCERTAIN",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "SendVotePayloadDeserializer.java:38-39 uses the CLIENT-SUPPLIED encryption group (p, q, g) to deserialize the EncryptedVerifiableVote BEFORE the server checks it matches the stored group (ChoiceReturnCodesService.java:97). If GqGroup constructor doesn't validate primality of p and q, an attacker can submit a composite modulus that breaks ElGamal security, enabling vote manipulation or privacy violation.\n\nSame pattern in ConfirmVotePayloadDeserializer.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.595560"
+    },
+    {
+      "id": "teamviewer-2026-03-31/001-ipc-auth-secret-unchanged",
+      "title": "IPC Authentication Secret Unchanged in v15.76.3",
+      "file": "engagements/teamviewer-2026-03-31/findings/001-ipc-auth-secret-unchanged.md",
+      "engagement": "teamviewer-2026-03-31",
+      "engagement_date": "2026-03-31",
+      "target": "teamviewer",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "CONFIRMED",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "The TeamViewer SYSTEM service IPC authentication on `localhost:5939` uses the **same hardcoded MD5 secret** as the version vulnerable to CVE-2024-7479. Any local user can authenticate to the SYSTEM service's IPC socket.",
+      "acid": {
+        "a": "- **YES**: Any local user can open a TCP connection to `127.0.0.1:5939`\n- Auth uses a hardcoded shared secret: `40 C2 89 05 3B E8 C1 69 7D 74 D8 36 FC 1D 2F 6E`\n- This secret is identical to the one documented in the CVE-2024-7479 PoC (Fortra/PeterGabaldon)\n- No additional authentication (no process validation, no PID checking, no token verification)",
+        "c": "- Connection \u2192 Auth handshake \u2192 Control message \u2192 **Authenticated IPC session**\n- Confirmed on TeamViewer 15.76.3 (latest as of 2026-03-25)\n- The control message accepted PID from our probe process (non-TeamViewer)\n- 0 sync messages received (vs ~21 expected) \u2014 suggests version mismatch handling or stripped response",
+        "i": "- **On its own**: LOW \u2014 authenticated IPC session is a prerequisite, not a vulnerability\n- **As a primitive**: CRITICAL \u2014 this is the entry point for all IPC-based attacks\n- The CVE-2024-7479 fix was in the driver install handler, not in the auth\n- Any new IPC handler vulnerability (e.g., `Received_StartLoaderProcess`) is reachable via this unchanged auth",
+        "d": "- The fix for CVE-2024-7479 added signature verification on the driver install path\n- The driver install request was sent but timed out \u2014 the handler exists but the install is blocked\n- However, the auth + control phase succeeded, meaning **all other IPC commands are reachable**"
+      },
+      "ingested_at": "2026-04-08T22:29:59.596123"
+    },
+    {
+      "id": "teamviewer-2026-03-31/002-ipc-process-creation-surface",
+      "title": "SYSTEM Service Process Creation via IPC \u2014 Attack Surface Analysis",
+      "file": "engagements/teamviewer-2026-03-31/findings/002-ipc-process-creation-surface.md",
+      "engagement": "teamviewer-2026-03-31",
+      "engagement_date": "2026-03-31",
+      "target": "teamviewer",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "CONFIRMED",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "TeamViewer_Service.exe (running as SYSTEM) contains multiple process creation pathways reachable via the IPC socket on `localhost:5939`. The service can spawn processes using `CreateProcessW`, `CreateProcessAsUserW`, `CreateProcessWithLogonW`, and `CreateProcessWithTokenW`. Combined with Finding 001 (auth secret unchanged), any local user can reach these handlers.",
+      "acid": {
+        "a": "**YES**: IPC auth confirmed working (Finding 001). Local user can send arbitrary BCommands.",
+        "c": "**INCOMPLETE**: We know the IPC handlers exist and are reachable post-auth. We need to confirm:\n- Whether exe path/args come from BCommand parameters or are hardcoded\n- Whether any validation exists on process path\n- Whether session isolation prevents cross-session process creation",
+        "i": "**CRITICAL** (if path is user-controlled): Direct SYSTEM code execution\n**HIGH** (if path is hardcoded): DLL sideloading or argument injection in SYSTEM context",
+        "d": "- Process path may be hardcoded to TeamViewer binaries (likely defense)\n- Session isolation via `CreateProcessInSession` may limit target session\n- Integrity level checks may exist post-CVE-2025-0065 patch"
+      },
+      "ingested_at": "2026-04-08T22:29:59.596829"
+    },
+    {
+      "id": "teamviewer-2026-03-31/003-driver-install-validation-analysis",
+      "title": "Driver Install Path Validation (CVE-2024-7479 Patch Analysis)",
+      "file": "engagements/teamviewer-2026-03-31/findings/003-driver-install-validation-analysis.md",
+      "engagement": "teamviewer-2026-03-31",
+      "engagement_date": "2026-03-31",
+      "target": "teamviewer",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "LIKELY",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "The CVE-2024-7479 patch added **three validation checks** on the driver install path before `ShellExecuteExW` is called. These checks gate the `Received_VPNDriverConnector` handler. Understanding these checks is key to finding bypass variants.",
+      "acid": {},
+      "ingested_at": "2026-04-08T22:29:59.597501"
+    },
+    {
+      "id": "teamviewer-2026-03-31/004-logfile-weak-permissions",
+      "title": "SYSTEM Service Log Files with Everyone:RW Permissions",
+      "file": "engagements/teamviewer-2026-03-31/findings/004-logfile-weak-permissions.md",
+      "engagement": "teamviewer-2026-03-31",
+      "engagement_date": "2026-03-31",
+      "target": "teamviewer",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [],
+      "verdict": "CONFIRMED",
+      "techniques": [
+        "arbitrary_write"
+      ],
+      "defenses_bypassed": [
+        "Log data format is fixed (timestamps + messages) \u2014 not arbitrary binary content",
+        "The install directory itself is not user-writable \u2014 only these specific files have weak ACLs"
+      ],
+      "summary": "TeamViewer_Service.exe (running as SYSTEM) creates log files in its install directory with `Everyone:(R,W)` permissions. This allows any local user to read sensitive log data and write arbitrary content to files owned by SYSTEM.",
+      "acid": {
+        "a": "**YES**: Any local user, including low-integrity/AppContainer processes, can:\n- Read the complete SYSTEM service log (information disclosure)\n- Write arbitrary data to the log file\n- Delete the log file (implicit from write permission)",
+        "c": "**Partial**: The files are in `C:\\Program Files\\TeamViewer\\` which has standard inheritance. The `Everyone:(R,W)` ACE was explicitly set by TeamViewer's installer \u2014 it overrides the inherited `Users:(RX)` permission.\n\n**Information Disclosure**: Direct \u2014 user reads log file, gets SYSTEM service internal state, IPC details, connection info, potentially sensitive error messages.\n\n**Arbitrary Write Chain** (requires log rotation):\n1. User pads log file to trigger rotation size\n2. Service closes han",
+        "i": "- **Information Disclosure (confirmed)**: Log files may contain IPC session details, connection metadata, error messages with internal paths, version info. **P4 minimum.**\n- **Arbitrary SYSTEM File Write (theoretical)**: If log rotation junction race succeeds, attacker can write log-formatted data to arbitrary locations as SYSTEM. Could overwrite config files or plant content in DLL search paths. **P3-P2 if confirmed.**",
+        "d": "- The service keeps the log file handle open \u2014 junction swap requires catching the rotation window\n- Log data format is fixed (timestamps + messages) \u2014 not arbitrary binary content\n- The install directory itself is not user-writable \u2014 only these specific files have weak ACLs"
+      },
+      "ingested_at": "2026-04-08T22:29:59.598179"
+    },
+    {
+      "id": "teamviewer-2026-03-31/005-arbitrary-system-write-hardlink",
+      "title": "Arbitrary SYSTEM File Write via Log File Hardlink (LPE)",
+      "file": "engagements/teamviewer-2026-03-31/findings/005-arbitrary-system-write-hardlink.md",
+      "engagement": "teamviewer-2026-03-31",
+      "engagement_date": "2026-03-31",
+      "target": "teamviewer",
+      "target_type": "native_binary",
+      "platform": "yeswehack",
+      "cwes": [
+        "CWE-59",
+        "CWE-732"
+      ],
+      "severity": "P1",
+      "verdict": "CONFIRMED",
+      "techniques": [
+        "hardlink_abuse",
+        "arbitrary_write",
+        "privilege_escalation"
+      ],
+      "defenses_bypassed": [
+        "File data written is log-formatted text, not arbitrary binary \u2192 limits some exploitation paths"
+      ],
+      "summary": "TeamViewer_Service.exe creates log files with `Everyone:(R,W)` permissions. A local unprivileged user can delete the log file and replace it with an NTFS hardlink pointing to any file on the same volume. When the SYSTEM service restarts (reboot, update, crash), it writes log data to the attacker-chosen target file as SYSTEM, achieving an arbitrary file write primitive.",
+      "acid": {
+        "a": "**YES**: Any local user can:\n- Delete the log file (Everyone has Write permission which includes DELETE)\n- Create an NTFS hardlink in its place (no special privileges needed for same-volume hardlinks)\n- The target file can be anywhere on the same NTFS volume",
+        "c": "**YES**: Confirmed end-to-end:\n1. Stop service (trigger: reboot, crash, update) \u2192 log file handle released\n2. Delete `TeamViewer15_Logfile.log`\n3. `mklink /H \"C:\\Program Files\\TeamViewer\\TeamViewer15_Logfile.log\" \"C:\\target\\path\"`\n4. Service starts \u2192 opens hardlink \u2192 SYSTEM writes 7,627+ bytes to target",
+        "i": "**CRITICAL**: Arbitrary SYSTEM file write. Exploitation paths:\n- DLL hijacking: write log data (which starts with ASCII text) over a DLL loaded by a SYSTEM service\n- Config overwrite: corrupt security-critical config files\n- Scheduled task manipulation: overwrite task scripts\n- Combined with Finding 001 (IPC auth): trigger additional log writes with partially-controlled content",
+        "d": "- File data written is log-formatted text, not arbitrary binary \u2192 limits some exploitation paths\n- Requires service restart (reboot is the unprivileged trigger)\n- Same-volume restriction on NTFS hardlinks"
+      },
+      "ingested_at": "2026-04-08T22:29:59.598486"
+    },
+    {
+      "id": "telegram-desktop-2026-03-29/001-mtpphoto-oob-read",
+      "title": "Potential OOB Read in MTPphoto::match PhotoSize Processing",
+      "file": "engagements/telegram-desktop-2026-03-29/findings/001-mtpphoto-oob-read.md",
+      "engagement": "telegram-desktop-2026-03-29",
+      "engagement_date": "2026-03-29",
+      "target": "telegram-desktop",
+      "target_type": "unknown",
+      "cwes": [
+        "CWE-125"
+      ],
+      "verdict": "LIKELY",
+      "confidence": "HIGH",
+      "techniques": [
+        "deserialization"
+      ],
+      "defenses_bypassed": [
+        "**ASLR**: Enabled on Linux. OOB read could bypass it if it leaks pointers.",
+        "**Stack canary**: Present (__stack_chk_fail at end of function), but this is a heap read, not stack."
+      ],
+      "summary": "",
+      "acid": {
+        "a": "**Source**: TL (Type Language) deserialized response from the Telegram server.\n\nThe function `FUN_0151e7b0` processes `MTPphoto::match` (scheme.h line 0x1362f). It receives `param_2` which is a pointer to a deserialized MTP object containing photo metadata. The photo size entries are iterated from `*(long *)(lVar16 + 0x48)` through `*(long *)(lVar16 + 0x50)` entries.\n\nFor each `photoSizeProgressive` variant (constructor `0xfa3efb95`), `FUN_016d3750` returns a pointer `lVar14` to the deserialized",
+        "c": "At line 425-426:\n```c\nlocal_118 = (long)*(int *)(*(long *)(lVar14 + 0x38) + -4 + *(long *)(lVar14 + 0x40) * 4);\n```\n\nDeconstructed:\n1. `sizes_ptr = *(long *)(lVar14 + 0x38)` \u2014 base pointer to an array of int32 sizes\n2. `sizes_count = *(long *)(lVar14 + 0x40)` \u2014 number of entries (server-controlled)\n3. Read from: `sizes_ptr + (sizes_count * 4) - 4` \u2014 i.e., read the LAST element of the sizes array\n\nIf `sizes_count` is larger than the actual allocated array, this reads past the end of the buffer.",
+        "i": "Out-of-bounds read. If exploitable:\n- **Info disclosure**: Read adjacent heap memory, potentially leaking pointers (ASLR bypass), auth keys, or message content.\n- **Crash/DoS**: If the read hits an unmapped page.\n- Severity is lower than a write primitive. No evidence this can be turned into a write.\n\nCVSS estimate: 5.3-6.5 (Network/Low/None/None, Confidentiality: Low or High depending on what's leaked)",
+        "d": "1. **TL deserialization layer**: The `scheme.cpp` TL parser may enforce that vector lengths match the actual data received. If it does, `sizes_count` would always be accurate and this read would be in-bounds. This is the critical defense to verify.\n2. **ASLR**: Enabled on Linux. OOB read could bypass it if it leaks pointers.\n3. **Stack canary**: Present (__stack_chk_fail at end of function), but this is a heap read, not stack."
+      },
+      "ingested_at": "2026-04-08T22:29:59.599204"
+    },
+    {
+      "id": "telegram-desktop-2026-03-29/002-lottie-no-recursion-limit",
+      "title": "No Recursion Depth Limit in Lottie/TGS Parser",
+      "file": "engagements/telegram-desktop-2026-03-29/findings/002-lottie-no-recursion-limit.md",
+      "engagement": "telegram-desktop-2026-03-29",
+      "engagement_date": "2026-03-29",
+      "target": "telegram-desktop",
+      "target_type": "unknown",
+      "cwes": [
+        "CWE-674",
+        "CWE-787"
+      ],
+      "verdict": "CONFIRMED",
+      "confidence": "MEDIUM",
+      "techniques": [
+        "heap_overflow",
+        "buffer_overflow"
+      ],
+      "defenses_bypassed": [
+        "**ASLR**: Mitigates exploitation but doesn't prevent the crash.",
+        "**No recursion limit in rlottie**: Confirmed by grep. Telegram's fork of rlottie does not add one either."
+      ],
+      "summary": "The Lottie JSON parser (FUN_01397984, 5,747 lines) processes TGS sticker files without enforcing a recursion depth limit. The layer/asset parsing function FUN_04dc3060 is called recursively for nested precomposition references. A crafted TGS sticker with deeply nested precompositions can exhaust the stack, leading to a crash or potentially controlled code execution.",
+      "acid": {
+        "a": "**Source**: TGS sticker file received via Telegram message.\n\nTGS files are gzipped Lottie JSON. Any Telegram user can send a sticker. The file is automatically decompressed and parsed by the recipient's client when the message is displayed in the chat. No user interaction beyond viewing the chat is required.\n\nThe JSON content is fully attacker-controlled. The attacker crafts a Lottie JSON with deeply nested precomposition layers (\"ty\": 0 with \"refId\" pointing to assets that themselves contain la",
+        "c": "1. Attacker sends crafted .tgs file as a sticker\n2. Recipient's Telegram client downloads the file\n3. Client decompresses gzip (confirmed: \"zlib IO error\" string in parser at line 386)\n4. Client calls FUN_01397984 to parse the Lottie JSON\n5. At line 4932: `strcmp(key, \"layers\")` matches, enters layer parsing loop\n6. At line 4953: `FUN_04dc3060(pauStack_2f0, param_4, 0)` parses each layer\n7. If a layer is type precomp (ty=0), it references an asset by refId\n8. At line 2639: `FUN_04dc3060(pauStack",
+        "i": "**Stack overflow leading to crash (DoS)**: CONFIRMED pattern. Any Telegram user can crash any other user's client by sending a crafted sticker.\n\n**Potential RCE**: On Linux without stack clash protection, stack overflow can overwrite adjacent memory regions. With careful control of the stack frame contents at each recursion level (via JSON values parsed onto the stack), an attacker may be able to:\n- Overwrite a return address\n- Overwrite a stack-based function pointer\n- Corrupt adjacent thread s",
+        "d": "1. **TGS file size limit**: Telegram enforces a 64KB compressed size limit for TGS stickers. However, gzip decompression can expand this significantly. A 64KB gzip file with highly repetitive JSON (nested layers) can decompress to megabytes. Even without extreme decompression ratios, 40 bytes per nesting level means 64KB compressed easily holds 1000+ nesting levels.\n\n2. **Stack protector**: `__stack_chk_fail` is present (canary-based stack protection). This would catch simple buffer overflows bu"
+      },
+      "ingested_at": "2026-04-08T22:29:59.599908"
+    },
+    {
+      "id": "backblaze-2026-04-08/001-log-file-hardlink-lpe",
+      "title": "SYSTEM Log File Write via NTFS Hardlink (LPE)",
+      "file": "engagements/backblaze-2026-04-08/findings/001-log-file-hardlink-lpe.md",
+      "engagement": "backblaze-2026-04-08",
+      "engagement_date": "2026-04-08",
+      "target": "Backblaze Personal Backup",
+      "target_type": "native_binary",
+      "platform": "bugcrowd",
+      "cwes": [
+        "CWE-59",
+        "CWE-732"
+      ],
+      "severity": "P1",
+      "rating": 4,
+      "verdict": "CONFIRMED",
+      "confidence": "HIGH",
+      "techniques": [
+        "hardlink_abuse",
+        "arbitrary_write"
+      ],
+      "defenses_bypassed": [],
+      "summary": "bzserv.exe (the Backblaze SYSTEM service) writes log files to `C:\\ProgramData\\Backblaze\\bzdata\\bzreports\\bzlog_debug\\` and `C:\\ProgramData\\Backblaze\\bzdata\\asyncCommands.log`. The log file creation grants `GENERIC_ALL` to Authenticated Users via a custom DACL (FUN_14008dfd0). When opening existing log files (dwCreationDisposition=3 / OPEN_EXISTING), no security descriptor is applied. No hardlink or reparse point validation exists. A standard user can replace a log file with an NTFS hardlink to a",
+      "acid": {
+        "a": "**YES**: Any authenticated local user can:\n- Access `C:\\ProgramData\\Backblaze\\bzdata\\` (ProgramData grants write to Authenticated Users by default)\n- The custom DACL in FUN_14008dfd0 grants `GENERIC_ALL (0x10000000)` to SID `S-1-5-11` (Authenticated Users) on newly created files\n- Delete existing log files (Authenticated Users have GENERIC_ALL = includes DELETE)\n- Create NTFS hardlinks in their place (no special privileges needed for same-volume hardlinks on Windows)",
+        "c": "**YES**: Complete chain:\n1. bzserv.exe (SYSTEM) initializes logging in FUN_140036d60, constructing path `<bzdata>\\bzreports\\bzlog_debug\\`\n2. Log writer FUN_140037270 formats timestamped entries and opens file via FUN_14008fad0\n3. FUN_14008fad0 calls `CreateFileW` with flags `param_6 | 0x200000` (FILE_FLAG_BACKUP_SEMANTICS)\n4. When file exists (OPEN_EXISTING path), security attributes are NULL \u2014 no permission check\n5. WriteFile writes log data to the handle \u2014 follows hardlink transparently\n6. Att",
+        "i": "**CRITICAL**: Arbitrary SYSTEM file write. Exploitation paths:\n- **DLL hijacking**: Overwrite a DLL in a location loaded by a SYSTEM service\n- **Config overwrite**: Corrupt security-critical configuration files\n- **SAM database corruption**: Point hardlink at `C:\\Windows\\System32\\config\\SAM` for DoS or credential extraction\n- Combined with predictable log content: partial content control via triggering specific log messages",
+        "d": "1. **FILE_FLAG_BACKUP_SEMANTICS (0x200000)**: Applied to CreateFileW \u2014 this actually HELPS the attacker by allowing SYSTEM to follow hardlinks into protected directories. This is NOT FILE_FLAG_OPEN_REPARSE_POINT.\n2. **DACL on CREATE_NEW only**: The custom security descriptor is only applied when creating new files (dwCreationDisposition=1), not when opening existing ones (dwCreationDisposition=3). The OPEN_EXISTING path passes NULL security attributes.\n3. **No hardlink detection**: No calls to `"
+      },
+      "ingested_at": "2026-04-09T08:24:54.585114"
+    },
+    {
+      "id": "backblaze-2026-04-08/002-unsigned-update-execution-lpe",
+      "title": "SYSTEM Code Execution via Unsigned Auto-Update Binary (LPE)",
+      "file": "engagements/backblaze-2026-04-08/findings/002-unsigned-update-execution-lpe.md",
+      "engagement": "backblaze-2026-04-08",
+      "engagement_date": "2026-04-08",
+      "target": "Backblaze Personal Backup",
+      "target_type": "native_binary",
+      "platform": "bugcrowd",
+      "cwes": [
+        "CWE-494",
+        "CWE-426"
+      ],
+      "severity": "P1",
+      "rating": 5,
+      "verdict": "LIKELY",
+      "confidence": "HIGH",
+      "techniques": [],
+      "defenses_bypassed": [
+        "**ProgramData ACLs**: Default Windows ACL on ProgramData grants write to Authenticated Users. Backblaze installer may or may not lock down the subdirectory."
+      ],
+      "summary": "The Authenticode verification capability EXISTS in bztransmit.exe but is UNUSED in the update download path. This is arguably worse than not having the capability at all \u2014 it means the developers are aware of WinVerifyTrust but chose not to apply it to the most critical code path.",
+      "acid": {
+        "a": "**YES (local attacker)**: \n- `C:\\ProgramData\\Backblaze\\bzupdates\\` lives under ProgramData, which grants write access to Authenticated Users by default\n- Attacker can pre-place or replace `clientversion.xml` to trigger the update path\n- Attacker can replace the downloaded update binary before execution (TOCTOU window)\n- No authentication required beyond local user session",
+        "c": "**YES**: Complete update chain traced through decompiled code:\n\n1. **FUN_140015f30** (fetchclientversionxml): bzserv constructs command `\"<install_path>bztransmit.exe\" -fetchclientversionxml` and runs it async via ShellExecuteW. bztransmit downloads `clientversion.xml` to `C:\\ProgramData\\Backblaze\\bzupdates\\clientversion.xml`\n\n2. **FUN_140034670** (BzClientVersionManager init): Constructs path `<ProgramData>\\bzupdates\\clientversion.xml` and reads it\n\n3. **FUN_140034f20** (XML parser): Hand-rolle",
+        "i": "**CRITICAL**: Arbitrary code execution as NT AUTHORITY\\SYSTEM.\n- Full system compromise\n- Persistent access via service\n- Kernel-level access if combined with driver loading\n- Data exfiltration of all backed-up files\n- Ransomware protection bypass (the $15k bonus target)",
+        "d": "1. **HTTPS transport**: bztransmit.exe likely uses HTTPS to download updates, but no certificate pinning was observed in bzserv.exe. MITM on the local network could intercept.\n2. **No Authenticode verification**: Zero signature check APIs found in bzserv.exe. The service trusts whatever binary is in `bzupdates\\`.\n3. **ShellExecuteW with \"open\" verb**: Uses default verb, no elevation prompt since already running as SYSTEM.\n4. **ProgramData ACLs**: Default Windows ACL on ProgramData grants write t"
+      },
+      "ingested_at": "2026-04-09T08:24:54.585845"
+    },
+    {
+      "id": "backblaze-2026-04-08/003-restore-path-traversal",
+      "title": "Potential Path Traversal in Restore File Placement (bzrestore.exe)",
+      "file": "engagements/backblaze-2026-04-08/findings/003-restore-path-traversal.md",
+      "engagement": "backblaze-2026-04-08",
+      "engagement_date": "2026-04-08",
+      "target": "Backblaze Personal Backup",
+      "target_type": "native_binary",
+      "platform": "bugcrowd",
+      "cwes": [
+        "CWE-22"
+      ],
+      "severity": "P2",
+      "rating": 3,
+      "verdict": "UNCERTAIN",
+      "confidence": "MEDIUM",
+      "techniques": [
+        "path_traversal",
+        "arbitrary_write"
+      ],
+      "defenses_bypassed": [
+        "**TLS on server connection**: Prevents casual MITM but not compromised server or cert-level attacks",
+        "**PathAllocCanonicalize (FUN_140088f20)**: Resolves `..` into valid paths but does NOT reject them \u2014 this is canonicalization, not validation"
+      ],
+      "summary": "bzrestore.exe downloads backup files from Backblaze servers and writes them to disk. The server API response includes a `fully_qualified_file_name` field that flows into SQLite storage and eventually into `MoveFileExW` for final file placement. Path canonicalization via `PathAllocCanonicalize` exists but does NOT reject `..` traversal \u2014 it resolves them into valid absolute paths. No path prefix validation (checking the resolved path starts within the restore directory) was found. Additionally, t",
+      "acid": {
+        "a": "**PARTIAL**: The `fully_qualified_file_name` comes from the Backblaze server API (`RequestB1UserFileTreeDownloadFile`). Attack vectors:\n- **Compromised/malicious server**: Full control over file paths in restore responses\n- **MITM on restore channel**: If TLS can be intercepted (corp proxy, cert compromise)\n- **Compromised Backblaze account**: Attacker uploads files with crafted names to victim's backup, victim restores them\n\nThe `dot_dot` field in the API response (parsed in FUN_1400e41f0) is n",
+        "c": "**PARTIAL**: Traced chain:\n1. Server API \u2192 JSON parse (`FUN_1400e41f0`) extracts `fully_qualified_file_name` and `dot_dot`\n2. Filepath stored in SQLite: `INSERT INTO Files (FileID, ..., Filepath, FileState)`\n3. Hunks downloaded and reassembled by `RestoreOneDownloadedHunk` (`FUN_1401846d0`)\n4. File moved to final path via `MoveFileExW` in `FUN_1401669c0`\n\n**Gap**: Full decompilation only covers 1,163 of 19,178 functions. The critical path construction functions (0x1400e41f0, 0x1401669c0, 0x14018",
+        "i": "- **Arbitrary file write** to any location the running user can write to\n- Overwrite startup items \u2192 code execution on next login\n- DLL hijacking via overwriting DLLs in user-writable paths\n- Data destruction by overwriting arbitrary files during \"restore\"",
+        "d": "1. **TLS on server connection**: Prevents casual MITM but not compromised server or cert-level attacks\n2. **PathAllocCanonicalize (FUN_140088f20)**: Resolves `..` into valid paths but does NOT reject them \u2014 this is canonicalization, not validation\n3. **No prefix validation found**: No check that resolved path starts with the intended restore directory\n4. **User authentication**: Attacker needs access to the Backblaze account to upload crafted backup data"
+      },
+      "ingested_at": "2026-04-09T08:24:54.586354"
+    },
+    {
+      "id": "backblaze-2026-04-08/dynamic_validation_evidence",
+      "title": "Dynamic Validation Evidence \u2014 Backblaze LPE (2026-04-08)",
+      "file": "engagements/backblaze-2026-04-08/findings/dynamic_validation_evidence.md",
+      "engagement": "backblaze-2026-04-08",
+      "engagement_date": "2026-04-08",
+      "target": "Backblaze Personal Backup",
+      "target_type": "native_binary",
+      "platform": "bugcrowd",
+      "cwes": [],
+      "verdict": "CONFIRMED",
+      "techniques": [
+        "hardlink_abuse",
+        "arbitrary_write"
+      ],
+      "defenses_bypassed": [],
+      "summary": "",
+      "acid": {},
+      "ingested_at": "2026-04-09T08:24:54.586735"
+    },
+    {
+      "id": "keeper-security-2026-04-09/001-mitm-rce-cert-bypass",
+      "title": "Remote Code Execution via MITM \u2014 Global TLS Certificate Validation Disabled in Keeper Password Manager",
+      "file": "engagements/keeper-security-2026-04-09/findings/001-mitm-rce-cert-bypass.md",
+      "engagement": "keeper-security-2026-04-09",
+      "engagement_date": "2026-04-09",
+      "target": "keeper-security",
+      "target_type": "unknown",
+      "cwes": [
+        "CWE-295",
+        "CWE-494"
+      ],
+      "severity": "P1",
+      "rating": 5,
+      "verdict": "CONFIRMED",
+      "confidence": "HIGH",
+      "techniques": [],
+      "defenses_bypassed": [
+        "**Code Signature Verification (macOS)**: **BYPASSED** \u2014 `verifyCodeSignature()` result is ignored in `verifyStagedUpdate()`"
+      ],
+      "summary": "Keeper Password Manager Desktop (Electron) ships with `app.commandLine.appendSwitch(\"ignore-certificate-errors\",\"true\")` in `app.js`, **unconditionally disabling TLS certificate validation for the entire application**. This is not gated behind any dev/debug flag \u2014 it runs in the production snap/installer build.\n\nCombined with the auto-update mechanism in `update.js` which:\n- Fetches the update feed URL via plain `fetch()` (affected by the cert bypass)\n- On Windows: calls `autoUpdater.setFeedURL(",
+      "acid": {
+        "a": "**YES**: Any attacker on the same network segment can perform MITM:\n- Public WiFi (coffee shop, airport, hotel)\n- Corporate LAN (insider threat, compromised switch)\n- ISP-level interception\n- Rogue AP / Evil Twin attack\n- ARP spoofing on local network\n\nThe `ignore-certificate-errors` flag means the attacker's self-signed or invalid certificate is **silently accepted** by Keeper without any user prompt or warning.",
+        "c": "**YES**: Complete chain traced in production code:\n\n1. `app.js`: `app.commandLine.appendSwitch(\"ignore-certificate-errors\",\"true\")` \u2014 disables TLS cert validation globally\n2. `update.js:initUpdate()`: Constructs update feed URL from `config.js` (e.g., `updateFeedWin64`, `updateFeedDarwinArm64`)\n3. `update.js:http()`: Fetches feed URL via `fetch()` \u2014 goes through Chromium's network stack with cert validation disabled\n4. Attacker MITM intercepts the fetch, serves a fake update feed JSON pointing t",
+        "i": "**CRITICAL** \u2014 This is a password manager:\n- **Full RCE** as the user running Keeper\n- **Complete vault compromise** \u2014 all stored passwords, TOTP seeds, secure notes, payment cards\n- **Credential theft at scale** \u2014 corporate deployments with thousands of users on the same network\n- **Supply chain implications** \u2014 the update mechanism itself is the attack vector\n- **Silent exploitation** \u2014 no user interaction required, no certificate warning shown",
+        "d": "1. **TLS Certificate Validation**: **DISABLED** by `ignore-certificate-errors: true`\n2. **Code Signature Verification (macOS)**: **BYPASSED** \u2014 `verifyCodeSignature()` result is ignored in `verifyStagedUpdate()`\n3. **Code Signature Verification (Windows)**: **ABSENT** \u2014 no Authenticode/signature check exists\n4. **Update Feed Authentication**: **NONE** \u2014 plain HTTPS fetch, no certificate pinning, no HMAC on feed content"
+      },
+      "ingested_at": "2026-04-10T10:06:34.554959"
+    },
+    {
+      "id": "keeper-security-2026-04-09/002-global-prop-set-auth-bypass",
+      "title": "Lock Screen Bypass and API Redirect via Unrestricted IPC Property Overwrite (GLOBAL_PROP_SET)",
+      "file": "engagements/keeper-security-2026-04-09/findings/002-global-prop-set-auth-bypass.md",
+      "engagement": "keeper-security-2026-04-09",
+      "engagement_date": "2026-04-09",
+      "target": "keeper-security",
+      "target_type": "unknown",
+      "cwes": [
+        "CWE-862",
+        "CWE-284"
+      ],
+      "severity": "P2",
+      "rating": 4,
+      "confidence": "HIGH",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "The `GLOBAL_PROP_SET` IPC handler in `ipc-global-props.js` allows ANY renderer process to overwrite ANY property on `global.props` with zero validation or authorization:\n\n```javascript\nipcMain.handle(\"GLOBAL_PROP_SET\", (async(a, i, n) => { global.props[i] = n }));\n```\n\nThe `global.props` object stores security-critical application state including `authenticated`, `locked`, `vaultKey`, `trayKey`, `touchKey`, `regionHost`, and `savedLogin`. A compromised renderer (via XSS in a vault record, SSO pa",
+      "acid": {
+        "a": "**YES**: The renderer supplies both the property name and value. Attack vectors to reach the renderer:\n- XSS via malicious vault record (custom fields, notes with HTML)\n- Compromised SSO provider page\n- MITM-injected content (though this overlaps with Finding 001)\n- Malicious browser extension interacting with Keeper",
+        "c": "**YES**: Direct assignment with zero checks:\n1. Renderer calls `ipcRenderer.invoke(\"GLOBAL_PROP_SET\", \"regionHost\", \"attacker.com\")`\n2. `global.props.regionHost = \"attacker.com\"` \u2014 done\n3. All subsequent API calls go to attacker.com instead of keepersecurity.com\n4. Attacker captures master password, auth tokens, vault data",
+        "i": "- **Lock screen bypass**: Set `authenticated=true, locked=false` \u2192 access cached vault\n- **Credential theft**: Set `regionHost` \u2192 redirect API \u2192 capture master password\n- **Encryption key theft**: Overwrite `vaultKey`/`trayKey`\n- **Session hijack**: Overwrite `savedLogin`",
+        "d": "- `contextIsolation: true` \u2014 prevents direct Node.js access from renderer\n- BUT: the preload explicitly exposes `GLOBAL_PROP_SET` via contextBridge, negating the isolation for this specific channel\n- No allowlist on property names\n- No sender validation\n- No authorization check"
+      },
+      "ingested_at": "2026-04-10T10:06:34.555486"
+    },
+    {
+      "id": "keeper-security-2026-04-09/003-shell-open-external-rce",
+      "title": "Remote Code Execution via shell.openExternal with Insufficient URL Validation",
+      "file": "engagements/keeper-security-2026-04-09/findings/003-shell-open-external-rce.md",
+      "engagement": "keeper-security-2026-04-09",
+      "engagement_date": "2026-04-09",
+      "target": "keeper-security",
+      "target_type": "unknown",
+      "cwes": [
+        "CWE-78",
+        "CWE-20"
+      ],
+      "severity": "P2",
+      "rating": 4,
+      "confidence": "MEDIUM",
+      "techniques": [
+        "command_injection"
+      ],
+      "defenses_bypassed": [],
+      "summary": "Multiple IPC handlers pass renderer-controlled URLs to `shell.openExternal()` with only a `^https?://` regex check. On Windows, `shell.openExternal` delegates URL handling to the OS shell, which follows HTTP redirects to arbitrary protocol handlers \u2014 enabling RCE via protocol handler abuse (ms-msdt, search-ms, etc.).",
+      "acid": {
+        "i": "- **RCE on Windows** via protocol handler chain (pre-patch or unpatched systems)\n- **Social engineering amplified** \u2014 the URL opens in the system browser, appearing legitimate\n- **No user prompt** from Keeper \u2014 shell.openExternal fires silently"
+      },
+      "ingested_at": "2026-04-10T10:06:34.555812"
+    },
+    {
+      "id": "afd-sys-2026-04-28/001-bit12-race-FUN140029874",
+      "title": "Finding 001 \u2014 Cross-IOCTL race on AFD endpoint flag bits via FUN_140029874",
+      "file": "engagements/afd-sys-2026-04-28/findings/001-bit12-race-FUN140029874.md",
+      "engagement": "afd-sys-2026-04-28",
+      "engagement_date": "2026-04-28",
+      "target": "Windows Ancillary Function Driver for WinSock (afd.sys)",
+      "target_type": "binary",
+      "platform": "Windows 11 24H2",
+      "cwes": [
+        "CWE-362",
+        "CWE-367"
+      ],
+      "verdict": "LIKELY",
+      "techniques": [
+        "race_condition",
+        "kernel_pool_overflow"
+      ],
+      "defenses_bypassed": [
+        "the unsynchronized access in test mode. Production systems do not run",
+        "lookaside but doesn't prevent the same-tag UAF."
+      ],
+      "summary": "",
+      "acid": {
+        "a": "\u2705 **Yes**. Both IOCTLs are reachable from user-mode via\n`NtDeviceIoControlFile` on `\\Device\\Afd` (same device WinSock uses for\nTCP/UDP sockets). No special privilege required \u2014 any process that can\ncreate a socket can issue these IOCTLs. Sharing the handle to a worker\nthread is trivial (`HANDLE h = socket(...); CreateThread(...)`).",
+        "c": "\u26a0\ufe0f **Partial**. The two write-sides (FUN_140029874 and FUN_140021360)\ndemonstrably touch `*(param+4)` from different locking regimes. To\nfully confirm the chain we need to verify:\n1. param_2 in FUN_140029874 corresponds to the same memory as param_1\n   (or `*(param_1+8)`) in FUN_140021360 \u2014 i.e., that the same socket\n   structure is at the address. **Not yet verified** \u2014 needs PDB symbol\n   download or runtime memory inspection.\n2. The handle reference resolution in `FUN_140029a50` and\n   `FUN_1",
+        "i": "\ud83d\udfe1 **Probable kernel pool corruption / UAF**. Specific impact depends on\nwhich interleaving the attacker hits:\n- **UAF**: thread B's path frees an inner buffer that thread A's path\n  has cached a pointer to, then thread A dereferences.\n- **Double-free**: both paths reach the `ExFreePoolWithTag(*(param_3+0xe0))`\n  branch in LAB_1400299ab without coordinating who owns the free.\n- **Type confusion**: the `*param_2 = 0xafd2` magic write in FUN_140029874\n  could overlap with thread B already having fr",
+        "d": "- **Driver Verifier**: Force IRQL Checking + Special Pool would catch\n  the unsynchronized access in test mode. Production systems do not run\n  Verifier by default \u2192 no real defense.\n- **kCFG**: irrelevant (data-only race, no indirect call).\n- **HVCI**: irrelevant (data-only).\n- **Smep/Smap**: irrelevant.\n- **Pool isolation**: AFD-tagged pool ('AfdR' = 0x52646641) has its own\n  lookaside but doesn't prevent the same-tag UAF.\n\n---"
+      },
+      "ingested_at": "2026-04-28T17:03:13.007995"
+    },
+    {
+      "id": "afd-sys-2026-04-28/001-AfdSetupAcceptEndpoint-cross-lock-race",
+      "title": "Finding 001 \u2014 Cross-lock race on AFD endpoint flag field via `AfdSetupAcceptEndpoint`",
+      "file": "engagements/afd-sys-2026-04-28/findings/001-AfdSetupAcceptEndpoint-cross-lock-race.md",
+      "engagement": "afd-sys-2026-04-28",
+      "engagement_date": "2026-04-28",
+      "target": "Windows Ancillary Function Driver for WinSock (afd.sys)",
+      "target_type": "binary",
+      "platform": "Windows 11 24H2",
+      "cwes": [
+        "CWE-362",
+        "CWE-367"
+      ],
+      "verdict": "LIKELY",
+      "techniques": [
+        "race_condition",
+        "kernel_pool_overflow",
+        "lock_ordering"
+      ],
+      "defenses_bypassed": [
+        "in test mode. Production systems do not run Verifier by default.",
+        "this doesn't prevent same-tag UAF."
+      ],
+      "summary": "",
+      "acid": {
+        "a": "\u2705 Strong. Both code paths reachable from user-mode via standard WinSock\nAPIs (`AcceptEx`, `bind`, `connect`, `ConnectEx`). No special privilege\nrequired \u2014 attacker is any local user able to create a socket and spawn\na thread (the default for any Windows process).",
+        "c": "\ud83d\udfe1 Partial. The chain is verified in decompilation:\n- `AcceptEx` user buffer \u2192 `*(IRP+0x20)` \u2192 user-supplied handle resolved\n  by `ObReferenceObjectByHandle` to AFD endpoint E.\n- E flows into `AfdSetupAcceptEndpoint` as `param_2`.\n- E's `+4` flag is written without holding `*(E+8)+0x38` lock.\n\nWhat remains to verify:\n1. **Type confirmation that `param_2` of `AfdSetupAcceptEndpoint` and\n   `param_1` of `AfdAddConnectedReference` are the same struct (AFD_ENDPOINT)\n   at the same memory address when",
+        "i": "\ud83d\udfe1 Probable kernel pool corruption / state-machine confusion. CVSS estimate:\n\n`CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H` = **7.0 (Important)**\n\nThis matches the severity tier of all eight April 2026 AFD CVEs (each\nCVSS 7.0 or 7.8). High attack complexity acknowledges the race precondition.\n\nConcrete impact ladder:\n- **A0** Race window observed under Driver Verifier \u2192 kernel BSOD (DoS).\n- **A1** State-machine confusion that lets bound-but-unconnected socket\n  be used as connected \u2192 information",
+        "d": "- **Driver Verifier**: With `verifier /standard /driver afd.sys`,\n  Force-IRQL-Checking + Special Pool would catch the unsynchronized access\n  in test mode. Production systems do not run Verifier by default.\n- **kCFG / HVCI**: irrelevant (data-only race; no indirect call).\n- **AFD pool tagging**: `'AfdR'` allocations have their own lookaside, but\n  this doesn't prevent same-tag UAF.\n- **`Feature_2074285368` kill-switch**: Microsoft can flip the patch off\n  via Velocity if regressions appear. The"
+      },
+      "ingested_at": "2026-04-28T21:26:44.090484"
+    },
+    {
+      "id": "afd-sys-2026-04-28/002-AfdSendDatagram-method-neither-uncertain",
+      "title": "Finding 002 \u2014 AfdSendDatagram METHOD_NEITHER probe-coverage uncertainty",
+      "file": "engagements/afd-sys-2026-04-28/findings/002-AfdSendDatagram-method-neither-uncertain.md",
+      "engagement": "afd-sys-2026-04-28",
+      "engagement_date": "2026-04-28",
+      "target": "Windows Ancillary Function Driver for WinSock (afd.sys)",
+      "target_type": "binary",
+      "platform": "Windows 11 24H2",
+      "cwes": [
+        "CWE-822"
+      ],
+      "verdict": "UNCERTAIN",
+      "techniques": [
+        "null_dereference"
+      ],
+      "defenses_bypassed": [],
+      "summary": "",
+      "acid": {},
+      "ingested_at": "2026-04-28T21:26:44.091662"
+    },
+    {
+      "id": "dropbox-2026-04-30/001-dbxsvc-signature-validation-bypass",
+      "title": "Dropbox `dbxsvc.exe` \u2014 Client-Process Signature Validation Bypassable via Process-Hollowing / Junction Substitution",
+      "file": "engagements/dropbox-2026-04-30/findings/001-dbxsvc-signature-validation-bypass.md",
+      "engagement": "dropbox-2026-04-30",
+      "engagement_date": "2026-04-30",
+      "target": "dropbox",
+      "target_type": "unknown",
+      "cwes": [],
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "`dbxsvc.exe` exposes a named pipe `\\\\.\\pipe\\dbxsvc` for IPC. Before accepting commands, it identifies the calling process via `GetNamedPipeClientProcessId`, opens the caller's image file, and verifies the file's Authenticode signature with `WinVerifyTrust` (`FUN_100003784`). If the signature is valid, the caller is granted IPC trust and can dispatch privileged commands including `FilterUnload`/variant-swap of the `dbx.sys` kernel filter driver and a `dbgeng`-driven crash-dump triage primitive (c",
+      "acid": {
+        "i": "- **Standard user \u2192 \"trusted client\" of `dbx.sys` SYSTEM-context controller.** Trust boundary advertised as \"only signed Dropbox binaries can talk to me\" is violated by any standard user via process hollowing.\n- **Concrete primitives (post-bypass):**\n  - Filtered read of kernel crash dumps (`MEMORY.DMP`, `Minidump\\*.dmp`) parsed through `dbgeng.dll`'s `kn` + `lm v` commands \u2192 kernel stack pointers, loaded driver base addresses (KASLR defeat) \u2014 files are otherwise admin-only readable.\n  - `Filter"
+      },
+      "ingested_at": "2026-05-02T10:36:21.239474"
+    },
+    {
+      "id": "dropbox-2026-04-30/002-bypass-validation-registry-flag",
+      "title": "Dropbox `dbxsvc.exe` \u2014 `BypassClientValidation` Registry Flag Disables All Caller Validation",
+      "file": "engagements/dropbox-2026-04-30/findings/002-bypass-validation-registry-flag.md",
+      "engagement": "dropbox-2026-04-30",
+      "engagement_date": "2026-04-30",
+      "target": "dropbox",
+      "target_type": "unknown",
+      "cwes": [],
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "`dbxsvc.exe` first reads `HKLM\\SOFTWARE\\Dropbox\\BypassClientValidation` (DWORD). If the value equals `1`, **all caller validation is skipped** \u2014 the named-pipe handler accepts any connecting process and dispatches its commands as if the caller were a signed Dropbox binary.\n\nThe intent of this flag is presumably internal Dropbox dev/QA testing. Whether it is exploitable by a standard user depends entirely on the DACL of the `HKLM\\SOFTWARE\\Dropbox` registry key as established by the Dropbox instal",
+      "acid": {},
+      "ingested_at": "2026-05-02T10:36:21.240043"
+    },
+    {
+      "id": "dropbox-2026-04-30/003-uninstall-cmd-substring-bypass",
+      "title": "Dropbox Updater `uninstall.cmd` \u2014 Substring Path Validation Bypass + Arbitrary `rmdir`",
+      "file": "engagements/dropbox-2026-04-30/findings/003-uninstall-cmd-substring-bypass.md",
+      "engagement": "dropbox-2026-04-30",
+      "engagement_date": "2026-04-30",
+      "target": "dropbox",
+      "target_type": "unknown",
+      "cwes": [],
+      "verdict": "CONFIRMED",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "`uninstall.cmd` is a 23-line batch script bundled with the Dropbox updater. It accepts `--dir <path>` and recursively deletes the directory. Before deleting, it tries to ensure the path is \"an updater install path\" by checking that the path contains the substring `\\Dropbox\\DropboxUpdater`:\n\n```batch\n@echo %Directory% | FindStr /L \\Dropbox\\DropboxUpdater > nul\nif %ERRORLEVEL% NEQ 0 (\n  echo \"Invalid argument.\"\n  exit 2\n)\n\nfor /L %%G IN (1,1,15) do (\n  ping -n 2 127.0.0.1 > nul\n  rmdir %Directory%",
+      "acid": {},
+      "ingested_at": "2026-05-02T10:36:21.240761"
+    },
+    {
+      "id": "dropbox-2026-04-30/004-ielevator-clean",
+      "title": "DropboxElevationService \u2014 Forced NTLM Authentication / SYSTEM Process-Spawn via IElevator::RunRecoveryCRXElevated",
+      "file": "engagements/dropbox-2026-04-30/findings/004-ielevator-clean.md",
+      "engagement": "dropbox-2026-04-30",
+      "engagement_date": "2026-04-30",
+      "target": "dropbox",
+      "target_type": "unknown",
+      "cwes": [
+        "CWE-918",
+        "CWE-200",
+        "CWE-269"
+      ],
+      "verdict": "CONFIRMED",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "",
+      "acid": {},
+      "ingested_at": "2026-05-02T10:36:21.242387"
+    },
+    {
+      "id": "dropbox-2026-04-30/004-ielevator-com-chain-WIP",
+      "title": "Finding #4 (WIP) \u2014 IElevatorDropbox COM RunRecoveryCRXElevated chain",
+      "file": "engagements/dropbox-2026-04-30/findings/004-ielevator-com-chain-WIP.md",
+      "engagement": "dropbox-2026-04-30",
+      "engagement_date": "2026-04-30",
+      "target": "dropbox",
+      "target_type": "unknown",
+      "cwes": [],
+      "verdict": "CONFIRMED",
+      "techniques": [
+        "path_traversal"
+      ],
+      "defenses_bypassed": [],
+      "summary": "",
+      "acid": {},
+      "ingested_at": "2026-05-02T10:36:21.244380"
+    },
+    {
+      "id": "dropbox-2026-04-30/004-ielevator-submission",
+      "title": "Dropbox Desktop \u2014 `IElevator::RunRecoveryCRXElevated` lets a standard user trigger SYSTEM-context process spawn and force NTLM authentication to attacker-chosen hosts",
+      "file": "engagements/dropbox-2026-04-30/findings/004-ielevator-submission.md",
+      "engagement": "dropbox-2026-04-30",
+      "engagement_date": "2026-04-30",
+      "target": "dropbox",
+      "target_type": "unknown",
+      "cwes": [],
+      "verdict": "CONFIRMED",
+      "techniques": [],
+      "defenses_bypassed": [],
+      "summary": "`DropboxElevationService.exe` (which runs as `NT AUTHORITY\\SYSTEM`) exposes a COM\ninterface called `IElevator`. Its only method, `RunRecoveryCRXElevated`, takes a\ncaller-supplied path and feeds it straight into `CreateFileW` before the rest of the\nrecovery logic kicks in.\n\nTwo things fall out of that:\n\n1. The path isn't sanitised against UNC, so any standard user can point the SYSTEM\n   service at `\\\\attacker\\share\\foo.crx`. Windows will then attempt outbound\n   authentication to the attacker ho",
+      "acid": {
+        "i": "In a corporate/domain environment (Dropbox's main deployment context), Angle A\nis a forced-auth primitive in the PetitPotam family. A standard user can\ncoerce SYSTEM-level NTLM authentication outbound, with the captured machine\naccount credentials usable for NTLM relay \u2192 AD object modification, SYSTEM\non other endpoints, etc. CVE-2021-36942 (PetitPotam) and CVE-2022-26925 are\nthe canonical reference precedents.\n\nStandalone (non-domain) it's a confidentiality breach: machine account hash\nleak, re"
+      },
+      "ingested_at": "2026-05-02T10:36:21.245834"
+    },
+    {
+      "id": "bitdefender-2026-05-02/001-msgbus-trusted-process-bypass",
+      "title": "msgbus Security Gate \u2014 trusted_client_process Path-Hash Bypass (Prerequisite Research)",
+      "file": "engagements/bitdefender-2026-05-02/findings/001-msgbus-trusted-process-bypass.md",
+      "engagement": "bitdefender-2026-05-02",
+      "engagement_date": "2026-05-02",
+      "target": "bitdefender",
+      "target_type": "unknown",
+      "cwes": [],
+      "verdict": "UNCERTAIN",
+      "techniques": [
+        "arbitrary_write"
+      ],
+      "defenses_bypassed": [
+        "**same_sign check**: For \"high\"/\"high_enhanced\" tiers, the connecting process must be Bitdefender-signed. Not applicable to \"low\" tier.",
+        "**trusted_client_path check**: Additional check that process is in a trusted system directory (system32, Program Files, etc.). Low tier doesn't require this."
+      ],
+      "summary": "The Bitdefender msgbus IPC system uses a named pipe accessible to all users (Everyone ACL), relying entirely on application-layer security to gate privileged operations. The weakest security tier (\"low\") only checks `trusted_client_process` \u2014 an FNV-1a-derived hash of the connecting process's image path. If any process executable in a user-writable or user-accessible location appears in the trusted hash map, a standard user can connect and invoke all \"low\"-tier endpoints (which include the proce",
+      "acid": {
+        "a": "The pipe is accessible to any process on the machine (ACL grants WinWorldSid GENERIC_READ|GENERIC_WRITE). The attacker controls:\n- Which process they launch (and therefore its image path)\n- The message body sent over the pipe\n\nThe `trusted_client_process` check (FUN_1800212c0 in msgbus.dll) computes a hash of the process image path using a custom FNV-1a\u2013based algorithm that normalizes `/` and `\\` as equivalent. If the attacker can run a binary from a trusted path, the hash will match.",
+        "c": "```\nAttacker process at trusted path\n    \u2192 connects to \\\\.\\PIPE\\local\\msgbus\\bd.process.broker.pipe  (WinWorldSid ACL)\n    \u2192 msgbus checks trusted_client_process (FNV-1a hash of image path)\n    \u2192 if hash matches: security level \"low\" satisfied\n    \u2192 calls process_broker::spawn or ElevatedOperations::SaveRegValue\n    \u2192 SYSTEM-privileged operation executes\n```\n\nThe chain is complete IF a trusted process path is user-accessible. The break point is the trusted process hash map content (unknown witho",
+        "i": "**If trusted path found:**\n- **Process broker spawn**: Can invoke any pre-registered task from `process_broker.json` with a specified session token. Impact: code execution as any logged-in user (not SYSTEM elevation per se \u2014 impersonates caller).\n- **ElevatedOperations _SaveRegValue**: Arbitrary registry write as SYSTEM (security level TBD). If confirmed \"low\" tier: arbitrary SYSTEM registry writes \u2192 persistence, LPE via autorun/service hijack.\n- **ElevatedOperations _SafeElevatedRun**: Execute",
+        "d": "1. **trusted_client_process hash map**: Only pre-approved process paths can pass. Hash is 64-bit, collision attack infeasible.\n2. **same_sign check**: For \"high\"/\"high_enhanced\" tiers, the connecting process must be Bitdefender-signed. Not applicable to \"low\" tier.\n3. **admin_client check**: Some operations additionally require TokenElevation. Standard user without UAC elevation fails this.\n4. **trusted_client_path check**: Additional check that process is in a trusted system directory (system32"
+      },
+      "ingested_at": "2026-05-02T23:19:10.781856"
+    },
+    {
+      "id": "bitdefender-2026-05-02/002-safeelevatedrun-wvt-toctou",
+      "title": "CSafeElevatedRun::Run \u2014 WinVerifyTrust TOCTOU (CWE-367)",
+      "file": "engagements/bitdefender-2026-05-02/findings/002-safeelevatedrun-wvt-toctou.md",
+      "engagement": "bitdefender-2026-05-02",
+      "engagement_date": "2026-05-02",
+      "target": "bitdefender",
+      "target_type": "unknown",
+      "cwes": [
+        "CWE-367"
+      ],
+      "verdict": "UNCERTAIN",
+      "techniques": [
+        "race_condition"
+      ],
+      "defenses_bypassed": [],
+      "summary": "`CSafeElevatedRun::Run` (FUN_180017440 in safeelevatedrun.dll) verifies the Authenticode signature of a target executable with `WinVerifyTrust`, then passes the same path to `CreateProcessAsUserW`. There is a race window between the signature check and process launch. An attacker who can substitute the file between these calls can execute unsigned/malicious code in a different user's session.",
+      "acid": {
+        "a": "- The executable path (`param_2`) is supplied by the msgbus caller\n- `CSafeElevatedRun::Run` is invoked via `CElevatedOperationsServer::_SafeElevatedRun` over the ElevatedOperations msgbus channel\n- Caller must pass the `trusted_client_process` check to reach this code\n- Attack pre-condition: ability to call ElevatedOperations::SafeElevatedRun AND write access to the path specified",
+        "c": "```\nElevatedOperations msgbus caller\n    \u2192 CElevatedOperationsServer::_SafeElevatedRun (FUN_18000c290)\n    \u2192 CSafeElevatedRun::Run (FUN_180017440)\n    \u2192 FUN_1800184c0: calls FUN_180016d00 \u2192 WinVerifyTrust(path) \u2192 returns success\n    [RACE WINDOW: attacker swaps file at path to malicious binary]\n    \u2192 FUN_180002f20 \u2192 FUN_180003120: CreateProcessAsUserW(token, NULL, path, ...)\n    \u2192 malicious binary executes in target session\n```",
+        "i": "- Execute arbitrary code in another Windows session (e.g., admin session) as that session's user\n- If the target session is an admin, this achieves LPE from standard user to admin",
+        "d": "1. **WinVerifyTrust**: Validates Authenticode signature \u2014 requires initial path to point to a valid signed binary\n2. **Access to ElevatedOperations**: Caller must be trusted process\n3. **Race window**: Must be exploitable \u2014 depends on filesystem latency and path. Tight races on local NTFS may be hard to win reliably.\n4. **File locking**: WinVerifyTrust may hold a file handle open, blocking substitution"
+      },
+      "ingested_at": "2026-05-02T23:19:10.782485"
+    }
+  ],
+  "stats": {
+    "total_entries": 46,
+    "unique_cwes": 26,
+    "unique_techniques": 19,
+    "unique_targets": 11,
+    "last_ingested": "2026-05-02T23:19:10.782541"
+  }
+}

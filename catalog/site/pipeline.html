@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Vulnerabin · Research pipeline</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#131315",
+        background: "#0c0c0e",
+        "on-surface": "#e5e1e4",
+        "on-background": "#e5e1e4",
+        "on-surface-variant": "#c2c6d6",
+        "surface-container-lowest": "#0e0e10",
+        "surface-container-low": "#1b1b1d",
+        "surface-container": "#201f21",
+        "surface-container-high": "#2a2a2c",
+        "surface-container-highest": "#353437",
+        "surface-bright": "#39393b",
+        "surface-variant": "#353437",
+        outline: "#8c909f",
+        "outline-variant": "#424754",
+        primary: "#adc6ff",
+        "primary-fixed": "#d8e2ff",
+        "primary-fixed-dim": "#adc6ff",
+        "primary-container": "#4d8eff",
+        "on-primary": "#002e6a",
+        "on-primary-container": "#00285d",
+        secondary: "#4fdbc8",
+        "secondary-container": "#04b4a2",
+        tertiary: "#ffb786",
+        "tertiary-container": "#df7412",
+        error: "#ffb4ab",
+        "error-container": "#93000a",
+        "on-error": "#690005",
+        "on-error-container": "#ffdad6",
+        accent: "#3b82f6",
+        // Source-class group colors (matching taxonomy/binary/sources_v2.json groups)
+        "grp-F": "#fdd6d6",
+        "grp-F-stroke": "#c00",
+        "grp-I": "#fed9a3",
+        "grp-I-stroke": "#c80",
+        "grp-N": "#c5d3ff",
+        "grp-N-stroke": "#06c",
+        "grp-K": "#e0bdf2",
+        "grp-K-stroke": "#909",
+        "grp-U": "#bfeac6",
+        "grp-U-stroke": "#080",
+        "grp-T": "#cfd2d8",
+        "grp-T-stroke": "#555",
+        "grp-UP": "#fff0a3",
+        "grp-UP-stroke": "#aa0",
+        "grp-C": "#e9d4b8",
+        "grp-C-stroke": "#862",
+        "grp-E": "#a8d4ff",
+        "grp-E-stroke": "#069",
+        "grp-W": "#f4c5ff",
+        "grp-W-stroke": "#909",
+        "grp-CR": "#cccccc",
+        "grp-CR-stroke": "#333",
+      },
+      borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "9999px" },
+      spacing: { base: "4px", xs: "4px", sm: "8px", gutter: "12px", md: "16px", margin: "16px", lg: "24px", xl: "32px", unit: "4px" },
+      fontFamily: {
+        "ui-sans-md": ["Inter"], "ui-sans-sm": ["Inter"],
+        "data-mono-sm": ["JetBrains Mono"], "data-mono-md": ["JetBrains Mono"],
+        "code-block": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"],
+        "h1": ["Inter"], "h2": ["Inter"], "title-sm": ["Inter"],
+        "headline-md": ["Inter"], "display-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+      },
+      fontSize: {
+        "h1": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "h2": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "title-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+        "ui-sans-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+        "ui-sans-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+        "data-mono-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "data-mono-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+        "code-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "code-sm": ["11px", { lineHeight: "16px", fontWeight: "400" }],
+        "code-block": ["13px", { lineHeight: "22px", fontWeight: "400" }],
+        "label-caps": ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "700" }],
+        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+      },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a2c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #424754; }
+.bg-custom-surface { background-color: #16171d; }
+</style>
+</head>
+<body class="bg-background text-on-background font-ui-sans-md h-screen flex flex-col overflow-hidden">
+
+<!-- Top app bar -->
+<header class="bg-surface-container border-b border-outline-variant flex justify-between items-center w-full px-lg py-sm z-50 h-14 shrink-0">
+  <div class="flex items-center gap-md">
+    <a href="index.html" class="text-h2 font-h1 tracking-tight text-primary">Vulnerabin</a>
+    <nav class="hidden md:flex items-center gap-sm ml-lg">
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="index.html">Products</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="binaries.html">Binaries</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="chains.html">Chains</a>
+      <a class="text-primary font-bold hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="pipeline.html">Pipeline</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="taxonomy.html">Taxonomy</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-sm">
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+  </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden">
+  <!-- Side nav -->
+  <aside class="bg-surface text-on-surface font-ui-sans-sm border-r border-outline-variant flex flex-col py-md space-y-unit shrink-0 w-60 h-full overflow-y-auto">
+    <div class="px-4 mb-4">
+      <div class="font-h2 text-h2 font-black text-primary leading-tight">Vulnerabin</div>
+      <div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">v0.5.0 · catalog</div>
+    </div>
+    <nav class="flex-1 space-y-unit">
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="index.html">
+        <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        <span class="font-body-sm">Products</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="binaries.html">
+        <span class="material-symbols-outlined text-[18px]">memory</span>
+        <span class="font-body-sm">Binaries</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="chains.html">
+        <span class="material-symbols-outlined text-[18px]">timeline</span>
+        <span class="font-body-sm">Chains</span>
+      </a>
+      <a class="bg-surface-container-high text-primary border-l-2 border-primary hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="pipeline.html">
+        <span class="material-symbols-outlined text-[18px]">trending_up</span>
+        <span class="font-body-sm">Pipeline</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="taxonomy.html">
+        <span class="material-symbols-outlined text-[18px]">hub</span>
+        <span class="font-body-sm">Taxonomy</span>
+      </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="https://github.com/anthropics/vulnerabin"><span class="material-symbols-outlined text-[16px]">menu_book</span><span class="font-body-sm">Docs</span></a>
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[16px]">dns</span><span class="font-body-sm">Status</span></a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col bg-background overflow-y-auto">
+    
+<div class="px-lg py-md border-b border-outline-variant bg-surface">
+  <div class="max-w-[1800px] mx-auto w-full flex items-end justify-between">
+    <div>
+      <h1 class="font-h1 text-h1 text-primary">Research pipeline</h1>
+      <p class="text-ui-sans-sm text-on-surface-variant mt-xs max-w-3xl">Chains organised by workflow stage. Move left → right as you reverse a binary, identify inputs, trace conditions, build a PoC, test it, observe whether it crosses a security boundary, and ultimately submit.</p>
+    </div>
+    <div class="text-data-mono-sm text-on-surface-variant">26 chains across pipeline</div>
+  </div>
+</div>
+<div class="p-lg max-w-[1800px] mx-auto w-full">
+  <div class="grid grid-cols-6 gap-md">
+    
+    
+    <div class="bg-surface-container border border-outline-variant rounded flex flex-col">
+      <div class="px-sm py-xs border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[14px] text-primary">search</span>
+          <span class="font-data-mono-sm uppercase text-on-surface">Input identified</span>
+        </div>
+        <span class="font-data-mono-sm text-on-surface-variant">22</span>
+      </div>
+      <div class="p-sm flex flex-col gap-sm flex-1 min-h-[300px] max-h-[70vh] overflow-y-auto">
+        
+        <a href="binaries/broker/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Everyone-ACL named pipes accept process-spawn task GUIDs to SYSTEM broker</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">broker</div>
+          
+        </a>
+        
+        <a href="binaries/bzrestore/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Server-supplied filename in restore API response flows to MoveFileExW without pr</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">bzrestore</div>
+          
+        </a>
+        
+        <a href="binaries/bzserv/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Standard user replaces ProgramData log file with NTFS hardlink to privileged tar</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">bzserv</div>
+          
+        </a>
+        
+        <a href="binaries/bzserv/chains/CHAIN-002.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-002</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Auto-updater downloads and executes binary without Authenticode signature verifi</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">bzserv</div>
+          
+        </a>
+        
+        <a href="binaries/dropbox_offline_installer_exe/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">HKLM\Software\DropboxUpdate\...\UninstallCmdLine value (writable by BUILTIN\User</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">dropbox_offline_installer.exe</div>
+          
+        </a>
+        
+        <a href="binaries/hp_support_assistant_exe/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">User-writable C:\ProgramData\HP\* dirs accept junctions; needs HPSA UWP trigger</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">hp_support_assistant.exe</div>
+          
+        </a>
+        
+        <a href="binaries/mb5_setup_consumer_5_5_4_252_exe/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Original junction-write claim invalidated by live access-denied on every standar</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">mb5-setup-consumer-5.5.4.252.exe</div>
+          
+        </a>
+        
+        <a href="binaries/mb5_setup_consumer_5_5_4_252_exe/chains/CHAIN-002.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-002</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Original ICACLS-based junction-prerequisite claim (later invalidated)</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">mb5-setup-consumer-5.5.4.252.exe</div>
+          
+        </a>
+        
+        <a href="binaries/msgbus_dll/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Standard user connects to Everyone-ACLed msgbus pipe; trusted-process check is F</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">msgbus.dll</div>
+          
+        </a>
+        
+        <a href="binaries/productagent_dll/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Writable C:\ProgramData\Bitdefender Agent\bdch\ allows DLL plant; SYSTEM service</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">productagent.dll</div>
+          
+        </a>
+        
+        <a href="binaries/sophossetup_exe/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Sophos hardens C:\ProgramData\Sophos with explicit non-inheriting DACL; no candi</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">sophossetup.exe</div>
+          
+        </a>
+        
+        <a href="binaries/teamviewer_service_exe/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            <span class="text-[10px] bg-tertiary/20 text-tertiary px-1 rounded ml-auto">🟡</span>
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Multiple process-creation IPC handlers reachable via auth bypass on localhost:59</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">teamviewer_service.exe</div>
+          
+        </a>
+        
+        <a href="binaries/teamviewer_service_exe/chains/CHAIN-002.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-002</span>
+            <span class="text-[10px] bg-tertiary/20 text-tertiary px-1 rounded ml-auto">🟡</span>
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">TeamViewer log files in install dir have Everyone:RW permissions</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">teamviewer_service.exe</div>
+          
+        </a>
+        
+        <a href="binaries/teamviewer_service_exe/chains/CHAIN-003.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-003</span>
+            <span class="text-[10px] bg-tertiary/20 text-tertiary px-1 rounded ml-auto">🟡</span>
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Replace Everyone:RW log file with NTFS hardlink to privileged target</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">teamviewer_service.exe</div>
+          
+        </a>
+        
+        <a href="binaries/teamviewer_service_exe/chains/CHAIN-004.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-004</span>
+            <span class="text-[10px] bg-tertiary/20 text-tertiary px-1 rounded ml-auto">🟡</span>
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Updated writeup of IPC auth bypass via unchanged hardcoded MD5 secret + process </div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">teamviewer_service.exe</div>
+          
+        </a>
+        
+        <a href="binaries/teamviewervpn_sys/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            <span class="text-[10px] bg-tertiary/20 text-tertiary px-1 rounded ml-auto">🟡</span>
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">TAP device DACL grants Everyone GR/GW/GX; any local user opens device and issues</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">teamviewervpn.sys</div>
+          
+        </a>
+        
+        <a href="binaries/teamviewervpn_sys/chains/CHAIN-002.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-002</span>
+            <span class="text-[10px] bg-tertiary/20 text-tertiary px-1 rounded ml-auto">🟡</span>
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">IOCTL 0x220024 copies up to 256 bytes user-controlled data into adapter struct w</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">teamviewervpn.sys</div>
+          
+        </a>
+        
+        <a href="binaries/telegram/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Server-supplied TL-deserialized photo metadata triggers OOB read</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">telegram</div>
+          
+        </a>
+        
+        <a href="binaries/telegram/chains/CHAIN-002.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-002</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Crafted TGS sticker (gzip+JSON) sent in chat; recursive precomp parsing exhausts</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">telegram</div>
+          
+        </a>
+        
+        <a href="binaries/telegram/chains/CHAIN-003.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-003</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">tg://bg URL routing has stray ^ in regex; cosmetic only</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">telegram</div>
+          
+        </a>
+        
+        <a href="binaries/telegram/chains/CHAIN-004.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-004</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">IV renderer puts URL into &lt;iframe srcdoc&gt; instead of src; latent XSS class</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">telegram</div>
+          
+        </a>
+        
+        <a href="binaries/vantageinstaller_exe/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Hardcoded SYSTEM-context paths under user-writable C:\ProgramData\Lenovo\Vantage</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">vantageinstaller.exe</div>
+          
+        </a>
+        
+      </div>
+    </div>
+    
+    
+    <div class="bg-surface-container border border-outline-variant rounded flex flex-col">
+      <div class="px-sm py-xs border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[14px] text-tertiary">list_alt</span>
+          <span class="font-data-mono-sm uppercase text-on-surface">Conditions enumerated</span>
+        </div>
+        <span class="font-data-mono-sm text-on-surface-variant">1</span>
+      </div>
+      <div class="p-sm flex flex-col gap-sm flex-1 min-h-[300px] max-h-[70vh] overflow-y-auto">
+        
+        <a href="binaries/safeelevatedrun_dll/chains/CHAIN-002.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-002</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Command-line injection via executable_args field (unexplored)</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">safeelevatedrun.dll</div>
+          
+        </a>
+        
+      </div>
+    </div>
+    
+    
+    <div class="bg-surface-container border border-outline-variant rounded flex flex-col">
+      <div class="px-sm py-xs border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[14px] text-secondary">build</span>
+          <span class="font-data-mono-sm uppercase text-on-surface">PoC built</span>
+        </div>
+        <span class="font-data-mono-sm text-on-surface-variant">0</span>
+      </div>
+      <div class="p-sm flex flex-col gap-sm flex-1 min-h-[300px] max-h-[70vh] overflow-y-auto">
+        
+        <div class="text-data-mono-sm text-on-surface-variant text-center mt-md italic opacity-60">no chains</div>
+        
+      </div>
+    </div>
+    
+    
+    <div class="bg-surface-container border border-outline-variant rounded flex flex-col">
+      <div class="px-sm py-xs border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[14px] text-secondary">play_arrow</span>
+          <span class="font-data-mono-sm uppercase text-on-surface">PoC tested</span>
+        </div>
+        <span class="font-data-mono-sm text-on-surface-variant">0</span>
+      </div>
+      <div class="p-sm flex flex-col gap-sm flex-1 min-h-[300px] max-h-[70vh] overflow-y-auto">
+        
+        <div class="text-data-mono-sm text-on-surface-variant text-center mt-md italic opacity-60">no chains</div>
+        
+      </div>
+    </div>
+    
+    
+    <div class="bg-surface-container border border-outline-variant rounded flex flex-col">
+      <div class="px-sm py-xs border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[14px] text-error">warning</span>
+          <span class="font-data-mono-sm uppercase text-on-surface">Boundary crossed</span>
+        </div>
+        <span class="font-data-mono-sm text-on-surface-variant">0</span>
+      </div>
+      <div class="p-sm flex flex-col gap-sm flex-1 min-h-[300px] max-h-[70vh] overflow-y-auto">
+        
+        <div class="text-data-mono-sm text-on-surface-variant text-center mt-md italic opacity-60">no chains</div>
+        
+      </div>
+    </div>
+    
+    
+    <div class="bg-surface-container border border-outline-variant rounded flex flex-col">
+      <div class="px-sm py-xs border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[14px] text-error">send</span>
+          <span class="font-data-mono-sm uppercase text-on-surface">Submitted</span>
+        </div>
+        <span class="font-data-mono-sm text-on-surface-variant">3</span>
+      </div>
+      <div class="p-sm flex flex-col gap-sm flex-1 min-h-[300px] max-h-[70vh] overflow-y-auto">
+        
+        <a href="binaries/productagentservice_exe/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            <span class="text-[10px] bg-error/20 text-error px-1 rounded ml-auto">✅</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Config injection + BDLogging junction → arbitrary SYSTEM file write</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">ProductAgentService.exe</div>
+          <div class="text-data-mono-sm mt-1"><span class="bg-surface-container-lowest text-on-surface px-1 rounded">P3</span></div>
+        </a>
+        
+        <a href="binaries/safeelevatedrun_dll/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            <span class="text-[10px] bg-tertiary/20 text-tertiary px-1 rounded ml-auto">🟡</span>
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">IsInFolder prefix check accepts traversal segments, allows Microsoft-signed cmd.exe spawn</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">safeelevatedrun.dll</div>
+          <div class="text-data-mono-sm mt-1"><span class="bg-surface-container-lowest text-on-surface px-1 rounded">P3</span></div>
+        </a>
+        
+        <a href="binaries/trufos_sys/chains/CHAIN-001.html" class="bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded p-sm block transition-colors">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="font-data-mono-sm text-primary font-bold">CHAIN-001</span>
+            
+          </div>
+          <div class="text-ui-sans-sm text-on-surface mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">FUN_140042c5c error-path returns IRP-&gt;IoStatus.Information (kernel pool address) without zeroing</div>
+          <div class="text-data-mono-sm text-on-surface-variant truncate">trufos.sys</div>
+          <div class="text-data-mono-sm mt-1"><span class="bg-surface-container-lowest text-on-surface px-1 rounded">P3</span></div>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+  </main>
+</div>
+</body>
+</html>

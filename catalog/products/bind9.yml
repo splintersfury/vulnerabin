@@ -1,0 +1,68 @@
+product: bind9
+display_name: ISC BIND9 DNS Server
+vendor: ISC
+description: >
+  Authoritative + recursive DNS server. Engagement bind9-2026-04-06: 11
+  parser-audit findings against various RR types and the HTTP/2 DoH endpoint.
+  Most candidates didn't reach confirmable PoC at server-RCE level — pattern is
+  endemic to DNS-server audits (many candidates, few that ship).
+
+versions_seen:
+  - version: "9.x current"
+    eng: bind9-2026-04-06
+    seen: 2026-04-06
+
+binaries:
+  - named (the BIND9 daemon)
+
+topology:
+  trust_zones:
+    SYSTEM_or_root:
+      - named
+    Network_attacker:
+      - "(anyone who can spoof DNS responses or send queries)"
+
+  defenses:
+    dns_parser:
+      - "extensive bounds checking on RR parsing"
+      - "GAP CANDIDATES (none confirmed to ship): heap overflow rdata, TSIG/TKEY parsing, QNAME minimization, glue parsing, DNS64 mapping, NSEC3 chain, SVCB, HTTP/2 DoH null deref"
+    auth_recursion:
+      - "ACL-based query control; recursion-limit protection"
+      - "Less audited: per-finding details"
+
+vulnerabilities:
+  - finding_ref: bind9-2026-04-06/findings/001-rr-parser-audit.md
+    binary: named (the BIND9 daemon)
+    classes: [N-001]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: bind9-2026-04-06/findings/002-heap-overflow-rdata-audit.md
+    binary: named (the BIND9 daemon)
+    classes: [N-001]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: bind9-2026-04-06/findings/003-tsig-parser-audit.md
+    binary: named (the BIND9 daemon)
+    classes: [N-001]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: bind9-2026-04-06/findings/004-tkey-parser-audit.md
+    binary: named (the BIND9 daemon)
+    classes: [N-001]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: bind9-2026-04-06/findings/008-http2-null-deref-empty-sstreams.md
+    binary: named (the BIND9 daemon)
+    classes: [N-002, N-001]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+
+open_angles:
+  - "fuzz-driven follow-up on the 11 parser candidates not yet performed"
+  - "DNSSEC validation chains — KeyTrap class variants worth re-checking"
+  - "Async I/O concurrency bugs — not audited"

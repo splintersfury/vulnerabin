@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Vulnerabin · acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#131315",
+        background: "#0c0c0e",
+        "on-surface": "#e5e1e4",
+        "on-background": "#e5e1e4",
+        "on-surface-variant": "#c2c6d6",
+        "surface-container-lowest": "#0e0e10",
+        "surface-container-low": "#1b1b1d",
+        "surface-container": "#201f21",
+        "surface-container-high": "#2a2a2c",
+        "surface-container-highest": "#353437",
+        "surface-bright": "#39393b",
+        "surface-variant": "#353437",
+        outline: "#8c909f",
+        "outline-variant": "#424754",
+        primary: "#adc6ff",
+        "primary-fixed": "#d8e2ff",
+        "primary-fixed-dim": "#adc6ff",
+        "primary-container": "#4d8eff",
+        "on-primary": "#002e6a",
+        "on-primary-container": "#00285d",
+        secondary: "#4fdbc8",
+        "secondary-container": "#04b4a2",
+        tertiary: "#ffb786",
+        "tertiary-container": "#df7412",
+        error: "#ffb4ab",
+        "error-container": "#93000a",
+        "on-error": "#690005",
+        "on-error-container": "#ffdad6",
+        accent: "#3b82f6",
+        // Source-class group colors (matching taxonomy/binary/sources_v2.json groups)
+        "grp-F": "#fdd6d6",
+        "grp-F-stroke": "#c00",
+        "grp-I": "#fed9a3",
+        "grp-I-stroke": "#c80",
+        "grp-N": "#c5d3ff",
+        "grp-N-stroke": "#06c",
+        "grp-K": "#e0bdf2",
+        "grp-K-stroke": "#909",
+        "grp-U": "#bfeac6",
+        "grp-U-stroke": "#080",
+        "grp-T": "#cfd2d8",
+        "grp-T-stroke": "#555",
+        "grp-UP": "#fff0a3",
+        "grp-UP-stroke": "#aa0",
+        "grp-C": "#e9d4b8",
+        "grp-C-stroke": "#862",
+        "grp-E": "#a8d4ff",
+        "grp-E-stroke": "#069",
+        "grp-W": "#f4c5ff",
+        "grp-W-stroke": "#909",
+        "grp-CR": "#cccccc",
+        "grp-CR-stroke": "#333",
+      },
+      borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "9999px" },
+      spacing: { base: "4px", xs: "4px", sm: "8px", gutter: "12px", md: "16px", margin: "16px", lg: "24px", xl: "32px", unit: "4px" },
+      fontFamily: {
+        "ui-sans-md": ["Inter"], "ui-sans-sm": ["Inter"],
+        "data-mono-sm": ["JetBrains Mono"], "data-mono-md": ["JetBrains Mono"],
+        "code-block": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"],
+        "h1": ["Inter"], "h2": ["Inter"], "title-sm": ["Inter"],
+        "headline-md": ["Inter"], "display-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+      },
+      fontSize: {
+        "h1": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "h2": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "title-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+        "ui-sans-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+        "ui-sans-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+        "data-mono-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "data-mono-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+        "code-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "code-sm": ["11px", { lineHeight: "16px", fontWeight: "400" }],
+        "code-block": ["13px", { lineHeight: "22px", fontWeight: "400" }],
+        "label-caps": ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "700" }],
+        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+      },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a2c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #424754; }
+.bg-custom-surface { background-color: #16171d; }
+</style>
+</head>
+<body class="bg-background text-on-background font-ui-sans-md h-screen flex flex-col overflow-hidden">
+
+<!-- Top app bar -->
+<header class="bg-surface-container border-b border-outline-variant flex justify-between items-center w-full px-lg py-sm z-50 h-14 shrink-0">
+  <div class="flex items-center gap-md">
+    <a href="../index.html" class="text-h2 font-h1 tracking-tight text-primary">Vulnerabin</a>
+    <nav class="hidden md:flex items-center gap-sm ml-lg">
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../index.html">Products</a>
+      <a class="text-primary font-bold hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../binaries.html">Binaries</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../chains.html">Chains</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../pipeline.html">Pipeline</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../taxonomy.html">Taxonomy</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-sm">
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+  </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden">
+  <!-- Side nav -->
+  <aside class="bg-surface text-on-surface font-ui-sans-sm border-r border-outline-variant flex flex-col py-md space-y-unit shrink-0 w-60 h-full overflow-y-auto">
+    <div class="px-4 mb-4">
+      <div class="font-h2 text-h2 font-black text-primary leading-tight">Vulnerabin</div>
+      <div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">v0.5.0 · catalog</div>
+    </div>
+    <nav class="flex-1 space-y-unit">
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../index.html">
+        <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        <span class="font-body-sm">Products</span>
+      </a>
+      <a class="bg-surface-container-high text-primary border-l-2 border-primary hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../binaries.html">
+        <span class="material-symbols-outlined text-[18px]">memory</span>
+        <span class="font-body-sm">Binaries</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../chains.html">
+        <span class="material-symbols-outlined text-[18px]">timeline</span>
+        <span class="font-body-sm">Chains</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../pipeline.html">
+        <span class="material-symbols-outlined text-[18px]">trending_up</span>
+        <span class="font-body-sm">Pipeline</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../taxonomy.html">
+        <span class="material-symbols-outlined text-[18px]">hub</span>
+        <span class="font-body-sm">Taxonomy</span>
+      </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="https://github.com/anthropics/vulnerabin"><span class="material-symbols-outlined text-[16px]">menu_book</span><span class="font-body-sm">Docs</span></a>
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[16px]">dns</span><span class="font-body-sm">Status</span></a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col bg-background overflow-y-auto">
+    
+
+<!-- Breadcrumbs + header -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface sticky top-0 z-30">
+  <div class="flex items-center gap-sm font-data-mono-sm text-on-surface-variant mb-xs">
+    <a class="hover:text-primary" href="../index.html">Products</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    
+    <a class="hover:text-primary" href="../binaries.html">Binaries</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    
+    <span class="text-primary">acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe</span>
+  </div>
+  <div class="flex justify-between items-start mt-sm">
+    <div>
+      <h1 class="font-data-mono-md text-primary text-[20px] font-bold tracking-tight">acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe</h1>
+      <div class="text-ui-sans-sm text-on-surface-variant mt-xs">acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe</div>
+      <div class="flex flex-wrap gap-xs mt-sm">
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span></span>
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded"></span>
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded">exe</span>
+        
+        
+        <span class="bg-error-container/20 border border-error text-error font-data-mono-sm px-2 py-0.5 rounded">SYSTEM</span>
+        
+      </div>
+    </div>
+    <div class="flex gap-sm">
+      <a href="../../binaries/acroniscyberprotect_agentforwindows_web_26_4_1_42393_exe.yml" class="bg-surface-container border border-outline-variant text-on-surface font-title-sm text-title-sm px-3 py-1.5 rounded hover:bg-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">code</span>YAML</a>
+    </div>
+  </div>
+  
+  <p class="text-ui-sans-sm text-on-surface-variant mt-md max-w-3xl">(Auto-seeded; replace this description.) Catalogued in 1 engagement(s).</p>
+  
+</div>
+
+<div class="p-lg space-y-lg max-w-[1600px] mx-auto w-full">
+
+  <!-- Reverse engineering brief (the RE journey that PRECEDES sources/sinks) -->
+  
+
+  <!-- Capabilities (the BACKWARD view: what can this binary DO?) -->
+  
+
+  <!-- Coverage Matrix (the holistic view: inputs × capabilities) -->
+  
+
+  <!-- Coverage Gaps (the forcing function) -->
+  
+
+  <!-- Layer 1: Attack-surface map -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant flex justify-between items-center bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">account_tree</span>Layer 1 · Attack-Surface Map</h2>
+      <span class="text-data-mono-sm text-on-surface-variant">0 sources · 0 sinks</span>
+    </div>
+    <div class="p-lg bg-surface-container-lowest h-[460px] relative overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#e5e1e4 1px, transparent 1px); background-size: 16px 16px;"></div>
+
+      <!-- Legend -->
+      <div class="absolute bottom-sm right-sm bg-surface-container border border-outline-variant p-2 rounded font-data-mono-sm flex flex-col gap-1 z-10 shadow-lg max-h-[300px] overflow-y-auto">
+        <div class="text-on-surface text-[10px] uppercase font-bold mb-1">class group</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #fdd6d6"></span>F</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #fed9a3"></span>I</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #c5d3ff"></span>N</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #e0bdf2"></span>K</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #bfeac6"></span>U</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #cfd2d8"></span>T</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #fff0a3"></span>UP</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #e9d4b8"></span>C</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #a8d4ff"></span>E</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #f4c5ff"></span>W</div>
+        
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: #cccccc"></span>CR</div>
+        
+      </div>
+
+      <!-- SVG edges (drawn first so they sit behind nodes) -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1000 460" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow" markerWidth="6" markerHeight="6" orient="auto" refX="5" refY="3" viewBox="0 0 6 6"><path d="M 0 0 L 6 3 L 0 6 z" fill="#8c909f"></path></marker>
+        </defs>
+        
+        
+        
+        
+      </svg>
+
+      <!-- Source nodes (left), binary (center), sink nodes (right) -->
+      <div class="absolute inset-0 flex justify-between items-center px-[40px]">
+        <div class="flex flex-col gap-md w-[200px]">
+          
+        </div>
+        <div class="bg-surface-container border-2 border-primary px-4 py-3 rounded flex flex-col items-center shadow-[0_0_30px_rgba(173,198,255,0.15)] z-10">
+          <div class="font-data-mono-md text-primary font-bold">acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe</div>
+          
+          <div class="bg-error-container/20 text-error font-data-mono-sm px-2 rounded mt-1">SYSTEM</div>
+        </div>
+        <div class="flex flex-col gap-md w-[220px]">
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Layer 2: Trust boundary -->
+  
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">security</span>Layer 2 · Trust Boundary & Process Model</h2>
+    </div>
+    <div class="p-lg grid grid-cols-1 lg:grid-cols-4 gap-md">
+      <div class="lg:col-span-3 bg-surface-container-lowest border border-surface-variant rounded p-md grid grid-rows-4 gap-sm relative overflow-hidden">
+        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: linear-gradient(#424754 1px, transparent 1px), linear-gradient(90deg, #424754 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <!-- SYSTEM zone -->
+        <div class="border border-dashed border-error/40 rounded p-sm relative bg-error/[0.03]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-error">SYSTEM</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            
+            
+            <div class="flex items-center gap-2 px-2 py-1 bg-surface-container border-2 border-primary rounded">
+              <div class="w-2 h-2 rounded-full bg-primary"></div>
+              <span class="font-data-mono-sm text-primary font-bold">acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe</span>
+            </div>
+            
+            
+          </div>
+        </div>
+        <!-- Admin zone -->
+        <div class="border border-dashed border-tertiary/40 rounded p-sm relative bg-tertiary/[0.02]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-tertiary">Admin</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            
+          </div>
+        </div>
+        <!-- LoggedInUser zone -->
+        <div class="border border-dashed border-secondary/40 rounded p-sm relative bg-secondary/[0.02]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-secondary">loggedInUser</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            
+          </div>
+        </div>
+        <!-- Attacker zone -->
+        <div class="border border-dashed border-on-surface-variant rounded p-sm relative bg-surface-container/40">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-on-surface-variant">Standard user (attacker)</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            <div class="flex items-center gap-2 px-2 py-1 bg-on-surface-variant/10 border border-on-surface-variant rounded">
+              <div class="w-2 h-2 rounded-full bg-on-surface-variant"></div>
+              <span class="font-data-mono-sm text-on-surface-variant">(any standard-user process)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Side panel with process-model facts -->
+      <div class="bg-surface-container-low border border-surface-variant rounded p-md flex flex-col gap-md">
+        <div>
+          <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-1">Loaded by</div>
+          <div class="text-data-mono-sm text-on-surface"></div>
+        </div>
+        <div>
+          <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-1">Start trigger</div>
+          <div class="text-data-mono-sm text-on-surface"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-sm pt-sm border-t border-outline-variant">
+          <div>
+            <div class="text-data-mono-sm text-on-surface-variant uppercase mb-1">Impersonation</div>
+            <div class="text-data-mono-sm text-error">no</div>
+          </div>
+          <div>
+            <div class="text-data-mono-sm text-on-surface-variant uppercase mb-1">PPL</div>
+            <div class="text-data-mono-sm text-error">no</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Layer 3: Defense matrix -->
+  
+
+  <!-- Layer 5: Class coverage matrix -->
+  
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container flex justify-between items-center">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">grid_view</span>Layer 5 · Class Coverage Matrix</h2>
+      <div class="text-data-mono-sm text-on-surface-variant">
+        <span class="text-error">0</span> present ·
+        <span class="text-secondary">0</span> defense observed ·
+        <span class="text-on-surface-variant">0</span> not present ·
+        <span class="text-tertiary">46</span> unchecked
+      </div>
+    </div>
+    <div class="p-md space-y-md">
+      
+      <details open class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group F <span class="text-on-surface-variant">(7 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 7 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">F-001</span><div class="text-on-surface-variant text-[10px] mt-0.5">NTFS-junction-write-by-elevated-process</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Apply protected DACL to every ancestor the binary creates; open paths with FILE_OPEN_REPARSE_POINT/OBJ_DONT_REPARSE; refuse if FILE_ATTRIBUTE_REPARSE_POINT is set on any walked component; OR...</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Vendor adds IsJunctionPoint(leaf) check after a CVE; attacker creates junction one level UP — leaf check passes</li><li>Directory.CreateDirectory(path, security) only secures the LEAF; auto-created ancestors inherit upstream ACL</li><li>Race between Directory.Exists check and CreateDirectory — attacker creates junction in the gap</li><li>Vendor sets DACL on one path; next subdirectory inherits</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary write to any path under %PROGRAMDATA%, %WINDIR%\Temp, or %LOCALAPPDATA%\Temp?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is any ancestor of that path auto-created (CreateDirectoryW / SHCreateDirectoryEx / Directory.CreateDirectory / fs.mkdirSync recursive:true)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: does the principal performing the write differ from the principal of the user who can pre-create the parent? (typically SYSTEM-vs-user)</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the open call missing FILE_FLAG_OPEN_REPARSE_POINT / OBJ_DONT_REPARSE?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is impersonation (ImpersonateLoggedOnUser/ImpersonateNamedPipeClient) NOT in effect at the moment of write?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />If 5/5 yes → present. If 4/5 yes with one defense → defense_observed. If Q1 no → not_present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">F-002</span><div class="text-on-surface-variant text-[10px] mt-0.5">NTFS-junction-read-by-elevated-process</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Same as F-001 plus HMAC/sign config files so even if read succeeds, content is rejected unless the signature checks.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Junction redirects parent of config dir; elevated reader picks up attacker-supplied config</li><li>Vendor canonicalizes path but parses the redirected content unsafely (e.g., trusts log_dir field for second-stage F-001)</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary read from any path under %PROGRAMDATA%, %WINDIR%\Temp, or %LOCALAPPDATA%\Temp?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is any ancestor of that path auto-created on first run with default ACL?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the read principal more privileged than the user who can pre-create the parent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does the read content drive a privileged decision (config flag, log_dir, exec_path, library load path)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the read NOT signature-verified or HMAC'd?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 yes → present. Q1 no → not_present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">F-003</span><div class="text-on-surface-variant text-[10px] mt-0.5">NTFS-hardlink-substitution</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Open with FILE_FLAG_OPEN_REPARSE_POINT, verify nNumberOfLinks == 1 via GetFileInformationByHandle; or use FILE_DISPOSITION_POSIX_SEMANTICS for delete operations.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Service truncates a log file; hardlink redirects to SAM/PhysicalDrive0</li><li>Service appends to log; hardlink to disk header writes attacker bytes</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary open a file with TRUNCATE_EXISTING or write-mode under a parent that's user-writable?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is GetFileInformationByHandle.nNumberOfLinks check absent before the operation?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is FILE_FLAG_OPEN_REPARSE_POINT not set on the open call?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the principal more privileged than the parent's writer?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the file content / size / metadata of security relevance (i.e., truncating/overwriting it has impact)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 yes → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">F-004</span><div class="text-on-surface-variant text-[10px] mt-0.5">Symlink-by-low-priv-into-protected-ta...</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Use O_NOFOLLOW; openat() with AT_SYMLINK_NOFOLLOW; mkstemp for temp files instead of predictable paths.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Race the symlink creation with the open call on systems without O_NOFOLLOW</li><li>Hard symlink in deeply-nested path bypasses leaf-only checks</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the daemon open() / fopen() any path under /tmp, /var/tmp, /run, or per-user predictable locations?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is O_NOFOLLOW absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: does the daemon run as root (or higher uid than path's writer)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the operation write/truncate/unlink (vs read-only)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the path predictable / not from mkstemp?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 yes → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">F-005</span><div class="text-on-surface-variant text-[10px] mt-0.5">World-writable IPC socket</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Linux: socket mode 0700 / per-user; SO_PEERCRED to verify caller UID. Windows: explicit DACL granting only owning service account.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Daemon sets DACL on socket but parent directory is world-writable; attacker pre-creates</li><li>Daemon trusts source port / source IP (always 127.0.0.1)</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary create a Unix socket / named pipe?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the socket mode 0777 / 0666 (Linux) or NULL DACL / Everyone:GA (Windows)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is SO_PEERCRED / impersonation absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does the daemon run with higher privilege than UID-1000 / standard user?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: do the accepted commands include any privileged operation (file write, exec, kernel device access)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 yes → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">F-006</span><div class="text-on-surface-variant text-[10px] mt-0.5">World-writable / user-readable...</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Apply protected DACL on file creation; rotate logs to admin-only directories; redact sensitive content before logging.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Logs include creds / IPC tokens / sessions and are written to user-readable locations</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary write any file under %PROGRAMDATA% or per-user accessible location?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the file's DACL permissive on read (Authenticated Users / Everyone)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: does the file content include security-relevant data (creds, tokens, paths to elevated bins, IPC keys)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the principal writing the file more privileged than the user who can read it?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is there no rotation / cleanup that minimizes exposure window?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 yes → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">F-007</span><div class="text-on-surface-variant text-[10px] mt-0.5">File-association / drag-drop trust handler</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Treat file content as untrusted; sanitize path components; drop privileges before parsing; use a sandbox process for file-content parsing.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Handler trusts file extension, parser is buggy</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary register a file extension or shell extension (HKCR\<.ext>\shell\open\command)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does it register a drag-drop handler (RegisterDragDrop / IShellExtInit)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the file-format parser running in the same process as elevated logic?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the parser hand-rolled (vs sandboxed)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: does the parser take any user-controllable extension dispatch?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+      <details open class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group I <span class="text-on-surface-variant">(9 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 9 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-001</span><div class="text-on-surface-variant text-[10px] mt-0.5">Named-pipe-unauthenticated-read</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Explicit SDDL grant only to the owning service principal; authenticate caller via ImpersonateNamedPipeClient + token check.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Service uses default DACL (permissive)</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary call CreateNamedPipe with PIPE_ACCESS_DUPLEX or PIPE_ACCESS_OUTBOUND?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the security descriptor NULL or grants FR to Authenticated Users / Everyone?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: does the binary publish messages to readers without per-message auth check?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: do those messages include security-sensitive data?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a standard user reach the pipe (accesschk -a \\.\pipe\<name>)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-002</span><div class="text-on-surface-variant text-[10px] mt-0.5">Named-pipe-unauthenticated-write</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Explicit SDDL; authenticate caller via ImpersonateNamedPipeClient + group membership check, OR GetNamedPipeClientProcessId + image-path allowlist.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Service authenticates by image path → process-hollowing T-001 bypasses</li><li>Service authenticates by parent process → spawn legitimate parent under controlled args (T-006 variant)</li><li>ImpersonateNamedPipeClient + RevertToSelf with TOCTOU on impersonated user's input</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary call CreateNamedPipe with PIPE_ACCESS_INBOUND or DUPLEX?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does the message-handling state machine dispatch on a command code without first authenticating the caller?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the security descriptor permissive or NULL?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does any handler perform privileged action (file write, exec, kernel call, registry edit)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the caller-auth check defeatable by image-path-trust / parent-process-trust / TOCTOU?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-003</span><div class="text-on-surface-variant text-[10px] mt-0.5">D-Bus method caller-uid trust</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Always read caller uid from g_dbus_method_invocation_get_sender(invocation) then bus.get_unix_user(sender). Discard any uid argument.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Method takes uid as argument 'for backward compat'; daemon never deprecates</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the daemon expose any D-Bus method with a uid parameter?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does the handler trust the parameter without cross-check against the bus uid?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the bus policy permissive (allow send_destination without per-method scoping)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: do the operations performed differ by uid (e.g., affects another user's settings)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a standard user invoke the method?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-004</span><div class="text-on-surface-variant text-[10px] mt-0.5">COM elevation moniker / IElevator interface</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Restrict LaunchPermission to admin-only SIDs. Authenticate caller in every method via CoImpersonateClient + OpenThreadToken + token check.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>LaunchPermission grants Authenticated Users</li><li>Methods bypass auth check via QueryInterface to a different IID</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary register a CLSID with HKCR\AppID\{...}\RunAs = 'Interactive User' or 'NT AUTHORITY\\SYSTEM'?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is HKCR\CLSID\{...}\Elevation\Enabled = 1?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: does LaunchPermission grant Authenticated Users / Everyone?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: do the methods perform privileged operations without per-method caller-token check?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can CoCreateInstanceEx with CLSCTX_ELEVATION_AWARE succeed from a low-priv process?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-005</span><div class="text-on-surface-variant text-[10px] mt-0.5">WM_COPYDATA / window message</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> ChangeWindowMessageFilter / ChangeWindowMessageFilterEx to block specific messages from non-elevated; rely on UIPI default.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>UIPI bypass via AllowSetForegroundWindow + ChangeWindowMessageFilter</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary RegisterClass / RegisterClassEx and process WM_COPYDATA or custom WM_USER messages?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does the WndProc parse cbData/lpData without rigorous validation?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the binary running at higher integrity than the window-finding process?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is ChangeWindowMessageFilter not set to block?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: does the message-handling perform privileged action?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-006</span><div class="text-on-surface-variant text-[10px] mt-0.5">ALPC port (kernel)</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Implement an ALPC connection callback that validates caller via AlpcGetMessageAttribute + PsLookupProcessByProcessId checks.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Connection callback absent / validates wrong attribute</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the kernel-mode binary call IoCreateAlpcPort / NtAlpcCreatePort?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is a connection callback registered? Does it actually validate caller?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: do the message handlers perform privileged operations?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: can user-mode reach the port (NtAlpcConnectPort)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the port's security descriptor permissive?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-007</span><div class="text-on-surface-variant text-[10px] mt-0.5">Mailslot</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Set DACL via lpSecurityAttributes; legacy IPC, prefer migrating to named pipes.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Mailslots don't expose peer creds; auth must be application-layer</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary call CreateMailslotW?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the mailslot's DACL permissive?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: does it process incoming messages with privileged effect?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 (or 3/3) → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-008</span><div class="text-on-surface-variant text-[10px] mt-0.5">Shared section / cross-process memory</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Per-session local namespace (\Sessions\<sid>\BaseNamedObjects\); explicit DACL.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Section in global \BaseNamedObjects with permissive DACL</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary call CreateFileMappingW / NtCreateSection?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the security descriptor NULL or permissive?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the section name in a globally-reachable namespace?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does the binary read from / write to the section based on data the section provides?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a low-priv process map the section?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">I-009</span><div class="text-on-surface-variant text-[10px] mt-0.5">Localhost TCP IPC (port-bound)</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Application-level auth: TLS with mutual-cert, HMAC over messages, OAuth-style tokens. The IPC layer offers no protection.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Service authenticates by source port range (useless on localhost)</li><li>Service authenticates by source IP (always 127.0.0.1)</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary bind to 127.0.0.1:N or 0.0.0.0:N?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the listener accepting commands from any local connector?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is application-layer auth absent or trivially defeatable?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does the listener perform privileged operations on receipt?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the binary running with higher privilege than a standard user?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+      <details  class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group N <span class="text-on-surface-variant">(7 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 7 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">N-001</span><div class="text-on-surface-variant text-[10px] mt-0.5">DNS wire-format parser</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Strict bounds checking on every length field; compression-pointer cycle detection; explicit max-iterations on RR-list traversal.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Parser checks parent record length but not nested; integer overflows endemic</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary parse DNS packets (A/AAAA/MX/TXT/SOA/RRSIG/NSEC3/SVCB/HTTPS/...)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: are length-field arithmetic operations on RDATA unchecked for overflow?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is compression-pointer cycle detection absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: are explicit max-iterations on RR list missing?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the binary network-reachable (resolver / authoritative / DoH endpoint)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">N-002</span><div class="text-on-surface-variant text-[10px] mt-0.5">HTTP listener (HTTP.sys / IIS / custom)</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Use battle-tested HTTP libraries; strict RFC compliance; explicit length checks; reject malformed Transfer-Encoding combinations.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>HTTP request smuggling; header injection; chunked-transfer bypass</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary call HttpAddUrlToUrlGroup / HttpReceiveHttpRequest or similar?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the URL/header/body parser hand-rolled?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the binary network-reachable?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: are length checks present?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is request-smuggling defense (TE/CL handling) explicitly correct?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">N-003</span><div class="text-on-surface-variant text-[10px] mt-0.5">TLS / network protocol parser...</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Cert pinning; HMAC over payloads; protocol parser fuzzing.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Cert validation skips hostname check</li><li>Pinning omitted</li><li>Downgrade-to-plaintext-on-retry fallback</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary read SSL/TLS data with SSL_read / BIO_read / Schannel?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is there an application protocol parser after the TLS read?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the cert validation lax (no hostname check / accepts self-signed)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the parser hand-rolled with custom binary format?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the attacker model 'malicious server' or 'malicious client'?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present (transport-level).</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">N-004</span><div class="text-on-surface-variant text-[10px] mt-0.5">Custom application protocol (payload-level)</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Use schema-driven parsers (protobuf, capnproto); explicit type tags; bounds-checked TLV walks.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Hand-rolled TLV parser; integer overflows in length fields; type confusion</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary parse a vendor-specific binary or text protocol after a transport handshake?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the protocol payload format hand-rolled (vs schema-driven)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: are length-field overflow checks absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is type-confusion possible (variant types switched at runtime)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a malicious peer (server or client) supply attacker-controlled bytes?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present (payload-level).</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">N-005</span><div class="text-on-surface-variant text-[10px] mt-0.5">SSRF</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> URL allowlist; DNS resolution before fetch + filter against internal IP ranges; disable redirects; disable file://, gopher://.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>DNS rebinding; IPv6; URL parser confusion (http://[::1]/, http://localhost%23.evil.com/); 30x redirect</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary fetch a URL where any portion is user-supplied?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the URL allowlist absent or string-prefix only?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is DNS-level filtering of internal IP ranges absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: do redirects follow without re-validation?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is file://, gopher://, or other unusual schemes allowed?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">N-006</span><div class="text-on-surface-variant text-[10px] mt-0.5">WebSocket</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Origin check on upgrade; per-message length checks; auth token in upgrade or first message.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary accept WebSocket upgrades?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is Origin not validated?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: are per-message handlers vulnerable to length/parser bugs?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is auth absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: does the binary perform privileged operations on receipt?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">N-007</span><div class="text-on-surface-variant text-[10px] mt-0.5">Multicast / mDNS / broadcast listener</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Treat multicast/broadcast packets as untrusted by definition; rate-limit; sanity-check packet structure aggressively.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary bind to a multicast (224.0.0.0/4) or broadcast (255.255.255.255) address?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does it parse application-layer data from received packets?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is rate-limiting absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does the parser have integer/length bugs?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: does action on receipt include privileged effects?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+      <details  class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group U <span class="text-on-surface-variant">(5 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 5 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">U-001</span><div class="text-on-surface-variant text-[10px] mt-0.5">Elevated process argv parsing</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Don't trust argv; for service/installer use case, derive args from authoritative source (registry under admin DACL, SCM-set ImagePath).</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: is the binary launched from a context where the user controls argv (scheduled task, custom service registration, Run dialog)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does the binary parse argv into commands / paths?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is argv-derived data used in privileged operations?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the binary running elevated?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a low-priv user influence the argv?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">U-002</span><div class="text-on-surface-variant text-[10px] mt-0.5">Environment variable trust</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Sanitize/whitelist env vars at process boundary; for setuid/elevated, use sanitized libc env routines or strip non-essential vars.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary call GetEnvironmentVariableW / getenv at runtime?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the binary running elevated with the calling user's environment?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: does env-var content flow into privileged operations (paths, exec, lib load)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is sanitization absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the env var attacker-influenceable (set by user before binary starts)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">U-003</span><div class="text-on-surface-variant text-[10px] mt-0.5">Custom-protocol-handler URL routing</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Strict URL parser; reject unexpected URL components; treat URL as untrusted input regardless of source.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: is the binary registered as a protocol handler (HKCR\<scheme>\shell\open\command or app.setAsDefaultProtocolClient)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is URL parsing hand-rolled?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: do URL fragments become argv / IPC / fs paths?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the URL delivered via browser navigation (cross-trust)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: do downstream operations include privileged effects?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">U-004</span><div class="text-on-surface-variant text-[10px] mt-0.5">Clipboard / drag-drop content</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Don't trust clipboard content for privileged operations; validate format before parsing.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary register a clipboard listener or drag-drop handler?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does it parse RTF/HTML/file-list content from the clipboard?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the binary running at elevated integrity?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the parser hand-rolled?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: do parse results drive privileged operations?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">U-005</span><div class="text-on-surface-variant text-[10px] mt-0.5">Window-message input</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> ChangeWindowMessageFilter to block privileged messages from non-elevated; UIPI default protection.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary process WM_KEYDOWN / WM_LBUTTONDOWN / WM_USER messages that drive privileged state?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is UIPI default (binary higher integrity than message sender)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is ChangeWindowMessageFilter not blocking the message?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: do handlers perform privileged action?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can lower-integrity processes find and message the window?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+      <details open class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group T <span class="text-on-surface-variant">(7 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 7 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">T-001</span><div class="text-on-surface-variant text-[10px] mt-0.5">WinVerifyTrust on file path...</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Verify in-memory code: hash caller's image base via ZwReadVirtualMemory and compare against expected hash; or use PPL on the trusting service.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Process-hollowing: spawn from signed binary, unmap original, write attacker code, resume</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary perform GetNamedPipeClientProcessId → QueryFullProcessImageNameW → WinVerifyTrust?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is in-memory code verification absent (no ZwReadVirtualMemory + hash compare)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the trusting service's host process not PPL?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: do successful peers gain access to privileged operations?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a low-priv process spawn a hollowed signed binary?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">T-002</span><div class="text-on-surface-variant text-[10px] mt-0.5">PEB.ImagePathName trust</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Use NtQueryInformationProcess(ProcessImageFileName, class 29) which sources from EPROCESS->SectionObject (kernel-authoritative); never read from PEB for trust decisions.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Attacker writes to own PEB ImagePathName before connecting</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary read PEB.ImagePathName via NtQueryInformationProcess(ProcessBasicInformation) and walk?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the read used in trust decision?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is no kernel-image-path cross-check performed?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the binary running elevated?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a low-priv attacker spoof the PEB before connecting?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">T-003</span><div class="text-on-surface-variant text-[10px] mt-0.5">Token / SID / membership check spoofable</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Use authoritative kernel-derived checks; for cross-process trust, prefer ImpersonateLoggedOnUser + SeAccessCheck against a kernel object.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary call CheckTokenMembership / GetTokenInformation on a peer?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the result trusted for privileged decision?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the check defeatable by restricted-token / shadow-SID techniques?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does it run elevated?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is no fallback verification (e.g., kernel object access check) performed?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">T-004</span><div class="text-on-surface-variant text-[10px] mt-0.5">Caller-process-image-path trust...</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Don't have IPC at all, OR require fresh authentication beyond image-path identity (HMAC token, mutual TLS, signed session ticket).</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Inject code into a process that legitimately has the trusted path</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary query peer image path via NtQueryInformationProcess(ProcessImageFileName)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the trusted-path string the sole authentication?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is no fresh token / HMAC / session check performed?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does the trusted binary lack PPL?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a low-priv attacker inject into the trusted binary?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">T-005</span><div class="text-on-surface-variant text-[10px] mt-0.5">Path-traversal / canonicalization in...</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Canonicalize before compare: GetFullPathNameW(path, MAX_PATH, canonical, NULL) then wcsncmp; or PathIsPrefix from shlwapi on canonicalized inputs.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>..\ segments resolving outside the allow-list</li><li>8.3 short-name aliasing (PROGRA~1)</li><li>UNC vs DOS path equivalences</li><li>Symlink/junction in path components</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary perform a string-comparison (wcsncmp / strncmp) on a user-influenced path?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the path normalized only with lowercase / slash-flip / quote-strip (no canonicalization API)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the comparison the gate to a privileged operation?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does the comparison use a fixed length (wcslen of expected prefix)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can attacker construct a `..\` path that matches the prefix?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">T-006</span><div class="text-on-surface-variant text-[10px] mt-0.5">Same-sign / co-signing assumption</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Don't trust co-signing as auth. Use mutual TLS, fresh tokens, or kernel-mode authentication primitives.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Inject code into any process the publisher has signed that loads attacker DLLs</li><li>Process-hollow a co-signed binary</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary verify peer's signature publisher matches its own?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is this the sole / primary auth mechanism?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: are no fresh-token / handshake checks performed?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: are co-signed binaries available that load attacker DLLs (DLL search-order)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can co-signed binaries be process-hollowed without other defenses (PPL, VAD scan)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">T-007</span><div class="text-on-surface-variant text-[10px] mt-0.5">Internal-component-as-untrusted-source</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Threshold-protocol design assuming K-of-N components are honest; cross-validate aggregations; require independent signatures from at least M components.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: is the protocol a threshold / multi-party design (M-of-N signing, threshold encryption, distributed key generation)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does any aggregating component receive full privileges?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is independent verification of aggregated values absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the threat model documented to exclude insider / coalition attackers?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: would compromise of K < M components yield privilege escalation?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+      <details  class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group UP <span class="text-on-surface-variant">(5 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 5 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">UP-001</span><div class="text-on-surface-variant text-[10px] mt-0.5">Auto-updater unsigned-binary execution</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> WinVerifyTrust on every downloaded binary before exec; signature pinning with backup keys; refuse exec on signature failure.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary fetch a payload from a remote URL?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: does it execute / load the payload after download?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is signature verification absent before exec?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the binary running elevated when it execs?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is the fetch over HTTP or HTTPS without cert pinning?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">UP-002</span><div class="text-on-surface-variant text-[10px] mt-0.5">Squirrel.Windows update channel</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Restrict packages directory to admin-write; sign all packages; verify package signatures before unpack/install.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary use Squirrel.Windows for updates?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is %LOCALAPPDATA%\<app>\packages\ user-writable?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the feed URL HTTP (not HTTPS)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is package signature check absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: does the elevated install step trust the package contents?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">UP-003</span><div class="text-on-surface-variant text-[10px] mt-0.5">electron-updater feed manipulation</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> HTTPS feed; sign latest.yml / app-update.yml; cert pinning; code-sign on the downloaded package.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary use electron-updater?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the feed URL HTTP or accept self-signed certs?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is feed signature check absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is downloaded-package signature check absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: does the install step run elevated?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">UP-004</span><div class="text-on-surface-variant text-[10px] mt-0.5">MSI custom-action argv</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Don't trust MSI properties for security decisions; restrict who can msiexec /i with custom properties.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the MSI have custom actions (DLL or VBScript)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: do they take user-controllable properties (passed via /i ... PROP=value)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: are properties used in privileged operations (paths, exec, lib load)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the install step running elevated?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a standard user invoke msiexec with custom properties (UAC consent only)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">UP-005</span><div class="text-on-surface-variant text-[10px] mt-0.5">Installer extract-then-execute</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Extract to admin-write-only path; canonicalize before exec; verify signature on extracted binary before running.</div>
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc"><li>Junction on extract path</li><li>Race extract-then-exec</li><li>Path-traversal in extract</li></ul></div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the installer extract a payload to a runtime-built path?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the extract path under user-writable parent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the extract path auto-created with default ACL?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the extracted binary executed/loaded by an elevated process?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is signature verification on the extracted binary absent?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+      <details  class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group C <span class="text-on-surface-variant">(4 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 4 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">C-001</span><div class="text-on-surface-variant text-[10px] mt-0.5">Registry value with permissive DACL...</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Admin-only SDDL on the subkey; for HKCU values used by elevated process, validate per-user-context they don't influence cross-user decisions.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary RegQueryValueEx a value used in privileged decision?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the subkey's DACL writable by Authenticated Users?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the value content used in path / exec / lib load operations?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the principal more privileged than the writer?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: is no signature/HMAC on the value content?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">C-002</span><div class="text-on-surface-variant text-[10px] mt-0.5">Config file in user-writable location</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Variant of F-002/F-006 — same defense.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />See F-002 detection checklist.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">C-003</span><div class="text-on-surface-variant text-[10px] mt-0.5">GPO / policy preference</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Sign / encrypt sensitive values; rotate keys; use modern Group Policy Preferences APIs that don't store credentials in cpassword.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary read from GPO Preferences / Local Security Policy paths?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: are sensitive values present (cpassword, secrets, paths)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the policy file readable by lower-tier admins or users?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the binary elevated?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: are no defenses against the cpassword class (CVE-2014-1812)?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">C-004</span><div class="text-on-surface-variant text-[10px] mt-0.5">Service start parameters</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> Restrict SERVICE_START to admins; don't accept lpServiceArgVectors from non-admin callers.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the service binary parse argv from StartServiceW lpServiceArgVectors?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is SERVICE_START on the service granted to non-admin?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the parsed argv used in privileged decision?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: is the service running elevated?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can a standard user start the service?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+      <details  class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group CR <span class="text-on-surface-variant">(2 classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">0 present · 2 unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">CR-001</span><div class="text-on-surface-variant text-[10px] mt-0.5">Constant-key / many-time-pad...</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> BCryptGenRandom for keys; nonces from BCryptGenRandom per-message; AEAD modes (GCM/CCM) which fail catastrophically on nonce reuse.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q1: does the binary use stream cipher / AES-CTR / AES-CBC / XOR for encryption?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q2: is the key constant / hardcoded / derived from public values?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q3: is the nonce / IV constant or reused?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q4: does decryption produce data trusted for privileged decision?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />Q5: can an attacker collect ciphertext pairs?</li><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />5/5 → present.</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">CR-002</span><div class="text-on-surface-variant text-[10px] mt-0.5">Reserved (signature/HMAC omitted by default)</div></td>
+              <td class="p-2 align-top w-[20%]">
+                <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> (placeholder) Sign/HMAC every privileged datum.</div>
+                      
+                      
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1"><li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />(reserved for Phase B expansion)</li></ul></div>
+                      
+                      
+                    </div>
+                  </details>
+                
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </details>
+      
+    </div>
+  </section>
+  
+
+  <!-- Chains -->
+  
+
+</div>
+
+<!-- Tooltip element (populated on hover) -->
+<div id="vbn-tooltip" class="fixed pointer-events-none z-[100] bg-surface-container-high border border-outline-variant rounded p-sm font-data-mono-sm text-on-surface shadow-2xl hidden" style="max-width: 360px;"></div>
+
+<style>
+  .vbn-cov-row.vbn-hidden { display: none; }
+</style>
+
+<script>
+(function(){
+  // ----- Source/sink hover tooltips -----
+  const tooltip = document.getElementById('vbn-tooltip');
+  function showTooltip(ev, html) {
+    tooltip.innerHTML = html;
+    tooltip.classList.remove('hidden');
+    const x = ev.clientX + 16;
+    const y = ev.clientY + 16;
+    tooltip.style.left = (x + 380 > window.innerWidth ? window.innerWidth - 380 : x) + 'px';
+    tooltip.style.top = (y + 200 > window.innerHeight ? window.innerHeight - 220 : y) + 'px';
+  }
+  function hideTooltip() { tooltip.classList.add('hidden'); }
+
+  document.querySelectorAll('.vbn-source-node').forEach(node => {
+    node.addEventListener('mouseenter', (ev) => {
+      const name = node.dataset.name || '';
+      const via = node.dataset.via || '';
+      const fn = node.dataset.function || '';
+      const caveat = node.dataset.caveat || '';
+      const cls = node.dataset.classids || '';
+      let html = `<div class="font-bold text-primary mb-1">${cls}</div>`;
+      html += `<div class="text-on-surface mb-2">${name}</div>`;
+      if (via) html += `<div class="text-on-surface-variant"><span class="text-on-surface">via:</span> ${via}</div>`;
+      if (fn) html += `<div class="text-on-surface-variant"><span class="text-on-surface">function:</span> ${fn}</div>`;
+      if (caveat) html += `<div class="text-tertiary mt-1"><span class="text-on-surface">caveat:</span> ${caveat}</div>`;
+      showTooltip(ev, html);
+    });
+    node.addEventListener('mousemove', (ev) => {
+      const x = ev.clientX + 16;
+      const y = ev.clientY + 16;
+      tooltip.style.left = (x + 380 > window.innerWidth ? window.innerWidth - 380 : x) + 'px';
+      tooltip.style.top = (y + 200 > window.innerHeight ? window.innerHeight - 220 : y) + 'px';
+    });
+    node.addEventListener('mouseleave', hideTooltip);
+  });
+
+  document.querySelectorAll('.vbn-sink-node').forEach(node => {
+    node.addEventListener('mouseenter', (ev) => {
+      const name = node.dataset.name || '';
+      const cwe = node.dataset.cwe || '';
+      const fn = node.dataset.function || '';
+      const impact = node.dataset.impact || '';
+      let html = `<div class="font-bold text-error mb-1">${cwe}</div>`;
+      html += `<div class="text-on-surface mb-2">${name}</div>`;
+      if (fn) html += `<div class="text-on-surface-variant"><span class="text-on-surface">function:</span> ${fn}</div>`;
+      if (impact) html += `<div class="text-on-surface-variant"><span class="text-on-surface">impact:</span> ${impact}</div>`;
+      showTooltip(ev, html);
+    });
+    node.addEventListener('mousemove', (ev) => {
+      const x = ev.clientX + 16;
+      const y = ev.clientY + 16;
+      tooltip.style.left = (x + 380 > window.innerWidth ? window.innerWidth - 380 : x) + 'px';
+      tooltip.style.top = (y + 200 > window.innerHeight ? window.innerHeight - 220 : y) + 'px';
+    });
+    node.addEventListener('mouseleave', hideTooltip);
+  });
+})();
+</script>
+
+
+  </main>
+</div>
+</body>
+</html>

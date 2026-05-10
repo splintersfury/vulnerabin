@@ -1,0 +1,245 @@
+{% extends "_base.html.j2" %}
+{% set active = 'product' %}
+{% block title %}Vulnerabin · {{ chain.id }} — {{ binary.binary }}{% endblock %}
+{% block content %}
+
+<!-- Breadcrumb + header -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface sticky top-0 z-30">
+  <div class="flex items-center gap-sm font-data-mono-sm text-on-surface-variant mb-xs">
+    <a class="hover:text-primary" href="{{ root }}index.html">Products</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    {% if binary.product %}
+    <a class="hover:text-primary" href="{{ root }}products/{{ binary.product }}.html">{{ binary.product }}</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    {% endif %}
+    <a class="hover:text-primary" href="{{ root }}binaries/{{ binary.page_stem }}.html">{{ binary.binary }}</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    <span class="text-primary">{{ chain.id }}</span>
+  </div>
+  <div class="flex justify-between items-start mt-sm">
+    <div class="max-w-3xl">
+      <div class="flex items-center gap-sm mb-xs">
+        <span class="font-data-mono-md text-primary font-bold text-[20px]">{{ chain.id }}</span>
+        {% if chain.status == 'confirmed' %}<span class="bg-error/20 text-error px-2 py-0.5 rounded font-data-mono-sm">✅ confirmed</span>
+        {% elif chain.status == 'partial' %}<span class="bg-tertiary/20 text-tertiary px-2 py-0.5 rounded font-data-mono-sm">🟡 partial</span>
+        {% elif chain.status == 'hypothesised' %}<span class="bg-primary/20 text-primary px-2 py-0.5 rounded font-data-mono-sm">❔ hypothesised</span>
+        {% elif chain.status == 'unexplored' %}<span class="bg-secondary/20 text-secondary px-2 py-0.5 rounded font-data-mono-sm">⏳ unexplored</span>
+        {% elif chain.status == 'mitigated' %}<span class="bg-on-surface-variant/10 text-on-surface-variant px-2 py-0.5 rounded font-data-mono-sm">🛡 mitigated</span>{% endif %}
+        {% if chain.severity %}<span class="bg-surface-container border border-outline-variant text-on-surface px-2 py-0.5 rounded font-data-mono-sm">{{ chain.severity }}</span>{% endif %}
+      </div>
+      <h1 class="font-h1 text-h1 text-on-surface">{{ chain.title }}</h1>
+      {% if chain.cvss %}<div class="font-data-mono-sm text-on-surface-variant mt-xs">CVSS: <code class="bg-surface-container px-1 rounded">{{ chain.cvss }}</code></div>{% endif %}
+    </div>
+    <div class="flex flex-col gap-sm items-end">
+      {% if chain.submission_ref %}<div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface">Submission:</span> {{ chain.submission_ref }}</div>{% endif %}
+      {% if chain.confirmed_in_version %}<div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface">Confirmed in:</span> {{ chain.confirmed_in_version }}</div>{% endif %}
+      {% if chain.cwe %}<div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface">CWE:</span> {{ chain.cwe | join(', ') }}</div>{% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="p-lg max-w-[1600px] mx-auto w-full space-y-lg">
+
+  <!-- Research workflow tracker -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">trending_up</span>Research workflow stage</h2>
+    </div>
+    <div class="p-md">
+      <div class="flex items-center justify-between gap-1">
+        {% set workflow_stages = [
+          ('input_identified', 'Input identified', 'search'),
+          ('conditions_enumerated', 'Conditions enumerated', 'list_alt'),
+          ('poc_built', 'PoC built', 'build'),
+          ('poc_tested', 'PoC tested', 'play_arrow'),
+          ('boundary_crossed', 'Boundary crossed', 'warning'),
+          ('submitted', 'Submitted', 'send'),
+        ] %}
+        {% set current_stage = workflow_current_stage %}
+        {% set stage_keys = ['input_identified', 'conditions_enumerated', 'poc_built', 'poc_tested', 'boundary_crossed', 'submitted'] %}
+        {% set current_idx = stage_keys.index(current_stage) if current_stage in stage_keys else 0 %}
+        {% for sk, sl, si in workflow_stages %}
+          {% set is_current = (sk == current_stage) %}
+          {% set is_done = (loop.index0 < current_idx) or is_current %}
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center {% if is_current %}bg-primary text-on-primary ring-4 ring-primary/30{% elif is_done %}bg-secondary/30 text-secondary border border-secondary{% else %}bg-surface-container-lowest text-on-surface-variant border border-outline-variant{% endif %}">
+              <span class="material-symbols-outlined text-[18px]">{{ si }}</span>
+            </div>
+            <div class="text-data-mono-sm text-center mt-1 {% if is_current %}text-primary font-bold{% elif is_done %}text-on-surface{% else %}text-on-surface-variant{% endif %}">{{ sl }}</div>
+          </div>
+          {% if not loop.last %}
+          <div class="flex-1 h-0.5 self-start mt-4 {% if loop.index <= current_idx %}bg-secondary{% else %}bg-outline-variant{% endif %}"></div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <!-- PoC + outcome detail rows -->
+      {% if chain.poc or chain.outcome %}
+      <div class="grid grid-cols-2 gap-md mt-md pt-md border-t border-outline-variant">
+        <div>
+          <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-1">PoC</div>
+          {% if chain.poc %}
+          <div class="text-ui-sans-sm text-on-surface">Status: <span class="font-bold">{{ chain.poc.status | default('—') }}</span></div>
+          {% if chain.poc.path %}<div class="text-data-mono-sm text-on-surface-variant mt-1">{{ chain.poc.path }}</div>{% endif %}
+          {% if chain.poc.commands %}<div class="text-data-mono-sm text-on-surface-variant mt-1 bg-surface-container-lowest p-sm rounded font-data-mono-sm whitespace-pre-wrap">{{ chain.poc.commands }}</div>{% endif %}
+          {% else %}<div class="text-data-mono-sm text-on-surface-variant italic">no PoC yet — fill `chain.poc.{status,path,commands}` in YAML</div>{% endif %}
+        </div>
+        <div>
+          <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-1">Outcome</div>
+          {% if chain.outcome %}
+          <div class="text-ui-sans-sm text-on-surface">Boundary crossed: <span class="font-bold {% if chain.outcome.boundary_crossed in ['yes', true] %}text-error{% elif chain.outcome.boundary_crossed == 'no' %}text-secondary{% else %}text-on-surface-variant{% endif %}">{{ chain.outcome.boundary_crossed | default('unverified') }}</span></div>
+          {% if chain.outcome.evidence %}<div class="text-data-mono-sm text-on-surface-variant mt-1"><span class="text-on-surface">evidence:</span> {{ chain.outcome.evidence }}</div>{% endif %}
+          {% if chain.outcome.notes %}<div class="text-data-mono-sm text-on-surface-variant mt-1">{{ chain.outcome.notes }}</div>{% endif %}
+          {% else %}<div class="text-data-mono-sm text-on-surface-variant italic">no outcome recorded — fill `chain.outcome.{boundary_crossed,evidence,notes}` after PoC run</div>{% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Big chain flowchart: Source → Conditions → Sink -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">timeline</span>Source → Conditions → Sink</h2>
+    </div>
+    <div class="p-lg bg-surface-container-lowest overflow-x-auto">
+      <div class="flex items-stretch gap-md min-w-max">
+        <!-- Source box -->
+        {% if source %}
+        {% set src_grp = source.source_class_id.split('-')[0] if source.source_class_id else 'CR' %}
+        <div class="flex flex-col w-[260px] shrink-0">
+          <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-xs">Source</div>
+          <div class="bg-surface-container border-2 rounded p-md flex-1" style="border-color: {{ {'F':'#c00','I':'#c80','N':'#06c','K':'#909','U':'#080','T':'#555','UP':'#aa0','C':'#862','E':'#069','W':'#909','CR':'#333'}[src_grp] }}">
+            <div class="flex items-center gap-1 mb-sm">
+              <span class="font-data-mono-md text-on-surface font-bold">{{ source.id }}</span>
+              <span class="text-data-mono-sm ml-auto" style="color: {{ {'F':'#c00','I':'#c80','N':'#06c','K':'#909','U':'#080','T':'#555','UP':'#aa0','C':'#862','E':'#069','W':'#909','CR':'#333'}[src_grp] }}">{{ source.source_class_id }}{% if source.co_class_ids %}+{{ source.co_class_ids | join('+') }}{% endif %}</span>
+            </div>
+            <div class="font-data-mono-sm text-on-surface mb-sm">{{ source.name }}</div>
+            {% if source.via %}<div class="text-data-mono-sm text-on-surface-variant mb-1"><span class="text-on-surface">via:</span> {{ source.via }}</div>{% endif %}
+            {% if source.function %}<div class="text-data-mono-sm text-on-surface-variant mb-1"><span class="text-on-surface">fn:</span> {{ source.function }}</div>{% endif %}
+            <div class="text-data-mono-sm mt-sm">
+              {% if source.attacker_controlled == 'yes' %}<span class="bg-error/20 text-error px-1.5 py-0.5 rounded">attacker-controlled</span>
+              {% elif source.attacker_controlled == 'yes_with_caveat' %}<span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">attacker-controlled (caveat)</span>
+              {% elif source.attacker_controlled == 'no' %}<span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">not attacker-controlled</span>
+              {% else %}<span class="bg-surface-bright text-on-surface-variant px-1.5 py-0.5 rounded">unclear</span>{% endif %}
+            </div>
+            {% if source.caveat %}<div class="text-data-mono-sm text-on-surface-variant mt-sm pt-sm border-t border-outline-variant">{{ source.caveat }}</div>{% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Arrow -->
+        <div class="flex items-center self-center text-on-surface-variant"><span class="material-symbols-outlined text-[28px]">arrow_forward</span></div>
+
+        <!-- Conditions chain -->
+        {% if chain.conditions %}
+        <div class="flex flex-col flex-1 min-w-[400px]">
+          <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-xs">Conditions ({{ chain.conditions | length }} must hold)</div>
+          <div class="flex flex-col gap-sm flex-1">
+            {% for cond in chain.conditions %}
+            <div class="bg-surface-container border border-tertiary/50 rounded p-sm flex items-start gap-sm">
+              <div class="bg-tertiary text-on-tertiary font-data-mono-sm rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold">{{ loop.index }}</div>
+              <div class="text-ui-sans-sm text-on-surface flex-1">{{ cond }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Arrow -->
+        <div class="flex items-center self-center text-on-surface-variant"><span class="material-symbols-outlined text-[28px]">arrow_forward</span></div>
+
+        <!-- Sink box -->
+        {% if sink %}
+        <div class="flex flex-col w-[280px] shrink-0">
+          <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-xs">Sink</div>
+          <div class="bg-surface-container border-2 border-error rounded p-md shadow-[0_0_15px_rgba(255,180,171,0.15)] flex-1">
+            <div class="flex items-center gap-1 mb-sm">
+              <span class="font-data-mono-md text-error font-bold">{{ sink.id }}</span>
+              <span class="text-data-mono-sm text-error ml-auto">{{ sink.cwe }}</span>
+            </div>
+            <div class="font-data-mono-sm text-on-surface mb-sm">{{ sink.name }}</div>
+            {% if sink.function %}<div class="text-data-mono-sm text-on-surface-variant mb-1"><span class="text-on-surface">fn:</span> {{ sink.function }}</div>{% endif %}
+            {% if sink.impact %}<div class="text-data-mono-sm text-on-surface-variant mt-sm pt-sm border-t border-outline-variant"><span class="text-on-surface">impact:</span> {{ sink.impact }}</div>{% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Bypasses required -->
+  {% if chain.bypasses_required %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-tertiary">block</span>Bypasses required to fire this chain</h2>
+    </div>
+    <div class="p-md">
+      <ul class="space-y-sm">
+        {% for b in chain.bypasses_required %}
+        <li class="flex items-start gap-sm text-ui-sans-sm">
+          <span class="material-symbols-outlined text-[16px] text-tertiary mt-0.5">block</span>
+          <span class="text-on-surface-variant">{{ b }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Impact + finding refs -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+    {% if chain.impact %}
+    <section class="bg-surface border border-outline-variant rounded p-md">
+      <h3 class="font-label-caps uppercase tracking-wider text-on-surface mb-sm flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-error">warning</span>Impact</h3>
+      <p class="text-ui-sans-sm text-on-surface">{{ chain.impact }}</p>
+    </section>
+    {% endif %}
+    <section class="bg-surface border border-outline-variant rounded p-md">
+      <h3 class="font-label-caps uppercase tracking-wider text-on-surface mb-sm flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">link</span>References</h3>
+      <div class="flex flex-col gap-xs text-data-mono-sm">
+        {% if chain.finding_ref %}<div><span class="text-on-surface-variant">Finding:</span> <code class="text-primary">{{ chain.finding_ref }}</code></div>{% endif %}
+        {% if chain.submission_ref %}<div><span class="text-on-surface-variant">Submission:</span> <code class="text-primary">{{ chain.submission_ref }}</code></div>{% endif %}
+        <div><span class="text-on-surface-variant">Binary:</span> <a class="text-primary hover:underline" href="{{ root }}binaries/{{ binary.page_stem }}.html">{{ binary.binary }}</a></div>
+        {% if binary.product %}<div><span class="text-on-surface-variant">Product:</span> <a class="text-primary hover:underline" href="{{ root }}products/{{ binary.product }}.html">{{ binary.product }}</a></div>{% endif %}
+      </div>
+    </section>
+  </div>
+
+  <!-- Notes -->
+  {% if chain.notes %}
+  <section class="bg-surface border border-outline-variant rounded p-md">
+    <h3 class="font-label-caps uppercase tracking-wider text-on-surface mb-sm flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-on-surface-variant">notes</span>Notes</h3>
+    <p class="text-ui-sans-sm text-on-surface-variant whitespace-pre-wrap">{{ chain.notes }}</p>
+  </section>
+  {% endif %}
+
+  <!-- Sibling chains in same binary -->
+  {% if sibling_chains %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">linked_services</span>Other chains in {{ binary.binary }}</h2>
+    </div>
+    <table class="w-full text-left text-data-mono-sm">
+      <thead><tr class="bg-surface-container-low border-b border-outline-variant">
+        <th class="p-2 font-normal text-on-surface-variant uppercase">ID</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Title</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Status</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Severity</th>
+      </tr></thead>
+      <tbody>
+        {% for c in sibling_chains %}
+        <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='{{ root }}binaries/{{ binary.page_stem }}/chains/{{ c.id }}.html'">
+          <td class="p-2 text-primary">{{ c.id }}</td>
+          <td class="p-2 text-on-surface">{{ c.title | truncate(80) }}</td>
+          <td class="p-2 text-on-surface-variant">{{ c.status }}</td>
+          <td class="p-2 text-on-surface-variant">{{ c.severity | default('—') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+
+</div>
+
+{% endblock %}

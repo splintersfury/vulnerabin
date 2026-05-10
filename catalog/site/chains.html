@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Vulnerabin · Chains</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#131315",
+        background: "#0c0c0e",
+        "on-surface": "#e5e1e4",
+        "on-background": "#e5e1e4",
+        "on-surface-variant": "#c2c6d6",
+        "surface-container-lowest": "#0e0e10",
+        "surface-container-low": "#1b1b1d",
+        "surface-container": "#201f21",
+        "surface-container-high": "#2a2a2c",
+        "surface-container-highest": "#353437",
+        "surface-bright": "#39393b",
+        "surface-variant": "#353437",
+        outline: "#8c909f",
+        "outline-variant": "#424754",
+        primary: "#adc6ff",
+        "primary-fixed": "#d8e2ff",
+        "primary-fixed-dim": "#adc6ff",
+        "primary-container": "#4d8eff",
+        "on-primary": "#002e6a",
+        "on-primary-container": "#00285d",
+        secondary: "#4fdbc8",
+        "secondary-container": "#04b4a2",
+        tertiary: "#ffb786",
+        "tertiary-container": "#df7412",
+        error: "#ffb4ab",
+        "error-container": "#93000a",
+        "on-error": "#690005",
+        "on-error-container": "#ffdad6",
+        accent: "#3b82f6",
+        // Source-class group colors (matching taxonomy/binary/sources_v2.json groups)
+        "grp-F": "#fdd6d6",
+        "grp-F-stroke": "#c00",
+        "grp-I": "#fed9a3",
+        "grp-I-stroke": "#c80",
+        "grp-N": "#c5d3ff",
+        "grp-N-stroke": "#06c",
+        "grp-K": "#e0bdf2",
+        "grp-K-stroke": "#909",
+        "grp-U": "#bfeac6",
+        "grp-U-stroke": "#080",
+        "grp-T": "#cfd2d8",
+        "grp-T-stroke": "#555",
+        "grp-UP": "#fff0a3",
+        "grp-UP-stroke": "#aa0",
+        "grp-C": "#e9d4b8",
+        "grp-C-stroke": "#862",
+        "grp-E": "#a8d4ff",
+        "grp-E-stroke": "#069",
+        "grp-W": "#f4c5ff",
+        "grp-W-stroke": "#909",
+        "grp-CR": "#cccccc",
+        "grp-CR-stroke": "#333",
+      },
+      borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "9999px" },
+      spacing: { base: "4px", xs: "4px", sm: "8px", gutter: "12px", md: "16px", margin: "16px", lg: "24px", xl: "32px", unit: "4px" },
+      fontFamily: {
+        "ui-sans-md": ["Inter"], "ui-sans-sm": ["Inter"],
+        "data-mono-sm": ["JetBrains Mono"], "data-mono-md": ["JetBrains Mono"],
+        "code-block": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"],
+        "h1": ["Inter"], "h2": ["Inter"], "title-sm": ["Inter"],
+        "headline-md": ["Inter"], "display-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+      },
+      fontSize: {
+        "h1": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "h2": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "title-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+        "ui-sans-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+        "ui-sans-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+        "data-mono-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "data-mono-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+        "code-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "code-sm": ["11px", { lineHeight: "16px", fontWeight: "400" }],
+        "code-block": ["13px", { lineHeight: "22px", fontWeight: "400" }],
+        "label-caps": ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "700" }],
+        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+      },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a2c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #424754; }
+.bg-custom-surface { background-color: #16171d; }
+</style>
+</head>
+<body class="bg-background text-on-background font-ui-sans-md h-screen flex flex-col overflow-hidden">
+
+<!-- Top app bar -->
+<header class="bg-surface-container border-b border-outline-variant flex justify-between items-center w-full px-lg py-sm z-50 h-14 shrink-0">
+  <div class="flex items-center gap-md">
+    <a href="index.html" class="text-h2 font-h1 tracking-tight text-primary">Vulnerabin</a>
+    <nav class="hidden md:flex items-center gap-sm ml-lg">
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="index.html">Products</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="binaries.html">Binaries</a>
+      <a class="text-primary font-bold hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="chains.html">Chains</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="pipeline.html">Pipeline</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="taxonomy.html">Taxonomy</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-sm">
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+  </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden">
+  <!-- Side nav -->
+  <aside class="bg-surface text-on-surface font-ui-sans-sm border-r border-outline-variant flex flex-col py-md space-y-unit shrink-0 w-60 h-full overflow-y-auto">
+    <div class="px-4 mb-4">
+      <div class="font-h2 text-h2 font-black text-primary leading-tight">Vulnerabin</div>
+      <div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">v0.5.0 · catalog</div>
+    </div>
+    <nav class="flex-1 space-y-unit">
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="index.html">
+        <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        <span class="font-body-sm">Products</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="binaries.html">
+        <span class="material-symbols-outlined text-[18px]">memory</span>
+        <span class="font-body-sm">Binaries</span>
+      </a>
+      <a class="bg-surface-container-high text-primary border-l-2 border-primary hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="chains.html">
+        <span class="material-symbols-outlined text-[18px]">timeline</span>
+        <span class="font-body-sm">Chains</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="pipeline.html">
+        <span class="material-symbols-outlined text-[18px]">trending_up</span>
+        <span class="font-body-sm">Pipeline</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="taxonomy.html">
+        <span class="material-symbols-outlined text-[18px]">hub</span>
+        <span class="font-body-sm">Taxonomy</span>
+      </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="https://github.com/anthropics/vulnerabin"><span class="material-symbols-outlined text-[16px]">menu_book</span><span class="font-body-sm">Docs</span></a>
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[16px]">dns</span><span class="font-body-sm">Status</span></a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col bg-background overflow-y-auto">
+    
+<div class="px-lg py-md border-b border-outline-variant bg-surface">
+  <div class="max-w-[1600px] mx-auto w-full">
+    <h1 class="font-h1 text-h1 text-primary">Chains across all binaries</h1>
+    <p class="text-ui-sans-sm text-on-surface-variant mt-xs max-w-3xl">26 chains catalogued. Each row is a source → conditions → sink path; click to see the full chain detail with all conditions.</p>
+  </div>
+</div>
+<div class="p-lg max-w-[1600px] mx-auto w-full">
+  <table class="w-full text-left text-data-mono-sm bg-surface border border-outline-variant rounded">
+    <thead><tr class="bg-surface-container border-b border-outline-variant">
+      <th class="p-2 font-normal text-on-surface-variant uppercase">ID</th>
+      <th class="p-2 font-normal text-on-surface-variant uppercase">Title</th>
+      <th class="p-2 font-normal text-on-surface-variant uppercase">Binary</th>
+      <th class="p-2 font-normal text-on-surface-variant uppercase">Product</th>
+      <th class="p-2 font-normal text-on-surface-variant uppercase">Status</th>
+      <th class="p-2 font-normal text-on-surface-variant uppercase">Severity</th>
+      <th class="p-2 font-normal text-on-surface-variant uppercase">CWE</th>
+    </tr></thead>
+    <tbody>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/productagentservice_exe/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Config injection + BDLogging junction → arbitrary SYSTEM file write</td>
+        <td class="p-2 text-on-surface-variant">ProductAgentService.exe</td>
+        <td class="p-2 text-on-surface-variant"><a href="products/bitdefender-total-security.html" class="hover:text-primary" onclick="event.stopPropagation()">bitdefender-total-security</a></td>
+        <td class="p-2">
+          <span class="bg-error/20 text-error px-1.5 py-0.5 rounded">✅ confirmed</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant">P3</td>
+        <td class="p-2 text-on-surface-variant">CWE-269, CWE-22, CWE-732</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/safeelevatedrun_dll/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">IsInFolder prefix check accepts traversal segments, allows Microsoft-signed...</td>
+        <td class="p-2 text-on-surface-variant">safeelevatedrun.dll</td>
+        <td class="p-2 text-on-surface-variant"><a href="products/bitdefender-total-security.html" class="hover:text-primary" onclick="event.stopPropagation()">bitdefender-total-security</a></td>
+        <td class="p-2">
+          <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">🟡 partial</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant">P3</td>
+        <td class="p-2 text-on-surface-variant">CWE-22, CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/teamviewer_service_exe/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Multiple process-creation IPC handlers reachable via auth bypass on localhost:59</td>
+        <td class="p-2 text-on-surface-variant">teamviewer_service.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">🟡 partial</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-862</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/teamviewervpn_sys/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">TAP device DACL grants Everyone GR/GW/GX; any local user opens device and issues</td>
+        <td class="p-2 text-on-surface-variant">teamviewervpn.sys</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">🟡 partial</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-787</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/teamviewer_service_exe/chains/CHAIN-002.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-002</td>
+        <td class="p-2 text-on-surface">TeamViewer log files in install dir have Everyone:RW permissions</td>
+        <td class="p-2 text-on-surface-variant">teamviewer_service.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">🟡 partial</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/teamviewervpn_sys/chains/CHAIN-002.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-002</td>
+        <td class="p-2 text-on-surface">IOCTL 0x220024 copies up to 256 bytes user-controlled data into adapter struct w</td>
+        <td class="p-2 text-on-surface-variant">teamviewervpn.sys</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">🟡 partial</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-787</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/teamviewer_service_exe/chains/CHAIN-003.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-003</td>
+        <td class="p-2 text-on-surface">Replace Everyone:RW log file with NTFS hardlink to privileged target</td>
+        <td class="p-2 text-on-surface-variant">teamviewer_service.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">🟡 partial</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/teamviewer_service_exe/chains/CHAIN-004.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-004</td>
+        <td class="p-2 text-on-surface">Updated writeup of IPC auth bypass via unchanged hardcoded MD5 secret + process </td>
+        <td class="p-2 text-on-surface-variant">teamviewer_service.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">🟡 partial</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-862</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/hp_support_assistant_exe/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">User-writable C:\ProgramData\HP\* dirs accept junctions; needs HPSA UWP trigger</td>
+        <td class="p-2 text-on-surface-variant">hp_support_assistant.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded">❔ hypothesised</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/mb5_setup_consumer_5_5_4_252_exe/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Original junction-write claim invalidated by live access-denied on every standar</td>
+        <td class="p-2 text-on-surface-variant">mb5-setup-consumer-5.5.4.252.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded">❔ hypothesised</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/sophossetup_exe/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Sophos hardens C:\ProgramData\Sophos with explicit non-inheriting DACL; no candi</td>
+        <td class="p-2 text-on-surface-variant">sophossetup.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded">❔ hypothesised</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/vantageinstaller_exe/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Hardcoded SYSTEM-context paths under user-writable C:\ProgramData\Lenovo\Vantage</td>
+        <td class="p-2 text-on-surface-variant">vantageinstaller.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded">❔ hypothesised</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/mb5_setup_consumer_5_5_4_252_exe/chains/CHAIN-002.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-002</td>
+        <td class="p-2 text-on-surface">Original ICACLS-based junction-prerequisite claim (later invalidated)</td>
+        <td class="p-2 text-on-surface-variant">mb5-setup-consumer-5.5.4.252.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded">❔ hypothesised</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/telegram/chains/CHAIN-003.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-003</td>
+        <td class="p-2 text-on-surface">tg://bg URL routing has stray ^ in regex; cosmetic only</td>
+        <td class="p-2 text-on-surface-variant">telegram</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded">❔ hypothesised</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/telegram/chains/CHAIN-004.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-004</td>
+        <td class="p-2 text-on-surface">IV renderer puts URL into &lt;iframe srcdoc&gt; instead of src; latent XSS class</td>
+        <td class="p-2 text-on-surface-variant">telegram</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded">❔ hypothesised</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-94</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/broker/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Everyone-ACL named pipes accept process-spawn task GUIDs to SYSTEM broker</td>
+        <td class="p-2 text-on-surface-variant">broker</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-862</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/bzrestore/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Server-supplied filename in restore API response flows to MoveFileExW without pr</td>
+        <td class="p-2 text-on-surface-variant">bzrestore</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-787</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/dropbox_offline_installer_exe/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">HKLM\Software\DropboxUpdate\...\UninstallCmdLine value (writable by BUILTIN\User</td>
+        <td class="p-2 text-on-surface-variant">dropbox_offline_installer.exe</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-732</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/msgbus_dll/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Standard user connects to Everyone-ACLed msgbus pipe; trusted-process check is F</td>
+        <td class="p-2 text-on-surface-variant">msgbus.dll</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-862</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/productagent_dll/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Writable C:\ProgramData\Bitdefender Agent\bdch\ allows DLL plant; SYSTEM service</td>
+        <td class="p-2 text-on-surface-variant">productagent.dll</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/telegram/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Server-supplied TL-deserialized photo metadata triggers OOB read</td>
+        <td class="p-2 text-on-surface-variant">telegram</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-787</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/bzserv/chains/CHAIN-002.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-002</td>
+        <td class="p-2 text-on-surface">Auto-updater downloads and executes binary without Authenticode signature verifi</td>
+        <td class="p-2 text-on-surface-variant">bzserv</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-494</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/safeelevatedrun_dll/chains/CHAIN-002.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-002</td>
+        <td class="p-2 text-on-surface">Command-line injection via executable_args field (unexplored)</td>
+        <td class="p-2 text-on-surface-variant">safeelevatedrun.dll</td>
+        <td class="p-2 text-on-surface-variant"><a href="products/bitdefender-total-security.html" class="hover:text-primary" onclick="event.stopPropagation()">bitdefender-total-security</a></td>
+        <td class="p-2">
+          <span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-78, CWE-88</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/telegram/chains/CHAIN-002.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-002</td>
+        <td class="p-2 text-on-surface">Crafted TGS sticker (gzip+JSON) sent in chat; recursive precomp parsing exhausts</td>
+        <td class="p-2 text-on-surface-variant">telegram</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+          
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-787</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/bzserv/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">Standard user replaces ProgramData log file with NTFS hardlink to privileged tar</td>
+        <td class="p-2 text-on-surface-variant">bzserv</td>
+        <td class="p-2 text-on-surface-variant">—</td>
+        <td class="p-2">
+          <span class="bg-on-surface-variant/10 text-on-surface-variant px-1.5 py-0.5 rounded">🛡 mitigated</span>
+        </td>
+        <td class="p-2 text-on-surface-variant"></td>
+        <td class="p-2 text-on-surface-variant">CWE-269</td>
+      </tr>
+      
+      <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='binaries/trufos_sys/chains/CHAIN-001.html'">
+        <td class="p-2 text-primary font-bold">CHAIN-001</td>
+        <td class="p-2 text-on-surface">FUN_140042c5c error-path returns IRP-&gt;IoStatus.Information (kernel pool...</td>
+        <td class="p-2 text-on-surface-variant">trufos.sys</td>
+        <td class="p-2 text-on-surface-variant"><a href="products/bitdefender-total-security.html" class="hover:text-primary" onclick="event.stopPropagation()">bitdefender-total-security</a></td>
+        <td class="p-2">
+          <span class="bg-on-surface-variant/10 text-on-surface-variant px-1.5 py-0.5 rounded">🛡 mitigated</span>
+        </td>
+        <td class="p-2 text-on-surface-variant">P3</td>
+        <td class="p-2 text-on-surface-variant">CWE-200</td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+
+  </main>
+</div>
+</body>
+</html>

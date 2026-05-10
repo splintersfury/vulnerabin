@@ -1,0 +1,60 @@
+# Canonical schema for catalog/products/<product>.yml
+# This file is the reference. Copy and adapt when cataloguing a new product.
+# A product groups multiple binaries under one vendor / suite identity, and
+# enables the Layer 4 cross-binary topology view rendered by
+# `scripts/catalog_product_render.py`.
+
+product: example-product               # canonical slug, used as filename
+display_name: Example Product
+vendor: Example Vendor
+description: >
+  One-paragraph plain-English description of the product, its architecture,
+  and the IPC/transport backbone if there is one.
+
+versions_seen:
+  - version: ""
+    eng: ""                            # engagements/<eng>/ folder
+    seen: ""                           # YYYY-MM-DD
+
+# Binaries in this product. Each entry should match a `catalog/binaries/<name>.yml`
+# `binary` field; fuzzy substring match is fallback. Order doesn't matter.
+binaries:
+  - example.dll
+  - example.exe
+
+# Topology — drives the Layer 4 mermaid diagram and trust-zone clustering.
+topology:
+  trust_zones:
+    SYSTEM:
+      - host_process_a
+      - service_dll_a (loaded by host_process_a)
+    Admin:
+      - admin_helper.exe
+    LoggedInUser:
+      - ui_app.exe
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  ipc_edges:
+    # src/dst should match a token in trust_zones above; fuzzy substring
+    # matching resolves "bdappsrv" against "bdappsrv (in bdservicehost)".
+    - { src: ui_app.exe, dst: host_process_a, via: "named pipe \\.\\pipe\\foo" }
+    - { src: host_process_a, dst: CreateProcessAsUserW, via: SYSTEM-token process spawn }
+
+  defenses:
+    # Per-component summary of what defends which class. Phase B style.
+    component_a:
+      - "what defends it"
+      - "what's GAP"
+
+# Cross-binary findings catalog. Each entry links to a finding markdown.
+vulnerabilities:
+  - finding_ref: ""                    # engagements/<eng>/findings/<file>
+    binary: ""                         # which binary this finding pertains to
+    classes: []                        # taxonomy IDs
+    severity: ""
+    status: ""                         # submitted | submitted_paid | submitted_dropped | in_progress | not_submitted | unknown
+    submission_ref: ""                 # platform:id
+
+open_angles:
+  - "questions left for vendor or future investigation"

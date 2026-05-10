@@ -1,0 +1,49 @@
+product: dell-supportassist
+display_name: Dell SupportAssist Installer
+vendor: Dell
+description: >
+  Dell's installer for the SupportAssist OEM agent. Runs as
+  installer-elevated principal (Admin via UAC, or via UAC-S4U scheduled task).
+  Extracts payload to a runtime-built path under %LOCALAPPDATA%\Temp\<random>;
+  the parent (LIMITED user's %LOCALAPPDATA%\Temp) is auto-created with
+  default ACL. Engagement filed a P2 patch-bypass variant of CVE-2024-38305:
+  protected DACL applied to the leaf extract path, but the parent inherits
+  from the LIMITED user's %LOCALAPPDATA%\Temp so a standard user can
+  pre-create it as a junction and redirect SYSTEM-context writes.
+
+versions_seen:
+  - version: "various"
+    eng: dell-2026-04-25
+    seen: 2026-04-25
+
+binaries:
+  - csc-deploy-full-5.1.16.194.exe   # the SupportAssist deployer
+  - SupportAssistInstaller.exe       # the canonical name in Dell's docs
+
+topology:
+  trust_zones:
+    Installer_elevated_Admin:
+      - SupportAssistInstaller.exe
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  ipc_edges:
+    - { src: SupportAssistInstaller.exe, dst: CreateProcessW (extracted payload), via: SYSTEM-token process spawn after extract }
+
+  defenses:
+    extract_directory:
+      - "Directory.CreateDirectory(extractRoot, securedAcl) — applies protected DACL to LEAF only"
+      - "GAP: parent of extractRoot (typically %LOCALAPPDATA%\\Temp) is auto-created from inherited ACL — when running via UAC-S4U scheduled task, this is the LIMITED user's profile, pre-creatable as junction"
+      - "Original CVE-2024-38305 was the same shape; vendor patched leaf check; our finding exploits one level higher"
+
+vulnerabilities:
+  - finding_ref: dell-2026-04-25/findings/001-supportassist-installer-junction-variant.md
+    binary: SupportAssistInstaller.exe
+    classes: [F-001, UP-005]
+    severity: P2
+    status: submitted
+    submission_ref: bugcrowd:dell-supportassist-cve-2024-38305-variant
+
+open_angles:
+  - "other Dell installers (other OEM agents in the family) — same shape may exist"
+  - "MSI custom-action argv (UP-004) not investigated"

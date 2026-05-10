@@ -1,0 +1,210 @@
+{% extends "_base.html.j2" %}
+{% set active = 'product' %}
+{% block title %}Vulnerabin · {{ product.display_name | default(product.product) }}{% endblock %}
+{% block content %}
+
+<div class="px-lg py-md border-b border-outline-variant bg-surface sticky top-0 z-30">
+  <div class="flex items-center gap-sm font-data-mono-sm text-on-surface-variant mb-xs">
+    <a class="hover:text-primary" href="{{ root }}index.html">Catalog</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    <a class="hover:text-primary" href="{{ root }}products/index.html">Products</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    <span class="text-primary">{{ product.product }}</span>
+  </div>
+  <div class="flex justify-between items-end mt-sm">
+    <div>
+      <div class="font-data-mono-sm text-on-surface-variant uppercase tracking-widest mb-xs">{{ product.vendor | default('') }}</div>
+      <h1 class="font-h1 text-h1 text-primary">{{ product.display_name | default(product.product) }}</h1>
+    </div>
+    <div class="flex gap-base overflow-x-auto pb-1 max-w-[400px]">
+      {% for v in product.versions_seen or [] %}
+      <span class="font-data-mono-sm px-2 py-1 border border-outline-variant rounded {% if loop.first %}bg-surface-container-high text-primary{% else %}bg-surface-container text-on-surface-variant{% endif %} whitespace-nowrap">{{ v.version }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  {% if product.description %}
+  <p class="text-ui-sans-sm text-on-surface-variant mt-md max-w-3xl">{{ product.description | trim }}</p>
+  {% endif %}
+</div>
+
+<div class="p-lg space-y-lg max-w-[1600px] mx-auto w-full">
+
+  <!-- Layer 4: Topology -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">hub</span>Layer 4 · Cross-product Topology</h2>
+    </div>
+    <div class="p-md">
+      <div class="bg-surface-container-lowest border border-surface-variant rounded p-md grid grid-cols-1 gap-md min-h-[420px] relative overflow-hidden">
+        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: linear-gradient(#424754 1px, transparent 1px), linear-gradient(90deg, #424754 1px, transparent 1px); background-size: 20px 20px;"></div>
+        {% for zone_name, members in (product.topology.trust_zones or {}).items() %}
+        <div class="border border-dashed rounded p-sm relative {% if 'SYSTEM' in zone_name %}border-error/40 bg-error/[0.03]{% elif 'Admin' in zone_name %}border-tertiary/40 bg-tertiary/[0.02]{% elif 'LoggedInUser' in zone_name %}border-secondary/40 bg-secondary/[0.02]{% else %}border-on-surface-variant bg-surface-container/40{% endif %}">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm {% if 'SYSTEM' in zone_name %}text-error{% elif 'Admin' in zone_name %}text-tertiary{% elif 'LoggedInUser' in zone_name %}text-secondary{% else %}text-on-surface-variant{% endif %}">{{ zone_name | replace('_', ' ') }}</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            {% for m in members %}
+              {% set bin_name = m.split(' ')[0] %}
+              {% set is_known = bin_name in known_binaries %}
+              {% if is_known %}
+              <a href="{{ root }}binaries/{{ known_binaries[bin_name] }}.html" class="flex items-center gap-2 px-2 py-1 bg-surface-container border border-surface-bright rounded hover:bg-surface-container-high">
+                <div class="w-2 h-2 rounded-full {% if 'SYSTEM' in zone_name %}bg-error{% elif 'Admin' in zone_name %}bg-tertiary{% elif 'LoggedInUser' in zone_name %}bg-secondary{% else %}bg-on-surface-variant{% endif %}"></div>
+                <span class="font-data-mono-sm text-primary">{{ m }}</span>
+              </a>
+              {% else %}
+              <div class="flex items-center gap-2 px-2 py-1 bg-surface-container border border-surface-variant rounded opacity-60">
+                <div class="w-2 h-2 rounded-full bg-outline"></div>
+                <span class="font-data-mono-sm text-on-surface">{{ m }}</span>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if product.topology.ipc_edges %}
+      <div class="mt-md">
+        <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-2">IPC edges</div>
+        <ul class="text-data-mono-sm space-y-1">
+          {% for e in product.topology.ipc_edges %}
+          <li class="text-on-surface-variant"><span class="text-primary">{{ e.src }}</span> →<span class="text-on-surface mx-1">{{ e.via }}</span>→ <span class="text-error">{{ e.dst }}</span>{% if e.auth %} <span class="text-on-surface-variant">[auth: {{ e.auth }}]</span>{% endif %}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Source-class heatmap -->
+  {% if heatmap_classes %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">grid_view</span>Source-class heatmap</h2>
+    </div>
+    <div class="overflow-x-auto p-md">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr>
+            <th class="font-data-mono-sm text-on-surface-variant border-b border-surface-variant pb-xs pr-sm font-normal">Binary</th>
+            {% for cls in heatmap_classes %}
+            <th class="font-data-mono-sm text-on-surface-variant border-b border-surface-variant pb-xs px-base text-center font-normal" title="{{ cls }}">{{ cls }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in heatmap_rows %}
+          <tr class="border-b border-surface-variant">
+            <td class="font-data-mono-sm text-primary py-xs pr-sm">{{ row.binary }}</td>
+            {% for cls in heatmap_classes %}
+              {% set n = row.counts.get(cls, 0) %}
+              <td class="py-xs px-base">
+                {% if n == 0 %}<div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                {% elif n <= 2 %}<div class="bg-surface-bright text-primary text-center font-data-mono-sm rounded-sm py-[2px]">{{ n }}</div>
+                {% else %}<div class="bg-error-container/40 text-on-error-container text-center font-data-mono-sm rounded-sm py-[2px]">{{ n }}</div>{% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Defense distribution -->
+  {% if product.topology.defenses %}
+  <section>
+    <h2 class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-gutter flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">shield</span>Defense distribution</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+      {% for component, items in product.topology.defenses.items() %}
+      <div class="bg-surface-container-low border border-surface-variant rounded p-sm flex flex-col gap-sm">
+        <div class="font-ui-sans-md text-primary">{{ component }}</div>
+        <div class="flex flex-col gap-xs font-data-mono-sm">
+          {% for it in items %}
+            {% if it.startswith('GAP:') %}
+            <div class="flex items-start gap-1 text-error"><span class="bg-error-container/40 text-on-error-container px-1 rounded shrink-0">GAP</span><span>{{ it[4:] | trim }}</span></div>
+            {% else %}
+            <div class="text-on-surface">{{ it }}</div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Vulnerabilities ledger -->
+  {% if product.vulnerabilities %}
+  <section>
+    <h2 class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-gutter flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">list_alt</span>Vulnerabilities ledger</h2>
+    <div class="bg-surface-container border border-outline-variant rounded overflow-hidden">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-surface-container-high border-b border-outline-variant">
+          <tr>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Binary</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Finding</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Classes</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Severity</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Status</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Submission</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-variant font-data-mono-sm text-on-surface">
+          {% for v in product.vulnerabilities %}
+          <tr class="hover:bg-surface-container-high transition-colors">
+            <td class="py-2 px-4 text-primary">{{ v.binary }}</td>
+            <td class="py-2 px-4 text-on-surface-variant truncate max-w-md" title="{{ v.finding_ref }}">{{ v.finding_ref | default('—') | truncate(60) }}</td>
+            <td class="py-2 px-4">{% for c in v.classes or [] %}<span class="bg-surface-container-lowest text-on-surface px-1 rounded text-[10px] mr-1">{{ c }}</span>{% endfor %}</td>
+            <td class="py-2 px-4"><span class="{% if v.severity in ['P1','Critical'] %}text-error font-bold{% elif v.severity in ['P2','High'] %}text-error{% elif v.severity in ['P3','Medium'] %}text-tertiary{% else %}text-on-surface-variant{% endif %}">{{ v.severity | default('—') }}</span></td>
+            <td class="py-2 px-4">
+              {% if v.status == 'submitted_paid' %}<span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">✅ paid</span>
+              {% elif v.status == 'submitted' %}<span class="bg-secondary/10 text-secondary px-1.5 py-0.5 rounded">🟢 submitted</span>
+              {% elif v.status == 'in_progress' %}<span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ in progress</span>
+              {% elif v.status == 'submitted_dropped' %}<span class="bg-on-surface-variant/10 text-on-surface-variant px-1.5 py-0.5 rounded">⚠ dropped</span>
+              {% elif v.status == 'not_submitted' %}<span class="bg-surface-container-lowest text-on-surface-variant px-1.5 py-0.5 rounded">⏸ not submitted</span>
+              {% else %}<span class="text-on-surface-variant">{{ v.status | default('?') }}</span>{% endif %}
+            </td>
+            <td class="py-2 px-4 text-on-surface-variant">{{ v.submission_ref | default('—') | truncate(40) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if product.open_angles %}
+  <section>
+    <h2 class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-gutter flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">help</span>Open angles</h2>
+    <ul class="text-ui-sans-sm space-y-2">
+      {% for a in product.open_angles %}<li class="text-on-surface-variant">— {{ a }}</li>{% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <!-- Binaries in this product -->
+  {% if product.binaries %}
+  <section>
+    <h2 class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-gutter flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">memory</span>Binaries in this product</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-gutter">
+      {% for b in product.binaries %}
+        {% set bk = b.split(' ')[0] %}
+        {% if bk in known_binaries %}
+        <a href="{{ root }}binaries/{{ known_binaries[bk] }}.html" class="bg-surface-container border border-outline-variant rounded p-sm hover:bg-surface-container-high transition-colors">
+          <div class="font-data-mono-sm text-primary">{{ b }}</div>
+          <div class="text-[10px] text-on-surface-variant mt-1">catalogued</div>
+        </a>
+        {% else %}
+        <div class="bg-surface-container-low border border-outline-variant rounded p-sm opacity-60">
+          <div class="font-data-mono-sm text-on-surface-variant">{{ b }}</div>
+          <div class="text-[10px] text-on-surface-variant mt-1">no entry yet</div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+</div>
+
+{% endblock %}

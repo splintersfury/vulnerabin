@@ -1,0 +1,641 @@
+{
+  "schema_version": "2",
+  "generated_at": "2026-05-09",
+  "doc_reference": "taxonomy/binary/sources_comprehensive.md",
+  "audit_reference": "engagements/_audit/audit_phase_a.md",
+  "classes": [
+    {
+      "id": "F-001",
+      "group": "F",
+      "name": "NTFS-junction-write-by-elevated-process",
+      "summary": "Elevated principal writes to path whose parent low-priv user pre-creates as junction; junction-following gives arbitrary write",
+      "trust_boundary": "standard_user_to_SYSTEM",
+      "static_signals": ["CreateDirectoryW", "SHCreateDirectoryExW", "_wmkdir", "Directory.CreateDirectory", "fs.mkdirSync_recursive_true", "ExpandEnvironmentStringsW_PROGRAMDATA"],
+      "dynamic_signals": ["ProcMon NAME_NOT_FOUND on SYSTEM-context vendor paths"],
+      "defense": ["protected_DACL_on_every_ancestor", "FILE_OPEN_REPARSE_POINT", "ImpersonateLoggedOnUser_before_write"],
+      "bypass": ["junction_one_level_up", "race_check_then_create", "leaf_only_DACL"],
+      "cve_exemplars": [
+        {"id": "CVE-2024-38305", "vendor": "Dell SupportAssistInstaller", "confidence": "HIGH"},
+        {"id": "CVE-2020-1170", "vendor": "Microsoft Defender", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 15
+    },
+    {
+      "id": "F-002",
+      "group": "F",
+      "name": "NTFS-junction-read-by-elevated-process",
+      "summary": "Elevated principal reads attacker-redirected file (config injection class)",
+      "trust_boundary": "standard_user_to_SYSTEM",
+      "static_signals": ["CreateFileW_GENERIC_READ", "config_file_parse_under_PROGRAMDATA"],
+      "dynamic_signals": ["ProcMon NAME_NOT_FOUND on SYSTEM-context vendor read paths"],
+      "defense": ["FILE_OPEN_REPARSE_POINT", "HMAC_signed_config"],
+      "bypass": ["junction_redirect_config", "config_field_controls_log_path_for_F001_chain"],
+      "cve_exemplars": [
+        {"id": "internal:bd-pas-paid-2026-03", "vendor": "Bitdefender ProductAgentService", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 0
+    },
+    {
+      "id": "F-003",
+      "group": "F",
+      "name": "NTFS-hardlink-substitution",
+      "summary": "Privileged process opens file expected under control; hardlink redirects to protected target",
+      "trust_boundary": "standard_user_to_SYSTEM",
+      "static_signals": ["CreateFileW_GENERIC_WRITE", "TRUNCATE_EXISTING_with_user_writable_parent"],
+      "dynamic_signals": ["GetFileInformationByHandle_nNumberOfLinks_check_absent"],
+      "defense": ["nNumberOfLinks_eq_1_check", "SYSTEM_only_DACL_parent"],
+      "bypass": ["hardlink_to_SAM_or_PhysicalDrive0"],
+      "cve_exemplars": [
+        {"id": "CVE-2023-32016", "vendor": "Windows", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 2
+    },
+    {
+      "id": "F-004",
+      "group": "F",
+      "name": "Symlink-by-low-priv-into-protected-target",
+      "summary": "Linux equivalent of F-003; symlink redirect on root-owned files",
+      "trust_boundary": "uid_to_root",
+      "static_signals": ["open_no_O_NOFOLLOW", "fopen_w_predictable_tmp_path"],
+      "defense": ["O_NOFOLLOW", "openat_AT_SYMLINK_NOFOLLOW", "mkstemp"],
+      "cve_exemplars": [
+        {"id": "CVE-2017-2616", "vendor": "Linux su", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 0
+    },
+    {
+      "id": "F-005",
+      "group": "F",
+      "name": "World-writable-IPC-socket",
+      "summary": "Local socket with permissive mode; any UID can connect",
+      "trust_boundary": "standard_user_to_root_or_SYSTEM",
+      "static_signals": ["set_permissions_0o0777", "NULL_DACL_on_pipe", "umask_0_then_bind"],
+      "defense": ["mode_0700", "explicit_DACL", "SO_PEERCRED"],
+      "cve_exemplars": [
+        {"id": "internal:rustdesk-uinput-2026-05", "vendor": "RustDesk", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 1
+    },
+    {
+      "id": "F-006",
+      "group": "F",
+      "name": "World-writable-or-user-readable-config-or-log-file",
+      "summary": "Privileged process writes file to user-readable path; info disclosure or substitution precondition",
+      "trust_boundary": "standard_user_read_of_privileged_data",
+      "phase_a_count": 2
+    },
+    {
+      "id": "F-007",
+      "group": "F",
+      "name": "File-association-or-drag-drop-handler-trust",
+      "summary": "Handler trusts file extension or content; web-delivered files become attacker-controlled input",
+      "trust_boundary": "browser_user_to_desktop_user",
+      "cve_exemplars": [
+        {"id": "CVE-2017-11882", "vendor": "Office Equation Editor", "confidence": "HIGH"},
+        {"id": "CVE-2023-21716", "vendor": "Office RTF", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 0
+    },
+    {
+      "id": "I-001",
+      "group": "I",
+      "name": "Named-pipe-unauthenticated-read",
+      "summary": "Pipe DACL grants Everyone/AuthenticatedUsers read; sensitive data exposed",
+      "trust_boundary": "standard_user_to_publishing_service",
+      "static_signals": ["CreateNamedPipe_NULL_security", "PIPE_ACCESS_OUTBOUND"],
+      "dynamic_signals": ["accesschk_-a_pipe"],
+      "defense": ["explicit_SDDL_owner_only", "ImpersonateNamedPipeClient_then_token_check"],
+      "cve_exemplars": [
+        {"id": "CVE-2018-1000007", "vendor": "Plex", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 3
+    },
+    {
+      "id": "I-002",
+      "group": "I",
+      "name": "Named-pipe-unauthenticated-write",
+      "summary": "Pipe DACL grants Everyone/AuthenticatedUsers write; commands accepted from low-priv",
+      "trust_boundary": "standard_user_to_listening_service_typically_SYSTEM",
+      "static_signals": ["CreateNamedPipe_NULL_security_inbound", "ReadFile_on_pipe_then_dispatcher", "no_caller_auth"],
+      "dynamic_signals": ["accesschk_-w_pipe"],
+      "defense": ["explicit_SDDL", "ImpersonateNamedPipeClient_token_check", "GetNamedPipeClientProcessId_image_path_allowlist"],
+      "bypass": ["process_hollowing_T-001", "co-signed_injection_T-006", "TOCTOU_after_RevertToSelf"],
+      "cve_exemplars": [
+        {"id": "CVE-2020-7368", "vendor": "Cisco AnyConnect", "confidence": "HIGH"},
+        {"id": "CVE-2021-31380", "vendor": "Citrix Workspace", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 11
+    },
+    {
+      "id": "I-003",
+      "group": "I",
+      "name": "D-Bus method caller-uid trust",
+      "summary": "Method takes uid argument from caller; daemon trusts it without checking sender",
+      "trust_boundary": "uid_to_root_or_other_user",
+      "static_signals": ["dbus_method_param_uid", "g_variant_get_uint32_then_trust"],
+      "defense": ["g_dbus_method_invocation_get_sender_then_get_unix_user"],
+      "cve_exemplars": [
+        {"id": "CVE-2021-3560", "vendor": "polkit pkexec", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 1
+    },
+    {
+      "id": "I-004",
+      "group": "I",
+      "name": "COM-elevation-moniker-or-IElevator-interface",
+      "summary": "Standard user instantiates elevated COM class via Elevation moniker; methods perform privileged actions without authenticating caller",
+      "trust_boundary": "standard_user_to_SYSTEM_or_Admin",
+      "static_signals": ["AppID_RunAs_Interactive_User", "Elevation_Enabled_1", "LaunchPermission_grants_authenticated_users"],
+      "dynamic_signals": ["oleview_or_NtObjectManager_Get_ComProcess"],
+      "defense": ["LaunchPermission_admin_only", "CoImpersonateClient_per_method"],
+      "cve_exemplars": [
+        {"id": "internal:msrc-vuln-175971-edge-ielevatoredge", "vendor": "Microsoft Edge IElevatorEdge", "confidence": "HIGH"},
+        {"id": "internal:dropbox-ielevator", "vendor": "Dropbox", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 3
+    },
+    {
+      "id": "I-005",
+      "group": "I",
+      "name": "WM_COPYDATA-or-window-message",
+      "summary": "Privileged GUI process accepts WM_COPYDATA from any process that can find the window",
+      "trust_boundary": "standard_user_to_window_owner_same_session",
+      "static_signals": ["WndProc_WM_COPYDATA_handler"],
+      "defense": ["ChangeWindowMessageFilter", "UIPI_default"],
+      "phase_a_count": 0
+    },
+    {
+      "id": "I-006",
+      "group": "I",
+      "name": "ALPC-port-kernel",
+      "summary": "Cross-trust ALPC port without proper auth callback",
+      "trust_boundary": "user_to_kernel",
+      "static_signals": ["IoCreateAlpcPort", "NtAlpcCreatePort_no_auth_callback"],
+      "cve_exemplars": [
+        {"id": "CVE-2018-8440", "vendor": "Task Scheduler ALPC", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 0
+    },
+    {
+      "id": "I-007",
+      "group": "I",
+      "name": "Mailslot",
+      "summary": "Mailslot listener accepts attacker writes",
+      "phase_a_count": 0
+    },
+    {
+      "id": "I-008",
+      "group": "I",
+      "name": "Shared-section-or-cross-process-memory",
+      "summary": "Cross-trust section without sealing",
+      "static_signals": ["CreateFileMappingW_NULL_SD", "BaseNamedObjects_section"],
+      "defense": ["per_session_local_namespace", "explicit_DACL"],
+      "phase_a_count": 0
+    },
+    {
+      "id": "I-009",
+      "group": "I",
+      "name": "Localhost-TCP-IPC-port-bound",
+      "summary": "Server binds to 127.0.0.1:N with no peer authentication; any local process can connect",
+      "trust_boundary": "standard_user_to_listener_principal",
+      "static_signals": ["socket_AF_INET_bind_INADDR_LOOPBACK"],
+      "dynamic_signals": ["netstat_LISTENING_localhost_low_port"],
+      "defense": ["TLS_mutual_cert", "HMAC_over_messages", "OAuth_tokens"],
+      "cve_exemplars": [
+        {"id": "CVE-2016-1577", "vendor": "Cisco AnyConnect", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 3
+    },
+    {
+      "id": "N-001",
+      "group": "N",
+      "name": "DNS-wire-format-parser",
+      "summary": "Resolver/server parses untrusted DNS packets",
+      "trust_boundary": "network_attacker_to_server",
+      "static_signals": ["dns_name_fromwire", "RR_type_dispatcher", "RDATA_length_arithmetic"],
+      "defense": ["bounds_check_every_length", "compression_pointer_cycle_detection", "max_iterations_RR_list"],
+      "cve_exemplars": [
+        {"id": "CVE-2020-1350", "vendor": "Windows DNS Server SIGRed", "confidence": "HIGH"},
+        {"id": "CVE-2023-50387", "vendor": "DNSSEC KeyTrap", "confidence": "HIGH"},
+        {"id": "CVE-2022-3094", "vendor": "BIND named", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 11
+    },
+    {
+      "id": "N-002",
+      "group": "N",
+      "name": "HTTP-listener",
+      "summary": "Server-side HTTP request parser",
+      "trust_boundary": "network_attacker_to_server",
+      "static_signals": ["HttpAddUrlToUrlGroup", "HttpReceiveHttpRequest"],
+      "cve_exemplars": [
+        {"id": "CVE-2022-21907", "vendor": "Windows HTTP Protocol Stack", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 1
+    },
+    {
+      "id": "N-003",
+      "group": "N",
+      "name": "TLS-or-network-protocol-parser-transport",
+      "summary": "Custom protocol on TLS endpoint; malicious-server / malicious-client model",
+      "static_signals": ["SSL_read_then_app_parser", "BIO_read_app_parser"],
+      "defense": ["cert_pinning", "HMAC_over_payloads"],
+      "cve_exemplars": [
+        {"id": "CVE-2014-0160", "vendor": "Heartbleed", "confidence": "HIGH"},
+        {"id": "CVE-2023-46604", "vendor": "ActiveMQ OpenWire", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 8
+    },
+    {
+      "id": "N-004",
+      "group": "N",
+      "name": "Custom-application-protocol-payload",
+      "summary": "Vendor-specific protocol parsed inside an established channel",
+      "cve_exemplars": [
+        {"id": "CVE-2025-7775", "vendor": "Citrix Netscaler", "confidence": "HIGH"},
+        {"id": "CVE-2025-32756", "vendor": "Fortinet", "confidence": "HIGH"},
+        {"id": "CVE-2023-46805", "vendor": "Ivanti", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 2
+    },
+    {
+      "id": "N-005",
+      "group": "N",
+      "name": "SSRF",
+      "summary": "Server fetches user-supplied URL",
+      "static_signals": ["HttpClient_Get_user_url", "curl_easy_perform_user_url"],
+      "defense": ["URL_allowlist", "DNS_resolve_then_internal_ip_filter"],
+      "bypass": ["DNS_rebinding", "IPv6", "URL_parser_confusion", "30x_redirect"],
+      "cve_exemplars": [
+        {"id": "CVE-2021-26855", "vendor": "Exchange ProxyLogon", "confidence": "HIGH"},
+        {"id": "CVE-2019-11580", "vendor": "Atlassian Crowd", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 2
+    },
+    {
+      "id": "N-006",
+      "group": "N",
+      "name": "WebSocket",
+      "phase_a_count": 0
+    },
+    {
+      "id": "N-007",
+      "group": "N",
+      "name": "Multicast-mDNS-broadcast-listener",
+      "cve_exemplars": [
+        {"id": "CVE-2017-15098", "vendor": "Apple mDNSResponder", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 0
+    },
+    {
+      "id": "K-001",
+      "group": "K",
+      "name": "IOCTL-input-buffer",
+      "summary": "User-mode DeviceIoControl reaches IRP_MJ_DEVICE_CONTROL dispatch",
+      "trust_boundary": "user_to_kernel_via_device_object_DACL",
+      "static_signals": ["DriverEntry_MajorFunction_IRP_MJ_DEVICE_CONTROL", "IoGetCurrentIrpStackLocation", "IoControlCode_switch", "Method_NEITHER_no_ProbeForRead"],
+      "dynamic_signals": ["WinObj_enumerate_Device", "accesschk_-e_Device"],
+      "defense": ["IoCreateDeviceSecure_admin_SDDL", "SeAccessCheck_per_IOCTL", "METHOD_BUFFERED_default", "ProbeForRead_with_try_except", "length_overflow_checks"],
+      "bypass": ["integer_underflow_via_length_field", "TOCTOU_user_pointer_swap", "double_fetch_K-006_subclass", "MmMapLockedPages_user_unmap"],
+      "cve_exemplars": [
+        {"id": "CVE-2021-21551", "vendor": "Dell DBUtil", "confidence": "HIGH"},
+        {"id": "CVE-2023-21768", "vendor": "Windows AFD.sys", "confidence": "HIGH"},
+        {"id": "CVE-2020-17087", "vendor": "Windows cng.sys", "confidence": "HIGH"},
+        {"id": "CVE-2022-22047", "vendor": "Windows CSRSS", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 16
+    },
+    {
+      "id": "K-002",
+      "group": "K",
+      "name": "FSCTL-or-minifilter-port-operation",
+      "summary": "Filter callback or FilterSendMessage channel receiving user-influenced operation",
+      "static_signals": ["FltRegisterFilter", "FltCreateCommunicationPort", "FilterSendMessage"],
+      "cve_exemplars": [
+        {"id": "CVE-2023-36802", "vendor": "Windows MSKSSRV.SYS", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 1
+    },
+    {
+      "id": "K-003",
+      "group": "K",
+      "name": "WMI-provider-input",
+      "static_signals": ["IoWMIRegistrationControl"],
+      "phase_a_count": 0
+    },
+    {
+      "id": "K-004",
+      "group": "K",
+      "name": "Object-or-process-or-image-or-registry-callback",
+      "static_signals": ["ObRegisterCallbacks", "PsSetCreateProcessNotifyRoutine", "CmRegisterCallbackEx"],
+      "phase_a_count": 0
+    },
+    {
+      "id": "K-005",
+      "group": "K",
+      "name": "Non-IOCTL-IRP-read-write-create",
+      "summary": "Variant of K-001 via IRP_MJ_READ/WRITE/CREATE",
+      "phase_a_count": 0
+    },
+    {
+      "id": "K-006",
+      "group": "K",
+      "name": "Kernel-resident-user-mapped-buffer-multifetch",
+      "summary": "Kernel maps user buffer; multi-fetch race during processing",
+      "static_signals": ["CcMapData", "MmMapLockedPages", "field_dereferenced_multiple_times_in_handler"],
+      "tooling": "scripts/multifetch_scan.py",
+      "defense": ["kernel_pool_snapshot_before_validate"],
+      "cve_exemplars": [
+        {"id": "CVE-2026-3006", "vendor": "WinFSP family", "confidence": "HIGH"},
+        {"id": "CVE-2023-21674", "vendor": "Windows ALPC double-fetch", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 2
+    },
+    {
+      "id": "U-001",
+      "group": "U",
+      "name": "Elevated-process-argv-parsing",
+      "phase_a_count": 0
+    },
+    {
+      "id": "U-002",
+      "group": "U",
+      "name": "Environment-variable-trust",
+      "cve_exemplars": [
+        {"id": "CVE-2017-1000367", "vendor": "sudo TTY env", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 0
+    },
+    {
+      "id": "U-003",
+      "group": "U",
+      "name": "Custom-protocol-handler-URL-routing",
+      "static_signals": ["app.setAsDefaultProtocolClient", "second-instance_argv_parser", "HKCR_scheme_shell_open_command"],
+      "cve_exemplars": [
+        {"id": "CVE-2024-21412", "vendor": "Windows SmartScreen", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 1
+    },
+    {
+      "id": "U-004",
+      "group": "U",
+      "name": "Clipboard-or-drag-drop-content",
+      "phase_a_count": 0
+    },
+    {
+      "id": "U-005",
+      "group": "U",
+      "name": "Window-message-input",
+      "phase_a_count": 0
+    },
+    {
+      "id": "T-001",
+      "group": "T",
+      "name": "WinVerifyTrust-on-file-path-process-hollowing",
+      "summary": "Privileged peer trusts on-disk image; attacker process-hollows signed binary",
+      "static_signals": ["GetNamedPipeClientProcessId_then_QueryFullProcessImageNameW_then_WinVerifyTrust"],
+      "defense": ["in_memory_code_hash_check", "PPL_for_trusting_service"],
+      "cve_exemplars": [
+        {"id": "CVE-2013-3900", "vendor": "Windows WinVerifyTrust", "confidence": "HIGH"},
+        {"id": "CVE-2022-34689", "vendor": "Windows CryptoAPI", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 2
+    },
+    {
+      "id": "T-002",
+      "group": "T",
+      "name": "PEB-ImagePathName-trust",
+      "summary": "Server reads PEB from caller; PEB is user-writable so trust is broken",
+      "phase_a_count": 0
+    },
+    {
+      "id": "T-003",
+      "group": "T",
+      "name": "Token-SID-membership-check-spoofable",
+      "phase_a_count": 0
+    },
+    {
+      "id": "T-004",
+      "group": "T",
+      "name": "Caller-process-image-path-trust-without-impersonation",
+      "summary": "Server queries kernel for peer image path; defense is strong but injection into trusted binary defeats",
+      "static_signals": ["NtQueryInformationProcess_ProcessImageFileName_class_29"],
+      "phase_a_count": 1
+    },
+    {
+      "id": "T-005",
+      "group": "T",
+      "name": "Path-traversal-or-canonicalization-in-trust-check",
+      "static_signals": ["wcsncmp_no_canonicalization", "no_GetFullPathNameW_PathCanonicalize"],
+      "defense": ["GetFullPathNameW_then_compare", "PathIsPrefix_canonicalized"],
+      "cve_exemplars": [
+        {"id": "CVE-2024-7344", "vendor": "Howyar Reloader Authenticode bypass", "confidence": "HIGH"},
+        {"id": "internal:bdts-005-2026-05-09", "vendor": "Bitdefender SafeElevatedRun", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 2
+    },
+    {
+      "id": "T-006",
+      "group": "T",
+      "name": "Same-sign-or-cosigning-assumption",
+      "summary": "Server requires peer co-signed; bypassable via injection into co-signed binary",
+      "phase_a_count": 2
+    },
+    {
+      "id": "T-007",
+      "group": "T",
+      "name": "Internal-component-as-untrusted-source",
+      "summary": "Multi-party protocol; coalition-of-K compromised components becomes attacker (threshold cryptography)",
+      "phase_a_count": 1
+    },
+    {
+      "id": "UP-001",
+      "group": "UP",
+      "name": "Auto-updater-unsigned-binary-execution",
+      "static_signals": ["Process_Start_downloaded_path_no_WinVerifyTrust"],
+      "defense": ["WinVerifyTrust_on_downloaded", "code_signing_required_by_updater"],
+      "cve_exemplars": [
+        {"id": "CVE-2020-15889", "vendor": "JetBrains TeamCity", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 2
+    },
+    {
+      "id": "UP-002",
+      "group": "UP",
+      "name": "Squirrel-Windows-update-channel",
+      "phase_a_count": 0
+    },
+    {
+      "id": "UP-003",
+      "group": "UP",
+      "name": "electron-updater-feed-manipulation",
+      "static_signals": ["electron-updater_package_feed_url"],
+      "defense": ["HTTPS_required", "feed_signature", "package_code_signing"],
+      "cve_exemplars": [
+        {"id": "CVE-2023-25809", "vendor": "electron-updater", "confidence": "MEDIUM"}
+      ],
+      "phase_a_count": 3
+    },
+    {
+      "id": "UP-004",
+      "group": "UP",
+      "name": "MSI-custom-action-argv",
+      "cve_exemplars": [
+        {"id": "CVE-2024-38014", "vendor": "Windows Installer Standard User Elevation", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 0
+    },
+    {
+      "id": "UP-005",
+      "group": "UP",
+      "name": "Installer-extract-then-execute",
+      "static_signals": ["fopen_wb_then_LoadLibrary", "Path.GetTempPath_then_File.WriteAllBytes_then_Process.Start"],
+      "cve_exemplars": [
+        {"id": "CVE-2024-38305", "vendor": "Dell SupportAssistInstaller", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 2
+    },
+    {
+      "id": "C-001",
+      "group": "C",
+      "name": "Registry-value-with-permissive-DACL-trusted-by-elevated",
+      "summary": "Hive-agnostic; DACL on subkey allows lower-priv write; elevated reader trusts",
+      "static_signals": ["RegQueryValueExW_used_in_privileged_decision"],
+      "dynamic_signals": ["accesschk_-k_subkey"],
+      "defense": ["admin_only_SDDL_on_subkey"],
+      "phase_a_count": 2
+    },
+    {
+      "id": "C-002",
+      "group": "C",
+      "name": "Config-file-in-user-writable-location",
+      "summary": "Variant of F-002/F-006",
+      "phase_a_count": 0
+    },
+    {
+      "id": "C-003",
+      "group": "C",
+      "name": "GPO-or-policy-preference",
+      "cve_exemplars": [
+        {"id": "CVE-2014-1812", "vendor": "Windows Group Policy Preferences cpassword", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 0
+    },
+    {
+      "id": "C-004",
+      "group": "C",
+      "name": "Service-start-parameters",
+      "phase_a_count": 0
+    },
+    {
+      "id": "E-001",
+      "group": "E",
+      "name": "ipcMain-on-or-handle-channel",
+      "static_signals": ["ipcMain.on", "ipcMain.handle", "renderer_supplied_args_to_fs_or_exec"],
+      "defense": ["contextIsolation_true", "argument_validation_per_channel"],
+      "phase_a_count": 2
+    },
+    {
+      "id": "E-002",
+      "group": "E",
+      "name": "Custom-protocol-handler-URL-routing-Electron",
+      "static_signals": ["setAsDefaultProtocolClient", "protocol.handle"],
+      "cve_exemplars": [
+        {"id": "CVE-2018-1000006", "vendor": "Electron protocol handler RCE", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 0
+    },
+    {
+      "id": "E-003",
+      "group": "E",
+      "name": "webPreferences-nodeIntegration-true",
+      "static_signals": ["nodeIntegration: true", "contextIsolation: false", "webSecurity: false"],
+      "defense": ["contextBridge.exposeInMainWorld_explicit_API"],
+      "cve_exemplars": [
+        {"id": "CVE-2018-15685", "vendor": "Electron iframe nodeIntegration", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 1
+    },
+    {
+      "id": "E-004",
+      "group": "E",
+      "name": "protocol-registerFileProtocol-unvalidated",
+      "phase_a_count": 0
+    },
+    {
+      "id": "E-005",
+      "group": "E",
+      "name": "BrowserWindow-loadURL-attacker-URL",
+      "phase_a_count": 0
+    },
+    {
+      "id": "E-006",
+      "group": "E",
+      "name": "Renderer-XSS-in-trusted-origin",
+      "phase_a_count": 2
+    },
+    {
+      "id": "E-007",
+      "group": "E",
+      "name": "Squirrel-or-electron-updater-feed-Electron-specific",
+      "summary": "Overlap with UP-003",
+      "phase_a_count": 0
+    },
+    {
+      "id": "W-001",
+      "group": "W",
+      "name": "Authenticated-user-session-as-source",
+      "phase_a_count": 7
+    },
+    {
+      "id": "W-002",
+      "group": "W",
+      "name": "Cross-tenant-authorization-gap",
+      "phase_a_count": 0
+    },
+    {
+      "id": "W-003",
+      "group": "W",
+      "name": "Pre-auth-endpoint",
+      "cve_exemplars": [
+        {"id": "CVE-2024-3400", "vendor": "PAN-OS", "confidence": "HIGH"},
+        {"id": "CVE-2021-26855", "vendor": "Exchange ProxyLogon", "confidence": "HIGH"}
+      ],
+      "phase_a_count": 1
+    },
+    {
+      "id": "CR-001",
+      "group": "CR",
+      "name": "Constant-key-or-many-time-pad-encryption",
+      "static_signals": ["constant_key_array", "PRNG_seeded_with_constant", "nonce_reset_between_messages"],
+      "defense": ["BCryptGenRandom_per_message_nonce", "AEAD_modes"],
+      "phase_a_count": 1
+    },
+    {
+      "id": "CR-002",
+      "group": "CR",
+      "name": "Reserved-signature-or-HMAC-omitted-by-default",
+      "phase_a_count": 0
+    }
+  ],
+  "chain_patterns_to_prioritize": [
+    {
+      "name": "IPC + trust-assumption",
+      "classes": ["I-001", "I-002", "I-009"],
+      "combined_with": ["T-001", "T-004", "T-005", "T-006"],
+      "rationale": "6 of 21 submitted findings; the highest-yield chain shape we've observed"
+    },
+    {
+      "name": "Junction + installer extract",
+      "classes": ["F-001"],
+      "combined_with": ["UP-005", "UP-001"],
+      "rationale": "Acronis 002, Malwarebytes 005, Dell SAI all combine these"
+    },
+    {
+      "name": "MITM + electron-updater",
+      "classes": ["N-003"],
+      "combined_with": ["UP-003"],
+      "rationale": "Keeper 001, Nextcloud 001/004 — protocol parser meets unvalidated update feed"
+    }
+  ]
+}

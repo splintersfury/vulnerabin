@@ -1,0 +1,85 @@
+product: dropbox
+display_name: Dropbox Desktop (Windows)
+vendor: Dropbox
+description: >
+  Cloud-sync client. Architecture includes a SYSTEM service (dbxsvc.exe) that
+  exposes a named pipe (\\.\pipe\dbxsvc), an installer (Dropbox_Offline_Installer.exe),
+  and a COM elevation interface (IElevator). Engagement uncovered a
+  signature-validation bypass via process-hollowing (T-001 + I-001), a registry
+  flag bypass (C-001), uninstaller substring matching (C-001 + UP-005), and an
+  IElevator COM elevation chain submitted to Bugcrowd.
+
+versions_seen:
+  - version: "2026.x"
+    eng: dropbox-2026-04-30
+    seen: 2026-04-30
+
+binaries:
+  - dbxsvc.exe
+  - dropbox_offline_installer.exe
+  - dropbox_ielevator (COM CLSID)
+
+topology:
+  trust_zones:
+    SYSTEM:
+      - dbxsvc.exe
+      - dropbox_ielevator (COM Elevation moniker — runs SYSTEM via UAC)
+    Admin_or_user:
+      - dropbox.exe (UI / sync engine)
+      - dropbox_offline_installer.exe
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  ipc_edges:
+    - { src: dropbox.exe (UI), dst: dbxsvc.exe, via: named pipe \\.\pipe\dbxsvc }
+    - { src: "(any standard-user process)", dst: dbxsvc.exe, via: named pipe + auth via WinVerifyTrust on caller image (T-001 BYPASSABLE) }
+    - { src: "(any standard-user process)", dst: dropbox_ielevator (COM), via: CoCreateInstanceEx with CLSCTX_ELEVATION_AWARE }
+
+  defenses:
+    dbxsvc:
+      - "named pipe DACL grants Authenticated Users (intentional — by design, IPC is multi-process)"
+      - "auth via GetNamedPipeClientProcessId + WinVerifyTrust on caller image"
+      - "GAP: T-001 — WinVerifyTrust is on the FILE on disk, not the running CODE; process-hollowing bypasses (finding 001)"
+    ielevator:
+      - "COM class with Elevation moniker; runs SYSTEM"
+      - "GAP: I-004 — methods don't authenticate caller within COM; any standard user instantiates and calls (finding 004)"
+    uninstaller:
+      - "C-001 — checks BypassClientValidation flag in HKLM that's writable by Authenticated Users"
+      - "GAP: substring match on cmd allows attacker to provide arbitrary path containing the expected substring (finding 003)"
+
+vulnerabilities:
+  - finding_ref: dropbox-2026-04-30/findings/001-dbxsvc-signature-validation-bypass.md
+    binary: dbxsvc.exe
+    classes: [T-001, I-001]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: dropbox-2026-04-30/findings/002-bypass-validation-registry-flag.md
+    binary: dbxsvc.exe
+    classes: [C-001]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: dropbox-2026-04-30/findings/003-uninstall-cmd-substring-bypass.md
+    binary: dropbox_offline_installer.exe
+    classes: [C-001, UP-005]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: dropbox-2026-04-30/findings/004-ielevator-submission.md
+    binary: dropbox_ielevator
+    classes: [I-004]
+    severity: TBD
+    status: submitted
+    submission_ref: bugcrowd:dropbox-ielevator
+  - finding_ref: dropbox-2026-04-30/findings/004-ielevator-clean.md
+    binary: dropbox_ielevator
+    classes: [I-004]
+    severity: TBD
+    status: submitted
+    submission_ref: bugcrowd:dropbox-ielevator (canonical)
+
+open_angles:
+  - "dbxsvc full IPC command-handler enumeration not complete"
+  - "auto-updater path (UP-001 / UP-003) not deeply audited"
+  - "kernel-mode shell-extension surface not enumerated"

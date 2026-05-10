@@ -1,0 +1,218 @@
+{% extends "_base.html.j2" %}
+{% set active = 'catalog' %}
+{% block title %}Vulnerabin · Catalog{% endblock %}
+{% block content %}
+
+<!-- Top rail: recent submissions -->
+{% if recent_findings %}
+<div class="border-b border-outline-variant bg-surface p-gutter shrink-0 overflow-x-auto whitespace-nowrap flex gap-gutter">
+  {% for r in recent_findings %}
+  <a href="{{ root }}products/{{ r.product_slug }}.html" class="bg-surface-container border border-outline-variant rounded p-gutter min-w-[280px] inline-flex flex-col gap-sm hover:bg-surface-container-high transition-colors cursor-pointer">
+    <div class="flex justify-between items-start">
+      <div class="flex items-center gap-2">
+        <div class="w-5 h-5 rounded bg-surface-bright flex items-center justify-center"><span class="material-symbols-outlined text-[14px] text-primary">{{ r.icon }}</span></div>
+        <span class="font-data-mono-sm text-on-surface">{{ r.id_short }}</span>
+      </div>
+      <span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm">{{ r.platform }}</span>
+    </div>
+    <div class="text-ui-sans-sm text-on-surface-variant truncate" title="{{ r.title }}">{{ r.title }}</div>
+    <div class="flex items-center gap-2 mt-1">
+      <div class="w-1.5 h-1.5 rounded-full {{ r.status_dot }}"></div>
+      <span class="text-on-surface-variant text-[10px] uppercase tracking-wider">{{ r.status_label }}</span>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="flex-1 flex overflow-hidden">
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Filters -->
+    <div class="p-gutter border-b border-outline-variant bg-surface shrink-0 flex flex-col gap-gutter">
+      <div class="flex gap-sm">
+        <div class="relative flex-1">
+          <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[16px] text-on-surface-variant">search</span>
+          <input id="vbn-search" class="w-full bg-surface-container-lowest border border-outline-variant rounded text-ui-sans-sm text-on-surface pl-8 pr-3 py-1.5 focus:outline-none focus:border-primary placeholder:text-on-surface-variant" placeholder="Search binaries, products, platform…" type="text" />
+        </div>
+        <button id="vbn-clear" class="bg-surface-container hover:bg-surface-container-high border border-outline-variant rounded px-3 py-1.5 text-ui-sans-sm text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">filter_alt_off</span> Clear</button>
+      </div>
+      <div class="flex gap-sm flex-wrap" id="vbn-filter-chips">
+        <button data-filter-key="platform" data-filter-value="" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip vbn-chip-active"><span class="text-on-surface-variant">Platform:</span><span class="text-primary">All</span></button>
+        {% for plat in unique_platforms %}<button data-filter-key="platform" data-filter-value="{{ plat }}" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><span class="text-on-surface">{{ plat }}</span></button>{% endfor %}
+        <span class="border-l border-outline-variant mx-1"></span>
+        <button data-filter-key="hasconfirmed" data-filter-value="" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip vbn-chip-active"><span class="text-on-surface-variant">Status:</span><span class="text-primary">All</span></button>
+        <button data-filter-key="hasconfirmed" data-filter-value="confirmed" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><div class="w-1.5 h-1.5 rounded-full bg-error"></div><span class="text-on-surface">Has confirmed</span></button>
+        <button data-filter-key="hasconfirmed" data-filter-value="partial" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div><span class="text-on-surface">Has partial</span></button>
+        <button data-filter-key="hasconfirmed" data-filter-value="unexplored" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><div class="w-1.5 h-1.5 rounded-full bg-secondary"></div><span class="text-on-surface">Unexplored only</span></button>
+      </div>
+      <div id="vbn-result-count" class="text-data-mono-sm text-on-surface-variant"></div>
+    </div>
+
+    <!-- Data table -->
+    <div class="flex-1 overflow-auto bg-surface relative">
+      <table class="w-full text-left border-collapse whitespace-nowrap">
+        <thead class="sticky top-0 bg-surface z-10 border-b border-outline-variant">
+          <tr>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal w-10"></th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal">Binary</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal">Product</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal">Platform</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Sources</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Sinks</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Chains</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Confirmed</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Unexplored</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant/50">
+          {% for b in binaries %}
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="{{ b.binary }} {{ b.display_name | default('') }} {{ b.product | default('') }}" data-platform="{{ b.platform }}" data-hasconfirmed="{% if b.confirmed %}confirmed {% endif %}{% if b.partial %}partial {% endif %}{% if b.unexplored %}unexplored {% endif %}" onclick="location.href='{{ root }}binaries/{{ b.page_stem }}.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full {{ b.status_dot }} mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">{{ b.binary }}</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">{{ b.display_name | default('') }}</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              {% if b.product %}<a href="{{ root }}products/{{ b.product }}.html" class="text-on-surface-variant hover:text-primary text-data-mono-sm">{{ b.product }}</a>{% else %}<span class="text-on-surface-variant text-data-mono-sm">—</span>{% endif %}
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm">{{ b.platform }}</span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">{{ b.source_count }}</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">{{ b.sink_count }}</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">{{ b.chain_count }}</td>
+            <td class="px-gutter py-2.5 text-right">
+              {% if b.confirmed %}<span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-secondary/10 text-secondary border border-secondary/30 rounded text-data-mono-sm">{{ b.confirmed }}</span>{% else %}<span class="text-outline text-data-mono-sm">0</span>{% endif %}
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              {% if b.unexplored %}<span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">{{ b.unexplored }}</span>{% else %}<span class="text-outline text-data-mono-sm">0</span>{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Right stats panel -->
+  <aside class="w-72 bg-surface-container border-l border-outline-variant shrink-0 flex flex-col p-gutter overflow-y-auto hidden lg:flex gap-lg">
+    <div class="flex flex-col gap-sm">
+      <h3 class="text-ui-sans-sm font-bold text-on-surface uppercase tracking-wider">Catalog Overview</h3>
+      <div class="grid grid-cols-2 gap-sm">
+        <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col"><span class="text-data-mono-sm text-on-surface-variant mb-1">Binaries</span><span class="font-data-mono-md text-h2 text-primary">{{ stats.total_binaries }}</span></div>
+        <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col"><span class="text-data-mono-sm text-on-surface-variant mb-1">Products</span><span class="font-data-mono-md text-h2 text-primary">{{ stats.total_products }}</span></div>
+        <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col"><span class="text-data-mono-sm text-on-surface-variant mb-1">Chains</span><span class="font-data-mono-md text-h2 text-on-surface">{{ stats.total_chains }}</span></div>
+        <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col"><span class="text-data-mono-sm text-on-surface-variant mb-1">Confirmed</span><span class="font-data-mono-md text-h2 text-error">{{ stats.confirmed }}</span></div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-sm">
+      <h3 class="text-ui-sans-sm font-bold text-on-surface uppercase tracking-wider">Chain Status</h3>
+      <div class="bg-surface-container-lowest border border-outline-variant rounded p-gutter flex items-center justify-center relative min-h-[140px]">
+        {% set total = stats.total_chains or 1 %}
+        {% set deg_confirmed = (stats.confirmed * 360 / total) %}
+        {% set deg_partial = (stats.partial * 360 / total) %}
+        {% set deg_unexplored = (stats.unexplored * 360 / total) %}
+        {% set circ = 251.2 %}
+        <svg class="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" fill="transparent" r="40" stroke="#2a2a2c" stroke-width="12"></circle>
+          {% if stats.confirmed > 0 %}
+          <circle cx="50" cy="50" fill="transparent" r="40" stroke="#ffb4ab" stroke-dasharray="{{ (stats.confirmed * circ / total) | round(1) }} {{ circ }}" stroke-dashoffset="0" stroke-width="12"></circle>
+          {% endif %}
+          {% if stats.partial > 0 %}
+          <circle cx="50" cy="50" fill="transparent" r="40" stroke="#ffb786" stroke-dasharray="{{ (stats.partial * circ / total) | round(1) }} {{ circ }}" stroke-dashoffset="-{{ (stats.confirmed * circ / total) | round(1) }}" stroke-width="12"></circle>
+          {% endif %}
+          {% if stats.unexplored > 0 %}
+          <circle cx="50" cy="50" fill="transparent" r="40" stroke="#4fdbc8" stroke-dasharray="{{ (stats.unexplored * circ / total) | round(1) }} {{ circ }}" stroke-dashoffset="-{{ ((stats.confirmed + stats.partial) * circ / total) | round(1) }}" stroke-width="12"></circle>
+          {% endif %}
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center flex-col">
+          <span class="font-data-mono-md text-primary">{{ stats.total_chains }}</span>
+          <span class="text-[10px] text-on-surface-variant uppercase">chains</span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1 mt-2">
+        <div class="flex items-center justify-between text-ui-sans-sm"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-error"></div><span class="text-on-surface-variant">Confirmed</span></div><span class="font-data-mono-sm text-on-surface">{{ stats.confirmed }}</span></div>
+        <div class="flex items-center justify-between text-ui-sans-sm"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-tertiary"></div><span class="text-on-surface-variant">Partial</span></div><span class="font-data-mono-sm text-on-surface">{{ stats.partial }}</span></div>
+        <div class="flex items-center justify-between text-ui-sans-sm"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-secondary"></div><span class="text-on-surface-variant">Unexplored</span></div><span class="font-data-mono-sm text-on-surface">{{ stats.unexplored }}</span></div>
+      </div>
+    </div>
+
+    {% if stats.top_classes %}
+    <div class="flex flex-col gap-sm">
+      <h3 class="text-ui-sans-sm font-bold text-on-surface uppercase tracking-wider">Top Source Classes</h3>
+      <div class="flex flex-col gap-2">
+        {% set max_class = stats.top_classes[0][1] if stats.top_classes else 1 %}
+        {% for cls, n in stats.top_classes %}
+        <div>
+          <div class="flex justify-between text-data-mono-sm mb-1"><span class="text-on-surface">{{ cls }}</span><span class="text-on-surface-variant">{{ n }}</span></div>
+          <div class="h-1.5 w-full bg-surface-container-lowest rounded overflow-hidden">
+            <div class="h-full bg-primary rounded" style="width: {{ (n * 100 / max_class) | round(0) }}%"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </aside>
+</div>
+
+<style>
+  .vbn-chip-active { background-color: #4d8eff !important; border-color: #4d8eff !important; color: white !important; }
+  .vbn-chip-active span { color: white !important; }
+  .vbn-row.vbn-hidden { display: none; }
+</style>
+
+<script>
+(function(){
+  const searchEl = document.getElementById('vbn-search');
+  const clearEl = document.getElementById('vbn-clear');
+  const chipsEl = document.getElementById('vbn-filter-chips');
+  const rows = Array.from(document.querySelectorAll('.vbn-row'));
+  const resultCount = document.getElementById('vbn-result-count');
+  const filters = { platform: '', hasconfirmed: '' };
+
+  function apply() {
+    const q = (searchEl.value || '').toLowerCase().trim();
+    let visible = 0;
+    for (const r of rows) {
+      const search = (r.dataset.search || '').toLowerCase();
+      const platform = r.dataset.platform || '';
+      const hasconfirmed = r.dataset.hasconfirmed || '';
+      let show = true;
+      if (q && !search.includes(q)) show = false;
+      if (filters.platform && platform.toLowerCase() !== filters.platform.toLowerCase()) show = false;
+      if (filters.hasconfirmed && !hasconfirmed.includes(filters.hasconfirmed)) show = false;
+      if (show) { r.classList.remove('vbn-hidden'); visible++; }
+      else { r.classList.add('vbn-hidden'); }
+    }
+    resultCount.textContent = `Showing ${visible} of ${rows.length} binaries`;
+  }
+
+  searchEl.addEventListener('input', apply);
+  clearEl.addEventListener('click', () => {
+    searchEl.value = '';
+    filters.platform = '';
+    filters.hasconfirmed = '';
+    chipsEl.querySelectorAll('.vbn-chip').forEach(c => c.classList.remove('vbn-chip-active'));
+    chipsEl.querySelectorAll('[data-filter-value=""]').forEach(c => c.classList.add('vbn-chip-active'));
+    apply();
+  });
+
+  chipsEl.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.vbn-chip');
+    if (!btn) return;
+    const key = btn.dataset.filterKey;
+    const val = btn.dataset.filterValue;
+    filters[key] = val;
+    chipsEl.querySelectorAll(`[data-filter-key="${key}"]`).forEach(c => c.classList.remove('vbn-chip-active'));
+    btn.classList.add('vbn-chip-active');
+    apply();
+  });
+
+  apply();
+})();
+</script>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+product: nvidia-app
+display_name: NVIDIA App
+vendor: NVIDIA
+description: >
+  Successor to GeForce Experience. Per-machine SYSTEM service plus user-context
+  UI. Engagement: nvidia-app-2026-04-30. Found junction-following on a directory
+  the SYSTEM service auto-creates; submitted (finding 003 ready).
+
+versions_seen:
+  - version: "11.0.7.247"
+    eng: nvidia-app-2026-04-30
+    seen: 2026-04-30
+
+binaries:
+  - nvidia_app_v11.0.7.247.exe
+  - NVIDIA_App_Service.exe        # nominal — present in install
+  - NVIDIA_App_UI.exe              # nominal
+
+topology:
+  trust_zones:
+    SYSTEM:
+      - NVIDIA_App_Service.exe
+    LoggedInUser:
+      - NVIDIA_App_UI.exe
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  defenses:
+    nvidia_app_service:
+      - "creates extract directories under %PROGRAMDATA%\\NVIDIA"
+      - "GAP: F-001 — junction primitive confirmed; arbitrary file create as SYSTEM (finding 002)"
+    framework_extension:
+      - "FrameViewSDK and similar SDK extensions also load NVIDIA-signed binaries"
+      - "GAP: extension-load surface (finding 004) — possible UP-005 chain"
+
+vulnerabilities:
+  - finding_ref: nvidia-app-2026-04-30/findings/001-junction-primitives-confirmed.md
+    binary: NVIDIA_App_Service.exe
+    classes: [F-001]
+    severity: TBD
+    status: in_progress
+    submission_ref: ""
+  - finding_ref: nvidia-app-2026-04-30/findings/002-arbitrary-dir-file-create-as-SYSTEM.md
+    binary: NVIDIA_App_Service.exe
+    classes: [F-001]
+    severity: TBD
+    status: in_progress
+    submission_ref: ""
+  - finding_ref: nvidia-app-2026-04-30/findings/003-FINAL-submission-ready.md
+    binary: NVIDIA_App_Service.exe
+    classes: [F-001]
+    severity: TBD
+    status: submitted
+    submission_ref: bugcrowd:nvidia
+  - finding_ref: nvidia-app-2026-04-30/findings/004-FrameViewSDK-extension.md
+    binary: NVIDIA_App_Service.exe
+    classes: [F-001, UP-005]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+
+open_angles:
+  - "FrameView extension-load full surface not enumerated"
+  - "Driver-installer flow (.inf packages) not audited for argv injection"
+  - "Auto-update mechanism not investigated"

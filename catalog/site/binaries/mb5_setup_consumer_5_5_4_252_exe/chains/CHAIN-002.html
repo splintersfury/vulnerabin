@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Vulnerabin · CHAIN-002 — mb5-setup-consumer-5.5.4.252.exe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#131315",
+        background: "#0c0c0e",
+        "on-surface": "#e5e1e4",
+        "on-background": "#e5e1e4",
+        "on-surface-variant": "#c2c6d6",
+        "surface-container-lowest": "#0e0e10",
+        "surface-container-low": "#1b1b1d",
+        "surface-container": "#201f21",
+        "surface-container-high": "#2a2a2c",
+        "surface-container-highest": "#353437",
+        "surface-bright": "#39393b",
+        "surface-variant": "#353437",
+        outline: "#8c909f",
+        "outline-variant": "#424754",
+        primary: "#adc6ff",
+        "primary-fixed": "#d8e2ff",
+        "primary-fixed-dim": "#adc6ff",
+        "primary-container": "#4d8eff",
+        "on-primary": "#002e6a",
+        "on-primary-container": "#00285d",
+        secondary: "#4fdbc8",
+        "secondary-container": "#04b4a2",
+        tertiary: "#ffb786",
+        "tertiary-container": "#df7412",
+        error: "#ffb4ab",
+        "error-container": "#93000a",
+        "on-error": "#690005",
+        "on-error-container": "#ffdad6",
+        accent: "#3b82f6",
+        // Source-class group colors (matching taxonomy/binary/sources_v2.json groups)
+        "grp-F": "#fdd6d6",
+        "grp-F-stroke": "#c00",
+        "grp-I": "#fed9a3",
+        "grp-I-stroke": "#c80",
+        "grp-N": "#c5d3ff",
+        "grp-N-stroke": "#06c",
+        "grp-K": "#e0bdf2",
+        "grp-K-stroke": "#909",
+        "grp-U": "#bfeac6",
+        "grp-U-stroke": "#080",
+        "grp-T": "#cfd2d8",
+        "grp-T-stroke": "#555",
+        "grp-UP": "#fff0a3",
+        "grp-UP-stroke": "#aa0",
+        "grp-C": "#e9d4b8",
+        "grp-C-stroke": "#862",
+        "grp-E": "#a8d4ff",
+        "grp-E-stroke": "#069",
+        "grp-W": "#f4c5ff",
+        "grp-W-stroke": "#909",
+        "grp-CR": "#cccccc",
+        "grp-CR-stroke": "#333",
+      },
+      borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "9999px" },
+      spacing: { base: "4px", xs: "4px", sm: "8px", gutter: "12px", md: "16px", margin: "16px", lg: "24px", xl: "32px", unit: "4px" },
+      fontFamily: {
+        "ui-sans-md": ["Inter"], "ui-sans-sm": ["Inter"],
+        "data-mono-sm": ["JetBrains Mono"], "data-mono-md": ["JetBrains Mono"],
+        "code-block": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"],
+        "h1": ["Inter"], "h2": ["Inter"], "title-sm": ["Inter"],
+        "headline-md": ["Inter"], "display-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+      },
+      fontSize: {
+        "h1": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "h2": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "title-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+        "ui-sans-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+        "ui-sans-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+        "data-mono-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "data-mono-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+        "code-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "code-sm": ["11px", { lineHeight: "16px", fontWeight: "400" }],
+        "code-block": ["13px", { lineHeight: "22px", fontWeight: "400" }],
+        "label-caps": ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "700" }],
+        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+      },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a2c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #424754; }
+.bg-custom-surface { background-color: #16171d; }
+</style>
+</head>
+<body class="bg-background text-on-background font-ui-sans-md h-screen flex flex-col overflow-hidden">
+
+<!-- Top app bar -->
+<header class="bg-surface-container border-b border-outline-variant flex justify-between items-center w-full px-lg py-sm z-50 h-14 shrink-0">
+  <div class="flex items-center gap-md">
+    <a href="../../../index.html" class="text-h2 font-h1 tracking-tight text-primary">Vulnerabin</a>
+    <nav class="hidden md:flex items-center gap-sm ml-lg">
+      <a class="text-primary font-bold hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../../../index.html">Products</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../../../binaries.html">Binaries</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../../../chains.html">Chains</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../../../pipeline.html">Pipeline</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../../../taxonomy.html">Taxonomy</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-sm">
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+  </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden">
+  <!-- Side nav -->
+  <aside class="bg-surface text-on-surface font-ui-sans-sm border-r border-outline-variant flex flex-col py-md space-y-unit shrink-0 w-60 h-full overflow-y-auto">
+    <div class="px-4 mb-4">
+      <div class="font-h2 text-h2 font-black text-primary leading-tight">Vulnerabin</div>
+      <div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">v0.5.0 · catalog</div>
+    </div>
+    <nav class="flex-1 space-y-unit">
+      <a class="bg-surface-container-high text-primary border-l-2 border-primary hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../../../index.html">
+        <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        <span class="font-body-sm">Products</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../../../binaries.html">
+        <span class="material-symbols-outlined text-[18px]">memory</span>
+        <span class="font-body-sm">Binaries</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../../../chains.html">
+        <span class="material-symbols-outlined text-[18px]">timeline</span>
+        <span class="font-body-sm">Chains</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../../../pipeline.html">
+        <span class="material-symbols-outlined text-[18px]">trending_up</span>
+        <span class="font-body-sm">Pipeline</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../../../taxonomy.html">
+        <span class="material-symbols-outlined text-[18px]">hub</span>
+        <span class="font-body-sm">Taxonomy</span>
+      </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="https://github.com/anthropics/vulnerabin"><span class="material-symbols-outlined text-[16px]">menu_book</span><span class="font-body-sm">Docs</span></a>
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[16px]">dns</span><span class="font-body-sm">Status</span></a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col bg-background overflow-y-auto">
+    
+
+<!-- Breadcrumb + header -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface sticky top-0 z-30">
+  <div class="flex items-center gap-sm font-data-mono-sm text-on-surface-variant mb-xs">
+    <a class="hover:text-primary" href="../../../index.html">Products</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    
+    <a class="hover:text-primary" href="../../../binaries/mb5_setup_consumer_5_5_4_252_exe.html">mb5-setup-consumer-5.5.4.252.exe</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    <span class="text-primary">CHAIN-002</span>
+  </div>
+  <div class="flex justify-between items-start mt-sm">
+    <div class="max-w-3xl">
+      <div class="flex items-center gap-sm mb-xs">
+        <span class="font-data-mono-md text-primary font-bold text-[20px]">CHAIN-002</span>
+        <span class="bg-primary/20 text-primary px-2 py-0.5 rounded font-data-mono-sm">❔ hypothesised</span>
+        
+        
+      </div>
+      <h1 class="font-h1 text-h1 text-on-surface">Original ICACLS-based junction-prerequisite claim (later invalidated)</h1>
+      
+    </div>
+    <div class="flex flex-col gap-sm items-end">
+      
+      
+      <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface">CWE:</span> CWE-269</div>
+    </div>
+  </div>
+</div>
+
+<div class="p-lg max-w-[1600px] mx-auto w-full space-y-lg">
+
+  <!-- Research workflow tracker -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">trending_up</span>Research workflow stage</h2>
+    </div>
+    <div class="p-md">
+      <div class="flex items-center justify-between gap-1">
+        
+        
+        
+        
+        
+          
+          
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-primary text-on-primary ring-4 ring-primary/30">
+              <span class="material-symbols-outlined text-[18px]">search</span>
+            </div>
+            <div class="text-data-mono-sm text-center mt-1 text-primary font-bold">Input identified</div>
+          </div>
+          
+          <div class="flex-1 h-0.5 self-start mt-4 bg-outline-variant"></div>
+          
+        
+          
+          
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-container-lowest text-on-surface-variant border border-outline-variant">
+              <span class="material-symbols-outlined text-[18px]">list_alt</span>
+            </div>
+            <div class="text-data-mono-sm text-center mt-1 text-on-surface-variant">Conditions enumerated</div>
+          </div>
+          
+          <div class="flex-1 h-0.5 self-start mt-4 bg-outline-variant"></div>
+          
+        
+          
+          
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-container-lowest text-on-surface-variant border border-outline-variant">
+              <span class="material-symbols-outlined text-[18px]">build</span>
+            </div>
+            <div class="text-data-mono-sm text-center mt-1 text-on-surface-variant">PoC built</div>
+          </div>
+          
+          <div class="flex-1 h-0.5 self-start mt-4 bg-outline-variant"></div>
+          
+        
+          
+          
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-container-lowest text-on-surface-variant border border-outline-variant">
+              <span class="material-symbols-outlined text-[18px]">play_arrow</span>
+            </div>
+            <div class="text-data-mono-sm text-center mt-1 text-on-surface-variant">PoC tested</div>
+          </div>
+          
+          <div class="flex-1 h-0.5 self-start mt-4 bg-outline-variant"></div>
+          
+        
+          
+          
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-container-lowest text-on-surface-variant border border-outline-variant">
+              <span class="material-symbols-outlined text-[18px]">warning</span>
+            </div>
+            <div class="text-data-mono-sm text-center mt-1 text-on-surface-variant">Boundary crossed</div>
+          </div>
+          
+          <div class="flex-1 h-0.5 self-start mt-4 bg-outline-variant"></div>
+          
+        
+          
+          
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center bg-surface-container-lowest text-on-surface-variant border border-outline-variant">
+              <span class="material-symbols-outlined text-[18px]">send</span>
+            </div>
+            <div class="text-data-mono-sm text-center mt-1 text-on-surface-variant">Submitted</div>
+          </div>
+          
+        
+      </div>
+      <!-- PoC + outcome detail rows -->
+      
+    </div>
+  </section>
+
+  <!-- Big chain flowchart: Source → Conditions → Sink -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">timeline</span>Source → Conditions → Sink</h2>
+    </div>
+    <div class="p-lg bg-surface-container-lowest overflow-x-auto">
+      <div class="flex items-stretch gap-md min-w-max">
+        <!-- Source box -->
+        
+        
+        <div class="flex flex-col w-[260px] shrink-0">
+          <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-xs">Source</div>
+          <div class="bg-surface-container border-2 rounded p-md flex-1" style="border-color: #c00">
+            <div class="flex items-center gap-1 mb-sm">
+              <span class="font-data-mono-md text-on-surface font-bold">SRC-002</span>
+              <span class="text-data-mono-sm ml-auto" style="color: #c00">F-001</span>
+            </div>
+            <div class="font-data-mono-sm text-on-surface mb-sm">Original ICACLS-based junction-prerequisite claim (later invalidated)</div>
+            <div class="text-data-mono-sm text-on-surface-variant mb-1"><span class="text-on-surface">via:</span> (see finding)</div>
+            
+            <div class="text-data-mono-sm mt-sm">
+              <span class="bg-error/20 text-error px-1.5 py-0.5 rounded">attacker-controlled</span>
+              
+            </div>
+            
+          </div>
+        </div>
+        
+
+        <!-- Arrow -->
+        <div class="flex items-center self-center text-on-surface-variant"><span class="material-symbols-outlined text-[28px]">arrow_forward</span></div>
+
+        <!-- Conditions chain -->
+        
+        <div class="flex flex-col flex-1 min-w-[400px]">
+          <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-xs">Conditions (1 must hold)</div>
+          <div class="flex flex-col gap-sm flex-1">
+            
+            <div class="bg-surface-container border border-tertiary/50 rounded p-sm flex items-start gap-sm">
+              <div class="bg-tertiary text-on-tertiary font-data-mono-sm rounded-full w-6 h-6 flex items-center justify-center shrink-0 font-bold">1</div>
+              <div class="text-ui-sans-sm text-on-surface flex-1">(auto-stub: walk the source through any defenses, list each check that must pass)</div>
+            </div>
+            
+          </div>
+        </div>
+        
+
+        <!-- Arrow -->
+        <div class="flex items-center self-center text-on-surface-variant"><span class="material-symbols-outlined text-[28px]">arrow_forward</span></div>
+
+        <!-- Sink box -->
+        
+        <div class="flex flex-col w-[280px] shrink-0">
+          <div class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-xs">Sink</div>
+          <div class="bg-surface-container border-2 border-error rounded p-md shadow-[0_0_15px_rgba(255,180,171,0.15)] flex-1">
+            <div class="flex items-center gap-1 mb-sm">
+              <span class="font-data-mono-md text-error font-bold">SNK-001</span>
+              <span class="text-data-mono-sm text-error ml-auto">CWE-269</span>
+            </div>
+            <div class="font-data-mono-sm text-on-surface mb-sm">Elevated file operation (write / set_acl / read)</div>
+            <div class="text-data-mono-sm text-on-surface-variant mb-1"><span class="text-on-surface">fn:</span> (see finding evidence)</div>
+            <div class="text-data-mono-sm text-on-surface-variant mt-sm pt-sm border-t border-outline-variant"><span class="text-on-surface">impact:</span> arbitrary file access at privileged principal's level</div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Bypasses required -->
+  
+
+  <!-- Impact + finding refs -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+    
+    <section class="bg-surface border border-outline-variant rounded p-md">
+      <h3 class="font-label-caps uppercase tracking-wider text-on-surface mb-sm flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-error">warning</span>Impact</h3>
+      <p class="text-ui-sans-sm text-on-surface">arbitrary file access at privileged principal's level</p>
+    </section>
+    
+    <section class="bg-surface border border-outline-variant rounded p-md">
+      <h3 class="font-label-caps uppercase tracking-wider text-on-surface mb-sm flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">link</span>References</h3>
+      <div class="flex flex-col gap-xs text-data-mono-sm">
+        <div><span class="text-on-surface-variant">Finding:</span> <code class="text-primary">malwarebytes-2026-04-29/findings/001-junction-prerequisite-mbamservice-INVALIDATED.md</code></div>
+        
+        <div><span class="text-on-surface-variant">Binary:</span> <a class="text-primary hover:underline" href="../../../binaries/mb5_setup_consumer_5_5_4_252_exe.html">mb5-setup-consumer-5.5.4.252.exe</a></div>
+        
+      </div>
+    </section>
+  </div>
+
+  <!-- Notes -->
+  
+  <section class="bg-surface border border-outline-variant rounded p-md">
+    <h3 class="font-label-caps uppercase tracking-wider text-on-surface mb-sm flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-on-surface-variant">notes</span>Notes</h3>
+    <p class="text-ui-sans-sm text-on-surface-variant whitespace-pre-wrap">Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.</p>
+  </section>
+  
+
+  <!-- Sibling chains in same binary -->
+  
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">linked_services</span>Other chains in mb5-setup-consumer-5.5.4.252.exe</h2>
+    </div>
+    <table class="w-full text-left text-data-mono-sm">
+      <thead><tr class="bg-surface-container-low border-b border-outline-variant">
+        <th class="p-2 font-normal text-on-surface-variant uppercase">ID</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Title</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Status</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Severity</th>
+      </tr></thead>
+      <tbody>
+        
+        <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='../../../binaries/mb5_setup_consumer_5_5_4_252_exe/chains/CHAIN-001.html'">
+          <td class="p-2 text-primary">CHAIN-001</td>
+          <td class="p-2 text-on-surface">Original junction-write claim invalidated by live access-denied on every standar</td>
+          <td class="p-2 text-on-surface-variant">hypothesised</td>
+          <td class="p-2 text-on-surface-variant"></td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </section>
+  
+
+</div>
+
+
+  </main>
+</div>
+</body>
+</html>

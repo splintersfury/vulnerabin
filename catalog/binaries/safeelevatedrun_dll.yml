@@ -1,0 +1,406 @@
+binary: safeelevatedrun.dll
+display_name: Bitdefender SafeElevatedRun
+product: bitdefender-total-security
+description: 'Helper DLL loaded by bdappsrv (the SYSTEM-context elevation server hosted in bdservicehost.exe) to spawn elevated
+  processes. Exposes the `CElevatedOperationsClient::RunAsync` interface via msgbus IPC; performs a trust check (ExePath::IsTrusted
+  -> ExePath::IsInFolder + WinVerifyTrust) before invoking CreateProcessAsUserW with a SYSTEM token.
+
+  '
+canonical_path: C:\Program Files\Bitdefender\Bitdefender Security App\safeelevatedrun.dll
+arch: x64
+platform: windows
+binary_kind: dll
+trust_boundary: SYSTEM (bdappsrv) <- BD-signed user-context process (bdagent / bduserhost / seccenter) <- standard user
+process_model:
+  loaded_by: bdappsrv (in bdservicehost.exe)
+  principal: SYSTEM
+  start_trigger: service_start_or_demand_when_msgbus_msg_received
+  parent_processes:
+  - name: bdservicehost.exe
+    principal: SYSTEM
+    role: SCM-launched host
+  ipc_peers:
+  - name: bdagent.exe
+    principal: Admin (no PPL)
+    via: msgbus IPC pipe local\msgbus\bdappsrv
+  - name: seccenter.exe
+    principal: loggedInUser
+    via: msgbus IPC pipe local\msgbus\bdappsrv
+  - name: bduserhost.exe
+    principal: loggedInUser
+    via: msgbus IPC pipe local\msgbus\bdappsrv
+  impersonation_seen: false
+  ppl_protected: false
+versions:
+- version: '27'
+  sha256: ''
+  eng: bitdefender-total-security-2026-04-11
+  seen: 2026-04-11
+  notes: First version inspected. Vendor-distributed via Bitdefender Total Security retail channel.
+sources:
+- id: SRC-001
+  name: msgbus.run_elevated_async.executable_path
+  source_class_id: I-002
+  co_class_ids:
+  - T-005
+  - T-006
+  via: msgbus IPC pipe (\\.\pipe\local\msgbus\bdappsrv)
+  type: wide_string
+  attacker_controlled: yes_with_caveat
+  caveat: 'Caller must satisfy msgbus same_sign + trusted_client_process rules: a BD-Authenticode-signed binary running in
+    the BD install path. Reachable via process injection into bdagent/bduserhost/seccenter, OR by hijacking a legitimate BD
+    client''s RunAsync invocation.'
+  function: FUN_18001c460 (CElevatedOperationsClient::RunAsync, client-side message construction)
+  first_seen_version: '27'
+  last_confirmed_version: '27'
+  notes: 'Message fields observed: executable_path, executable_args, session_id, run_as_system.'
+- id: SRC-002
+  name: msgbus.run_elevated_async.executable_args
+  source_class_id: I-002
+  co_class_ids: []
+  via: msgbus IPC pipe (\\.\pipe\local\msgbus\bdappsrv)
+  type: wide_string
+  attacker_controlled: yes_with_caveat
+  caveat: Same as SRC-001.
+  function: FUN_18001c460
+  first_seen_version: '27'
+  last_confirmed_version: '27'
+  notes: Argument string passed unmodified into CreateProcessAsUserW lpCommandLine. Not yet investigated for command-line-injection
+    patterns.
+sinks:
+- id: SNK-001
+  name: CreateProcessAsUserW(SYSTEM_token, lpApplicationName=exe_path, lpCommandLine=exe_args)
+  cwe: CWE-269
+  function: bdappservice.dll FUN_18000c290 (dispatcher) -> safeelevatedrun.dll _SafeElevatedRun
+  impact: Arbitrary process spawn as NT AUTHORITY\SYSTEM
+  first_seen_version: '27'
+  notes: WinVerifyTrust gates this on the resolved exe_path. SYSTEM token comes from bdappsrv's process token.
+chains:
+- id: CHAIN-001
+  title: IsInFolder prefix check accepts traversal segments, allows Microsoft-signed cmd.exe spawn
+  source_id: SRC-001
+  sink_id: SNK-001
+  conditions:
+  - 'ExePath::IsInFolder(exe_path, install_folder) returns TRUE: FUN_18000f5d0 line 232 calls wcsncmp(exe_path, install_folder,
+    wcslen(install_folder)) without canonicalization. Path normalizer FUN_18000f440 only lowercases, slash-flips, and strips
+    quotes — does not call GetFullPathNameW or PathCanonicalize.'
+  - 'WinVerifyTrust(exe_path) succeeds: payload is c:\windows\system32\cmd.exe which is Microsoft-Authenticode-signed.'
+  - 'Caller passes msgbus same_sign + trusted_client_process rules: peer is a BD-signed process living in the BD install path.'
+  impact: SYSTEM process spawn (cmd.exe with full SYSTEM token)
+  cwe:
+  - CWE-22
+  - CWE-269
+  severity: P3
+  cvss: 5.7 / AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H
+  status: partial
+  confirmed_in_version: '27'
+  finding_ref: bitdefender-total-security-2026-04-11/findings/005-safeelevatedrun-path-traversal.md
+  submission_ref: bugcrowd:59aada4c-64d7-4215-851f-03ebde5d0629
+  bypasses_required:
+  - Caller must be BD-Authenticode-signed (msgbus same_sign + trusted_client_process server-side rules). Reachable from bdagent/bduserhost/seccenter
+    via process injection, but bdprivmon.sys + bddci4.sys block standard injection patterns from a non-Admin context.
+  - 'If injecting from non-BD process: defeat bdprivmon.sys VAD scan (kernel-mode unsigned-IMAGE-VAD detector) and bddci4.sys
+    ObRegisterCallbacks handle-strip on PROCESS_VM_OPERATION/WRITE/DUP_HANDLE.'
+  poc:
+    status: built
+    path: engagements/bitdefender-total-security-2026-04-11/pocs/005/
+    commands: '# Build the codepoint-identical mimic of FUN_18000f5d0 + FUN_18000f440
+
+      x86_64-w64-mingw32-gcc -O2 -municode -o isinfolder_mimic.exe isinfolder_mimic.c
+
+      # Or run the Python equivalent
+
+      python3 isinfolder_mimic.py
+
+      '
+    notes: 'Mimic harness deterministically reproduces the algorithmic bug without invoking BD code. Captured output in evidence_isinfolder_mimic_output.txt:
+      IsInFolder(traversal)=TRUE → resolves to c:\windows\system32\cmd.exe.'
+  outcome:
+    boundary_crossed: unverified
+    evidence: engagements/bitdefender-total-security-2026-04-11/pocs/005/evidence_isinfolder_mimic_output.txt
+    notes: Algorithmic bug deterministically demonstrated. Full LPE chain (standard user → SYSTEM execution) NOT reproduced
+      because bdprivmon+bddci4 block injection into BD-signed peers from non-admin context. Need msgbus auth bypass or admin-context
+      injection (separate finding).
+  notes: 'Submitted 2026-05-09 as Bugcrowd P3 conservative-framing (primitive proven, end-to-end chain not reproduced). Open
+    angles flagged for vendor in the submission: msgbus wire-protocol auth check beyond PEB ImagePathName, seccenter.exe COM
+    activation flow, BD user-launchable tools that may take attacker-controllable path arguments (bdfvwiz.exe, bdfvcl.exe,
+    agentcontroller.exe, installer.exe), and the update mechanism via updcenter.exe.
+
+    '
+- id: CHAIN-002
+  title: Command-line injection via executable_args field (unexplored)
+  source_id: SRC-002
+  sink_id: SNK-001
+  conditions:
+  - executable_args is passed unmodified to CreateProcessAsUserW lpCommandLine
+  - Target executable parses lpCommandLine in a way that allows shell-style argument injection
+  impact: 'Possibly: SYSTEM-context arg injection into a legitimate BD-signed binary'
+  cwe:
+  - CWE-78
+  - CWE-88
+  severity: ''
+  cvss: ''
+  status: unexplored
+  confirmed_in_version: ''
+  finding_ref: ''
+  submission_ref: ''
+  bypasses_required:
+  - Same as CHAIN-001 for reaching the IPC interface (BD-signed peer).
+  - 'Plus: identify a SYSTEM-spawned BD binary that reflects executable_args into a shell-relevant operation.'
+  notes: 'Not yet investigated. The message field exists per FUN_18001c460 decomp but argument-handling paths in callees were
+    not traced. Worth one focused pass on the next BDTS engagement.
+
+    '
+defenses:
+- class_id: I-002
+  defense_expected: msgbus same_sign + trusted_client_process server-side rules; SDDL on the pipe restricting to BD principal
+  observed: same_sign and trusted_client_process both registered (msgbus rule registry FUN_18003fd10). SDDL on the pipe is
+    permissive (any local process can connect; rules enforce after connect).
+  gap: rules are at the application layer, not the kernel ACL layer; bypassable via injection into a co-signed peer
+  bypass_attempts: PEB ImagePathName masquerade attempted, defeated by trusted_client_process which uses kernel image path.
+    Process-hollowing not yet attempted.
+- class_id: T-005
+  defense_expected: GetFullPathNameW or PathCanonicalize before prefix-compare in IsInFolder
+  observed: wcsncmp prefix check on uncanonicalized path; FUN_18000f5d0 line 232; normalizer FUN_18000f440 only lowercases
+    / slash-flips / strips quotes
+  gap: YES — confirmed exploitable; the BDTS 005 finding
+  bypass_attempts: ../../.. traversal works; mimic harness deterministic; submitted Bugcrowd 59aada4c
+- class_id: T-006
+  defense_expected: co-signature check on caller's image
+  observed: same_sign rule present in msgbus registry
+  gap: bypassable via injection into a co-signed peer (bdagent.exe in particular)
+  bypass_attempts: bdprivmon.sys + bddci4.sys block standard injection patterns from non-Admin context; injection from Admin
+    works (separate finding)
+class_coverage:
+- class_id: F-001
+  status: not_present
+  rationale: DLL itself does no path-construction-then-write; all fs operations happen in CreateProcessAsUserW (the sink).
+    The path-traversal IS the bug but it's catalogued under T-005, not F-001.
+  last_checked_version: '27'
+- class_id: F-002
+  status: not_present
+  rationale: No config-file reads in this DLL; configuration is process-internal.
+  last_checked_version: '27'
+- class_id: F-003
+  status: not_present
+  rationale: No file-open with TRUNCATE_EXISTING on user-writable parents.
+  last_checked_version: '27'
+- class_id: F-005
+  status: not_present
+  rationale: DLL does not create sockets / pipes itself; msgbus.dll owns the IPC pipe.
+  last_checked_version: '27'
+- class_id: F-006
+  status: not_present
+  rationale: No log/state files written by this DLL.
+  last_checked_version: '27'
+- class_id: F-007
+  status: not_present
+  rationale: No file-association / drag-drop handler registered.
+  last_checked_version: '27'
+- class_id: I-001
+  status: not_present
+  rationale: DLL does not publish IPC data to readers; msgbus is owned by msgbus.dll.
+  last_checked_version: '27'
+- class_id: I-002
+  status: present
+  refs:
+    sources:
+    - SRC-001
+    - SRC-002
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+  last_checked_version: '27'
+- class_id: I-004
+  status: not_present
+  rationale: No COM class registered by this DLL; DllGetClassObject not exported.
+  last_checked_version: '27'
+- class_id: I-005
+  status: not_present
+  rationale: No window-class registration.
+  last_checked_version: '27'
+- class_id: I-006
+  status: not_present
+  rationale: User-mode DLL; not a kernel ALPC port owner.
+  last_checked_version: '27'
+- class_id: I-007
+  status: not_present
+  rationale: No mailslot creation.
+  last_checked_version: '27'
+- class_id: I-008
+  status: not_present
+  rationale: No NtCreateSection / CreateFileMapping observed.
+  last_checked_version: '27'
+- class_id: I-009
+  status: not_present
+  rationale: No localhost TCP listener.
+  last_checked_version: '27'
+- class_id: N-001
+  status: not_present
+  rationale: Not a DNS parser.
+  last_checked_version: '27'
+- class_id: N-002
+  status: not_present
+  rationale: No HTTP listener.
+  last_checked_version: '27'
+- class_id: N-003
+  status: not_present
+  rationale: No TLS endpoint; IPC is local-only via msgbus.
+  last_checked_version: '27'
+- class_id: N-004
+  status: not_present
+  rationale: Custom protocol parsing happens in msgbus.dll, not here.
+  last_checked_version: '27'
+- class_id: N-005
+  status: not_present
+  rationale: No outbound URL fetch.
+  last_checked_version: '27'
+- class_id: N-006
+  status: not_present
+  rationale: No WebSocket.
+  last_checked_version: '27'
+- class_id: N-007
+  status: not_present
+  rationale: No multicast/broadcast listener.
+  last_checked_version: '27'
+- class_id: K-001
+  status: not_present
+  rationale: User-mode DLL, not a driver.
+  last_checked_version: '27'
+- class_id: K-002
+  status: not_present
+  rationale: User-mode DLL.
+  last_checked_version: '27'
+- class_id: K-003
+  status: not_present
+  rationale: User-mode DLL.
+  last_checked_version: '27'
+- class_id: K-004
+  status: not_present
+  rationale: User-mode DLL.
+  last_checked_version: '27'
+- class_id: K-005
+  status: not_present
+  rationale: User-mode DLL.
+  last_checked_version: '27'
+- class_id: K-006
+  status: not_present
+  rationale: User-mode DLL.
+  last_checked_version: '27'
+- class_id: U-001
+  status: not_present
+  rationale: DLL exports a callable interface, not a process with argv parsing.
+  last_checked_version: '27'
+- class_id: U-002
+  status: unchecked
+  rationale: Have not audited GetEnvironmentVariableW callers in this DLL.
+  last_checked_version: '27'
+- class_id: U-003
+  status: not_present
+  rationale: Not a protocol-handler-registered binary.
+  last_checked_version: '27'
+- class_id: U-004
+  status: not_present
+  rationale: No clipboard / drag-drop handler.
+  last_checked_version: '27'
+- class_id: U-005
+  status: not_present
+  rationale: No window-message handler.
+  last_checked_version: '27'
+- class_id: T-001
+  status: defense_observed
+  rationale: WinVerifyTrust on the requested exe path is performed before CreateProcessAsUserW. Process-hollowing of the requested
+    target binary would bypass it, but separate Bitdefender finding 002 (BDTS 05-02) tracks the WVT TOCTOU class.
+  last_checked_version: '27'
+- class_id: T-002
+  status: not_present
+  rationale: DLL does not read PEB ImagePathName for trust decisions.
+  last_checked_version: '27'
+- class_id: T-003
+  status: not_present
+  rationale: No CheckTokenMembership / GetTokenInformation calls.
+  last_checked_version: '27'
+- class_id: T-004
+  status: defense_observed
+  rationale: msgbus enforces trusted_client_process at the IPC boundary (in msgbus.dll, not here). The trusted_client_process
+    rule uses kernel image path query (NtQueryInformationProcess class 29), defeating PEB masquerade.
+  last_checked_version: '27'
+- class_id: T-005
+  status: present
+  refs:
+    sources:
+    - SRC-001
+    chains:
+    - CHAIN-001
+  last_checked_version: '27'
+- class_id: T-006
+  status: present
+  refs:
+    sources:
+    - SRC-001
+    chains:
+    - CHAIN-001
+  last_checked_version: '27'
+- class_id: UP-001
+  status: not_present
+  rationale: Not an updater.
+  last_checked_version: '27'
+- class_id: UP-002
+  status: not_present
+  rationale: Not Squirrel.
+  last_checked_version: '27'
+- class_id: UP-003
+  status: not_present
+  rationale: Not Electron.
+  last_checked_version: '27'
+- class_id: UP-004
+  status: not_present
+  rationale: Not an MSI.
+  last_checked_version: '27'
+- class_id: UP-005
+  status: not_present
+  rationale: Not an installer; this DLL spawns processes from existing on-disk binaries via WinVerifyTrust check.
+  last_checked_version: '27'
+- class_id: C-001
+  status: not_present
+  rationale: No registry reads observed in this DLL.
+  last_checked_version: '27'
+- class_id: C-002
+  status: not_present
+  rationale: Variant of F-002 / F-006; both not_present.
+  last_checked_version: '27'
+- class_id: C-003
+  status: not_present
+  rationale: No GPO reads.
+  last_checked_version: '27'
+- class_id: C-004
+  status: not_present
+  rationale: DLL, not a service.
+  last_checked_version: '27'
+- class_id: CR-001
+  status: not_present
+  rationale: No encryption / decryption operations in this DLL.
+  last_checked_version: '27'
+- class_id: CR-002
+  status: not_present
+  rationale: Reserved class, not yet defined.
+  last_checked_version: '27'
+coverage:
+  decomp_dirs:
+  - bitdefender-total-security-2026-04-11/decomp-safeelevatedrun
+  function_count: 0
+  functions_analyzed:
+  - FUN_18000f5d0 (IsInFolder)
+  - FUN_18000f440 (path normalizer)
+  - FUN_18000e980 (IsTrusted)
+  - FUN_18001c460 (RunAsync)
+  - FUN_180010100 (object registry)
+  unanalyzed_high_priority:
+  - FUN_18000c290 (bdappservice.dll dispatcher) — confirmed reaches CreateProcessAsUserW but flow not traced end-to-end
+  - msgbus auth-rule predicate bodies (vftable._Do_call slots) — only the registration sites located
+  recon_gaps:
+  - executable_args field not investigated for argument injection (CHAIN-002 unexplored)
+  - seccenter.exe COM activation flow (open angle from BDTS 005 submission)
+  - BD user-launchable tools that load safeelevatedrun.dll (bdfvwiz, bdfvcl, agentcontroller, installer) — not enumerated
+    for CLI argument paths
+capabilities: []

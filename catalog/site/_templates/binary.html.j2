@@ -1,0 +1,694 @@
+{% extends "_base.html.j2" %}
+{% set active = 'binary' %}
+{% block title %}Vulnerabin · {{ binary.binary }}{% endblock %}
+{% block content %}
+
+<!-- Breadcrumbs + header -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface sticky top-0 z-30">
+  <div class="flex items-center gap-sm font-data-mono-sm text-on-surface-variant mb-xs">
+    <a class="hover:text-primary" href="{{ root }}index.html">Products</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    {% if binary.product %}
+    <a class="hover:text-primary" href="{{ root }}products/{{ binary.product }}.html">{{ binary.product }}</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    {% else %}
+    <a class="hover:text-primary" href="{{ root }}binaries.html">Binaries</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    {% endif %}
+    <span class="text-primary">{{ binary.binary }}</span>
+  </div>
+  <div class="flex justify-between items-start mt-sm">
+    <div>
+      <h1 class="font-data-mono-md text-primary text-[20px] font-bold tracking-tight">{{ binary.binary }}</h1>
+      <div class="text-ui-sans-sm text-on-surface-variant mt-xs">{{ binary.display_name | default('') }}</div>
+      <div class="flex flex-wrap gap-xs mt-sm">
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>{{ binary.platform | default('?') }}</span>
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded">{{ binary.arch | default('?') }}</span>
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded">{{ binary.binary_kind | default('?') }}</span>
+        {% set principal = (binary.process_model or {}).principal | default('?') %}
+        {% if principal == 'SYSTEM' %}
+        <span class="bg-error-container/20 border border-error text-error font-data-mono-sm px-2 py-0.5 rounded">{{ principal }}</span>
+        {% else %}
+        <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded">{{ principal }}</span>
+        {% endif %}
+      </div>
+    </div>
+    <div class="flex gap-sm">
+      <a href="{{ root }}../binaries/{{ binary.page_stem }}.yml" class="bg-surface-container border border-outline-variant text-on-surface font-title-sm text-title-sm px-3 py-1.5 rounded hover:bg-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">code</span>YAML</a>
+    </div>
+  </div>
+  {% if binary.description %}
+  <p class="text-ui-sans-sm text-on-surface-variant mt-md max-w-3xl">{{ binary.description | trim }}</p>
+  {% endif %}
+</div>
+
+<div class="p-lg space-y-lg max-w-[1600px] mx-auto w-full">
+
+  <!-- Reverse engineering brief (the RE journey that PRECEDES sources/sinks) -->
+  {% if re %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant flex justify-between items-center bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-tertiary">construction</span>Reverse-Engineering Brief</h2>
+      <span class="text-data-mono-sm text-on-surface-variant">{{ (re.inputs or []) | length }} inputs · {{ (re.loaded_modules or []) | length }} modules</span>
+    </div>
+    <div class="p-md space-y-md">
+      {% if re.entrypoint %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-1">Entrypoint</div>
+        <div class="font-data-mono-md text-on-surface bg-surface-container-low px-sm py-1 rounded inline-block">{{ re.entrypoint }}</div>
+      </div>
+      {% endif %}
+
+      {% if re.behavior %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-1">Behaviour</div>
+        <div class="text-body-sm text-on-surface whitespace-pre-line bg-surface-container-low p-sm rounded">{{ re.behavior | trim }}</div>
+      </div>
+      {% endif %}
+
+      {% if re.loaded_modules %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Loaded modules</div>
+        <table class="w-full text-data-mono-sm border border-outline-variant rounded">
+          <thead class="bg-surface-container">
+            <tr><th class="text-left px-sm py-1">Name</th><th class="text-left px-sm py-1">Via</th><th class="text-left px-sm py-1">Role</th></tr>
+          </thead>
+          <tbody>
+            {% for m in re.loaded_modules %}
+            <tr class="border-t border-outline-variant">
+              <td class="px-sm py-1 text-primary">{{ m.name }}</td>
+              <td class="px-sm py-1 text-on-surface-variant">{{ m.via }}</td>
+              <td class="px-sm py-1 text-on-surface">{{ m.role }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      {% if re.inputs %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Inputs (the seedbed for sources)</div>
+        <div class="text-body-sm text-on-surface-variant mb-2">Each input below should map to one or more <code class="bg-surface-container-low px-1 rounded">SRC-*</code> entries via <code class="bg-surface-container-low px-1 rounded">derived_from</code>.</div>
+        <table class="w-full text-data-mono-sm border border-outline-variant rounded">
+          <thead class="bg-surface-container">
+            <tr>
+              <th class="text-left px-sm py-1">ID</th>
+              <th class="text-left px-sm py-1">Kind</th>
+              <th class="text-left px-sm py-1">Path / endpoint</th>
+              <th class="text-left px-sm py-1">Direction</th>
+              <th class="text-left px-sm py-1">Attacker reach</th>
+              <th class="text-left px-sm py-1">Linked sources</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for inp in re.inputs %}
+            {% set linked_srcs = (binary.sources or []) | selectattr('derived_from', 'equalto', inp.id) | list %}
+            <tr class="border-t border-outline-variant align-top">
+              <td class="px-sm py-1 text-tertiary font-bold">{{ inp.id }}</td>
+              <td class="px-sm py-1 text-on-surface">{{ inp.kind }}</td>
+              <td class="px-sm py-1 text-on-surface-variant break-all">{{ inp.path }}</td>
+              <td class="px-sm py-1 text-on-surface-variant">{{ inp.direction }}</td>
+              <td class="px-sm py-1 text-on-surface-variant">{{ inp.attacker_reachable | default('?') }}</td>
+              <td class="px-sm py-1">
+                {% if linked_srcs %}
+                  {% for s in linked_srcs %}<span class="inline-block bg-primary-container/20 text-primary px-1.5 py-0.5 rounded text-xs mr-1">{{ s.id }}</span>{% endfor %}
+                {% else %}
+                  <span class="text-error/70 italic">no SRC linked</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% if inp.reachability or inp.notes %}
+            <tr class="border-t-0">
+              <td></td>
+              <td colspan="5" class="px-sm py-1 text-body-sm text-on-surface-variant italic">{{ inp.reachability or inp.notes }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      {% if re.notable_strings %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-1">Notable strings</div>
+        <div class="flex flex-wrap gap-1">
+          {% for s in re.notable_strings %}<span class="font-data-mono-sm bg-surface-container-low text-secondary px-2 py-0.5 rounded">{{ s }}</span>{% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if re.rva_anchors %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-1">RVA anchors</div>
+        <table class="text-data-mono-sm border border-outline-variant rounded">
+          {% for name, addr in re.rva_anchors.items() %}
+          <tr class="border-t border-outline-variant"><td class="px-sm py-1 text-on-surface">{{ name }}</td><td class="px-sm py-1 text-tertiary">{{ addr }}</td></tr>
+          {% endfor %}
+        </table>
+      </div>
+      {% endif %}
+
+      {% if sources_missing_derivation %}
+      <div class="bg-error-container/20 border border-error/40 rounded p-sm">
+        <div class="font-label-caps uppercase tracking-wider text-error mb-1">⚠ Derivation gaps</div>
+        <div class="text-body-sm text-on-surface-variant">These sources are not linked back to an input via <code>derived_from</code>: {{ sources_missing_derivation | join(', ') }}</div>
+      </div>
+      {% endif %}
+
+      {% if sidecar_html %}
+      <details class="bg-surface-container-low rounded border border-outline-variant">
+        <summary class="cursor-pointer px-sm py-2 font-label-caps uppercase tracking-wider text-on-surface-variant hover:text-primary">RE journal (sidecar) — open</summary>
+        <div class="prose prose-invert prose-sm max-w-none p-md text-on-surface">{{ sidecar_html | safe }}</div>
+      </details>
+      {% endif %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Capabilities (the BACKWARD view: what can this binary DO?) -->
+  {% if matrix_capabilities %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant flex justify-between items-center bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-error">bolt</span>Capabilities (what this binary CAN DO)</h2>
+      <span class="text-data-mono-sm text-on-surface-variant">{{ matrix_capabilities | length }} capabilities · {{ binary.sinks | length }} sinks</span>
+    </div>
+    <div class="p-md">
+      <div class="text-body-sm text-on-surface-variant mb-3">Backward-traced from sink callsites: which entry functions and inputs can reach each dangerous-API category.</div>
+      <table class="w-full text-data-mono-sm border border-outline-variant rounded">
+        <thead class="bg-surface-container">
+          <tr>
+            <th class="text-left px-sm py-1">ID</th>
+            <th class="text-left px-sm py-1">Capability</th>
+            <th class="text-left px-sm py-1">Sinks</th>
+            <th class="text-left px-sm py-1">Reachable from inputs</th>
+            <th class="text-left px-sm py-1">User action</th>
+            <th class="text-left px-sm py-1">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cap in matrix_capabilities %}
+          <tr class="border-t border-outline-variant align-top">
+            <td class="px-sm py-1 text-error font-bold">{{ cap.id }}</td>
+            <td class="px-sm py-1 text-on-surface">
+              <div class="font-bold">{{ cap.name }}</div>
+              <div class="text-xs text-on-surface-variant">{{ cap.category }}</div>
+              {% if cap.impact %}<div class="text-xs text-on-surface-variant italic">{{ cap.impact }}</div>{% endif %}
+            </td>
+            <td class="px-sm py-1">
+              {% for sid in cap.sinks or [] %}
+                {% set s = matrix_sinks_by_id.get(sid) %}
+                <div><span class="text-tertiary font-bold">{{ sid }}</span> {% if s %}<span class="text-on-surface-variant">{{ s.name }}</span>{% endif %}</div>
+              {% endfor %}
+            </td>
+            <td class="px-sm py-1">
+              {% set rf = cap.reachable_from or {} %}
+              {% if rf.inputs %}
+                {% for inp_id in rf.inputs %}<span class="inline-block bg-primary-container/20 text-primary px-1.5 py-0.5 rounded text-xs mr-1 mb-1">{{ inp_id }}</span>{% endfor %}
+              {% else %}
+                <span class="text-error/70 italic">no input mapped</span>
+              {% endif %}
+              {% if rf.entry_funcs %}
+                <details class="mt-1"><summary class="text-xs text-on-surface-variant cursor-pointer">{{ rf.entry_funcs | length }} entry funcs</summary>
+                  <div class="text-xs text-on-surface-variant mt-1 space-y-0.5">
+                    {% for ef in rf.entry_funcs[:10] %}<div class="font-data-mono-sm">{{ ef }}</div>{% endfor %}
+                  </div>
+                </details>
+              {% endif %}
+            </td>
+            <td class="px-sm py-1 text-on-surface-variant text-xs">{{ cap.user_action or '—' }}</td>
+            <td class="px-sm py-1">
+              {% if cap.confirmed %}<span class="text-secondary">✓ confirmed</span>{% else %}<span class="text-on-surface-variant text-xs">candidate</span>{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Coverage Matrix (the holistic view: inputs × capabilities) -->
+  {% if matrix_inputs and matrix_capabilities %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant flex justify-between items-center bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-secondary">grid_on</span>Coverage Matrix · inputs × capabilities</h2>
+      <span class="text-data-mono-sm text-on-surface-variant">{{ matrix_inputs | length }} × {{ matrix_capabilities | length }} = {{ matrix_inputs | length * matrix_capabilities | length }} cells</span>
+    </div>
+    <div class="p-md">
+      <div class="text-body-sm text-on-surface-variant mb-3">Every cell is either <span class="text-secondary font-bold">connected</span> (chain exists), <span class="text-tertiary">hypothesised</span> (backward-trace says reachable, no chain yet), or <span class="text-on-surface-variant">unexplored</span>. The goal: zero unexplored cells through either chain construction or explicit unreachable annotation.</div>
+      <div class="overflow-x-auto">
+        <table class="text-data-mono-sm border border-outline-variant rounded min-w-full">
+          <thead class="bg-surface-container">
+            <tr>
+              <th class="text-left px-sm py-1 sticky left-0 bg-surface-container">Input \ Capability</th>
+              {% for cap in matrix_capabilities %}
+              <th class="text-left px-sm py-1 whitespace-nowrap"><span class="text-error font-bold">{{ cap.id }}</span><br><span class="text-xs text-on-surface-variant font-normal">{{ cap.name[:25] }}</span></th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for inp in matrix_inputs %}
+            <tr class="border-t border-outline-variant">
+              <td class="px-sm py-1 sticky left-0 bg-surface align-top whitespace-nowrap"><span class="text-tertiary font-bold">{{ inp.id }}</span><br><span class="text-xs text-on-surface-variant">{{ inp.kind }} · {{ (inp.path or '')[:30] }}</span></td>
+              {% for cap in matrix_capabilities %}
+              {% set cell = matrix.get(inp.id, {}).get(cap.id, {}) %}
+              <td class="px-sm py-1 text-center align-middle
+                  {% if cell.status == 'connected' %}bg-secondary/15 text-secondary
+                  {% elif cell.status == 'hypothesised' %}bg-tertiary/15 text-tertiary
+                  {% elif cell.status == 'unreachable' %}bg-surface-container-low text-on-surface-variant line-through
+                  {% else %}text-on-surface-variant/40
+                  {% endif %}">
+                {% if cell.chains %}
+                  {% for ch in cell.chains %}<div class="text-xs">{{ ch }}</div>{% endfor %}
+                {% elif cell.status == 'hypothesised' %}
+                  <span title="{{ cell.note }}">≈</span>
+                {% elif cell.status == 'unreachable' %}
+                  <span title="{{ cell.note }}">⊘</span>
+                {% else %}
+                  ?
+                {% endif %}
+              </td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Coverage Gaps (the forcing function) -->
+  {% if matrix_gaps and (matrix_gaps.unreached_inputs or matrix_gaps.unreached_capabilities or matrix_gaps.unmapped_sinks) %}
+  <section class="bg-error/5 border border-error/30 rounded">
+    <div class="px-sm py-xs border-b border-error/30 flex justify-between items-center">
+      <h2 class="font-label-caps uppercase tracking-wider text-error flex items-center gap-2"><span class="material-symbols-outlined text-[14px]">warning</span>Coverage Gaps</h2>
+      <span class="text-data-mono-sm text-on-surface-variant">{{ matrix_gaps.unreached_inputs | length }} inputs · {{ matrix_gaps.unreached_capabilities | length }} capabilities · {{ matrix_gaps.unmapped_sinks | length }} sinks</span>
+    </div>
+    <div class="p-md grid grid-cols-1 md:grid-cols-3 gap-md">
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Inputs with no chain</div>
+        {% if matrix_gaps.unreached_inputs %}
+        <ul class="text-data-mono-sm space-y-0.5">
+          {% for i in matrix_gaps.unreached_inputs %}<li><span class="text-tertiary font-bold">{{ i.id }}</span> <span class="text-on-surface-variant">{{ i.kind }} · {{ (i.path or '')[:50] }}</span></li>{% endfor %}
+        </ul>
+        {% else %}<div class="text-secondary text-xs">✓ all inputs reach a chain</div>{% endif %}
+      </div>
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Capabilities with no chain</div>
+        {% if matrix_gaps.unreached_capabilities %}
+        <ul class="text-data-mono-sm space-y-0.5">
+          {% for c in matrix_gaps.unreached_capabilities %}<li><span class="text-error font-bold">{{ c.id }}</span> <span class="text-on-surface-variant">{{ c.name }}</span></li>{% endfor %}
+        </ul>
+        {% else %}<div class="text-secondary text-xs">✓ all capabilities reached by a chain</div>{% endif %}
+      </div>
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Sinks not in any capability</div>
+        {% if matrix_gaps.unmapped_sinks %}
+        <ul class="text-data-mono-sm space-y-0.5">
+          {% for s in matrix_gaps.unmapped_sinks %}<li><span class="text-tertiary font-bold">{{ s.id }}</span> <span class="text-on-surface-variant">{{ s.name }}</span></li>{% endfor %}
+        </ul>
+        {% else %}<div class="text-secondary text-xs">✓ all sinks grouped into capabilities</div>{% endif %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Layer 1: Attack-surface map -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant flex justify-between items-center bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">account_tree</span>Layer 1 · Attack-Surface Map</h2>
+      <span class="text-data-mono-sm text-on-surface-variant">{{ binary.sources | length }} sources · {{ binary.sinks | length }} sinks</span>
+    </div>
+    <div class="p-lg bg-surface-container-lowest h-[460px] relative overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#e5e1e4 1px, transparent 1px); background-size: 16px 16px;"></div>
+
+      <!-- Legend -->
+      <div class="absolute bottom-sm right-sm bg-surface-container border border-outline-variant p-2 rounded font-data-mono-sm flex flex-col gap-1 z-10 shadow-lg max-h-[300px] overflow-y-auto">
+        <div class="text-on-surface text-[10px] uppercase font-bold mb-1">class group</div>
+        {% for grp, color in [('F','#fdd6d6'),('I','#fed9a3'),('N','#c5d3ff'),('K','#e0bdf2'),('U','#bfeac6'),('T','#cfd2d8'),('UP','#fff0a3'),('C','#e9d4b8'),('E','#a8d4ff'),('W','#f4c5ff'),('CR','#cccccc')] %}
+          <div class="flex items-center gap-2 text-on-surface-variant"><span class="w-2 h-2 rounded-full" style="background-color: {{ color }}"></span>{{ grp }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- SVG edges (drawn first so they sit behind nodes) -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1000 460" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow" markerWidth="6" markerHeight="6" orient="auto" refX="5" refY="3" viewBox="0 0 6 6"><path d="M 0 0 L 6 3 L 0 6 z" fill="#8c909f"></path></marker>
+        </defs>
+        {% set src_count = binary.sources | length %}
+        {% set sink_count = binary.sinks | length %}
+        {% for s in binary.sources %}
+          {% set y = 60 + loop.index0 * (380 / [src_count, 1] | max) %}
+          <path d="M 240 {{ y }} C 380 {{ y }}, 380 230, 500 230" stroke="#8c909f" stroke-opacity="0.4" stroke-width="1.2" fill="none" marker-end="url(#arrow)"></path>
+        {% endfor %}
+        {% for s in binary.sinks %}
+          {% set y = 60 + loop.index0 * (380 / [sink_count, 1] | max) %}
+          <path d="M 500 230 C 620 230, 620 {{ y }}, 760 {{ y }}" stroke="#ffb4ab" stroke-opacity="0.5" stroke-width="1.2" stroke-dasharray="4 3" fill="none" marker-end="url(#arrow)"></path>
+        {% endfor %}
+      </svg>
+
+      <!-- Source nodes (left), binary (center), sink nodes (right) -->
+      <div class="absolute inset-0 flex justify-between items-center px-[40px]">
+        <div class="flex flex-col gap-md w-[200px]">
+          {% for s in binary.sources %}
+            {% set grp = s.source_class_id.split('-')[0] if s.source_class_id else 'CR' %}
+            <div class="vbn-source-node bg-surface-container border-2 px-3 py-2 rounded flex flex-col gap-0.5 cursor-pointer hover:scale-[1.02] transition-transform z-10 relative" style="border-color: {{ {'F':'#c00','I':'#c80','N':'#06c','K':'#909','U':'#080','T':'#555','UP':'#aa0','C':'#862','E':'#069','W':'#909','CR':'#333'}[grp] }}" data-name="{{ s.name | e }}" data-via="{{ s.via | default('') | e }}" data-function="{{ s.function | default('') | e }}" data-caveat="{{ s.caveat | default('') | e }}" data-classids="{{ s.source_class_id }}{% if s.co_class_ids %}+{{ s.co_class_ids | join('+') }}{% endif %}">
+              <div class="flex items-center gap-1 text-data-mono-sm">
+                <span class="text-on-surface font-bold">{{ s.id }}</span>
+                <span class="text-[10px] uppercase ml-auto" style="color: {{ {'F':'#c00','I':'#c80','N':'#06c','K':'#909','U':'#080','T':'#555','UP':'#aa0','C':'#862','E':'#069','W':'#909','CR':'#333'}[grp] }}">{{ s.source_class_id }}{% if s.co_class_ids %}+{{ s.co_class_ids | length }}{% endif %}</span>
+              </div>
+              <div class="text-data-mono-sm text-on-surface-variant truncate" title="{{ s.name }}">{{ s.name | truncate(36) }}</div>
+              <div class="text-[10px] text-on-surface-variant flex items-center gap-1">
+                {% if s.attacker_controlled == 'yes' %}<span class="bg-error/20 text-error px-1 rounded">ac=yes</span>
+                {% elif s.attacker_controlled == 'yes_with_caveat' %}<span class="bg-tertiary/20 text-tertiary px-1 rounded">ac=caveat</span>
+                {% elif s.attacker_controlled == 'no' %}<span class="bg-secondary/20 text-secondary px-1 rounded">ac=no</span>
+                {% else %}<span class="bg-surface-bright text-on-surface-variant px-1 rounded">ac=?</span>{% endif %}
+                <span class="text-on-surface-variant">{{ s.status_badge | default('') }}</span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="bg-surface-container border-2 border-primary px-4 py-3 rounded flex flex-col items-center shadow-[0_0_30px_rgba(173,198,255,0.15)] z-10">
+          <div class="font-data-mono-md text-primary font-bold">{{ binary.binary }}</div>
+          {% set principal = (binary.process_model or {}).principal | default('?') %}
+          <div class="bg-error-container/20 text-error font-data-mono-sm px-2 rounded mt-1">{{ principal }}</div>
+        </div>
+        <div class="flex flex-col gap-md w-[220px]">
+          {% for s in binary.sinks %}
+            <div class="vbn-sink-node bg-surface-container border-2 border-error px-3 py-2 rounded flex flex-col gap-0.5 cursor-pointer hover:scale-[1.02] transition-transform z-10 shadow-[0_0_10px_rgba(255,180,171,0.1)] relative" data-name="{{ s.name | e }}" data-cwe="{{ s.cwe | default('') | e }}" data-function="{{ s.function | default('') | e }}" data-impact="{{ s.impact | default('') | e }}">
+              <div class="flex items-center gap-1 text-data-mono-sm">
+                <span class="text-error font-bold">{{ s.id }}</span>
+                <span class="text-[10px] uppercase ml-auto text-error">{{ s.cwe }}</span>
+              </div>
+              <div class="text-data-mono-sm text-on-surface truncate" title="{{ s.name }}">{{ s.name | truncate(34) }}</div>
+              <div class="text-[10px] text-on-surface-variant truncate" title="{{ s.impact }}">{{ s.impact | truncate(32) }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Layer 2: Trust boundary -->
+  {% if binary.process_model %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">security</span>Layer 2 · Trust Boundary & Process Model</h2>
+    </div>
+    <div class="p-lg grid grid-cols-1 lg:grid-cols-4 gap-md">
+      <div class="lg:col-span-3 bg-surface-container-lowest border border-surface-variant rounded p-md grid grid-rows-4 gap-sm relative overflow-hidden">
+        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: linear-gradient(#424754 1px, transparent 1px), linear-gradient(90deg, #424754 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <!-- SYSTEM zone -->
+        <div class="border border-dashed border-error/40 rounded p-sm relative bg-error/[0.03]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-error">SYSTEM</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            {% set principal = binary.process_model.principal %}
+            {% if principal == 'SYSTEM' %}
+            <div class="flex items-center gap-2 px-2 py-1 bg-surface-container border-2 border-primary rounded">
+              <div class="w-2 h-2 rounded-full bg-primary"></div>
+              <span class="font-data-mono-sm text-primary font-bold">{{ binary.binary }}</span>
+            </div>
+            {% endif %}
+            {% for p in binary.process_model.parent_processes or [] %}
+              {% if p.principal == 'SYSTEM' %}
+              <div class="flex items-center gap-2 px-2 py-1 bg-surface-container border border-outline-variant rounded">
+                <div class="w-2 h-2 rounded-full bg-error"></div>
+                <span class="font-data-mono-sm text-on-surface">{{ p.name }}</span>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <!-- Admin zone -->
+        <div class="border border-dashed border-tertiary/40 rounded p-sm relative bg-tertiary/[0.02]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-tertiary">Admin</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            {% for p in binary.process_model.ipc_peers or [] %}
+              {% if p.principal and 'Admin' in p.principal %}
+              <div class="flex items-center gap-2 px-2 py-1 bg-surface-container border border-outline-variant rounded">
+                <div class="w-2 h-2 rounded-full bg-tertiary"></div>
+                <span class="font-data-mono-sm text-on-surface">{{ p.name }}</span>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <!-- LoggedInUser zone -->
+        <div class="border border-dashed border-secondary/40 rounded p-sm relative bg-secondary/[0.02]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-secondary">loggedInUser</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            {% for p in binary.process_model.ipc_peers or [] %}
+              {% if p.principal == 'loggedInUser' %}
+              <div class="flex items-center gap-2 px-2 py-1 bg-surface-container border border-outline-variant rounded">
+                <div class="w-2 h-2 rounded-full bg-secondary"></div>
+                <span class="font-data-mono-sm text-on-surface">{{ p.name }}</span>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <!-- Attacker zone -->
+        <div class="border border-dashed border-on-surface-variant rounded p-sm relative bg-surface-container/40">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-on-surface-variant">Standard user (attacker)</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            <div class="flex items-center gap-2 px-2 py-1 bg-on-surface-variant/10 border border-on-surface-variant rounded">
+              <div class="w-2 h-2 rounded-full bg-on-surface-variant"></div>
+              <span class="font-data-mono-sm text-on-surface-variant">(any standard-user process)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Side panel with process-model facts -->
+      <div class="bg-surface-container-low border border-surface-variant rounded p-md flex flex-col gap-md">
+        <div>
+          <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-1">Loaded by</div>
+          <div class="text-data-mono-sm text-on-surface">{{ binary.process_model.loaded_by | default('—') }}</div>
+        </div>
+        <div>
+          <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-1">Start trigger</div>
+          <div class="text-data-mono-sm text-on-surface">{{ binary.process_model.start_trigger | default('—') }}</div>
+        </div>
+        <div class="grid grid-cols-2 gap-sm pt-sm border-t border-outline-variant">
+          <div>
+            <div class="text-data-mono-sm text-on-surface-variant uppercase mb-1">Impersonation</div>
+            <div class="text-data-mono-sm {% if binary.process_model.impersonation_seen %}text-secondary{% else %}text-error{% endif %}">{{ 'yes' if binary.process_model.impersonation_seen else 'no' }}</div>
+          </div>
+          <div>
+            <div class="text-data-mono-sm text-on-surface-variant uppercase mb-1">PPL</div>
+            <div class="text-data-mono-sm {% if binary.process_model.ppl_protected %}text-secondary{% else %}text-error{% endif %}">{{ 'yes' if binary.process_model.ppl_protected else 'no' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Layer 3: Defense matrix -->
+  {% if binary.defenses %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">shield</span>Layer 3 · Defense Matrix</h2>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-surface-container border-b border-outline-variant">
+            <th class="font-label-caps uppercase text-on-surface-variant p-2 font-normal">Class</th>
+            <th class="font-label-caps uppercase text-on-surface-variant p-2 font-normal">Expected</th>
+            <th class="font-label-caps uppercase text-on-surface-variant p-2 font-normal">Observed</th>
+            <th class="font-label-caps uppercase text-on-surface-variant p-2 font-normal">Gap</th>
+            <th class="font-label-caps uppercase text-on-surface-variant p-2 font-normal">Bypass attempts</th>
+          </tr>
+        </thead>
+        <tbody class="font-data-mono-sm">
+          {% for d in binary.defenses %}
+          <tr class="border-b border-outline-variant hover:bg-surface-container transition-colors {% if 'YES' in (d.gap or '') %}bg-error/[0.03]{% endif %}">
+            <td class="p-2 text-on-surface font-bold">{{ d.class_id }}</td>
+            <td class="p-2 text-on-surface-variant">{{ d.defense_expected | truncate(120) }}</td>
+            <td class="p-2 text-on-surface-variant">{{ d.observed | truncate(120) }}</td>
+            <td class="p-2">
+              {% if 'YES' in (d.gap or '') %}<span class="text-error bg-error/10 px-1.5 py-0.5 rounded font-bold">{{ d.gap | truncate(60) }}</span>
+              {% elif 'partial' in (d.gap or '') %}<span class="text-tertiary bg-tertiary/10 px-1.5 py-0.5 rounded">{{ d.gap | truncate(60) }}</span>
+              {% else %}<span class="text-on-surface-variant">{{ d.gap or '—' | truncate(60) }}</span>{% endif %}
+            </td>
+            <td class="p-2 text-on-surface-variant">{{ d.bypass_attempts | truncate(120) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Layer 5: Class coverage matrix -->
+  {% if class_coverage_grouped %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container flex justify-between items-center">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">grid_view</span>Layer 5 · Class Coverage Matrix</h2>
+      <div class="text-data-mono-sm text-on-surface-variant">
+        <span class="text-error">{{ coverage_stats.present }}</span> present ·
+        <span class="text-secondary">{{ coverage_stats.defense_observed }}</span> defense observed ·
+        <span class="text-on-surface-variant">{{ coverage_stats.not_present }}</span> not present ·
+        <span class="text-tertiary">{{ coverage_stats.unchecked }}</span> unchecked
+      </div>
+    </div>
+    <div class="p-md space-y-md">
+      {% for grp, rows in class_coverage_grouped %}
+      <details {% if grp == 'I' or grp == 'T' or grp == 'F' %}open{% endif %} class="border border-outline-variant rounded">
+        <summary class="px-md py-sm bg-surface-container-low cursor-pointer flex items-center justify-between">
+          <span class="font-data-mono-md text-on-surface">Group {{ grp }} <span class="text-on-surface-variant">({{ rows | length }} classes)</span></span>
+          <span class="text-data-mono-sm text-on-surface-variant">{{ rows | selectattr('status', 'equalto', 'present') | list | length }} present · {{ rows | selectattr('status', 'equalto', 'unchecked') | list | length }} unchecked</span>
+        </summary>
+        <table class="w-full text-left border-collapse text-data-mono-sm">
+          <tbody>
+            {% for r in rows %}
+            <tr class="border-t border-outline-variant hover:bg-surface-container">
+              <td class="p-2 align-top w-[15%]"><span class="text-on-surface font-bold">{{ r.class_id }}</span><div class="text-on-surface-variant text-[10px] mt-0.5">{{ r.name | truncate(40) }}</div></td>
+              <td class="p-2 align-top w-[20%]">
+                {% if r.status == 'present' %}<span class="bg-error/20 text-error px-1.5 py-0.5 rounded">🔴 present</span>
+                {% elif r.status == 'defense_observed' %}<span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">🟢 defense</span>
+                {% elif r.status == 'not_present' %}<span class="bg-on-surface-variant/10 text-on-surface-variant px-1.5 py-0.5 rounded">⚪ absent</span>
+                {% else %}<span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">⏳ unchecked</span>{% endif %}
+              </td>
+              <td class="p-2 align-top text-on-surface-variant">
+                {% if r.status == 'present' %}
+                  {% if r.refs and r.refs.sources %}sources: <span class="text-primary">{{ r.refs.sources | join(', ') }}</span>{% endif %}
+                  {% if r.refs and r.refs.chains %} · chains: <span class="text-primary">{{ r.refs.chains | join(', ') }}</span>{% endif %}
+                {% elif r.status == 'unchecked' %}
+                  <details><summary class="cursor-pointer text-tertiary hover:text-primary">walk detection checklist</summary>
+                    <div class="mt-2 p-2 bg-surface-container-lowest rounded text-on-surface-variant">
+                      {% if r.lib %}
+                      <div class="mb-2"><span class="text-on-surface font-bold">Canonical defense:</span> {{ r.lib.canonical_defense | truncate(200) }}</div>
+                      {% if r.lib.common_bypasses %}
+                      <div class="mb-2"><span class="text-on-surface font-bold">Common bypasses:</span><ul class="ml-4 mt-1 list-disc">{% for b in r.lib.common_bypasses %}<li>{{ b }}</li>{% endfor %}</ul></div>
+                      {% endif %}
+                      {% if r.lib.detection_checklist %}
+                      <div><span class="text-on-surface font-bold">Detection checklist:</span><ul class="ml-4 mt-1">{% for q in r.lib.detection_checklist %}<li class="flex items-start gap-2"><input type="checkbox" class="mt-1" disabled />{{ q }}</li>{% endfor %}</ul></div>
+                      {% endif %}
+                      {% endif %}
+                    </div>
+                  </details>
+                {% else %}
+                  {{ r.rationale | default('—') | truncate(160) }}
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </details>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Chains -->
+  {% if binary.chains %}
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">timeline</span>Chains ({{ binary.chains | length }})</h2>
+    </div>
+    <table class="w-full text-left border-collapse text-data-mono-sm">
+      <thead><tr class="bg-surface-container-low border-b border-outline-variant">
+        <th class="p-2 font-normal text-on-surface-variant uppercase">ID</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Title</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Status</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Severity</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">CWE</th>
+        <th class="p-2 font-normal text-on-surface-variant uppercase">Submission</th>
+      </tr></thead>
+      <tbody>
+        {% for c in binary.chains %}
+        <tr class="border-b border-outline-variant hover:bg-surface-container cursor-pointer" onclick="location.href='{{ root }}binaries/{{ binary.page_stem }}/chains/{{ c.id }}.html'">
+          <td class="p-2 text-primary font-bold">{{ c.id }}</td>
+          <td class="p-2 text-on-surface">{{ c.title | truncate(80) }}</td>
+          <td class="p-2">
+            {% if c.status == 'confirmed' %}<span class="bg-error/20 text-error px-1.5 py-0.5 rounded">✅ confirmed</span>
+            {% elif c.status == 'partial' %}<span class="bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">🟡 partial</span>
+            {% elif c.status == 'hypothesised' %}<span class="bg-primary/20 text-primary px-1.5 py-0.5 rounded">❔ hypothesised</span>
+            {% elif c.status == 'unexplored' %}<span class="bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">⏳ unexplored</span>
+            {% elif c.status == 'mitigated' %}<span class="bg-on-surface-variant/10 text-on-surface-variant px-1.5 py-0.5 rounded">🛡 mitigated</span>{% endif %}
+          </td>
+          <td class="p-2 text-on-surface-variant">{{ c.severity | default('—') }}</td>
+          <td class="p-2 text-on-surface-variant">{{ c.cwe | join(', ') if c.cwe else '—' }}</td>
+          <td class="p-2 text-on-surface-variant">{{ c.submission_ref | default('—') | truncate(50) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+
+</div>
+
+<!-- Tooltip element (populated on hover) -->
+<div id="vbn-tooltip" class="fixed pointer-events-none z-[100] bg-surface-container-high border border-outline-variant rounded p-sm font-data-mono-sm text-on-surface shadow-2xl hidden" style="max-width: 360px;"></div>
+
+<style>
+  .vbn-cov-row.vbn-hidden { display: none; }
+</style>
+
+<script>
+(function(){
+  // ----- Source/sink hover tooltips -----
+  const tooltip = document.getElementById('vbn-tooltip');
+  function showTooltip(ev, html) {
+    tooltip.innerHTML = html;
+    tooltip.classList.remove('hidden');
+    const x = ev.clientX + 16;
+    const y = ev.clientY + 16;
+    tooltip.style.left = (x + 380 > window.innerWidth ? window.innerWidth - 380 : x) + 'px';
+    tooltip.style.top = (y + 200 > window.innerHeight ? window.innerHeight - 220 : y) + 'px';
+  }
+  function hideTooltip() { tooltip.classList.add('hidden'); }
+
+  document.querySelectorAll('.vbn-source-node').forEach(node => {
+    node.addEventListener('mouseenter', (ev) => {
+      const name = node.dataset.name || '';
+      const via = node.dataset.via || '';
+      const fn = node.dataset.function || '';
+      const caveat = node.dataset.caveat || '';
+      const cls = node.dataset.classids || '';
+      let html = `<div class="font-bold text-primary mb-1">${cls}</div>`;
+      html += `<div class="text-on-surface mb-2">${name}</div>`;
+      if (via) html += `<div class="text-on-surface-variant"><span class="text-on-surface">via:</span> ${via}</div>`;
+      if (fn) html += `<div class="text-on-surface-variant"><span class="text-on-surface">function:</span> ${fn}</div>`;
+      if (caveat) html += `<div class="text-tertiary mt-1"><span class="text-on-surface">caveat:</span> ${caveat}</div>`;
+      showTooltip(ev, html);
+    });
+    node.addEventListener('mousemove', (ev) => {
+      const x = ev.clientX + 16;
+      const y = ev.clientY + 16;
+      tooltip.style.left = (x + 380 > window.innerWidth ? window.innerWidth - 380 : x) + 'px';
+      tooltip.style.top = (y + 200 > window.innerHeight ? window.innerHeight - 220 : y) + 'px';
+    });
+    node.addEventListener('mouseleave', hideTooltip);
+  });
+
+  document.querySelectorAll('.vbn-sink-node').forEach(node => {
+    node.addEventListener('mouseenter', (ev) => {
+      const name = node.dataset.name || '';
+      const cwe = node.dataset.cwe || '';
+      const fn = node.dataset.function || '';
+      const impact = node.dataset.impact || '';
+      let html = `<div class="font-bold text-error mb-1">${cwe}</div>`;
+      html += `<div class="text-on-surface mb-2">${name}</div>`;
+      if (fn) html += `<div class="text-on-surface-variant"><span class="text-on-surface">function:</span> ${fn}</div>`;
+      if (impact) html += `<div class="text-on-surface-variant"><span class="text-on-surface">impact:</span> ${impact}</div>`;
+      showTooltip(ev, html);
+    });
+    node.addEventListener('mousemove', (ev) => {
+      const x = ev.clientX + 16;
+      const y = ev.clientY + 16;
+      tooltip.style.left = (x + 380 > window.innerWidth ? window.innerWidth - 380 : x) + 'px';
+      tooltip.style.top = (y + 200 > window.innerHeight ? window.innerHeight - 220 : y) + 'px';
+    });
+    node.addEventListener('mouseleave', hideTooltip);
+  });
+})();
+</script>
+
+{% endblock %}

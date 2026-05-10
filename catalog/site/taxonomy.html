@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Vulnerabin · Taxonomy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#131315",
+        background: "#0c0c0e",
+        "on-surface": "#e5e1e4",
+        "on-background": "#e5e1e4",
+        "on-surface-variant": "#c2c6d6",
+        "surface-container-lowest": "#0e0e10",
+        "surface-container-low": "#1b1b1d",
+        "surface-container": "#201f21",
+        "surface-container-high": "#2a2a2c",
+        "surface-container-highest": "#353437",
+        "surface-bright": "#39393b",
+        "surface-variant": "#353437",
+        outline: "#8c909f",
+        "outline-variant": "#424754",
+        primary: "#adc6ff",
+        "primary-fixed": "#d8e2ff",
+        "primary-fixed-dim": "#adc6ff",
+        "primary-container": "#4d8eff",
+        "on-primary": "#002e6a",
+        "on-primary-container": "#00285d",
+        secondary: "#4fdbc8",
+        "secondary-container": "#04b4a2",
+        tertiary: "#ffb786",
+        "tertiary-container": "#df7412",
+        error: "#ffb4ab",
+        "error-container": "#93000a",
+        "on-error": "#690005",
+        "on-error-container": "#ffdad6",
+        accent: "#3b82f6",
+        // Source-class group colors (matching taxonomy/binary/sources_v2.json groups)
+        "grp-F": "#fdd6d6",
+        "grp-F-stroke": "#c00",
+        "grp-I": "#fed9a3",
+        "grp-I-stroke": "#c80",
+        "grp-N": "#c5d3ff",
+        "grp-N-stroke": "#06c",
+        "grp-K": "#e0bdf2",
+        "grp-K-stroke": "#909",
+        "grp-U": "#bfeac6",
+        "grp-U-stroke": "#080",
+        "grp-T": "#cfd2d8",
+        "grp-T-stroke": "#555",
+        "grp-UP": "#fff0a3",
+        "grp-UP-stroke": "#aa0",
+        "grp-C": "#e9d4b8",
+        "grp-C-stroke": "#862",
+        "grp-E": "#a8d4ff",
+        "grp-E-stroke": "#069",
+        "grp-W": "#f4c5ff",
+        "grp-W-stroke": "#909",
+        "grp-CR": "#cccccc",
+        "grp-CR-stroke": "#333",
+      },
+      borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "9999px" },
+      spacing: { base: "4px", xs: "4px", sm: "8px", gutter: "12px", md: "16px", margin: "16px", lg: "24px", xl: "32px", unit: "4px" },
+      fontFamily: {
+        "ui-sans-md": ["Inter"], "ui-sans-sm": ["Inter"],
+        "data-mono-sm": ["JetBrains Mono"], "data-mono-md": ["JetBrains Mono"],
+        "code-block": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"],
+        "h1": ["Inter"], "h2": ["Inter"], "title-sm": ["Inter"],
+        "headline-md": ["Inter"], "display-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+      },
+      fontSize: {
+        "h1": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "h2": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "title-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+        "ui-sans-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+        "ui-sans-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+        "data-mono-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "data-mono-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+        "code-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "code-sm": ["11px", { lineHeight: "16px", fontWeight: "400" }],
+        "code-block": ["13px", { lineHeight: "22px", fontWeight: "400" }],
+        "label-caps": ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "700" }],
+        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+      },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a2c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #424754; }
+.bg-custom-surface { background-color: #16171d; }
+</style>
+</head>
+<body class="bg-background text-on-background font-ui-sans-md h-screen flex flex-col overflow-hidden">
+
+<!-- Top app bar -->
+<header class="bg-surface-container border-b border-outline-variant flex justify-between items-center w-full px-lg py-sm z-50 h-14 shrink-0">
+  <div class="flex items-center gap-md">
+    <a href="index.html" class="text-h2 font-h1 tracking-tight text-primary">Vulnerabin</a>
+    <nav class="hidden md:flex items-center gap-sm ml-lg">
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="index.html">Products</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="binaries.html">Binaries</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="chains.html">Chains</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="pipeline.html">Pipeline</a>
+      <a class="text-primary font-bold hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="taxonomy.html">Taxonomy</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-sm">
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+  </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden">
+  <!-- Side nav -->
+  <aside class="bg-surface text-on-surface font-ui-sans-sm border-r border-outline-variant flex flex-col py-md space-y-unit shrink-0 w-60 h-full overflow-y-auto">
+    <div class="px-4 mb-4">
+      <div class="font-h2 text-h2 font-black text-primary leading-tight">Vulnerabin</div>
+      <div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">v0.5.0 · catalog</div>
+    </div>
+    <nav class="flex-1 space-y-unit">
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="index.html">
+        <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        <span class="font-body-sm">Products</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="binaries.html">
+        <span class="material-symbols-outlined text-[18px]">memory</span>
+        <span class="font-body-sm">Binaries</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="chains.html">
+        <span class="material-symbols-outlined text-[18px]">timeline</span>
+        <span class="font-body-sm">Chains</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="pipeline.html">
+        <span class="material-symbols-outlined text-[18px]">trending_up</span>
+        <span class="font-body-sm">Pipeline</span>
+      </a>
+      <a class="bg-surface-container-high text-primary border-l-2 border-primary hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="taxonomy.html">
+        <span class="material-symbols-outlined text-[18px]">hub</span>
+        <span class="font-body-sm">Taxonomy</span>
+      </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="https://github.com/anthropics/vulnerabin"><span class="material-symbols-outlined text-[16px]">menu_book</span><span class="font-body-sm">Docs</span></a>
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[16px]">dns</span><span class="font-body-sm">Status</span></a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col bg-background overflow-y-auto">
+    
+<div class="p-lg max-w-[1200px] mx-auto">
+<h1 class="font-h1 text-h1 text-primary mb-md">Source taxonomy v2</h1>
+<p class="text-ui-sans-sm text-on-surface-variant mb-lg max-w-3xl">62 source classes across 11 groups. The canonical reference is <code class="bg-surface-container px-1 rounded">taxonomy/binary/sources_comprehensive.md</code>; the detection-checklist + defense library is at <code class="bg-surface-container px-1 rounded">taxonomy/binary/defense_library.json</code>.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">F-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fdd6d6">F</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">NTFS-junction-write-by-elevated-process</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Apply protected DACL to every ancestor the binary creates; open paths with FILE_OPEN_REPARSE_POINT/OBJ_DONT_REPARSE; refuse if FILE_ATTRIBUTE_REPARSE_POINT...</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">F-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fdd6d6">F</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">NTFS-junction-read-by-elevated-process</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Same as F-001 plus HMAC/sign config files so even if read succeeds, content is rejected unless the signature checks.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">F-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fdd6d6">F</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">NTFS-hardlink-substitution</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Open with FILE_FLAG_OPEN_REPARSE_POINT, verify nNumberOfLinks == 1 via GetFileInformationByHandle; or use FILE_DISPOSITION_POSIX_SEMANTICS for delete operations.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">F-004</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fdd6d6">F</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Symlink-by-low-priv-into-protected-target (Linux)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Use O_NOFOLLOW; openat() with AT_SYMLINK_NOFOLLOW; mkstemp for temp files instead of predictable paths.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">F-005</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fdd6d6">F</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">World-writable IPC socket</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Linux: socket mode 0700 / per-user; SO_PEERCRED to verify caller UID. Windows: explicit DACL granting only owning service account.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">F-006</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fdd6d6">F</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">World-writable / user-readable config / log file</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Apply protected DACL on file creation; rotate logs to admin-only directories; redact sensitive content before logging.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">F-007</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fdd6d6">F</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">File-association / drag-drop trust handler</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Treat file content as untrusted; sanitize path components; drop privileges before parsing; use a sandbox process for file-content parsing.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">I-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fed9a3">I</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Named-pipe-unauthenticated-read</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Explicit SDDL grant only to the owning service principal; authenticate caller via ImpersonateNamedPipeClient + token check.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">I-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fed9a3">I</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Named-pipe-unauthenticated-write</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Explicit SDDL; authenticate caller via ImpersonateNamedPipeClient + group membership check, OR GetNamedPipeClientProcessId + image-path allowlist.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">I-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fed9a3">I</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">D-Bus method caller-uid trust</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Always read caller uid from g_dbus_method_invocation_get_sender(invocation) then bus.get_unix_user(sender). Discard any uid argument.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">I-004</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fed9a3">I</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">COM elevation moniker / IElevator interface</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Restrict LaunchPermission to admin-only SIDs. Authenticate caller in every method via CoImpersonateClient + OpenThreadToken + token check.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">I-005</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fed9a3">I</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">WM_COPYDATA / window message</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> ChangeWindowMessageFilter / ChangeWindowMessageFilterEx to block specific messages from non-elevated; rely on UIPI default.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">I-006</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fed9a3">I</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">ALPC port (kernel)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Implement an ALPC connection callback that validates caller via AlpcGetMessageAttribute + PsLookupProcessByProcessId checks.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">I-007</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fed9a3">I</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Mailslot</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Set DACL via lpSecurityAttributes; legacy IPC, prefer migrating to named pipes.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">I-008</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fed9a3">I</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Shared section / cross-process memory</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Per-session local namespace (\Sessions\&lt;sid&gt;\BaseNamedObjects\); explicit DACL.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">I-009</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fed9a3">I</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Localhost TCP IPC (port-bound)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Application-level auth: TLS with mutual-cert, HMAC over messages, OAuth-style tokens. The IPC layer offers no protection.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">N-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #c5d3ff">N</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">DNS wire-format parser</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Strict bounds checking on every length field; compression-pointer cycle detection; explicit max-iterations on RR-list traversal.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">N-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #c5d3ff">N</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">HTTP listener (HTTP.sys / IIS / custom)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Use battle-tested HTTP libraries; strict RFC compliance; explicit length checks; reject malformed Transfer-Encoding combinations.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">N-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #c5d3ff">N</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">TLS / network protocol parser (transport-level)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Cert pinning; HMAC over payloads; protocol parser fuzzing.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">N-004</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #c5d3ff">N</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Custom application protocol (payload-level)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Use schema-driven parsers (protobuf, capnproto); explicit type tags; bounds-checked TLV walks.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">N-005</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #c5d3ff">N</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">SSRF</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> URL allowlist; DNS resolution before fetch + filter against internal IP ranges; disable redirects; disable file://, gopher://.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">N-006</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #c5d3ff">N</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">WebSocket</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Origin check on upgrade; per-message length checks; auth token in upgrade or first message.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">N-007</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #c5d3ff">N</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Multicast / mDNS / broadcast listener</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Treat multicast/broadcast packets as untrusted by definition; rate-limit; sanity-check packet structure aggressively.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">K-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e0bdf2">K</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">IOCTL input buffer (IRP_MJ_DEVICE_CONTROL)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> IoCreateDeviceSecure with admin-only SDDL; SeAccessCheck per IOCTL; METHOD_BUFFERED default; ProbeForRead/ProbeForWrite for METHOD_NEITHER inside...</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">K-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e0bdf2">K</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">FSCTL / minifilter port operation</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> SDDL on the port; per-message authentication; bounds-check input/output sizes; FltGetFilterFromName ACL check.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">K-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e0bdf2">K</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">WMI provider input</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Validate every WMI method input; refuse callers without admin token.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">K-004</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e0bdf2">K</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Object/process/image-load/registry callback</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Callbacks should be defensive (validate, return STATUS_ACCESS_DENIED on suspect ops); never operate on user data without validation.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">K-005</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e0bdf2">K</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Non-IOCTL IRP (read/write/create)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Same as K-001 for the relevant IRP_MJ_*</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">K-006</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e0bdf2">K</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Kernel-resident user-mapped buffer (multi-fetch / Cc-mapped)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Kernel-pool snapshot before validate-and-use: copy user buffer to kernel-allocated buffer first, then validate-and-operate on the kernel copy.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">U-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #bfeac6">U</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Elevated process argv parsing</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Don&#39;t trust argv; for service/installer use case, derive args from authoritative source (registry under admin DACL, SCM-set ImagePath).</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">U-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #bfeac6">U</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Environment variable trust</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Sanitize/whitelist env vars at process boundary; for setuid/elevated, use sanitized libc env routines or strip non-essential vars.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">U-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #bfeac6">U</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Custom-protocol-handler URL routing</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Strict URL parser; reject unexpected URL components; treat URL as untrusted input regardless of source.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">U-004</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #bfeac6">U</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Clipboard / drag-drop content</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Don&#39;t trust clipboard content for privileged operations; validate format before parsing.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">U-005</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #bfeac6">U</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Window-message input</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> ChangeWindowMessageFilter to block privileged messages from non-elevated; UIPI default protection.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">T-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #cfd2d8">T</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">WinVerifyTrust on file path (process-hollowing)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Verify in-memory code: hash caller&#39;s image base via ZwReadVirtualMemory and compare against expected hash; or use PPL on the trusting service.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">T-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #cfd2d8">T</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">PEB.ImagePathName trust</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Use NtQueryInformationProcess(ProcessImageFileName, class 29) which sources from EPROCESS-&gt;SectionObject (kernel-authoritative); never read from PEB for...</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">T-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #cfd2d8">T</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Token / SID / membership check spoofable</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Use authoritative kernel-derived checks; for cross-process trust, prefer ImpersonateLoggedOnUser + SeAccessCheck against a kernel object.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">T-004</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #cfd2d8">T</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Caller-process-image-path trust without impersonation</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Don&#39;t have IPC at all, OR require fresh authentication beyond image-path identity (HMAC token, mutual TLS, signed session ticket).</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">T-005</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #cfd2d8">T</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Path-traversal / canonicalization in trust check</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Canonicalize before compare: GetFullPathNameW(path, MAX_PATH, canonical, NULL) then wcsncmp; or PathIsPrefix from shlwapi on canonicalized inputs.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">T-006</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #cfd2d8">T</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Same-sign / co-signing assumption</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Don&#39;t trust co-signing as auth. Use mutual TLS, fresh tokens, or kernel-mode authentication primitives.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">T-007</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #cfd2d8">T</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Internal-component-as-untrusted-source</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Threshold-protocol design assuming K-of-N components are honest; cross-validate aggregations; require independent signatures from at least M components.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">UP-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fff0a3">UP</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Auto-updater unsigned-binary execution</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> WinVerifyTrust on every downloaded binary before exec; signature pinning with backup keys; refuse exec on signature failure.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">UP-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fff0a3">UP</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Squirrel.Windows update channel</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Restrict packages directory to admin-write; sign all packages; verify package signatures before unpack/install.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">UP-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fff0a3">UP</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">electron-updater feed manipulation</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> HTTPS feed; sign latest.yml / app-update.yml; cert pinning; code-sign on the downloaded package.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">UP-004</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fff0a3">UP</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">MSI custom-action argv</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Don&#39;t trust MSI properties for security decisions; restrict who can msiexec /i with custom properties.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">UP-005</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #fff0a3">UP</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Installer extract-then-execute</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Extract to admin-write-only path; canonicalize before exec; verify signature on extracted binary before running.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">C-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e9d4b8">C</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Registry value with permissive DACL trusted by elevated</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Admin-only SDDL on the subkey; for HKCU values used by elevated process, validate per-user-context they don&#39;t influence cross-user decisions.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">C-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e9d4b8">C</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Config file in user-writable location</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Variant of F-002/F-006 — same defense.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">C-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e9d4b8">C</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">GPO / policy preference</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Sign / encrypt sensitive values; rotate keys; use modern Group Policy Preferences APIs that don&#39;t store credentials in cpassword.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">C-004</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #e9d4b8">C</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Service start parameters</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Restrict SERVICE_START to admins; don&#39;t accept lpServiceArgVectors from non-admin callers.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">E-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #a8d4ff">E</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">ipcMain.on/handle channel</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> contextIsolation: true; validate every handler argument; never pass renderer-supplied args directly to child_process.exec / fs.writeFile / eval; use a...</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">E-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #a8d4ff">E</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Custom protocol handler URL routing (Electron)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Strict URL parser; reject unexpected paths; treat URL as untrusted input.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">E-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #a8d4ff">E</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">webPreferences.nodeIntegration:true</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> contextIsolation: true; nodeIntegration: false (default modern Electron); use contextBridge.exposeInMainWorld for explicit API surface.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">E-004</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #a8d4ff">E</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">protocol.registerFileProtocol unvalidated</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Strict URL → path mapping; reject paths with .. or absolute paths; canonicalize and prefix-check against an expected base.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">E-005</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #a8d4ff">E</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">BrowserWindow.loadURL with attacker URL</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Allowlist origins for loadURL; strip query/fragment from user-supplied URLs; never disable webSecurity.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">E-006</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #a8d4ff">E</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Renderer XSS in trusted origin</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> DOMPurify on user-rendered content; CSP with strict-dynamic; nonce-based script loading.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">E-007</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #a8d4ff">E</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Squirrel/electron-updater feed (Electron-specific overlap UP-003)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Same as UP-003.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">W-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #f4c5ff">W</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Authenticated user session as source</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Tenant-scope every request; explicit authorization check on every endpoint; per-row access control.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">W-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #f4c5ff">W</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Cross-tenant authorization gap</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Tenant ID required on every query; SQL/ORM scope filters set by middleware not handler.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">W-003</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #f4c5ff">W</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Pre-auth endpoint</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> Auth required by default; explicit allowlist for genuinely public endpoints; rate-limit.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">CR-001</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #cccccc">CR</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Constant-key / many-time-pad encryption of privileged data</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> BCryptGenRandom for keys; nonces from BCryptGenRandom per-message; AEAD modes (GCM/CCM) which fail catastrophically on nonce reuse.</div>
+  </div>
+  
+  <div class="bg-surface-container border border-outline-variant rounded p-md">
+    <div class="flex items-center justify-between mb-1">
+      <span class="font-data-mono-md text-primary font-bold">CR-002</span>
+      <span class="text-[10px] uppercase font-data-mono-sm" style="color: #cccccc">CR</span>
+    </div>
+    <div class="font-ui-sans-md text-on-surface mb-2">Reserved (signature/HMAC omitted by default)</div>
+    <div class="text-data-mono-sm text-on-surface-variant"><span class="text-on-surface font-bold">Defense:</span> (placeholder) Sign/HMAC every privileged datum.</div>
+  </div>
+  
+</div>
+</div>
+
+  </main>
+</div>
+</body>
+</html>

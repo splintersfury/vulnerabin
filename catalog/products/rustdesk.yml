@@ -1,0 +1,47 @@
+product: rustdesk
+display_name: RustDesk (Linux service mode)
+vendor: RustDesk (Open-source)
+description: >
+  Cross-platform remote-desktop tool. Linux service mode runs the daemon as
+  root. Engagement uncovered F-005 world-writable IPC socket: the daemon
+  creates `/tmp/RustDesk/ipc_uinput_*` with mode 0o0777 owned by root, allowing
+  any local UID to drive root-context creation of kernel uinput devices that
+  emit attacker-chosen EV_KEY events.
+
+versions_seen:
+  - version: "1.4.6"
+    eng: local-host-svc-hunt-2026-05-09
+    seen: 2026-05-09
+
+binaries:
+  - rustdesk_daemon (Linux .deb 1.4.6 build 2026-04-14)
+
+topology:
+  trust_zones:
+    root:
+      - rustdesk_daemon
+    Standard_uid_attacker:
+      - "(any local UID-1000+ process)"
+
+  ipc_edges:
+    - { src: "(any local UID)", dst: rustdesk_daemon, via: Unix socket /tmp/RustDesk/ipc_uinput_* (mode 0777) }
+    - { src: rustdesk_daemon, dst: /dev/uinput, via: kernel uinput device creation }
+
+  defenses:
+    daemon:
+      - "binds Unix sockets in /tmp/RustDesk/"
+      - "GAP: F-005 — sockets created with `set_permissions(0o0777)` per src/ipc.rs:452; no peer-cred check"
+      - "GAP: handle_keyboard() reaches keyboard.emit() with no auth check (src/server/uinput.rs:619-648)"
+
+vulnerabilities:
+  - finding_ref: local-host-svc-hunt-2026-05-09/findings/001-rustdesk-uinput-lpe.md
+    binary: rustdesk_daemon
+    classes: [F-005]
+    severity: TBD
+    status: not_submitted
+    submission_ref: "(reported through skeptic-review-only; not yet filed)"
+
+open_angles:
+  - "Windows-version of RustDesk has different IPC architecture — not yet audited"
+  - "EV_KEY → X11 routing chain (the seventh chain link in finding) not reproduced from unprivileged context; needs PSIRT lab"
+  - "macOS service mode parallel-class not investigated"

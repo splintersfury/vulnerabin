@@ -1,0 +1,59 @@
+product: cisco-secure-client
+display_name: Cisco Secure Client (AnyConnect successor)
+vendor: Cisco
+description: >
+  Cisco's enterprise VPN + posture client for Windows. Includes a SYSTEM-context
+  service plus multiple kernel filter drivers (acsock64.sys, csskfltr).
+  Engagement: cisco-secure-client-2026-03-30. Two findings: an integer-overflow
+  in csskfltr IOCTL (submitted; later FP), and a method-NEITHER kernel-write
+  candidate.
+
+versions_seen:
+  - version: "5.1.16.194"
+    eng: cisco-secure-client-2026-03-30
+    seen: 2026-03-30
+
+binaries:
+  - acsock64.sys
+  - csskfltr.sys
+  - csc-deploy-full-5.1.16.194.exe
+
+topology:
+  trust_zones:
+    SYSTEM:
+      - cisco_service.exe (TCP 62522 listener)
+      - acsock64.sys
+      - csskfltr.sys
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  ipc_edges:
+    - { src: "(any standard-user process)", dst: csskfltr.sys, via: "DeviceIoControl on \\Device\\csskfltr (K-001)" }
+    - { src: "(any standard-user process)", dst: cisco_service.exe (TCP 62522 listener), via: "localhost TCP 127.0.0.1:62522 (I-009)" }
+
+  defenses:
+    csskfltr:
+      - "device SDDL: by default Authenticated Users have access (per finding)"
+      - "GAP: integer overflow in length-field arithmetic (submitted; FP'd by Cisco)"
+      - "GAP: method-NEITHER without proper ProbeForRead/Write — kernel-write primitive candidate"
+    acsock64:
+      - "VPN data-plane filter; not yet deeply audited"
+
+vulnerabilities:
+  - finding_ref: cisco-secure-client-2026-03-30/findings/001-integer-overflow-heap-overflow.md
+    binary: csskfltr.sys
+    classes: [K-001]
+    severity: TBD
+    status: submitted_dropped
+    submission_ref: bugcrowd:cisco (FP)
+  - finding_ref: cisco-secure-client-2026-03-30/findings/002-method-neither-arbitrary-kernel-write.md
+    binary: csskfltr.sys
+    classes: [K-001]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+
+open_angles:
+  - "csskfltr full IOCTL enumeration not complete"
+  - "TLS pinning on Cisco cloud connections not audited"
+  - "VPN data-plane wire format on acsock64 not investigated"

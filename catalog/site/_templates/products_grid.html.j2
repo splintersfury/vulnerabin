@@ -1,0 +1,139 @@
+{% extends "_base.html.j2" %}
+{% set active = 'product' %}
+{% block title %}Vulnerabin · Products{% endblock %}
+{% block content %}
+
+<!-- Hero -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface">
+  <div class="flex items-end justify-between max-w-[1600px] mx-auto w-full">
+    <div>
+      <div class="font-data-mono-sm text-on-surface-variant uppercase tracking-widest mb-xs">research catalog</div>
+      <h1 class="font-h1 text-h1 text-primary">Products</h1>
+      <p class="text-ui-sans-sm text-on-surface-variant mt-xs max-w-3xl">{{ stats.total_products }} catalogued products · {{ stats.total_binaries }} binaries · {{ stats.total_chains }} chains across the suite. Pick a product to see its binaries, then drill into the sources → conditions → sinks for any binary.</p>
+    </div>
+    <div class="flex gap-base">
+      <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col text-right">
+        <span class="text-data-mono-sm text-on-surface-variant">Confirmed</span>
+        <span class="font-data-mono-md text-h2 text-error">{{ stats.confirmed }}</span>
+      </div>
+      <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col text-right">
+        <span class="text-data-mono-sm text-on-surface-variant">Partial</span>
+        <span class="font-data-mono-md text-h2 text-tertiary">{{ stats.partial }}</span>
+      </div>
+      <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col text-right">
+        <span class="text-data-mono-sm text-on-surface-variant">Unexplored</span>
+        <span class="font-data-mono-md text-h2 text-secondary">{{ stats.unexplored }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="px-lg py-sm border-b border-outline-variant bg-surface-container">
+  <div class="flex gap-sm flex-wrap items-center max-w-[1600px] mx-auto w-full">
+    <div class="relative flex-1 min-w-[220px] max-w-[420px]">
+      <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[16px] text-on-surface-variant">search</span>
+      <input id="vbn-search" class="w-full bg-surface-container-lowest border border-outline-variant rounded text-ui-sans-sm text-on-surface pl-8 pr-3 py-1.5 focus:outline-none focus:border-primary placeholder:text-on-surface-variant" placeholder="Search product name or vendor…" type="text" />
+    </div>
+    <button data-filter-key="vendor" data-filter-value="" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip vbn-chip-active"><span class="text-on-surface-variant">Vendor:</span><span class="text-primary">All</span></button>
+    {% for v in unique_vendors %}<button data-filter-key="vendor" data-filter-value="{{ v }}" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><span class="text-on-surface">{{ v }}</span></button>{% endfor %}
+    <span class="border-l border-outline-variant mx-1 self-stretch"></span>
+    <button data-filter-key="status" data-filter-value="" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip vbn-chip-active"><span class="text-on-surface-variant">Status:</span><span class="text-primary">All</span></button>
+    <button data-filter-key="status" data-filter-value="confirmed" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><div class="w-1.5 h-1.5 rounded-full bg-error"></div><span class="text-on-surface">Has confirmed</span></button>
+    <button data-filter-key="status" data-filter-value="partial" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div><span class="text-on-surface">Has partial</span></button>
+    <button data-filter-key="status" data-filter-value="unexplored" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><div class="w-1.5 h-1.5 rounded-full bg-secondary"></div><span class="text-on-surface">Unexplored only</span></button>
+    <span class="border-l border-outline-variant mx-1 self-stretch"></span>
+    <button id="vbn-clear" class="bg-surface-container hover:bg-surface-container-high border border-outline-variant rounded px-3 py-1 text-ui-sans-sm text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">filter_alt_off</span> Clear</button>
+    <span id="vbn-result-count" class="text-data-mono-sm text-on-surface-variant ml-auto"></span>
+  </div>
+</div>
+
+<!-- Products grid -->
+<div class="p-lg max-w-[1600px] mx-auto w-full">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-md" id="vbn-products-grid">
+    {% for p in products %}
+    <a href="{{ root }}products/{{ p.slug }}.html" class="vbn-card bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high hover:border-primary transition-colors block group" data-search="{{ p.product }} {{ p.display_name | default('') }} {{ p.vendor | default('') }}" data-vendor="{{ p.vendor | default('') }}" data-status="{% if p.confirmed_count %}confirmed {% endif %}{% if p.partial_count %}partial {% endif %}{% if p.unexplored_count %}unexplored {% endif %}">
+      <div class="flex items-start justify-between mb-sm">
+        <div>
+          <div class="font-data-mono-sm text-on-surface-variant uppercase tracking-widest">{{ p.vendor | default('') }}</div>
+          <div class="font-h2 text-on-surface group-hover:text-primary transition-colors">{{ p.display_name | default(p.product) }}</div>
+        </div>
+        <div class="flex flex-col items-end gap-1">
+          {% if p.latest_version %}<span class="font-data-mono-sm bg-surface-container-lowest text-primary px-1.5 py-0.5 rounded border border-outline-variant">{{ p.latest_version }}</span>{% endif %}
+        </div>
+      </div>
+
+      {% if p.description %}
+      <p class="text-ui-sans-sm text-on-surface-variant mb-sm" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ p.description | trim }}</p>
+      {% endif %}
+
+      <!-- Stats row -->
+      <div class="flex items-center justify-between mt-md pt-sm border-t border-outline-variant">
+        <div class="flex gap-md text-data-mono-sm">
+          <div class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">memory</span>{{ p.binary_count }}</div>
+          <div class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">timeline</span>{{ p.chain_count }}</div>
+          <div class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">bug_report</span>{{ p.finding_count }}</div>
+        </div>
+        <div class="flex gap-1">
+          {% if p.confirmed_count %}<span class="text-data-mono-sm bg-error/20 text-error px-1.5 py-0.5 rounded">{{ p.confirmed_count }} ✅</span>{% endif %}
+          {% if p.partial_count %}<span class="text-data-mono-sm bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded">{{ p.partial_count }} 🟡</span>{% endif %}
+          {% if p.unexplored_count %}<span class="text-data-mono-sm bg-secondary/20 text-secondary px-1.5 py-0.5 rounded">{{ p.unexplored_count }} ⏳</span>{% endif %}
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .vbn-chip-active { background-color: #4d8eff !important; border-color: #4d8eff !important; }
+  .vbn-chip-active span { color: white !important; }
+  .vbn-card.vbn-hidden { display: none; }
+</style>
+
+<script>
+(function(){
+  const searchEl = document.getElementById('vbn-search');
+  const clearEl = document.getElementById('vbn-clear');
+  const cards = Array.from(document.querySelectorAll('.vbn-card'));
+  const resultCount = document.getElementById('vbn-result-count');
+  const filters = { vendor: '', status: '' };
+
+  function apply() {
+    const q = (searchEl.value || '').toLowerCase().trim();
+    let visible = 0;
+    for (const c of cards) {
+      const search = (c.dataset.search || '').toLowerCase();
+      const vendor = c.dataset.vendor || '';
+      const status = c.dataset.status || '';
+      let show = true;
+      if (q && !search.includes(q)) show = false;
+      if (filters.vendor && vendor.toLowerCase() !== filters.vendor.toLowerCase()) show = false;
+      if (filters.status && !status.includes(filters.status)) show = false;
+      if (show) { c.classList.remove('vbn-hidden'); visible++; }
+      else { c.classList.add('vbn-hidden'); }
+    }
+    resultCount.textContent = `${visible} of ${cards.length} products`;
+  }
+  searchEl.addEventListener('input', apply);
+  clearEl.addEventListener('click', () => {
+    searchEl.value = '';
+    filters.vendor = ''; filters.status = '';
+    document.querySelectorAll('.vbn-chip').forEach(c => c.classList.remove('vbn-chip-active'));
+    document.querySelectorAll('[data-filter-value=""]').forEach(c => c.classList.add('vbn-chip-active'));
+    apply();
+  });
+  document.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.vbn-chip');
+    if (!btn) return;
+    const key = btn.dataset.filterKey, val = btn.dataset.filterValue;
+    filters[key] = val;
+    document.querySelectorAll(`[data-filter-key="${key}"]`).forEach(c => c.classList.remove('vbn-chip-active'));
+    btn.classList.add('vbn-chip-active');
+    apply();
+  });
+  apply();
+})();
+</script>
+
+{% endblock %}

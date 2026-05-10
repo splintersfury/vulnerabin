@@ -1,0 +1,661 @@
+binary: telegram
+display_name: telegram
+description: (Auto-seeded; replace this description.) Catalogued in 1 engagement(s).
+canonical_path: ''
+arch: ''
+platform: ''
+binary_kind: ''
+trust_boundary: ''
+versions:
+- version: ''
+  sha256: ''
+  eng: telegram-desktop-2026-03-29
+  seen: '2026-03-29'
+  notes: ''
+sources:
+- id: SRC-001
+  name: Server-supplied TL-deserialized photo metadata triggers OOB read
+  source_class_id: N-003
+  co_class_ids:
+  - N-004
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: yes_with_caveat
+  caveat: Requires malicious Telegram server, MITM on MTProto, or server-side vuln
+  function: ''
+  first_seen_version: ''
+  last_confirmed_version: ''
+  notes: Auto-enriched from telegram-desktop-2026-03-29/001-mtpphoto-oob-read.md. Custom MTProto protocol parser; N-004 is
+    closer fit. Server-as-attacker.
+- id: SRC-002
+  name: Crafted TGS sticker (gzip+JSON) sent in chat; recursive precomp parsing exhausts stack
+  source_class_id: N-004
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: ''
+  last_confirmed_version: ''
+  notes: Auto-enriched from telegram-desktop-2026-03-29/002-lottie-no-recursion-limit.md. Application-level message parser;
+    N-004 custom application protocol.
+- id: SRC-003
+  name: tg://bg URL routing has stray ^ in regex; cosmetic only
+  source_class_id: U-003
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: ''
+  last_confirmed_version: ''
+  notes: Auto-enriched from telegram-desktop-2026-03-29/003-bg-regex-typo.md. U-003 custom-protocol-handler URL routing; closed
+    as not security.
+- id: SRC-004
+  name: IV renderer puts URL into <iframe srcdoc> instead of src; latent XSS class
+  source_class_id: E-006
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: yes_with_caveat
+  caveat: Weaponization gated on server validation of URL field
+  function: ''
+  first_seen_version: ''
+  last_confirmed_version: ''
+  notes: 'Auto-enriched from telegram-desktop-2026-03-29/004-iv-srcdoc-url-injection.md. Calibration target: E-006 renderer
+    XSS in trusted origin.'
+sinks:
+- id: SNK-001
+  name: Renderer-context API call reaches main process
+  cwe: CWE-94
+  function: (see finding evidence)
+  impact: code execution in main process
+  first_seen_version: ''
+  notes: Auto-generated stub for group E. Refine with the actual sink function/line as documented in the finding.
+- id: SNK-002
+  name: Network parser memory corruption / logic flaw
+  cwe: CWE-787
+  function: (see finding evidence)
+  impact: remote code execution or DoS
+  first_seen_version: ''
+  notes: Auto-generated stub for group N. Refine with the actual sink function/line as documented in the finding.
+- id: SNK-003
+  name: Privileged operation driven by user-input
+  cwe: CWE-269
+  function: (see finding evidence)
+  impact: privilege transition via crafted input
+  first_seen_version: ''
+  notes: Auto-generated stub for group U. Refine with the actual sink function/line as documented in the finding.
+chains:
+- id: CHAIN-001
+  title: Server-supplied TL-deserialized photo metadata triggers OOB read
+  source_id: SRC-001
+  sink_id: SNK-002
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: remote code execution or DoS
+  cwe:
+  - CWE-787
+  severity: ''
+  cvss: ''
+  status: unexplored
+  confirmed_in_version: ''
+  finding_ref: telegram-desktop-2026-03-29/findings/001-mtpphoto-oob-read.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+- id: CHAIN-002
+  title: Crafted TGS sticker (gzip+JSON) sent in chat; recursive precomp parsing exhausts
+  source_id: SRC-002
+  sink_id: SNK-002
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: remote code execution or DoS
+  cwe:
+  - CWE-787
+  severity: ''
+  cvss: ''
+  status: unexplored
+  confirmed_in_version: ''
+  finding_ref: telegram-desktop-2026-03-29/findings/001-mtpphoto-oob-read.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+- id: CHAIN-003
+  title: tg://bg URL routing has stray ^ in regex; cosmetic only
+  source_id: SRC-003
+  sink_id: SNK-003
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: privilege transition via crafted input
+  cwe:
+  - CWE-269
+  severity: ''
+  cvss: ''
+  status: hypothesised
+  confirmed_in_version: ''
+  finding_ref: telegram-desktop-2026-03-29/findings/001-mtpphoto-oob-read.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+- id: CHAIN-004
+  title: IV renderer puts URL into <iframe srcdoc> instead of src; latent XSS class
+  source_id: SRC-004
+  sink_id: SNK-001
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: code execution in main process
+  cwe:
+  - CWE-94
+  severity: ''
+  cvss: ''
+  status: hypothesised
+  confirmed_in_version: ''
+  finding_ref: telegram-desktop-2026-03-29/findings/001-mtpphoto-oob-read.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+_seed_meta:
+  decomp_dirs:
+  - telegram-desktop-2026-03-29/decomp-telegram
+  findings_seen:
+  - ref: telegram-desktop-2026-03-29/findings/001-mtpphoto-oob-read.md
+    eng: telegram-desktop-2026-03-29
+    version: ''
+  - ref: telegram-desktop-2026-03-29/findings/002-lottie-no-recursion-limit.md
+    eng: telegram-desktop-2026-03-29
+    version: ''
+  - ref: telegram-desktop-2026-03-29/findings/003-bg-regex-typo.md
+    eng: telegram-desktop-2026-03-29
+    version: ''
+  - ref: telegram-desktop-2026-03-29/findings/004-iv-srcdoc-url-injection.md
+    eng: telegram-desktop-2026-03-29
+    version: ''
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: ''
+  principal: unknown
+  start_trigger: ''
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+defenses:
+- class_id: E-006
+  defense_expected: DOMPurify on user-rendered content; CSP with strict-dynamic; nonce-based script loading.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+- class_id: N-003
+  defense_expected: Cert pinning; HMAC over payloads; protocol parser fuzzing.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+- class_id: N-004
+  defense_expected: Use schema-driven parsers (protobuf, capnproto); explicit type tags; bounds-checked TLV walks.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+- class_id: U-003
+  defense_expected: Strict URL parser; reject unexpected URL components; treat URL as untrusted input regardless of source.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+class_coverage:
+- class_id: C-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-006
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-004
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+    - CHAIN-003
+    - CHAIN-004
+  last_checked_version: ''
+- class_id: E-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-008
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-009
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-003
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+    - CHAIN-003
+    - CHAIN-004
+  last_checked_version: ''
+- class_id: N-004
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    - SRC-002
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+    - CHAIN-003
+    - CHAIN-004
+  last_checked_version: ''
+- class_id: N-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-003
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-003
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+    - CHAIN-003
+    - CHAIN-004
+  last_checked_version: ''
+- class_id: U-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: W-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: W-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: W-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''

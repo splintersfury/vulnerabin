@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Vulnerabin · Products</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#131315",
+        background: "#0c0c0e",
+        "on-surface": "#e5e1e4",
+        "on-background": "#e5e1e4",
+        "on-surface-variant": "#c2c6d6",
+        "surface-container-lowest": "#0e0e10",
+        "surface-container-low": "#1b1b1d",
+        "surface-container": "#201f21",
+        "surface-container-high": "#2a2a2c",
+        "surface-container-highest": "#353437",
+        "surface-bright": "#39393b",
+        "surface-variant": "#353437",
+        outline: "#8c909f",
+        "outline-variant": "#424754",
+        primary: "#adc6ff",
+        "primary-fixed": "#d8e2ff",
+        "primary-fixed-dim": "#adc6ff",
+        "primary-container": "#4d8eff",
+        "on-primary": "#002e6a",
+        "on-primary-container": "#00285d",
+        secondary: "#4fdbc8",
+        "secondary-container": "#04b4a2",
+        tertiary: "#ffb786",
+        "tertiary-container": "#df7412",
+        error: "#ffb4ab",
+        "error-container": "#93000a",
+        "on-error": "#690005",
+        "on-error-container": "#ffdad6",
+        accent: "#3b82f6",
+        // Source-class group colors (matching taxonomy/binary/sources_v2.json groups)
+        "grp-F": "#fdd6d6",
+        "grp-F-stroke": "#c00",
+        "grp-I": "#fed9a3",
+        "grp-I-stroke": "#c80",
+        "grp-N": "#c5d3ff",
+        "grp-N-stroke": "#06c",
+        "grp-K": "#e0bdf2",
+        "grp-K-stroke": "#909",
+        "grp-U": "#bfeac6",
+        "grp-U-stroke": "#080",
+        "grp-T": "#cfd2d8",
+        "grp-T-stroke": "#555",
+        "grp-UP": "#fff0a3",
+        "grp-UP-stroke": "#aa0",
+        "grp-C": "#e9d4b8",
+        "grp-C-stroke": "#862",
+        "grp-E": "#a8d4ff",
+        "grp-E-stroke": "#069",
+        "grp-W": "#f4c5ff",
+        "grp-W-stroke": "#909",
+        "grp-CR": "#cccccc",
+        "grp-CR-stroke": "#333",
+      },
+      borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "9999px" },
+      spacing: { base: "4px", xs: "4px", sm: "8px", gutter: "12px", md: "16px", margin: "16px", lg: "24px", xl: "32px", unit: "4px" },
+      fontFamily: {
+        "ui-sans-md": ["Inter"], "ui-sans-sm": ["Inter"],
+        "data-mono-sm": ["JetBrains Mono"], "data-mono-md": ["JetBrains Mono"],
+        "code-block": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"],
+        "h1": ["Inter"], "h2": ["Inter"], "title-sm": ["Inter"],
+        "headline-md": ["Inter"], "display-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+      },
+      fontSize: {
+        "h1": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "h2": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "title-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+        "ui-sans-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+        "ui-sans-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+        "data-mono-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "data-mono-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+        "code-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "code-sm": ["11px", { lineHeight: "16px", fontWeight: "400" }],
+        "code-block": ["13px", { lineHeight: "22px", fontWeight: "400" }],
+        "label-caps": ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "700" }],
+        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+      },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a2c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #424754; }
+.bg-custom-surface { background-color: #16171d; }
+</style>
+</head>
+<body class="bg-background text-on-background font-ui-sans-md h-screen flex flex-col overflow-hidden">
+
+<!-- Top app bar -->
+<header class="bg-surface-container border-b border-outline-variant flex justify-between items-center w-full px-lg py-sm z-50 h-14 shrink-0">
+  <div class="flex items-center gap-md">
+    <a href="../index.html" class="text-h2 font-h1 tracking-tight text-primary">Vulnerabin</a>
+    <nav class="hidden md:flex items-center gap-sm ml-lg">
+      <a class="text-primary font-bold hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../index.html">Products</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../binaries.html">Binaries</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../chains.html">Chains</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../pipeline.html">Pipeline</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../taxonomy.html">Taxonomy</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-sm">
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+  </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden">
+  <!-- Side nav -->
+  <aside class="bg-surface text-on-surface font-ui-sans-sm border-r border-outline-variant flex flex-col py-md space-y-unit shrink-0 w-60 h-full overflow-y-auto">
+    <div class="px-4 mb-4">
+      <div class="font-h2 text-h2 font-black text-primary leading-tight">Vulnerabin</div>
+      <div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">v0.5.0 · catalog</div>
+    </div>
+    <nav class="flex-1 space-y-unit">
+      <a class="bg-surface-container-high text-primary border-l-2 border-primary hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../index.html">
+        <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        <span class="font-body-sm">Products</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../binaries.html">
+        <span class="material-symbols-outlined text-[18px]">memory</span>
+        <span class="font-body-sm">Binaries</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../chains.html">
+        <span class="material-symbols-outlined text-[18px]">timeline</span>
+        <span class="font-body-sm">Chains</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../pipeline.html">
+        <span class="material-symbols-outlined text-[18px]">trending_up</span>
+        <span class="font-body-sm">Pipeline</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../taxonomy.html">
+        <span class="material-symbols-outlined text-[18px]">hub</span>
+        <span class="font-body-sm">Taxonomy</span>
+      </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="https://github.com/anthropics/vulnerabin"><span class="material-symbols-outlined text-[16px]">menu_book</span><span class="font-body-sm">Docs</span></a>
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[16px]">dns</span><span class="font-body-sm">Status</span></a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col bg-background overflow-y-auto">
+    
+<div class="p-lg">
+  <h1 class="font-h1 text-h1 text-primary mb-md">Products</h1>
+  <p class="text-ui-sans-sm text-on-surface-variant mb-lg max-w-3xl">14 catalogued products. Each provides a Layer 4 cross-binary topology view, source-class heatmap, defense distribution, and vulnerabilities ledger.</p>
+  <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md p-lg"><li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="backblaze.html" class="block"><div class="font-h2 text-primary">Backblaze Online Backup (Windows)</div><div class="text-on-surface-variant text-data-mono-sm">Backblaze</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Consumer cloud-backup client for Windows. Multi-process: a transmit daemon (bztransmit), a restore client (bzrestore), and a server-side helper (bzserv) that br…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">4 binaries · 4 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="bind9.html" class="block"><div class="font-h2 text-primary">ISC BIND9 DNS Server</div><div class="text-on-surface-variant text-data-mono-sm">ISC</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Authoritative + recursive DNS server. Engagement bind9-2026-04-06: 11 parser-audit findings against various RR types and the HTTP/2 DoH endpoint. Most candidate…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">1 binaries · 5 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="bitdefender-total-security.html" class="block"><div class="font-h2 text-primary">Bitdefender Total Security</div><div class="text-on-surface-variant text-data-mono-sm">Bitdefender</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Consumer endpoint security suite. Multi-process architecture: SYSTEM-context service host (bdservicehost.exe) loading multiple service DLLs (bdappsrv, bdappserv…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">13 binaries · 6 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="cisco-secure-client.html" class="block"><div class="font-h2 text-primary">Cisco Secure Client (AnyConnect successor)</div><div class="text-on-surface-variant text-data-mono-sm">Cisco</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Cisco's enterprise VPN + posture client for Windows. Includes a SYSTEM-context service plus multiple kernel filter drivers (acsock64.sys, csskfltr). Engagement:…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">3 binaries · 2 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="dell-supportassist.html" class="block"><div class="font-h2 text-primary">Dell SupportAssist Installer</div><div class="text-on-surface-variant text-data-mono-sm">Dell</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Dell's installer for the SupportAssist OEM agent. Runs as installer-elevated principal (Admin via UAC, or via UAC-S4U scheduled task). Extracts payload to a run…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">2 binaries · 1 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="dropbox.html" class="block"><div class="font-h2 text-primary">Dropbox Desktop (Windows)</div><div class="text-on-surface-variant text-data-mono-sm">Dropbox</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Cloud-sync client. Architecture includes a SYSTEM service (dbxsvc.exe) that exposes a named pipe (\\.\pipe\dbxsvc), an installer (Dropbox_Offline_Installer.exe)…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">3 binaries · 5 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="keeper-security.html" class="block"><div class="font-h2 text-primary">Keeper Password Manager (Desktop)</div><div class="text-on-surface-variant text-data-mono-sm">Keeper Security</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Cross-platform password manager. Engagement keeper-security-2026-04-09: TLS cert validation MITM in update flow (P5 Informational); two ipcMain channel surfaces…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">1 binaries · 3 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="malwarebytes.html" class="block"><div class="font-h2 text-primary">Malwarebytes Anti-Malware (consumer)</div><div class="text-on-surface-variant text-data-mono-sm">Malwarebytes</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Consumer endpoint security. Engagement malwarebytes-2026-04-29 explored multiple surfaces: constant-XOR keystream class (CR-001 — proposed in v2 taxonomy), IPC…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">5 binaries · 5 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="nextcloud-desktop.html" class="block"><div class="font-h2 text-primary">Nextcloud Desktop Client</div><div class="text-on-surface-variant text-data-mono-sm">Nextcloud</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Cross-platform file-sync client. Engagement nextcloud-desktop-2026-04-06: 4 findings spanning Linux .desktop-file RCE, SSRF, E2EE concerns, and updater path inj…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">1 binaries · 4 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="nvidia-app.html" class="block"><div class="font-h2 text-primary">NVIDIA App</div><div class="text-on-surface-variant text-data-mono-sm">NVIDIA</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Successor to GeForce Experience. Per-machine SYSTEM service plus user-context UI. Engagement: nvidia-app-2026-04-30. Found junction-following on a directory the…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">3 binaries · 4 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="protonvpn.html" class="block"><div class="font-h2 text-primary">Proton VPN</div><div class="text-on-surface-variant text-data-mono-sm">Proton AG</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Privacy VPN client. Two engagements: protonvpn-linux-2026-05-08 (D-Bus uid spoofing in split_tunneling daemon — submitted to security@proton.me) and protonvpn-l…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">3 binaries · 2 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="rustdesk.html" class="block"><div class="font-h2 text-primary">RustDesk (Linux service mode)</div><div class="text-on-surface-variant text-data-mono-sm">RustDesk (Open-source)</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Cross-platform remote-desktop tool. Linux service mode runs the daemon as root. Engagement uncovered F-005 world-writable IPC socket: the daemon creates `/tmp/R…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">1 binaries · 1 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="sophos.html" class="block"><div class="font-h2 text-primary">Sophos Intercept X (Windows endpoint)</div><div class="text-on-surface-variant text-data-mono-sm">Sophos</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Enterprise endpoint security. Two engagements: sophos-endpoint-ipc-2026-05-05 (the EventStore named-pipe info-disclosure that submitted as P3) and sophos-2026-0…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">4 binaries · 2 findings</div></a></li>
+<li class="bg-surface-container border border-outline-variant rounded p-md hover:bg-surface-container-high"><a href="teamviewer.html" class="block"><div class="font-h2 text-primary">TeamViewer (Windows)</div><div class="text-on-surface-variant text-data-mono-sm">TeamViewer</div><div class="text-on-surface-variant text-ui-sans-sm mt-2">Cross-platform remote-desktop tool. Windows install includes a SYSTEM-context service (TeamViewer_Service.exe) plus a user-context UI (TeamViewer.exe) and multi…</div><div class="text-data-mono-sm text-on-surface-variant mt-2">7 binaries · 6 findings</div></a></li></ul>
+</div>
+
+  </main>
+</div>
+</body>
+</html>

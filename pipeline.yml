@@ -1,0 +1,138 @@
+# Vulnerabin pipeline FSM.
+#
+# This is a CHECKLIST consulted by `scripts/fsm.py` and `scripts/orchestrate.py`,
+# not a parallel runtime. Claude Code (interactive) and orchestrate.py (headless)
+# are the actual orchestrators. The YAML defines:
+#   - which phases exist
+#   - what artifacts must be present to consider a phase complete
+#   - which phases may legally follow
+#   - which gates (KB-prime, exec-required, schema-valid) must pass
+
+version: 1
+
+phases:
+  acquisition:
+    prompt: prompts/phases/acquisition.md
+    requires_artifacts: []
+    produces_artifacts:
+      - scope.json
+      - target/
+    next: [preparation]
+
+  preparation:
+    prompt: prompts/phases/preparation.md
+    requires_artifacts: [scope.json, target/]
+    produces_artifacts_any:    # any of these counts as produced
+      - decomp/
+      - extracted/
+      - firmware/
+    next: [triage, junction_hunt]
+
+  triage:
+    prompt: prompts/phases/triage.md
+    requires_artifacts_any: [decomp/, extracted/, firmware/]
+    produces_artifacts: [triage.json]
+    gates:
+      - id: kb_prime
+        kind: pre
+        check: "kb_query for target_type ran in this phase"
+        rationale: "Per CLAUDE.md line 59 — prime triage with prior KB findings"
+      - id: schema_valid
+        kind: post
+        check: "triage.json conforms to taxonomy/schemas/triage_output.json"
+    next: [deep, quick_scan]
+
+  quick_scan:
+    prompt: prompts/phases/quick_scan.md
+    requires_artifacts_any: [decomp/, extracted/]
+    produces_artifacts: []
+    next: [triage, deep]
+
+  junction_hunt:
+    prompt: prompts/phases/junction_hunt.md
+    requires_artifacts: [scope.json]
+    produces_artifacts: []
+    next: [deep, validation]
+
+  deep:
+    prompt: prompts/phases/deep.md
+    requires_artifacts_any: [triage.json, "findings/"]
+    produces_artifacts: [findings/]
+    gates:
+      - id: kb_prime
+        kind: pre
+        check: "kb_query for matching CWE ran for each finding"
+      - id: acid_complete
+        kind: post
+        check: "Each finding has an ACID block with verdict and confidence"
+    next: [validation, deep, report]
+
+  validation:
+    prompt: prompts/phases/validation.md
+    requires_artifacts: [findings/]
+    produces_artifacts: [pocs/]
+    gates:
+      - id: aup_decomposed
+        kind: pre
+        check: "PoC built via scripts/exploit_step.py (one step per record)"
+        rationale: "Avoid AUP refusal; produces auditable trail"
+    next: [exec_validation, report]
+
+  exec_validation:
+    prompt: prompts/phases/exec_validation.md
+    requires_artifacts: [pocs/]
+    produces_artifacts: [exec/]
+    gates:
+      - id: sandbox_declared
+        kind: pre
+        check: "Target type maps to a sandbox in sandboxes.yml"
+      - id: evidence_recorded
+        kind: post
+        check: "exec/<N>/result.json contains verdict + evidence_hash"
+    next: [skeptic_review, deep]    # exec → skeptic_review (must pass) → report
+
+  skeptic_review:
+    prompt: prompts/phases/skeptic_review.md
+    requires_artifacts: [findings/]
+    produces_artifacts: [skeptic_review.json, skeptic_review.md]
+    gates:
+      - id: skeptic_passed
+        kind: post
+        check: "skeptic_review.json verdict == 'ship'; 'hedge' requires corrections applied + re-run; 'drop' requires journal waiver to bypass"
+        rationale: "No-context fresh-eyes audit catches discoverer-confidence bias before vendor inbox. See CLAUDE.md 'Skeptic-review phase'."
+    next: [report, deep]      # hedge/drop demote back to deep for revision
+
+  report:
+    prompt: prompts/phases/report.md
+    requires_artifacts: [findings/, skeptic_review.json]
+    produces_artifacts: [reports/]
+    gates:
+      - id: exec_required_or_justified
+        kind: pre
+        check: "Each CONFIRMED finding either has exec_result or a written waiver"
+        rationale: "Per article: static analysis without execution is the dominant FP source"
+      - id: skeptic_passed
+        kind: pre
+        check: "skeptic_review.json verdict == 'ship' OR journal waiver exists for the override"
+        rationale: "Don't waste vendor time on findings the no-context audit failed"
+      - id: humanise_passed
+        kind: post
+        check: "scripts/humanise_audit.py on each reports/*.md returns score <=3"
+        rationale: "Vendors who triage 50+ LLM-drafted reports per month clock AI tells in 30 seconds. Empirical baseline: BDTS 005 (2026-05-09) needed humanise after skeptic-review already said ship; the prose register pass is orthogonal to the truth/evidence pass. See prompts/phases/humanise.md."
+    next: [kb_ingest]
+
+  kb_ingest:
+    prompt: prompts/phases/kb_ingest.md
+    requires_artifacts: [reports/]
+    produces_artifacts: [taxonomy/kb/index.json]
+    next: []
+
+modes:
+  junction_hunt:
+    overrides:
+      triage: focused      # triage only filesystem-touching SYSTEM services
+  quick_scan:
+    skips: [triage]
+  variant:
+    entry: cve_pattern
+    skips: [triage]

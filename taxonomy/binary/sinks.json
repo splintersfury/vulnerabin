@@ -55,10 +55,27 @@
   },
   "pool_allocation": {
     "symbols": ["malloc", "calloc", "realloc", "ExAllocatePool", "ExAllocatePoolWithTag",
-                "ExAllocatePool2", "ExAllocatePool3", "kmalloc", "vmalloc", "kzalloc"],
+                "ExAllocatePool2", "ExAllocatePool3", "ExAllocatePoolWithQuotaTag",
+                "ExAllocatePoolWithTagPriority", "ExAllocateFromPagedLookasideList",
+                "ExAllocateFromNPagedLookasideList", "ExAllocateFromLookasideListEx",
+                "kmalloc", "vmalloc", "kzalloc"],
     "cwe": "CWE-190",
     "severity": "high",
     "description": "Allocation — integer overflow in size calculation leads to undersized buffer"
+  },
+  "multi_fetch_alloc": {
+    "symbols": ["ExAllocatePool", "ExAllocatePoolWithTag", "ExAllocatePool2", "ExAllocatePool3",
+                "ExAllocatePoolWithQuotaTag", "ExAllocatePoolWithTagPriority"],
+    "cwe": "CWE-367",
+    "severity": "critical",
+    "description": "Pool allocator size argument is a fresh re-read of the same expression that was validated and/or used in the subsequent copy. Race window between fetches can desynchronise alloc size and copy length, yielding heap-pool overflow.",
+    "anchor_cves": ["CVE-2026-3006 (WinFSP)", "CVE-2024-21338 (appid.sys/AppLocker)", "CVE-2023-21768 (afd.sys/WinSock)"],
+    "static_signature": "Same `*(<type>*)(<var>+<off>)` deref appears as the size argument of an ExAllocatePool* call AND elsewhere in the same function as a bound check or copy length, on at least 2 distinct lines, with no intervening kernel-stack snapshot.",
+    "scanner": "scripts/multifetch_scan.py",
+    "long_form_guide": "prompts/vuln_patterns/double_fetch.md",
+    "recognised_defenses": ["kernel_field_snapshot", "file_share_exclusivity"],
+    "racing_source_classes": ["irp_user_buffer", "mdl_mapped_user_buffer", "ccmap_file_cache_page",
+                              "guest_shared_ring", "kernel_resident_FP"]
   },
   "type_confusion": {
     "symbols": ["va_arg", "ioctl", "ObReferenceObjectByHandle"],

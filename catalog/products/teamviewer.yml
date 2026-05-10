@@ -1,0 +1,91 @@
+product: teamviewer
+display_name: TeamViewer (Windows)
+vendor: TeamViewer
+description: >
+  Cross-platform remote-desktop tool. Windows install includes a SYSTEM-context
+  service (TeamViewer_Service.exe) plus a user-context UI (TeamViewer.exe) and
+  multiple kernel drivers (TeamViewerVPN.sys, TVMonitor.sys). IPC backbone is a
+  localhost TCP listener (port 5938 by default), not a named pipe — so I-009
+  classifies the IPC surface, NOT I-002. Engagement found multiple findings
+  including an IPC auth bypass sent to psirt@teamviewer.com 2026-04-29.
+
+versions_seen:
+  - version: "2026.x"
+    eng: teamviewer-2026-03-31
+    seen: 2026-03-31
+
+binaries:
+  - teamviewer_service.exe
+  - teamviewer_host_setup_x64_2026.exe
+  - teamviewer_virtualdevicedriver.dll
+  - teamviewer_xpsdriverfilter.dll
+  - teamviewervpn.sys
+  - tvmonitor.sys
+  - tvvirtualmonitordriver.dll
+
+topology:
+  trust_zones:
+    SYSTEM:
+      - teamviewer_service.exe (port 5938 listener)
+      - teamviewervpn.sys
+      - tvmonitor.sys
+    Admin_or_user:
+      - teamviewer.exe (UI)
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  ipc_edges:
+    - { src: teamviewer.exe (UI), dst: teamviewer_service.exe (port 5938 listener), via: localhost TCP 127.0.0.1:5938 }
+    - { src: "(any local process)", dst: teamviewer_service.exe (port 5938 listener), via: localhost TCP — no peer auth }
+
+  defenses:
+    teamviewer_service:
+      - "binds to 127.0.0.1 (localhost-only)"
+      - "GAP: I-009 — no peer authentication; any local process connects (submitted to psirt@teamviewer.com)"
+      - "Application-layer auth via passwords; bypassable in some flows (T-005 path traversal in install validation)"
+    drivers:
+      - "kernel drivers serving virtual-monitor and VPN functionality"
+      - "K-001 IOCTL surface present; not yet deeply audited for memory corruption"
+
+vulnerabilities:
+  - finding_ref: teamviewer-2026-03-31/findings/001-localhost-tcp-ipc-auth-bypass.md
+    binary: teamviewer_service.exe
+    classes: [I-009]
+    severity: TBD
+    status: submitted
+    submission_ref: psirt@teamviewer.com
+  - finding_ref: teamviewer-2026-03-31/findings/002-ipc-command-handler.md
+    binary: teamviewer_service.exe
+    classes: [I-009]
+    severity: TBD
+    status: submitted
+    submission_ref: psirt@teamviewer.com
+  - finding_ref: teamviewer-2026-03-31/findings/003-driver-install-validation-analysis.md
+    binary: teamviewer_service.exe
+    classes: [I-009, T-005]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: teamviewer-2026-03-31/findings/004-log-readable-low-priv.md
+    binary: teamviewer_service.exe
+    classes: [F-006]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: teamviewer-2026-03-31/findings/005-hardlink-class.md
+    binary: teamviewer_service.exe
+    classes: [F-003]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: teamviewer-2026-03-31/findings/008-ipc-additional.md
+    binary: teamviewer_service.exe
+    classes: [I-009]
+    severity: TBD
+    status: submitted
+    submission_ref: psirt@teamviewer.com
+
+open_angles:
+  - "tvmonitor.sys / teamviewervpn.sys IOCTL surface — K-001 not deeply audited"
+  - "TLS-pinning on outbound TeamViewer cloud connections not verified"
+  - "auto-updater UP-003 not investigated"

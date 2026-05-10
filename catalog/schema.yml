@@ -1,0 +1,188 @@
+# Canonical schema for catalog/binaries/<name>.yml.
+# This file is the reference; copy and adapt when adding a new binary.
+# Keep keys in this order so diffs are clean.
+
+binary: example.dll                   # canonical filename (no path)
+display_name: Example DLL             # human-readable
+product: ""                           # optional; links to catalog/products/<product>.yml
+description: >
+  One-paragraph plain-English description of what this binary does in
+  the product.
+canonical_path: ""                    # typical install path, optional
+arch: x64                             # x64 | x86 | arm64 | arm | mixed
+platform: windows                     # windows | linux | macos | firmware | other
+binary_kind: dll                      # exe | dll | sys | so | other
+trust_boundary: ""                    # one-line privilege ladder, e.g. "SYSTEM <- service <- user"
+
+# ----- Reverse engineering brief (NEW — drives the top section of the binary page) -----
+# Captures the RE journey: what's main, what loads, what inputs come in, what behaviour.
+# This is the layer that PRECEDES sources/sinks/chains in the workflow — you reverse the
+# binary first to identify inputs, then formalise each as a SRC. Every `sources[].id` SHOULD
+# carry a `derived_from: INP-NNN` link back to an entry here so the page reads top-to-bottom.
+# Long-form dated journal lives in the sidecar: catalog/binaries/<name>.re.md
+reverse_engineering:
+  entrypoint: ""                       # e.g. "wWinMain @ 0x140001a30 -> ServiceMain @ 0x140012a0"
+  loaded_modules:                      # what DLLs/drivers this binary brings in
+    - name: ""                         # e.g. "BDLogging.dll"
+      via: ""                          # static_import | dynamic_LoadLibraryW | delay_load | reflective | resolved_at_runtime
+      role: ""                         # one-line: "shared logging library" / "policy engine" / "IPC transport"
+  inputs:                              # every external thing the binary takes (the seedbed for sources[])
+    - id: INP-001                      # stable ID; sources can derive_from this
+      kind: ""                         # ioctl | file_read | file_write | registry_read | registry_write | network_listen | network_connect | ipc_pipe | ipc_alpc | ipc_msgbus | ipc_com | env_var | cmdline | scm_control | shared_memory | etc.
+      path: ""                         # endpoint path/name (e.g. "\\.\BdDci" or "C:\ProgramData\...\config.json")
+      direction: ""                    # in | out | bidirectional | read | write
+      attacker_reachable: ""           # low_priv_user | admin | network_unauth | network_auth | local_high_integrity | no
+      reachability: ""                 # one-paragraph: ACL state, default config, prerequisites
+      notes: ""                        # how you discovered it; ProcMon, strings, decomp pivot, etc.
+  behavior: |                          # free-form 3-10 line summary of what the binary DOES
+    Plain English. What runs on init, what's the steady state, what triggers reactions.
+  notable_strings: []                  # decompilation breadcrumbs the next researcher should grep for
+  rva_anchors: {}                      # named RVA -> address; e.g. ServiceMain: '0x140012a0'
+  notes: ""                            # cross-link to the .re.md sidecar
+
+# ----- Process model (Layer 2 visualization input) -----
+# Optional but strongly recommended. Drives the trust-boundary mermaid diagram.
+process_model:
+  loaded_by: ""                       # what process this binary lives in (for DLLs/SYSes)
+  principal: ""                       # SYSTEM | Admin | LocalService | NetworkService | loggedInUser | installer-elevated | unknown
+  start_trigger: ""                   # service_start | scheduled_task | ipc_invocation | com_activation | process_start | etc.
+  parent_processes:                   # who launches / hosts the principal
+    - { name: "", principal: "", role: "" }
+  ipc_peers:                          # who connects to or hosts an IPC endpoint with this binary
+    - { name: "", principal: "", via: "" }
+  impersonation_seen: false           # does the binary call ImpersonateNamedPipeClient / ImpersonateLoggedOnUser?
+  ppl_protected: false                # is the binary's host process Protected Process Light?
+
+# ----- Versions seen -----
+# One entry per (version, engagement) pair. The seeder appends new entries;
+# you don't normally remove old ones (history is useful for variant analysis).
+versions:
+  - version: ""                        # vendor-canonical version string
+    sha256: ""                         # optional
+    eng: ""                            # engagement folder name under engagements/
+    seen: ""                           # YYYY-MM-DD
+    notes: ""
+
+# ----- Sources -----
+# Every place attacker-controlled input can enter THIS binary.
+# Stable IDs (SRC-NNN). Adding a new one bumps first_seen_version.
+sources:
+  - id: SRC-001
+    derived_from: ""                   # INP-NNN reference back to reverse_engineering.inputs[]; REQUIRED — the renderer warns if missing
+    name: ""                           # short, e.g. "ioctl 0x12345.input_buffer"
+    source_class_id: ""                # taxonomy ref, e.g. "I-002" or "K-001" (see taxonomy/binary/sources_v2.json)
+    co_class_ids: []                   # additional class IDs that apply (e.g. T-005 + T-006)
+    via: ""                            # how it arrives, e.g. "DeviceIoControl from user-mode"
+    type: ""                           # wide_string | byte_buffer | int | path | structured
+    attacker_controlled: yes           # yes | yes_with_caveat | no
+    caveat: ""                         # if yes_with_caveat, the caveat
+    function: ""                       # decompiler-named or symbol entry, optional
+    first_seen_version: ""
+    last_confirmed_version: ""
+    notes: ""
+
+# ----- Sinks -----
+# Dangerous operations reachable in THIS binary.
+# Stable IDs (SNK-NNN). Auto-discovered by catalog_re_extract.py from
+# function_index.json's per-function `callees` field; promote/edit by hand.
+sinks:
+  - id: SNK-001
+    name: ""                           # e.g. "CreateProcessAsUserW" (the API itself)
+    category: ""                       # process_creation | file_io | registry_write | memory_unsafe |
+                                        # token_manipulation | device_creation | command_exec |
+                                        # network | rpc | ipc | kernel_handle (matches sink-API library)
+    callsites:                         # one entry per RVA where this API is called inside the binary
+      - addr: ""                       # "0x140012a0"
+        function: ""                   # e.g. "spawn_helper" or "FUN_140012a0"
+    cwe: ""                            # primary CWE
+    function: ""                       # legacy single-callsite slot (kept for backward compat)
+    impact: ""                         # one-line: "code exec as SYSTEM" / "kernel pool address leak" / etc.
+    confirmed: false                   # false = auto-detected candidate; true = researcher promoted
+    first_seen_version: ""
+    notes: ""
+
+# ----- Capabilities (NEW — the backward view) -----
+# What can this binary DO when its sinks are exercised? Capabilities are the
+# user-facing description of dangerous behaviour, one or two abstraction levels
+# above the raw sink APIs. One capability typically groups multiple sinks
+# (e.g. "Spawn process" groups CreateProcessAsUserW, CreateProcessWithTokenW,
+# ZwCreateProcess). Auto-synthesised by catalog_re_extract.py from sink
+# categories; backward-reachability fields are populated by callgraph BFS.
+# The coverage matrix on the binary page renders inputs × capabilities so
+# every (interaction, behaviour) pair is either CHAINED, marked unreachable,
+# or visible as an unexplored gap.
+capabilities:
+  - id: CAP-001
+    name: ""                           # human-readable, e.g. "Spawn process as another user"
+    category: ""                       # matches sink category (process_creation, file_io, etc.)
+    sinks: []                          # list of SNK-* IDs implementing this capability
+    reachable_from:                    # backward-traced — what gets you here
+      entry_funcs: []                  # function names walked back to from sink callsites
+      inputs: []                       # INP-* IDs (cross-references reverse_engineering.inputs)
+                                        # — the auto-extract fills these heuristically; verify by hand
+    user_action: ""                    # plain-English: "Send IOCTL 0x12345 with auth token"
+    preconditions: []                  # list of one-liners
+    impact: ""                         # one-line; can echo sinks[].impact
+    confirmed: false                   # false = auto-synthesised candidate
+    notes: ""
+
+# ----- Chains -----
+# Source → conditions → sink. The catalog content. Stable IDs (CHAIN-NNN).
+chains:
+  - id: CHAIN-001
+    title: ""                          # short headline, e.g. "Prefix-only path check"
+    source_id: SRC-001
+    sink_id: SNK-001
+    capability_id: ""                  # CAP-* this chain reaches; drives the coverage matrix
+    conditions:                        # ordered; each is one human-readable check that must hold
+      - ""
+    impact: ""
+    cwe: []                            # list of CWE IDs covered by the full chain
+    severity: ""                       # P1..P5 or CVSS Critical/High/Medium/Low
+    cvss: ""                           # full vector, optional
+    status: unexplored                 # confirmed | partial | hypothesised | unexplored | mitigated
+    confirmed_in_version: ""
+    finding_ref: ""                    # engagements/<eng>/findings/<file> if there's a finding
+    submission_ref: ""                 # platform:id, e.g. "bugcrowd:abc123" or "msrc:VULN-186170"
+    bypasses_required:                 # what defenses must be bypassed to fire the chain
+      - ""
+    notes: ""
+
+# ----- Defenses (Layer 3 visualization input) -----
+# Per-source-class defense audit. One entry per class touching this binary.
+# Drives the defense-matrix table in the rendered page.
+defenses:
+  - class_id: ""                       # taxonomy ID, e.g. I-002
+    defense_expected: ""               # what the canonical defense looks like
+    observed: ""                       # what's actually in this binary
+    gap: ""                            # YES | partial | none — and why
+    bypass_attempts: ""                # what we've tried, what worked, what didn't
+
+# ----- Coverage -----
+# What we have and haven't analyzed. Drives the "Analysis coverage" subsection.
+coverage:
+  decomp_dirs: []                      # list of engagement-relative paths
+  function_count: 0                    # total per Ghidra function index
+  functions_analyzed: []
+  unanalyzed_high_priority: []
+  recon_gaps: []
+
+# ----- Class coverage matrix -----
+# The COMPREHENSIVE forcing-function: every taxonomy class relevant to this
+# binary's platform + binary_kind must have an entry. The renderer emits a
+# "Class Coverage Matrix" table from this; missing classes default to
+# "unchecked" with the detection checklist from taxonomy/binary/defense_library.json.
+#
+# Status enum:
+#   present         — class is exercised; cross-references sources[]/chains[]
+#   defense_observed — we audited; defense is in place; class effectively absent
+#   not_present     — surface doesn't exist (e.g., kernel driver has no Electron classes)
+#   unchecked       — we haven't audited this class for this binary (renderer prompts)
+class_coverage:
+  - class_id: ""                       # taxonomy class ID, e.g. F-001
+    status: unchecked                  # present | defense_observed | not_present | unchecked
+    rationale: ""                      # one-line explanation; required for defense_observed / not_present
+    refs:                              # only for status=present; lists source/chain IDs
+      sources: []
+      chains: []
+    last_checked_version: ""           # which version we last verified this status against

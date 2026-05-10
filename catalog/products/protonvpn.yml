@@ -1,0 +1,62 @@
+product: protonvpn
+display_name: Proton VPN
+vendor: Proton AG
+description: >
+  Privacy VPN client. Two engagements: protonvpn-linux-2026-05-08 (D-Bus uid
+  spoofing in split_tunneling daemon — submitted to security@proton.me) and
+  protonvpn-local-agent-rce-2026-05-08 (malicious-server DoS cluster in the
+  Rust local-agent — submitted same day).
+
+versions_seen:
+  - version: "Linux 2026-05"
+    eng: protonvpn-linux-2026-05-08
+    seen: 2026-05-08
+  - version: "local-agent-rs 2026-05"
+    eng: protonvpn-local-agent-rce-2026-05-08
+    seen: 2026-05-08
+
+binaries:
+  - protonvpn_split_tunneling_daemon (Linux, Python)
+  - local_agent_rs (Rust binary, Linux/Windows/macOS)
+  - protonvpn_client.exe (Windows UI, nominal)
+
+topology:
+  trust_zones:
+    root_or_SYSTEM:
+      - protonvpn_split_tunneling_daemon (Linux root daemon)
+      - local_agent_rs (Rust, runs elevated)
+    LoggedInUser:
+      - protonvpn_client (UI)
+    Standard_user_or_remote_attacker:
+      - "(any local UID, or malicious VPN server)"
+
+  ipc_edges:
+    - { src: "(any local UID)", dst: protonvpn_split_tunneling_daemon (Linux root daemon), via: "D-Bus method (I-003)" }
+    - { src: "(malicious VPN server)", dst: local_agent_rs (Rust, runs elevated), via: "TLS-wrapped wire protocol (N-003)" }
+
+  defenses:
+    split_tunneling:
+      - "D-Bus method takes uid argument — daemon trusts it"
+      - "GAP: I-003 — uid spoofing; submitted security@proton.me 2026-05-08"
+    local_agent_rs:
+      - "parses server-supplied wire packets"
+      - "GAP: N-003 — DoS cluster (length-prefix overflow + device_ip parsing); submitted security@proton.me 2026-05-08"
+
+vulnerabilities:
+  - finding_ref: protonvpn-linux-2026-05-08/findings/001-dbus-uid-spoof-setconfig.md
+    binary: protonvpn_split_tunneling_daemon (Linux, Python)
+    classes: [I-003]
+    severity: TBD
+    status: submitted
+    submission_ref: security@proton.me
+  - finding_ref: protonvpn-local-agent-rce-2026-05-08/findings/001-malicious-server-dos-cluster.md
+    binary: local_agent_rs (Rust binary, Linux/Windows/macOS)
+    classes: [N-003]
+    severity: TBD
+    status: submitted
+    submission_ref: security@proton.me
+
+open_angles:
+  - "Cert pinning on Proton servers — partial; not all endpoints pin"
+  - "macOS / Windows variants of split_tunneling not yet audited"
+  - "Wireguard-vs-OpenVPN protocol parsers not deeply investigated"

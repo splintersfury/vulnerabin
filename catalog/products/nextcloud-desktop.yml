@@ -1,0 +1,64 @@
+product: nextcloud-desktop
+display_name: Nextcloud Desktop Client
+vendor: Nextcloud
+description: >
+  Cross-platform file-sync client. Engagement nextcloud-desktop-2026-04-06: 4
+  findings spanning Linux .desktop-file RCE, SSRF, E2EE concerns, and
+  updater path injection. Several use the malicious-server attacker model.
+
+versions_seen:
+  - version: "current as of 2026-04"
+    eng: nextcloud-desktop-2026-04-06
+    seen: 2026-04-06
+
+binaries:
+  - nextcloud (desktop binary, cross-platform)
+
+topology:
+  trust_zones:
+    LoggedInUser:
+      - nextcloud (desktop binary)
+    Server_or_network_attacker:
+      - "(malicious Nextcloud server or MITM)"
+
+  defenses:
+    desktop_file_handler:
+      - "Linux: opens server-supplied URLs in .desktop file"
+      - "GAP: N-003 — server-supplied URL → .desktop content → exec (finding 001)"
+    ssrf:
+      - "downloads files via direct-download URLs"
+      - "GAP: N-005 + N-003 — SSRF via direct-download URL (finding 002)"
+    updater:
+      - "fetches updates from configured server"
+      - "GAP: UP-003 + N-003 — path-injection in updater chain (finding 004)"
+
+vulnerabilities:
+  - finding_ref: nextcloud-desktop-2026-04-06/findings/001-desktop-file-rce-linux.md
+    binary: nextcloud (desktop binary, cross-platform)
+    classes: [N-003, UP-003]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: nextcloud-desktop-2026-04-06/findings/002-ssrf-direct-download-url.md
+    binary: nextcloud (desktop binary, cross-platform)
+    classes: [N-005, N-003]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: nextcloud-desktop-2026-04-06/findings/003-e2ee-confidentiality.md
+    binary: nextcloud (desktop binary, cross-platform)
+    classes: [N-003]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+  - finding_ref: nextcloud-desktop-2026-04-06/findings/004-updater-path-injection-rce.md
+    binary: nextcloud (desktop binary, cross-platform)
+    classes: [UP-003, N-003]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+
+open_angles:
+  - "Windows / macOS variants of these chains — not yet verified"
+  - "Federation features (cross-server sharing) — additional N-003 surface"
+  - "End-to-end encryption key-handling — variant of CR-001 worth checking"

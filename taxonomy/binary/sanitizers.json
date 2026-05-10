@@ -36,5 +36,28 @@
   "error_handling": {
     "symbols": ["__try", "__except", "setjmp", "longjmp", "sigaction"],
     "description": "Exception/signal handling — may catch exploitation attempts"
+  },
+  "kernel_field_snapshot": {
+    "symbols": [],
+    "static_signature": "Inside one function, ≥2 statements of the form `local_<X> = *(<type> *)(param_<Y> [+ <off>])` reading distinct offsets of the same source param, followed by a call to an inner function that takes `&local_<X>` (or one of the snapshotted locals' address) as the corresponding pointer argument.",
+    "description": "Caller-side snapshot of user-supplied struct fields onto kernel stack before forwarding to inner function. Closes any multi-fetch class TOCTOU inside the inner function because the inner sees kernel-stack copies which user threads cannot mutate from another CPU.",
+    "real_world_example": "CClfsLogFcbPhysical::Initialize @ clfs.sys 10.0.26100.8246 — snapshots offsets 0x00/0x08/0x10 of _CLFS_FILTER_CONTEXT into local_60/uStack_58/local_50 before calling CClfsBaseFilePersisted::CreateImage(&local_60).",
+    "detected_by": "scripts/multifetch_scan.py (recogniser fires when find_snapshot_callers locates the pattern in a same-tree caller)"
+  },
+  "kernel_field_constructor_store": {
+    "symbols": [],
+    "static_signature": "Somewhere in the driver, a constructor-style function does `_Dst = ExAllocatePool*(...)` (or AfdReuseEndpoint / ExpInterlockedPopEntrySList / Io/Ex/Mm/RtlAllocate*) followed by `*(<type> *)(_Dst + <off>) = scalar_value;`. The candidate function reads `*(<type> *)(param_X + <off>)` later — `param_X` is kernel-pool-allocated, the +<off> field is a scalar snapshot.",
+    "description": "Value-passed-to-kernel-pool snapshot at construction time. The user buffer can be remapped/freed/rewritten after the constructor returns, but the kernel-pool struct's +<off> field holds the captured scalar permanently.",
+    "real_world_example": "AfdAllocateEndpoint @ afd.sys 10.0.26100.8246 line 163 — `*(uint *)(_Dst + 0xdc) = param_6;` where param_6 was a uint VALUE read from the user IRP buffer in AfdCreate. The AFD_ENDPOINT's +0xdc field is therefore race-immune, even though AfdDelayedAcceptListen reads it three times.",
+    "detected_by": "scripts/multifetch_scan.py (recogniser fires when find_constructor_stores locates a same-offset store after a kernel-pool allocator assignment, anywhere in the engagement decomp)",
+    "caveat": "Fuzzy match — coincidental same-offset matches between unrelated kernel structs can produce false defenses. The scanner's composable confidence model demotes-by-1 per recogniser rather than zeroing out, so a real candidate doesn't get hidden by a single coincidental match."
+  },
+  "file_share_exclusivity": {
+    "symbols": ["CreateFileW", "ZwCreateFile", "IoCreateFile"],
+    "static_signature": "Kernel driver opens its private metadata files with ShareAccess = 0 (FILE_SHARE_NONE).",
+    "description": "FS-layer defense against `CcMapData`-coherent multi-fetches. When the file backing the kernel cache page is opened with FILE_SHARE_NONE, no second user process can hold a writable handle, so the cache pages are not concurrently mutable in practice (even though `CcMapData` is theoretically coherent).",
+    "preflight_check": "From a low-priv user shell while the kernel driver is operating: `[System.IO.File]::Open('<path>', 'Open', 'ReadWrite', 'None')`. If it returns ERROR_SHARING_VIOLATION (32), the defense is in place — mark FALSE_POSITIVE without booking kernel-debug time.",
+    "real_world_example": "clfs.sys .blf and .bin containers — `FILE_SHARE_NONE` blocks the user-space race even though UpdateCachedOwnerPage has a textbook multi-fetch shape against `CcMapData` pages.",
+    "applies_to": ["clfs", "eventlog .evtx", "registry hives", "NTFS metadata files"]
   }
 }

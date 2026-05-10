@@ -1,0 +1,326 @@
+{
+  "toctou_file_path": {
+    "assumption": "File at path X is the same file that was loaded/executed",
+    "attack_class": "TOCTOU via hardlink/symlink/rename",
+    "cwe": "CWE-367",
+    "trigger_patterns": {
+      "symbols": ["ZwQueryInformationProcess", "GetModuleFileName", "GetProcessImageFileName",
+                   "QueryFullProcessImageName", "readlink", "realpath"],
+      "context": "Driver or service resolves a process image path then reads/hashes the file at that path"
+    },
+    "bypass_techniques": [
+      "NTFS hardlink swap between process load and driver check",
+      "Symlink redirect to trusted binary",
+      "Directory junction pointing to attacker-controlled location",
+      "Rename race on the executable path"
+    ],
+    "real_world": "AsIO3.sys CVE-2025-3464 — hardlink swap bypasses SHA256 ImageHashCheck",
+    "severity": "critical",
+    "question": "Does this check read the file on disk, or verify the loaded binary in memory? Can the file at the path change between check and use?"
+  },
+  "toctou_shared_memory": {
+    "assumption": "Value in shared memory stays the same between validation and use",
+    "attack_class": "Double-fetch from shared/user memory",
+    "cwe": "CWE-367",
+    "trigger_patterns": {
+      "symbols": ["copy_from_user", "__copy_from_user", "ProbeForRead", "ProbeForWrite",
+                   "MmMapLockedPages", "MmMapIoSpace"],
+      "context": "Kernel reads a value from user-writable memory, validates it, then reads it again"
+    },
+    "bypass_techniques": [
+      "Racing thread flipping the value between valid and malicious",
+      "userfaultfd to stall kernel between reads",
+      "FUSE filesystem returning different data per read",
+      "mmap + mprotect race"
+    ],
+    "real_world": "Hyper-V vmswitch double-fetch — section_idx validated then re-read from guest ring buffer",
+    "severity": "critical",
+    "question": "Is this value read once into kernel memory and reused, or re-read from the shared location?"
+  },
+  "toctou_multifetch_alloc_windows": {
+    "assumption": "The 16/32/64-bit field at *(buf + N) yields the same value on every read; alloc size and copy length read it independently and presume agreement.",
+    "attack_class": "Windows-kernel multi-fetch into ExAllocatePool* (CVE-2026-3006 / WinFSP class)",
+    "cwe": "CWE-367",
+    "trigger_patterns": {
+      "symbols": ["ExAllocatePoolWithTag", "ExAllocatePool2", "ExAllocatePool3",
+                   "ExAllocatePoolWithQuotaTag", "ExAllocatePoolWithTagPriority",
+                   "RtlCopyMemory", "memmove", "memcpy"],
+      "context": "Same `*(<type>*)(<var>+<off>)` deref appears as ExAllocatePool* size argument AND elsewhere in the same function as bound check or copy length, on ≥2 distinct lines."
+    },
+    "racing_source_classes": {
+      "irp_user_buffer": "METHOD_NEITHER IOCTL — user owns the buffer, race trivial. Static-detect via Irp->UserBuffer / Type3InputBuffer / SystemBuffer in the assignment RHS.",
+      "mdl_mapped_user_buffer": "METHOD_IN_DIRECT / METHOD_OUT_DIRECT — MmGetSystemAddressForMdlSafe / MmMapLockedPagesSpecifyCache returns a kernel-VA pointer into user-locked pages; the user mapping is still alive in the calling process. User-mutable unless the function deep-copies via ProbeForRead+RtlCopyMemory or caller-snapshots into a kernel buffer.",
+      "ccmap_file_cache_page": "Bytes from CcMapData/CcPinRead — coherent ONLY if file is opened FILE_SHARE_WRITE; pre-flight test required.",
+      "guest_shared_ring": "Hyper-V VMBus / virtio ring header — guest-mutable.",
+      "kernel_resident": "this/global/DAT_*/parameter from ExAllocate output — not user-mutable, FALSE_POSITIVE."
+    },
+    "recognised_defenses": {
+      "kernel_field_snapshot": "Caller copies user fields onto kernel stack and forwards `&local_a`. Inner multi-fetch reads kernel stack — race-immune.",
+      "file_share_exclusivity": "Kernel driver opens the source file with FILE_SHARE_NONE. Second user process can't acquire writable handle; CcMapData coherence is moot.",
+      "probeforread_plus_rtlcopy": "ProbeForRead + RtlCopyMemory into kernel-pool deep-copies the user struct before downstream reads."
+    },
+    "bypass_techniques": [
+      "Pin attacker thread to a different CPU than the syscall thread",
+      "Tight loop alternating between valid and malicious value at the suspect offset",
+      "For Cc-mapped sources: open the file with FILE_SHARE_WRITE before the kernel driver opens it (rarely possible)",
+      "For IRP user buffer: standard SMP race via second-thread WriteFile/memory write"
+    ],
+    "real_world": "CVE-2026-3006 (WinFSP, May 2026); CVE-2024-21338 (appid.sys/AppLocker); CVE-2023-21768 (afd.sys/WinSock).",
+    "severity": "critical",
+    "scanner": "scripts/multifetch_scan.py",
+    "long_form_guide": "prompts/vuln_patterns/double_fetch.md",
+    "question": "For each suspect *(var+off) deref: (1) what racing-source class? (2) does the caller perform kernel_field_snapshot? (3) for ccmap source, does FILE_SHARE_NONE close the race?"
+  },
+  "toctou_handle_reuse": {
+    "assumption": "Handle refers to the same object between check and use",
+    "attack_class": "Handle recycling / type confusion",
+    "cwe": "CWE-367",
+    "trigger_patterns": {
+      "symbols": ["ObReferenceObjectByHandle", "ZwDuplicateObject", "NtDuplicateObject",
+                   "ZwOpenProcess", "OpenProcess", "DuplicateHandle"],
+      "context": "Code validates a handle's type or permissions, then uses it after a potential close/reopen window"
+    },
+    "bypass_techniques": [
+      "Close handle in racing thread, force handle number reuse with different object type",
+      "Exploit handle table recycling to get same handle value pointing to different object"
+    ],
+    "severity": "high",
+    "question": "Can the handle be closed and recycled between the type check and the use?"
+  },
+  "process_name_identity": {
+    "assumption": "Process executable name or path substring equals process identity",
+    "attack_class": "Process name spoofing / path manipulation",
+    "cwe": "CWE-287",
+    "trigger_patterns": {
+      "symbols": ["strstr", "strncmp", "wcsstr", "_wcsnicmp", "PathFindFileName"],
+      "context": "Driver or service checks if calling process name contains a trusted substring"
+    },
+    "bypass_techniques": [
+      "Name attacker executable to contain the trusted substring",
+      "Place executable in directory whose path contains the substring",
+      "Create hardlink with matching name to attacker binary"
+    ],
+    "real_world": "AsIO3.sys also does substring match for 'AsusCertService' in path — any directory with that name works",
+    "severity": "high",
+    "question": "Is this checking the full verified identity of the caller, or just a substring of a spoofable path?"
+  },
+  "size_checked_vs_used": {
+    "assumption": "Size validated once remains valid when used in allocation/copy",
+    "attack_class": "Integer overflow / truncation between check and use",
+    "cwe": "CWE-190",
+    "trigger_patterns": {
+      "symbols": ["malloc", "kmalloc", "ExAllocatePoolWithTag", "ExAllocatePool2",
+                   "memcpy", "RtlCopyMemory", "copy_from_user"],
+      "context": "Size is validated against a maximum, then used in arithmetic (multiply, add) before allocation"
+    },
+    "bypass_techniques": [
+      "Integer overflow in size * element_count wraps to small allocation",
+      "Truncation from 64-bit to 32-bit size between check and alloc",
+      "Sign confusion: negative value passes < MAX check, becomes huge unsigned"
+    ],
+    "severity": "critical",
+    "question": "Is the EXACT validated value used in allocation, or does it go through arithmetic that could overflow?"
+  },
+  "pointer_validity": {
+    "assumption": "Pointer validated at check time is still valid at use time",
+    "attack_class": "Use-after-free / dangling pointer",
+    "cwe": "CWE-416",
+    "trigger_patterns": {
+      "symbols": ["free", "kfree", "ExFreePool", "ExFreePoolWithTag",
+                   "ObfDereferenceObject", "ObDereferenceObject", "IoFreeIrp"],
+      "context": "Object freed on one path, pointer still used on another path or by another thread"
+    },
+    "bypass_techniques": [
+      "Trigger free path, then reclaim the freed memory with controlled data",
+      "Race condition between free and use across threads",
+      "Reference count manipulation to trigger early free"
+    ],
+    "severity": "critical",
+    "question": "Can this object be freed while a reference to it still exists? Is the refcount correctly managed?"
+  },
+  "kernel_api_as_safe_wrapper": {
+    "assumption": "Calling a kernel API with user-controlled args is safe because it's a kernel function",
+    "attack_class": "Kernel API primitive abuse",
+    "cwe": "CWE-822",
+    "trigger_patterns": {
+      "symbols": ["ObfDereferenceObject", "ObDereferenceObject", "ExFreePool",
+                   "ExFreePoolWithTag", "MmUnmapLockedPages", "IoFreeMdl",
+                   "ZwClose", "NtClose"],
+      "context": "IOCTL handler passes user-controlled value directly to a kernel API"
+    },
+    "bypass_techniques": [
+      "ObfDereferenceObject on arbitrary address = decrement-by-one at (addr - 0x30)",
+      "ExFreePool on controlled address = arbitrary free for UAF",
+      "ZwClose on arbitrary handle value = close handles in other processes"
+    ],
+    "real_world": "AsIO3.sys IOCTL 0xA0402450 — ObfDereferenceObject with user-supplied address = arbitrary kernel memory decrement",
+    "severity": "critical",
+    "question": "Does this IOCTL pass user-controlled values directly to kernel APIs? What side-effects do those APIs have beyond their intended purpose?"
+  },
+  "single_check_stays_valid": {
+    "assumption": "A condition checked once remains true for the duration of the operation",
+    "attack_class": "Race condition / concurrent state mutation",
+    "cwe": "CWE-362",
+    "trigger_patterns": {
+      "symbols": ["KeAcquireSpinLock", "ExAcquireFastMutex", "mutex_lock",
+                   "spin_lock", "InterlockedCompareExchange"],
+      "context": "Security check performed without holding a lock that protects the checked state"
+    },
+    "bypass_techniques": [
+      "Race thread mutates the checked state between check and use",
+      "Signal handler interrupts between check and use",
+      "Callback invoked between check and use that changes state"
+    ],
+    "severity": "high",
+    "question": "Is the checked state protected by a lock during both check and use? Can another thread/interrupt modify it?"
+  },
+  "access_control_completeness": {
+    "assumption": "All paths to sensitive functionality go through the access check",
+    "attack_class": "Alternate entry point / missing check",
+    "cwe": "CWE-862",
+    "trigger_patterns": {
+      "symbols": ["IRP_MJ_DEVICE_CONTROL", "IRP_MJ_INTERNAL_DEVICE_CONTROL",
+                   "IRP_MJ_FILE_SYSTEM_CONTROL", "IRP_MJ_READ", "IRP_MJ_WRITE"],
+      "context": "Driver validates caller on IRP_MJ_DEVICE_CONTROL but not on other IRP types"
+    },
+    "bypass_techniques": [
+      "Use IRP_MJ_INTERNAL_DEVICE_CONTROL which skips validation",
+      "Use IRP_MJ_READ/WRITE directly if they expose the same functionality",
+      "Direct IOCTL from kernel mode bypasses userspace validation"
+    ],
+    "severity": "high",
+    "question": "Is this access check applied on ALL paths to the sensitive operation, or only on the obvious one?"
+  },
+  "junction_on_write": {
+    "assumption": "Path resolved by privileged code refers to a normal directory under the user profile",
+    "attack_class": "NTFS reparse-point redirection (Shape A)",
+    "cwe": "CWE-59",
+    "trigger_patterns": {
+      "symbols": ["CreateFile", "MoveFile", "DeleteFile", "CopyFile", "SHFileOperation", "RtlDosPathNameToNtPathName_U"],
+      "context": "SYSTEM service writes/copies/deletes under a path the low-priv user can replace with a junction"
+    },
+    "bypass_techniques": [
+      "mklink /J victim_dir target_privileged_dir",
+      "Use NtCreateFile with FILE_OPEN_REPARSE_POINT to set mount point",
+      "Combine with oplock to swap mid-operation"
+    ],
+    "real_world": "BlueHammer CVE-2026-33825, OEM uninstaller LPE family",
+    "severity": "critical",
+    "question": "Does the privileged side resolve junctions before the operation, or does it write through them?"
+  },
+  "oplock_on_check": {
+    "assumption": "File contents and identity stay constant from check to act",
+    "attack_class": "Oplock-paused check-then-act (Shape B)",
+    "cwe": "CWE-367",
+    "trigger_patterns": {
+      "symbols": ["FsRtlOplockFsctrl", "WinVerifyTrust", "CryptHashFile", "NtQueryInformationFile", "GetFileVersionInfo"],
+      "context": "Privileged side performs verify/hash followed by another open/read of the same path"
+    },
+    "bypass_techniques": [
+      "FSCTL_REQUEST_OPLOCK on the target file as the user",
+      "On oplock break, swap target via hardlink retarget or rename"
+    ],
+    "real_world": "cldflt.sys CVE-2025-55680, AsIO3.sys CVE-2025-3464",
+    "severity": "critical",
+    "question": "Does the operation re-open or re-read the file after an integrity check?"
+  },
+  "rpc_caller_trust": {
+    "assumption": "RPC peer identity from PID/path/binding is trustworthy",
+    "attack_class": "RPC interface trust (Shape C)",
+    "cwe": "CWE-940",
+    "trigger_patterns": {
+      "symbols": ["RpcServerInqCallAttributes", "I_RpcBindingInqLocalClientPID", "RpcImpersonateClient", "GetNamedPipeClientProcessId"],
+      "context": "RPC handler retrieves caller info via PID or path string and uses it for authorization"
+    },
+    "bypass_techniques": [
+      "PID reuse race",
+      "Hardlink to trusted-named binary then exec to spoof image path identity",
+      "Parent-PID spoof to fake trusted ancestor"
+    ],
+    "real_world": "PhantomRPC (Securelist 2025), ICMLuaUtil COM elevation family",
+    "severity": "high",
+    "question": "Is caller identity established by token integrity / SID, or by an attacker-influenceable name?"
+  },
+  "com_autoelevate": {
+    "assumption": "CLSID with Elevation\\Enabled=1 should only be invoked by genuinely-elevated callers",
+    "attack_class": "COM autoElevate via CoCreateInstanceAsAdmin coercion (Shape C)",
+    "cwe": "CWE-269",
+    "trigger_patterns": {
+      "symbols": ["CoCreateInstance", "CoGetObject", "CoCreateInstanceAsAdmin", "ICMLuaUtil", "ShellExec"],
+      "context": "Elevated COM object exposing a privileged primitive (FileWrite/RegistryWrite/ShellExec)"
+    },
+    "bypass_techniques": [
+      "Mock-folder %SystemRoot% redirection",
+      "DLL planting in RunDll32 search path",
+      "Registry CLSID hijack via per-user TreatAs"
+    ],
+    "real_world": "Numerous fileless UAC bypasses, FodHelper, ComputerDefaults, Forshaw Admin Protection bypass series",
+    "severity": "high",
+    "question": "Does the COM server validate caller integrity, or trust the elevation moniker?"
+  },
+  "vss_previous_version": {
+    "assumption": "Shadow copies are read-only historical snapshots",
+    "attack_class": "VSS-mediated path redirection (Shape D)",
+    "cwe": "CWE-732",
+    "trigger_patterns": {
+      "symbols": ["VssVolumeSnapshot", "GLOBALROOT", "HarddiskVolumeShadowCopy"],
+      "context": "Privileged worker reads or writes through a path containing a shadow-copy device name"
+    },
+    "bypass_techniques": [
+      "Create attacker-controlled shadow copy mounted as a subpath of a SYSTEM-touched directory",
+      "Combine with junction to make SYSTEM operate in the shadow namespace"
+    ],
+    "real_world": "BlueHammer CVE-2026-33825",
+    "severity": "high",
+    "question": "Does the path resolution code reject \\\\.\\GLOBALROOT or shadow-copy device names?"
+  },
+  "cloud_files_placeholder": {
+    "assumption": "Reads from a path return real on-disk bytes",
+    "attack_class": "cldflt.sys placeholder traps (Shape B/D)",
+    "cwe": "CWE-367",
+    "trigger_patterns": {
+      "symbols": ["CfRegisterSyncRoot", "CfHydratePlaceholder", "CldApi", "FltGetReparseTagInformation"],
+      "context": "Privileged code reads a file under a Cloud Files sync root"
+    },
+    "bypass_techniques": [
+      "Register attacker-owned sync provider over a directory the privileged worker reads",
+      "Provider returns different content per fetch — TOCTOU between read1 and read2"
+    ],
+    "real_world": "CVE-2025-55680, RedSun (unpatched, Defender)",
+    "severity": "critical",
+    "question": "Does the privileged worker handle FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS, or treat placeholder files as regular files?"
+  },
+  "update_worker_staging": {
+    "assumption": "User-writable staging dir contains only the worker's own artifacts",
+    "attack_class": "Update / repair / rollback worker abuse (Shape D)",
+    "cwe": "CWE-552",
+    "trigger_patterns": {
+      "symbols": ["MoveFileEx", "DeleteFile", "LoadLibrary", "WinExec", "MsiInstallProduct"],
+      "context": "SYSTEM worker scans %ProgramData% / %TEMP% / Installer cache and acts on found files"
+    },
+    "bypass_techniques": [
+      "Pre-stage attacker DLL where worker calls LoadLibrary with non-fully-qualified name",
+      "Replace expected file with junction to privileged location",
+      "MSI rollback log contains attacker-injected restore entries"
+    ],
+    "real_world": "CVE-2025-21204 (WU stack), BlueHammer (Defender), Mandiant third-party installer LPE catalog",
+    "severity": "critical",
+    "question": "Does the worker fully-qualify all paths and verify file ownership before acting?"
+  },
+  "se_impersonate_coercion": {
+    "assumption": "Service-side accept of unauthenticated callbacks preserves caller integrity",
+    "attack_class": "SeImpersonate token coercion (Potato family)",
+    "cwe": "CWE-287",
+    "trigger_patterns": {
+      "symbols": ["RpcImpersonateClient", "ImpersonateNamedPipeClient", "CoImpersonateClient", "AcceptEx"],
+      "context": "Process holds SeImpersonatePrivilege, accepts an inbound auth and impersonates"
+    },
+    "bypass_techniques": [
+      "Coerce SYSTEM service to authenticate to attacker-controlled named pipe / RPC endpoint",
+      "Capture the auth, impersonate to reach SYSTEM token"
+    ],
+    "real_world": "PrintSpoofer, RoguePotato, GodPotato, EfsPotato (any process with SeImpersonate)",
+    "severity": "critical",
+    "question": "Can a low-priv process force the target service to authenticate outbound to me?"
+  }
+}

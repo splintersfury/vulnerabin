@@ -1,0 +1,391 @@
+binary: msgbus.dll
+display_name: msgbus.dll
+description: (Auto-seeded; replace this description.) Catalogued in 2 engagement(s).
+canonical_path: ''
+arch: ''
+platform: ''
+binary_kind: dll
+trust_boundary: ''
+versions:
+- version: ''
+  sha256: ''
+  eng: bitdefender-2026-05-02
+  seen: '2026-05-02'
+  notes: ''
+- version: 27.x
+  sha256: ''
+  eng: bitdefender-total-security-2026-04-11
+  seen: '2026-04-11'
+  notes: 'Auto-seeded from bitdefender-total-security-2026-04-11/scope.json (target: Bitdefender Total Security)'
+sources:
+- id: SRC-001
+  name: Standard user connects to Everyone-ACLed msgbus pipe; trusted-process check is FNV-1a hash of caller image path
+  source_class_id: I-002
+  co_class_ids:
+  - T-004
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: ''
+  last_confirmed_version: ''
+  notes: Auto-enriched from bitdefender-2026-05-02/001-msgbus-trusted-process-bypass.md. Named-pipe write source plus T-004
+    caller-process-image-path trust check.
+sinks:
+- id: SNK-001
+  name: IPC handler executes privileged operation
+  cwe: CWE-862
+  function: (see finding evidence)
+  impact: arbitrary command execution as listening service
+  first_seen_version: ''
+  notes: Auto-generated stub for group I. Refine with the actual sink function/line as documented in the finding.
+- id: SNK-002
+  name: Trust check bypassed; downstream privileged operation accepted
+  cwe: CWE-285
+  function: (see finding evidence)
+  impact: auth bypass leads to privileged action
+  first_seen_version: ''
+  notes: Auto-generated stub for group T. Refine with the actual sink function/line as documented in the finding.
+chains:
+- id: CHAIN-001
+  title: Standard user connects to Everyone-ACLed msgbus pipe; trusted-process check is F
+  source_id: SRC-001
+  sink_id: SNK-001
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: arbitrary command execution as listening service
+  cwe:
+  - CWE-862
+  severity: ''
+  cvss: ''
+  status: unexplored
+  confirmed_in_version: ''
+  finding_ref: bitdefender-2026-05-02/findings/001-msgbus-trusted-process-bypass.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+_seed_meta:
+  decomp_dirs:
+  - bitdefender-2026-05-02/decomp-msgbus
+  - bitdefender-2026-05-02/msgbus_decomp
+  - bitdefender-total-security-2026-04-11/decomp-msgbus
+  - bitdefender-total-security-2026-04-11/msgbus_decomp
+  findings_seen:
+  - ref: bitdefender-2026-05-02/findings/001-msgbus-trusted-process-bypass.md
+    eng: bitdefender-2026-05-02
+    version: ''
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: ''
+  principal: unknown
+  start_trigger: ''
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+defenses:
+- class_id: I-002
+  defense_expected: Explicit SDDL; authenticate caller via ImpersonateNamedPipeClient + group membership check, OR GetNamedPipeClientProcessId
+    + image-path allowlist.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+- class_id: T-004
+  defense_expected: Don't have IPC at all, OR require fresh authentication beyond image-path identity (HMAC token, mutual
+    TLS, signed session ticket).
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+class_coverage:
+- class_id: C-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-002
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    chains:
+    - CHAIN-001
+  last_checked_version: ''
+- class_id: I-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-008
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-009
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-004
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    chains:
+    - CHAIN-001
+  last_checked_version: ''
+- class_id: T-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''

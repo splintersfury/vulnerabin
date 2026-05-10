@@ -1,0 +1,62 @@
+product: sophos
+display_name: Sophos Intercept X (Windows endpoint)
+vendor: Sophos
+description: >
+  Enterprise endpoint security. Two engagements: sophos-endpoint-ipc-2026-05-05
+  (the EventStore named-pipe info-disclosure that submitted as P3) and
+  sophos-2026-04-29 (earlier surface enumeration). Plus a chromebook-SSO RCE
+  finding from a separate engagement (P3 N/A).
+
+versions_seen:
+  - version: "current as of 2026-05"
+    eng: sophos-endpoint-ipc-2026-05-05
+    seen: 2026-05-05
+  - version: "2026-04 build"
+    eng: sophos-2026-04-29
+    seen: 2026-04-29
+
+binaries:
+  - SophosEventStore (service)
+  - sophossetup.exe
+  - sophos_management_communications_system.exe   # nominal name
+  - SophosSysFilter.sys                            # filter driver
+
+topology:
+  trust_zones:
+    SYSTEM:
+      - SophosEventStore (named pipe owner)
+      - SophosSysFilter.sys
+    LoggedInUser:
+      - sophos_systray.exe (nominal)
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  ipc_edges:
+    - { src: "(any standard-user process)", dst: SophosEventStore (service), via: "named pipe \\\\.\\pipe\\SophosEventStore (I-001)" }
+
+  defenses:
+    sophoseventstore:
+      - "named pipe DACL grants Authenticated Users read/write per the finding"
+      - "GAP: I-001 — unauthenticated read of threat-detection metadata; submitted P3 to Bugcrowd"
+    csd_start:
+      - "Chromebook SSO certificate handler"
+      - "GAP: command injection via certificate Common Name — but P3 N/A per Sophos triage"
+
+vulnerabilities:
+  - finding_ref: sophos-endpoint-ipc-2026-05-05/findings/001-eventstore-unauth-read.md
+    binary: SophosEventStore (service)
+    classes: [I-001]
+    severity: P3
+    status: submitted
+    submission_ref: bugcrowd:sophos-eventstore
+  - finding_ref: sophos-2026-04-29/findings/001-csd-start-chromebook-sso-cmdinjection.md
+    binary: csd_start.pl
+    classes: [N-002]
+    severity: P3
+    status: submitted_dropped
+    submission_ref: bugcrowd:sophos (Not Applicable)
+
+open_angles:
+  - "SophosSysFilter IOCTL surface not deeply audited"
+  - "Update-channel signature verification not investigated"
+  - "Other named pipes in the suite — full enumeration not done"

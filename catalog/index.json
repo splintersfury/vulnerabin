@@ -1,0 +1,1946 @@
+{
+  "generated_at": "2026-05-09T15:29:24.348538+00:00",
+  "binary_count": 87,
+  "binaries": [
+    {
+      "binary": "acronis_web_installer_26.4.1.42393.exe",
+      "display_name": "acronis_web_installer_26.4.1.42393.exe",
+      "yml_path": "catalog/binaries/acronis_web_installer_26_4_1_42393_exe.yml",
+      "page_path": "catalog/pages/acronis_web_installer_26_4_1_42393_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "acronis-2026-05-07"
+      ]
+    },
+    {
+      "binary": "acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe",
+      "display_name": "acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe",
+      "yml_path": "catalog/binaries/acroniscyberprotect_agentforwindows_web_26_4_1_42393_exe.yml",
+      "page_path": "catalog/pages/acroniscyberprotect_agentforwindows_web_26_4_1_42393_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "acronis-2026-05-07"
+      ]
+    },
+    {
+      "binary": "acsock64_dec2025.sys",
+      "display_name": "acsock64_dec2025.sys",
+      "yml_path": "catalog/binaries/acsock64_dec2025_sys.yml",
+      "page_path": "catalog/pages/acsock64_dec2025_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "cisco-secure-client-2026-03-30"
+      ]
+    },
+    {
+      "binary": "acsock64_latest.sys",
+      "display_name": "acsock64_latest.sys",
+      "yml_path": "catalog/binaries/acsock64_latest_sys.yml",
+      "page_path": "catalog/pages/acsock64_latest_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "cisco-secure-client-2026-03-30"
+      ]
+    },
+    {
+      "binary": "acsock64_prev.sys",
+      "display_name": "acsock64_prev.sys",
+      "yml_path": "catalog/binaries/acsock64_prev_sys.yml",
+      "page_path": "catalog/pages/acsock64_prev_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "cisco-secure-client-2026-03-30"
+      ]
+    },
+    {
+      "binary": "afd_26100.8115_pre.sys",
+      "display_name": "afd_26100.8115_pre.sys",
+      "yml_path": "catalog/binaries/afd_26100_8115_pre_sys.yml",
+      "page_path": "catalog/pages/afd_26100_8115_pre_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "afd-sys-2026-04-28"
+      ]
+    },
+    {
+      "binary": "afd_26100.8246_post.sys",
+      "display_name": "afd_26100.8246_post.sys",
+      "yml_path": "catalog/binaries/afd_26100_8246_post_sys.yml",
+      "page_path": "catalog/pages/afd_26100_8246_post_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "afd-sys-2026-04-28"
+      ]
+    },
+    {
+      "binary": "app_communicator.dll",
+      "display_name": "app_communicator.dll",
+      "yml_path": "catalog/binaries/app_communicator_dll.yml",
+      "page_path": "catalog/pages/app_communicator_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "arcinstaller.exe",
+      "display_name": "arcinstaller.exe",
+      "yml_path": "catalog/binaries/arcinstaller_exe.yml",
+      "page_path": "catalog/pages/arcinstaller_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bcny-arc-2026-04-30"
+      ]
+    },
+    {
+      "binary": "avast_free_offline.exe",
+      "display_name": "avast_free_offline.exe",
+      "yml_path": "catalog/binaries/avast_free_offline_exe.yml",
+      "page_path": "catalog/pages/avast_free_offline_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "avast-avg-2026-04-30"
+      ]
+    },
+    {
+      "binary": "avast_free_setup.exe",
+      "display_name": "avast_free_setup.exe",
+      "yml_path": "catalog/binaries/avast_free_setup_exe.yml",
+      "page_path": "catalog/pages/avast_free_setup_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "avast-avg-2026-04-30"
+      ]
+    },
+    {
+      "binary": "bdappservice.dll",
+      "display_name": "bdappservice.dll",
+      "yml_path": "catalog/binaries/bdappservice_dll.yml",
+      "page_path": "catalog/pages/bdappservice_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "bddci4.sys",
+      "display_name": "bddci4.sys",
+      "yml_path": "catalog/binaries/bddci4_sys.yml",
+      "page_path": "catalog/pages/bddci4_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "bdntwrk.exe",
+      "display_name": "bdntwrk.exe",
+      "yml_path": "catalog/binaries/bdntwrk_exe.yml",
+      "page_path": "catalog/pages/bdntwrk_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "bdprocessbroker.dll",
+      "display_name": "bdprocessbroker.dll",
+      "yml_path": "catalog/binaries/bdprocessbroker_dll.yml",
+      "page_path": "catalog/pages/bdprocessbroker_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "bdservicehost.exe",
+      "display_name": "bdservicehost.exe",
+      "yml_path": "catalog/binaries/bdservicehost_exe.yml",
+      "page_path": "catalog/pages/bdservicehost_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "bdtrackerscomm.dll",
+      "display_name": "bdtrackerscomm.dll",
+      "yml_path": "catalog/binaries/bdtrackerscomm_dll.yml",
+      "page_path": "catalog/pages/bdtrackerscomm_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "broker",
+      "display_name": "broker",
+      "yml_path": "catalog/binaries/broker.yml",
+      "page_path": "catalog/pages/broker.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 2,
+      "source_count": 1,
+      "sink_count": 1,
+      "chain_count": 1,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 1,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "bzrestore",
+      "display_name": "bzrestore",
+      "yml_path": "catalog/binaries/bzrestore.yml",
+      "page_path": "catalog/pages/bzrestore.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 1,
+      "source_count": 1,
+      "sink_count": 1,
+      "chain_count": 1,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 1,
+        "mitigated": 0
+      },
+      "engagements": [
+        "backblaze-2026-04-08"
+      ]
+    },
+    {
+      "binary": "bzserv",
+      "display_name": "bzserv",
+      "yml_path": "catalog/binaries/bzserv.yml",
+      "page_path": "catalog/pages/bzserv.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 1,
+      "source_count": 2,
+      "sink_count": 2,
+      "chain_count": 2,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 1,
+        "mitigated": 1
+      },
+      "engagements": [
+        "backblaze-2026-04-08"
+      ]
+    },
+    {
+      "binary": "bztransmit",
+      "display_name": "bztransmit",
+      "yml_path": "catalog/binaries/bztransmit.yml",
+      "page_path": "catalog/pages/bztransmit.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "backblaze-2026-04-08"
+      ]
+    },
+    {
+      "binary": "csc-deploy-full-5.1.16.194.exe",
+      "display_name": "csc-deploy-full-5.1.16.194.exe",
+      "yml_path": "catalog/binaries/csc_deploy_full_5_1_16_194_exe.yml",
+      "page_path": "catalog/pages/csc_deploy_full_5_1_16_194_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "cisco-secure-client-2026-03-30"
+      ]
+    },
+    {
+      "binary": "discoverysrv.exe",
+      "display_name": "discoverysrv.exe",
+      "yml_path": "catalog/binaries/discoverysrv_exe.yml",
+      "page_path": "catalog/pages/discoverysrv_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "dropbox_offline_installer.exe",
+      "display_name": "dropbox_offline_installer.exe",
+      "yml_path": "catalog/binaries/dropbox_offline_installer_exe.yml",
+      "page_path": "catalog/pages/dropbox_offline_installer_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 1,
+      "sink_count": 2,
+      "chain_count": 1,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 1,
+        "mitigated": 0
+      },
+      "engagements": [
+        "dropbox-2026-04-30"
+      ]
+    },
+    {
+      "binary": "hp_support_assistant.exe",
+      "display_name": "hp_support_assistant.exe",
+      "yml_path": "catalog/binaries/hp_support_assistant_exe.yml",
+      "page_path": "catalog/pages/hp_support_assistant_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 1,
+      "sink_count": 1,
+      "chain_count": 1,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 1,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "hp-support-assistant-2026-04-29"
+      ]
+    },
+    {
+      "binary": "install_backblaze.exe",
+      "display_name": "install_backblaze.exe",
+      "yml_path": "catalog/binaries/install_backblaze_exe.yml",
+      "page_path": "catalog/pages/install_backblaze_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "backblaze-2026-04-08"
+      ]
+    },
+    {
+      "binary": "intel-driver-and-support-assistant-installer.exe",
+      "display_name": "intel-driver-and-support-assistant-installer.exe",
+      "yml_path": "catalog/binaries/intel_driver_and_support_assistant_installer_exe.yml",
+      "page_path": "catalog/pages/intel_driver_and_support_assistant_installer_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "intel-dsa-2026-04-30"
+      ]
+    },
+    {
+      "binary": "iservconfig.dll",
+      "display_name": "iservconfig.dll",
+      "yml_path": "catalog/binaries/iservconfig_dll.yml",
+      "page_path": "catalog/pages/iservconfig_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "latest",
+      "display_name": "latest",
+      "yml_path": "catalog/binaries/latest.yml",
+      "page_path": "catalog/pages/latest.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "cisco-secure-client-2026-03-30"
+      ]
+    },
+    {
+      "binary": "lghub_installer_2026.exe",
+      "display_name": "lghub_installer_2026.exe",
+      "yml_path": "catalog/binaries/lghub_installer_2026_exe.yml",
+      "page_path": "catalog/pages/lghub_installer_2026_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "logitech-2026-05-07"
+      ]
+    },
+    {
+      "binary": "log.dll",
+      "display_name": "log.dll",
+      "yml_path": "catalog/binaries/log_dll.yml",
+      "page_path": "catalog/pages/log_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "logioptionsplus_installer_2.3.879545.exe",
+      "display_name": "logioptionsplus_installer_2.3.879545.exe",
+      "yml_path": "catalog/binaries/logioptionsplus_installer_2_3_879545_exe.yml",
+      "page_path": "catalog/pages/logioptionsplus_installer_2_3_879545_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "logitech-2026-05-07"
+      ]
+    },
+    {
+      "binary": "mb5-setup-consumer-5.5.4.252.exe",
+      "display_name": "mb5-setup-consumer-5.5.4.252.exe",
+      "yml_path": "catalog/binaries/mb5_setup_consumer_5_5_4_252_exe.yml",
+      "page_path": "catalog/pages/mb5_setup_consumer_5_5_4_252_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 2,
+      "sink_count": 1,
+      "chain_count": 2,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 2,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "malwarebytes-2026-04-29"
+      ]
+    },
+    {
+      "binary": "mb-support-1.9.18.1166.exe",
+      "display_name": "mb-support-1.9.18.1166.exe",
+      "yml_path": "catalog/binaries/mb_support_1_9_18_1166_exe.yml",
+      "page_path": "catalog/pages/mb_support_1_9_18_1166_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "malwarebytes-2026-04-29"
+      ]
+    },
+    {
+      "binary": "messaging-ipc",
+      "display_name": "messaging-ipc",
+      "yml_path": "catalog/binaries/messaging_ipc.yml",
+      "page_path": "catalog/pages/messaging_ipc.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "messaging_ipc.dll",
+      "display_name": "messaging_ipc.dll",
+      "yml_path": "catalog/binaries/messaging_ipc_dll.yml",
+      "page_path": "catalog/pages/messaging_ipc_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "msgbus.dll",
+      "display_name": "msgbus.dll",
+      "yml_path": "catalog/binaries/msgbus_dll.yml",
+      "page_path": "catalog/pages/msgbus_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 1,
+      "sink_count": 2,
+      "chain_count": 1,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 1,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "nordvpninstall_8.1.2.0.exe",
+      "display_name": "nordvpninstall_8.1.2.0.exe",
+      "yml_path": "catalog/binaries/nordvpninstall_8_1_2_0_exe.yml",
+      "page_path": "catalog/pages/nordvpninstall_8_1_2_0_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "nordsecurity-2026-04-29"
+      ]
+    },
+    {
+      "binary": "notion-setup-7.16.0.exe",
+      "display_name": "notion-setup-7.16.0.exe",
+      "yml_path": "catalog/binaries/notion_setup_7_16_0_exe.yml",
+      "page_path": "catalog/pages/notion_setup_7_16_0_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "notion-2026-05-08"
+      ]
+    },
+    {
+      "binary": "nvidia_app_v11.0.7.247.exe",
+      "display_name": "nvidia_app_v11.0.7.247.exe",
+      "yml_path": "catalog/binaries/nvidia_app_v11_0_7_247_exe.yml",
+      "page_path": "catalog/pages/nvidia_app_v11_0_7_247_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "nvidia-app-2026-04-30"
+      ]
+    },
+    {
+      "binary": "productagent.dll",
+      "display_name": "productagent.dll",
+      "yml_path": "catalog/binaries/productagent_dll.yml",
+      "page_path": "catalog/pages/productagent_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 1,
+      "sink_count": 1,
+      "chain_count": 1,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 1,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "productagentdp.dll",
+      "display_name": "productagentdp.dll",
+      "yml_path": "catalog/binaries/productagentdp_dll.yml",
+      "page_path": "catalog/pages/productagentdp_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "productagentservice.exe",
+      "display_name": "productagentservice.exe",
+      "yml_path": "catalog/binaries/productagentservice_exe.yml",
+      "page_path": "catalog/pages/productagentservice_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "productagt",
+      "display_name": "productagt",
+      "yml_path": "catalog/binaries/productagt.yml",
+      "page_path": "catalog/pages/productagt.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "proxy",
+      "display_name": "proxy",
+      "yml_path": "catalog/binaries/proxy.yml",
+      "page_path": "catalog/pages/proxy.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "proxy.msgbus.client.dll",
+      "display_name": "proxy.msgbus.client.dll",
+      "yml_path": "catalog/binaries/proxy_msgbus_client_dll.yml",
+      "page_path": "catalog/pages/proxy_msgbus_client_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "proxy.msgbus.server.dll",
+      "display_name": "proxy.msgbus.server.dll",
+      "yml_path": "catalog/binaries/proxy_msgbus_server_dll.yml",
+      "page_path": "catalog/pages/proxy_msgbus_server_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "safeelevatedrun.dll",
+      "display_name": "Bitdefender SafeElevatedRun",
+      "yml_path": "catalog/binaries/safeelevatedrun_dll.yml",
+      "page_path": "catalog/pages/safeelevatedrun_dll.md",
+      "platform": "windows",
+      "binary_kind": "dll",
+      "version_count": 1,
+      "source_count": 2,
+      "sink_count": 1,
+      "chain_count": 2,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 1,
+        "hypothesised": 0,
+        "unexplored": 1,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "server2022",
+      "display_name": "server2022",
+      "yml_path": "catalog/binaries/server2022.yml",
+      "page_path": "catalog/pages/server2022.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "afd-sys-2026-04-28"
+      ]
+    },
+    {
+      "binary": "servicehost",
+      "display_name": "servicehost",
+      "yml_path": "catalog/binaries/servicehost.yml",
+      "page_path": "catalog/pages/servicehost.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "setpoint6.90.66_64.exe",
+      "display_name": "setpoint6.90.66_64.exe",
+      "yml_path": "catalog/binaries/setpoint6_90_66_64_exe.yml",
+      "page_path": "catalog/pages/setpoint6_90_66_64_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "logitech-2026-05-07"
+      ]
+    },
+    {
+      "binary": "sophossetup.exe",
+      "display_name": "sophossetup.exe",
+      "yml_path": "catalog/binaries/sophossetup_exe.yml",
+      "page_path": "catalog/pages/sophossetup_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 2,
+      "source_count": 1,
+      "sink_count": 1,
+      "chain_count": 1,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 1,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "sophos-2026-04-29",
+        "sophos-endpoint-ipc-2026-05-05"
+      ]
+    },
+    {
+      "binary": "storvsc_26100.3624_sept2025_pre.sys",
+      "display_name": "storvsc_26100.3624_sept2025_pre.sys",
+      "yml_path": "catalog/binaries/storvsc_26100_3624_sept2025_pre_sys.yml",
+      "page_path": "catalog/pages/storvsc_26100_3624_sept2025_pre_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "storvsc-2026-05-09"
+      ]
+    },
+    {
+      "binary": "storvsc_26100.8246_apr2026_post.sys",
+      "display_name": "storvsc_26100.8246_apr2026_post.sys",
+      "yml_path": "catalog/binaries/storvsc_26100_8246_apr2026_post_sys.yml",
+      "page_path": "catalog/pages/storvsc_26100_8246_apr2026_post_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "storvsc-2026-05-09"
+      ]
+    },
+    {
+      "binary": "storvsp_26100.7019_oct2025_pre-cve-2025-60708.sys",
+      "display_name": "storvsp_26100.7019_oct2025_pre-cve-2025-60708.sys",
+      "yml_path": "catalog/binaries/storvsp_26100_7019_oct2025_pre_cve_2025_60708_sys.yml",
+      "page_path": "catalog/pages/storvsp_26100_7019_oct2025_pre_cve_2025_60708_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "storvsp-2026-05-05"
+      ]
+    },
+    {
+      "binary": "storvsp_26100.7171_nov2025_post-cve-2025-60708.sys",
+      "display_name": "storvsp_26100.7171_nov2025_post-cve-2025-60708.sys",
+      "yml_path": "catalog/binaries/storvsp_26100_7171_nov2025_post_cve_2025_60708_sys.yml",
+      "page_path": "catalog/pages/storvsp_26100_7171_nov2025_post_cve_2025_60708_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "storvsp-2026-05-05"
+      ]
+    },
+    {
+      "binary": "storvsp_26100.7462_dec2025_pre-cve-2026-21508.sys",
+      "display_name": "storvsp_26100.7462_dec2025_pre-cve-2026-21508.sys",
+      "yml_path": "catalog/binaries/storvsp_26100_7462_dec2025_pre_cve_2026_21508_sys.yml",
+      "page_path": "catalog/pages/storvsp_26100_7462_dec2025_pre_cve_2026_21508_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "storvsp-2026-05-05"
+      ]
+    },
+    {
+      "binary": "storvsp_26100.7705_jan2026_post-cve-2026-21508.sys",
+      "display_name": "storvsp_26100.7705_jan2026_post-cve-2026-21508.sys",
+      "yml_path": "catalog/binaries/storvsp_26100_7705_jan2026_post_cve_2026_21508_sys.yml",
+      "page_path": "catalog/pages/storvsp_26100_7705_jan2026_post_cve_2026_21508_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "storvsp-2026-05-05"
+      ]
+    },
+    {
+      "binary": "storvsp_26100.7920_feb2026_live.sys",
+      "display_name": "storvsp_26100.7920_feb2026_live.sys",
+      "yml_path": "catalog/binaries/storvsp_26100_7920_feb2026_live_sys.yml",
+      "page_path": "catalog/pages/storvsp_26100_7920_feb2026_live_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "storvsp-2026-05-05"
+      ]
+    },
+    {
+      "binary": "teamviewer_host_setup_x64_2026.exe",
+      "display_name": "teamviewer_host_setup_x64_2026.exe",
+      "yml_path": "catalog/binaries/teamviewer_host_setup_x64_2026_exe.yml",
+      "page_path": "catalog/pages/teamviewer_host_setup_x64_2026_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "teamviewer-2026-03-31"
+      ]
+    },
+    {
+      "binary": "teamviewer_service.exe",
+      "display_name": "teamviewer_service.exe",
+      "yml_path": "catalog/binaries/teamviewer_service_exe.yml",
+      "page_path": "catalog/pages/teamviewer_service_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 4,
+      "sink_count": 2,
+      "chain_count": 4,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 4,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "teamviewer-2026-03-31"
+      ]
+    },
+    {
+      "binary": "teamviewer_virtualdevicedriver.dll",
+      "display_name": "teamviewer_virtualdevicedriver.dll",
+      "yml_path": "catalog/binaries/teamviewer_virtualdevicedriver_dll.yml",
+      "page_path": "catalog/pages/teamviewer_virtualdevicedriver_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "teamviewer-2026-03-31"
+      ]
+    },
+    {
+      "binary": "teamviewer_xpsdriverfilter.dll",
+      "display_name": "teamviewer_xpsdriverfilter.dll",
+      "yml_path": "catalog/binaries/teamviewer_xpsdriverfilter_dll.yml",
+      "page_path": "catalog/pages/teamviewer_xpsdriverfilter_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "teamviewer-2026-03-31"
+      ]
+    },
+    {
+      "binary": "teamviewervpn.sys",
+      "display_name": "teamviewervpn.sys",
+      "yml_path": "catalog/binaries/teamviewervpn_sys.yml",
+      "page_path": "catalog/pages/teamviewervpn_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 2,
+      "sink_count": 1,
+      "chain_count": 2,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 2,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "teamviewer-2026-03-31"
+      ]
+    },
+    {
+      "binary": "telegram",
+      "display_name": "telegram",
+      "yml_path": "catalog/binaries/telegram.yml",
+      "page_path": "catalog/pages/telegram.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 1,
+      "source_count": 4,
+      "sink_count": 3,
+      "chain_count": 4,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 2,
+        "unexplored": 2,
+        "mitigated": 0
+      },
+      "engagements": [
+        "telegram-desktop-2026-03-29"
+      ]
+    },
+    {
+      "binary": "trufos.sys",
+      "display_name": "trufos.sys",
+      "yml_path": "catalog/binaries/trufos_sys.yml",
+      "page_path": "catalog/pages/trufos_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 2,
+      "source_count": 2,
+      "sink_count": 1,
+      "chain_count": 2,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 1,
+        "mitigated": 1
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "tvmonitor.sys",
+      "display_name": "tvmonitor.sys",
+      "yml_path": "catalog/binaries/tvmonitor_sys.yml",
+      "page_path": "catalog/pages/tvmonitor_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "teamviewer-2026-03-31"
+      ]
+    },
+    {
+      "binary": "tvvirtualmonitordriver.dll",
+      "display_name": "tvvirtualmonitordriver.dll",
+      "yml_path": "catalog/binaries/tvvirtualmonitordriver_dll.yml",
+      "page_path": "catalog/pages/tvvirtualmonitordriver_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "teamviewer-2026-03-31"
+      ]
+    },
+    {
+      "binary": "updater",
+      "display_name": "updater",
+      "yml_path": "catalog/binaries/updater.yml",
+      "page_path": "catalog/pages/updater.md",
+      "platform": "",
+      "binary_kind": "",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "telegram-desktop-2026-03-29"
+      ]
+    },
+    {
+      "binary": "updatesrv.exe",
+      "display_name": "updatesrv.exe",
+      "yml_path": "catalog/binaries/updatesrv_exe.yml",
+      "page_path": "catalog/pages/updatesrv_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    },
+    {
+      "binary": "vantageinstaller.exe",
+      "display_name": "vantageinstaller.exe",
+      "yml_path": "catalog/binaries/vantageinstaller_exe.yml",
+      "page_path": "catalog/pages/vantageinstaller_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 1,
+      "source_count": 1,
+      "sink_count": 1,
+      "chain_count": 1,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 1,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "lenovo-vantage-2026-04-29"
+      ]
+    },
+    {
+      "binary": "vhdmp_26100.4946_pre_aug2025.sys",
+      "display_name": "vhdmp_26100.4946_pre_aug2025.sys",
+      "yml_path": "catalog/binaries/vhdmp_26100_4946_pre_aug2025_sys.yml",
+      "page_path": "catalog/pages/vhdmp_26100_4946_pre_aug2025_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vhdmp-2026-05-06"
+      ]
+    },
+    {
+      "binary": "vhdmp_26100.5074_post_aug2025.sys",
+      "display_name": "vhdmp_26100.5074_post_aug2025.sys",
+      "yml_path": "catalog/binaries/vhdmp_26100_5074_post_aug2025_sys.yml",
+      "page_path": "catalog/pages/vhdmp_26100_5074_post_aug2025_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vhdmp-2026-05-06"
+      ]
+    },
+    {
+      "binary": "vhdmp_26100.7171_pre_dec2025.sys",
+      "display_name": "vhdmp_26100.7171_pre_dec2025.sys",
+      "yml_path": "catalog/binaries/vhdmp_26100_7171_pre_dec2025_sys.yml",
+      "page_path": "catalog/pages/vhdmp_26100_7171_pre_dec2025_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vhdmp-2026-05-06"
+      ]
+    },
+    {
+      "binary": "vhdmp_26100.7309_post_dec2025.sys",
+      "display_name": "vhdmp_26100.7309_post_dec2025.sys",
+      "yml_path": "catalog/binaries/vhdmp_26100_7309_post_dec2025_sys.yml",
+      "page_path": "catalog/pages/vhdmp_26100_7309_post_dec2025_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vhdmp-2026-05-06"
+      ]
+    },
+    {
+      "binary": "vhdmp_26100.8115_live.sys",
+      "display_name": "vhdmp_26100.8115_live.sys",
+      "yml_path": "catalog/binaries/vhdmp_26100_8115_live_sys.yml",
+      "page_path": "catalog/pages/vhdmp_26100_8115_live_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vhdmp-2026-05-06"
+      ]
+    },
+    {
+      "binary": "vid_26100.5074_sept2025_pre.sys",
+      "display_name": "vid_26100.5074_sept2025_pre.sys",
+      "yml_path": "catalog/binaries/vid_26100_5074_sept2025_pre_sys.yml",
+      "page_path": "catalog/pages/vid_26100_5074_sept2025_pre_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vid-2026-05-09"
+      ]
+    },
+    {
+      "binary": "vid_26100.7920_feb2026_post.sys",
+      "display_name": "vid_26100.7920_feb2026_post.sys",
+      "yml_path": "catalog/binaries/vid_26100_7920_feb2026_post_sys.yml",
+      "page_path": "catalog/pages/vid_26100_7920_feb2026_post_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vid-2026-05-09"
+      ]
+    },
+    {
+      "binary": "vkrnlintvsp_22621.2506_pre.sys",
+      "display_name": "vkrnlintvsp_22621.2506_pre.sys",
+      "yml_path": "catalog/binaries/vkrnlintvsp_22621_2506_pre_sys.yml",
+      "page_path": "catalog/pages/vkrnlintvsp_22621_2506_pre_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vkrnlintvsp-2026-05-04"
+      ]
+    },
+    {
+      "binary": "vkrnlintvsp_22621.4751_post.sys",
+      "display_name": "vkrnlintvsp_22621.4751_post.sys",
+      "yml_path": "catalog/binaries/vkrnlintvsp_22621_4751_post_sys.yml",
+      "page_path": "catalog/pages/vkrnlintvsp_22621_4751_post_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vkrnlintvsp-2026-05-04"
+      ]
+    },
+    {
+      "binary": "vkrnlintvsp_26100.1150_pre.sys",
+      "display_name": "vkrnlintvsp_26100.1150_pre.sys",
+      "yml_path": "catalog/binaries/vkrnlintvsp_26100_1150_pre_sys.yml",
+      "page_path": "catalog/pages/vkrnlintvsp_26100_1150_pre_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vkrnlintvsp-2026-05-04"
+      ]
+    },
+    {
+      "binary": "vkrnlintvsp_26100.2894_post.sys",
+      "display_name": "vkrnlintvsp_26100.2894_post.sys",
+      "yml_path": "catalog/binaries/vkrnlintvsp_26100_2894_post_sys.yml",
+      "page_path": "catalog/pages/vkrnlintvsp_26100_2894_post_sys.md",
+      "platform": "",
+      "binary_kind": "sys",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vkrnlintvsp-2026-05-04"
+      ]
+    },
+    {
+      "binary": "vmusrv_22621.3672_pre.dll",
+      "display_name": "vmusrv_22621.3672_pre.dll",
+      "yml_path": "catalog/binaries/vmusrv_22621_3672_pre_dll.yml",
+      "page_path": "catalog/pages/vmusrv_22621_3672_pre_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vmusrv-cross-driver-2026-05-05"
+      ]
+    },
+    {
+      "binary": "vmusrv_22621.4830_post.dll",
+      "display_name": "vmusrv_22621.4830_post.dll",
+      "yml_path": "catalog/binaries/vmusrv_22621_4830_post_dll.yml",
+      "page_path": "catalog/pages/vmusrv_22621_4830_post_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vmusrv-cross-driver-2026-05-05"
+      ]
+    },
+    {
+      "binary": "vmusrv_26100.1150_pre.dll",
+      "display_name": "vmusrv_26100.1150_pre.dll",
+      "yml_path": "catalog/binaries/vmusrv_26100_1150_pre_dll.yml",
+      "page_path": "catalog/pages/vmusrv_26100_1150_pre_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vmusrv-cross-driver-2026-05-05"
+      ]
+    },
+    {
+      "binary": "vmusrv_26100.3037_post.dll",
+      "display_name": "vmusrv_26100.3037_post.dll",
+      "yml_path": "catalog/binaries/vmusrv_26100_3037_post_dll.yml",
+      "page_path": "catalog/pages/vmusrv_26100_3037_post_dll.md",
+      "platform": "",
+      "binary_kind": "dll",
+      "version_count": 1,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "vmusrv-cross-driver-2026-05-05"
+      ]
+    },
+    {
+      "binary": "watchdog.exe",
+      "display_name": "watchdog.exe",
+      "yml_path": "catalog/binaries/watchdog_exe.yml",
+      "page_path": "catalog/pages/watchdog_exe.md",
+      "platform": "",
+      "binary_kind": "exe",
+      "version_count": 2,
+      "source_count": 0,
+      "sink_count": 0,
+      "chain_count": 0,
+      "status_counts": {
+        "confirmed": 0,
+        "partial": 0,
+        "hypothesised": 0,
+        "unexplored": 0,
+        "mitigated": 0
+      },
+      "engagements": [
+        "bitdefender-2026-05-02",
+        "bitdefender-total-security-2026-04-11"
+      ]
+    }
+  ]
+}

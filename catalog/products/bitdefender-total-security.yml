@@ -1,0 +1,124 @@
+product: bitdefender-total-security
+display_name: Bitdefender Total Security
+vendor: Bitdefender
+description: >
+  Consumer endpoint security suite. Multi-process architecture: SYSTEM-context
+  service host (bdservicehost.exe) loading multiple service DLLs (bdappsrv,
+  bdappservice, etc.); kernel drivers (bdprivmon, bddci4, trufos) for
+  self-protection and AV operations; Admin / user-context UI processes
+  (bdagent, seccenter, bduserhost). IPC backbone is msgbus (named pipe
+  `local\msgbus\bdappsrv`) with application-layer auth rules
+  (same_sign, trusted_client_process, trusted_client_path,
+  trusted_parent_process, admin_client, admin_write_client_folder).
+
+versions_seen:
+  - version: "27"
+    eng: bitdefender-total-security-2026-04-11
+    seen: 2026-04-11
+  - version: "27.1"
+    eng: bitdefender-2026-05-02
+    seen: 2026-05-02
+
+# Binaries in this product (catalog YAML refs)
+binaries:
+  - safeelevatedrun.dll               # SYSTEM-context, the BDTS 005 surface
+  - bdappservice.dll                  # SYSTEM-context, dispatcher
+  - bdprivmon.sys                     # kernel, self-protection
+  - bddci4.sys                        # kernel, ObRegisterCallbacks
+  - trufos.sys                        # kernel, minifilter
+  - bdservicehost.exe                 # SYSTEM-context host
+  - bdappsrv                          # alias / hosted in bdservicehost
+  - bdagent.exe                       # Admin integrity, no PPL
+  - seccenter.exe                     # logged-in user
+  - bduserhost.exe                    # logged-in user
+  - msgbus.dll                        # the IPC backbone
+  - watchdog.exe                      # SYSTEM-context, has BDLogging junction surface
+  - productagentservice.exe           # SYSTEM-context (paid 2026-03 PAS finding lives here)
+
+# Process / IPC topology — used to render Layer 2 + Layer 4 diagrams
+topology:
+  trust_zones:
+    SYSTEM:
+      - bdservicehost.exe
+      - bdappsrv (in bdservicehost)
+      - bdappservice.dll (loaded by bdappsrv)
+      - safeelevatedrun.dll (loaded by bdappsrv)
+      - watchdog.exe
+      - productagentservice.exe
+      - bdprivmon.sys
+      - bddci4.sys
+      - trufos.sys
+    Admin_no_PPL:
+      - bdagent.exe
+    LoggedInUser:
+      - seccenter.exe
+      - bduserhost.exe
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  ipc_edges:
+    - { src: bdagent.exe, dst: bdappsrv, via: msgbus pipe local\msgbus\bdappsrv, auth: same_sign + trusted_client_process }
+    - { src: seccenter.exe, dst: bdappsrv, via: msgbus pipe local\msgbus\bdappsrv, auth: same_sign + trusted_client_process }
+    - { src: bduserhost.exe, dst: bdappsrv, via: msgbus pipe local\msgbus\bdappsrv, auth: same_sign + trusted_client_process }
+    - { src: bdappsrv, dst: bdappservice.dll, via: in-process call, auth: process-internal }
+    - { src: bdappsrv, dst: safeelevatedrun.dll, via: in-process call, auth: process-internal }
+    - { src: bdappsrv, dst: CreateProcessAsUserW, via: SYSTEM-token process spawn, auth: ExePath::IsTrusted (BDTS 005 bug) + WinVerifyTrust }
+
+  defenses:
+    bdprivmon.sys:
+      - "ObRegisterCallbacks strips PROCESS_VM_OPERATION/WRITE/DUP_HANDLE on cross-process handles to BD processes"
+      - "NtAllocateVirtualMemory / NtWriteVirtualMemory hooks against hardcoded BD-process list"
+      - "VAD-tree scan kills BD process containing unsigned IMAGE-type VAD"
+      - "GAP: ProductAgentService.exe NOT in the protected-process list (paid 2026-05-03 P3 in flight)"
+    bddci4.sys:
+      - "ObRegisterCallbacks for Process and Thread objects, strips access rights from any handle to BD process regardless of caller privilege"
+    msgbus_application_rules:
+      - "same_sign — caller must be co-signed by Bitdefender"
+      - "trusted_client_process — caller image path must be in BD install dir (uses kernel image path query, not PEB)"
+      - "trusted_client_path — variant of trusted_client_process"
+      - "trusted_parent_process — caller's parent must be a trusted SYSTEM process"
+      - "admin_client / admin_write_client_folder — admin-only operations"
+
+# Vulnerabilities surfaced in this product (links to findings)
+vulnerabilities:
+  - finding_ref: bitdefender-total-security-2026-04-11/findings/005-safeelevatedrun-path-traversal.md
+    binary: safeelevatedrun.dll
+    classes: [T-005, I-002, T-006]
+    severity: P3
+    status: submitted
+    submission_ref: bugcrowd:59aada4c-64d7-4215-851f-03ebde5d0629
+  - finding_ref: bitdefender-total-security-2026-04-11/findings/004-trufos-kernel-infoleak.md
+    binary: trufos.sys
+    classes: [K-002]
+    severity: P3
+    status: submitted_dropped
+    submission_ref: bugcrowd:c100b59d (P3 Not Applicable)
+  - finding_ref: prior-engagement/findings/bd-pas-config-injection.md
+    binary: productagentservice.exe
+    classes: [F-001, F-002]
+    severity: P3
+    status: submitted_paid
+    submission_ref: bugcrowd:791bd4d8 ($1,000)
+  - finding_ref: bitdefender-2026-05-02/findings/001-msgbus-trusted-process-bypass.md
+    binary: bdappsrv
+    classes: [I-002, T-004]
+    severity: TBD
+    status: in_progress
+  - finding_ref: bitdefender-2026-05-02/findings/002-safeelevatedrun-wvt-toctou.md
+    binary: safeelevatedrun.dll
+    classes: [I-002, T-001]
+    severity: TBD
+    status: in_progress
+  - finding_ref: bitdefender-total-security-2026-04-11/findings/006-seccenter-safeelevatedrun-relay-lpe.md
+    binary: safeelevatedrun.dll
+    classes: [T-006, I-002]
+    severity: TBD
+    status: not_submitted
+
+# Open angles flagged for vendor / future investigation
+open_angles:
+  - "msgbus wire-protocol auth check beyond PEB ImagePathName (predicate bodies not yet reversed)"
+  - "seccenter.exe COM activation flow — CLSID surface not enumerated"
+  - "BD user-launchable tools (bdfvwiz, bdfvcl, agentcontroller, installer) — CLI argument paths not enumerated"
+  - "updcenter.exe update mechanism — package signing + extract-then-execute path"
+  - "executable_args field in run_elevated_async — not investigated for CLI injection (CHAIN-002 in safeelevatedrun_dll.yml)"

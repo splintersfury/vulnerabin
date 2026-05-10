@@ -1,0 +1,2407 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Vulnerabin · Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#131315",
+        background: "#0c0c0e",
+        "on-surface": "#e5e1e4",
+        "on-background": "#e5e1e4",
+        "on-surface-variant": "#c2c6d6",
+        "surface-container-lowest": "#0e0e10",
+        "surface-container-low": "#1b1b1d",
+        "surface-container": "#201f21",
+        "surface-container-high": "#2a2a2c",
+        "surface-container-highest": "#353437",
+        "surface-bright": "#39393b",
+        "surface-variant": "#353437",
+        outline: "#8c909f",
+        "outline-variant": "#424754",
+        primary: "#adc6ff",
+        "primary-fixed": "#d8e2ff",
+        "primary-fixed-dim": "#adc6ff",
+        "primary-container": "#4d8eff",
+        "on-primary": "#002e6a",
+        "on-primary-container": "#00285d",
+        secondary: "#4fdbc8",
+        "secondary-container": "#04b4a2",
+        tertiary: "#ffb786",
+        "tertiary-container": "#df7412",
+        error: "#ffb4ab",
+        "error-container": "#93000a",
+        "on-error": "#690005",
+        "on-error-container": "#ffdad6",
+        accent: "#3b82f6",
+        // Source-class group colors (matching taxonomy/binary/sources_v2.json groups)
+        "grp-F": "#fdd6d6",
+        "grp-F-stroke": "#c00",
+        "grp-I": "#fed9a3",
+        "grp-I-stroke": "#c80",
+        "grp-N": "#c5d3ff",
+        "grp-N-stroke": "#06c",
+        "grp-K": "#e0bdf2",
+        "grp-K-stroke": "#909",
+        "grp-U": "#bfeac6",
+        "grp-U-stroke": "#080",
+        "grp-T": "#cfd2d8",
+        "grp-T-stroke": "#555",
+        "grp-UP": "#fff0a3",
+        "grp-UP-stroke": "#aa0",
+        "grp-C": "#e9d4b8",
+        "grp-C-stroke": "#862",
+        "grp-E": "#a8d4ff",
+        "grp-E-stroke": "#069",
+        "grp-W": "#f4c5ff",
+        "grp-W-stroke": "#909",
+        "grp-CR": "#cccccc",
+        "grp-CR-stroke": "#333",
+      },
+      borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "9999px" },
+      spacing: { base: "4px", xs: "4px", sm: "8px", gutter: "12px", md: "16px", margin: "16px", lg: "24px", xl: "32px", unit: "4px" },
+      fontFamily: {
+        "ui-sans-md": ["Inter"], "ui-sans-sm": ["Inter"],
+        "data-mono-sm": ["JetBrains Mono"], "data-mono-md": ["JetBrains Mono"],
+        "code-block": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"],
+        "h1": ["Inter"], "h2": ["Inter"], "title-sm": ["Inter"],
+        "headline-md": ["Inter"], "display-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+      },
+      fontSize: {
+        "h1": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "h2": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "title-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+        "ui-sans-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+        "ui-sans-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+        "data-mono-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "data-mono-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+        "code-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "code-sm": ["11px", { lineHeight: "16px", fontWeight: "400" }],
+        "code-block": ["13px", { lineHeight: "22px", fontWeight: "400" }],
+        "label-caps": ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "700" }],
+        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+      },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a2c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #424754; }
+.bg-custom-surface { background-color: #16171d; }
+</style>
+</head>
+<body class="bg-background text-on-background font-ui-sans-md h-screen flex flex-col overflow-hidden">
+
+<!-- Top app bar -->
+<header class="bg-surface-container border-b border-outline-variant flex justify-between items-center w-full px-lg py-sm z-50 h-14 shrink-0">
+  <div class="flex items-center gap-md">
+    <a href="../index.html" class="text-h2 font-h1 tracking-tight text-primary">Vulnerabin</a>
+    <nav class="hidden md:flex items-center gap-sm ml-lg">
+      <a class="text-primary font-bold hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../index.html">Catalog</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../products/index.html">Products</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../binaries/index.html">Binaries</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../taxonomy.html">Taxonomy</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-sm">
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+  </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden">
+  <!-- Side nav -->
+  <aside class="bg-surface text-on-surface font-ui-sans-sm border-r border-outline-variant flex flex-col py-md space-y-unit shrink-0 w-60 h-full overflow-y-auto">
+    <div class="px-4 mb-4">
+      <div class="font-h2 text-h2 font-black text-primary leading-tight">Vulnerabin</div>
+      <div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">v0.5.0 · catalog</div>
+    </div>
+    <nav class="flex-1 space-y-unit">
+      <a class="bg-surface-container-high text-primary border-l-2 border-primary hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../index.html">
+        <span class="material-symbols-outlined text-[18px]">folder_open</span>
+        <span class="font-body-sm">Catalog</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../products/index.html">
+        <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        <span class="font-body-sm">Products</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../binaries/index.html">
+        <span class="material-symbols-outlined text-[18px]">memory</span>
+        <span class="font-body-sm">Binaries</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../taxonomy.html">
+        <span class="material-symbols-outlined text-[18px]">hub</span>
+        <span class="font-body-sm">Taxonomy</span>
+      </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="https://github.com/anthropics/vulnerabin"><span class="material-symbols-outlined text-[16px]">menu_book</span><span class="font-body-sm">Docs</span></a>
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[16px]">dns</span><span class="font-body-sm">Status</span></a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col bg-background overflow-y-auto">
+    
+
+<!-- Top rail: recent submissions -->
+
+<div class="border-b border-outline-variant bg-surface p-gutter shrink-0 overflow-x-auto whitespace-nowrap flex gap-gutter">
+  
+  <a href="../products/bitdefender-total-security.html" class="bg-surface-container border border-outline-variant rounded p-gutter min-w-[280px] inline-flex flex-col gap-sm hover:bg-surface-container-high transition-colors cursor-pointer">
+    <div class="flex justify-between items-start">
+      <div class="flex items-center gap-2">
+        <div class="w-5 h-5 rounded bg-surface-bright flex items-center justify-center"><span class="material-symbols-outlined text-[14px] text-primary">dns</span></div>
+        <span class="font-data-mono-sm text-on-surface">CHAIN-001</span>
+      </div>
+      <span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm">windows</span>
+    </div>
+    <div class="text-ui-sans-sm text-on-surface-variant truncate" title="IsInFolder prefix check accepts traversal segments, allows Microsoft-signed cmd.exe spawn">IsInFolder prefix check accepts traversal segments, allows Microsoft-signed cmd.exe spawn</div>
+    <div class="flex items-center gap-2 mt-1">
+      <div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div>
+      <span class="text-on-surface-variant text-[10px] uppercase tracking-wider">partial</span>
+    </div>
+  </a>
+  
+</div>
+
+
+<div class="flex-1 flex overflow-hidden">
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Filters -->
+    <div class="p-gutter border-b border-outline-variant bg-surface shrink-0 flex flex-col gap-gutter">
+      <div class="flex gap-sm">
+        <div class="relative flex-1">
+          <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[16px] text-on-surface-variant">search</span>
+          <input id="vbn-search" class="w-full bg-surface-container-lowest border border-outline-variant rounded text-ui-sans-sm text-on-surface pl-8 pr-3 py-1.5 focus:outline-none focus:border-primary placeholder:text-on-surface-variant" placeholder="Search binaries, products, platform…" type="text" />
+        </div>
+        <button id="vbn-clear" class="bg-surface-container hover:bg-surface-container-high border border-outline-variant rounded px-3 py-1.5 text-ui-sans-sm text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">filter_alt_off</span> Clear</button>
+      </div>
+      <div class="flex gap-sm flex-wrap" id="vbn-filter-chips">
+        <button data-filter-key="platform" data-filter-value="" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip vbn-chip-active"><span class="text-on-surface-variant">Platform:</span><span class="text-primary">All</span></button>
+        <button data-filter-key="platform" data-filter-value="windows" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><span class="text-on-surface">windows</span></button>
+        <span class="border-l border-outline-variant mx-1"></span>
+        <button data-filter-key="hasconfirmed" data-filter-value="" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip vbn-chip-active"><span class="text-on-surface-variant">Status:</span><span class="text-primary">All</span></button>
+        <button data-filter-key="hasconfirmed" data-filter-value="confirmed" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><div class="w-1.5 h-1.5 rounded-full bg-error"></div><span class="text-on-surface">Has confirmed</span></button>
+        <button data-filter-key="hasconfirmed" data-filter-value="partial" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div><span class="text-on-surface">Has partial</span></button>
+        <button data-filter-key="hasconfirmed" data-filter-value="unexplored" class="bg-surface-container-lowest border border-outline-variant rounded-full px-3 py-1 text-data-mono-sm flex items-center gap-2 vbn-chip"><div class="w-1.5 h-1.5 rounded-full bg-secondary"></div><span class="text-on-surface">Unexplored only</span></button>
+      </div>
+      <div id="vbn-result-count" class="text-data-mono-sm text-on-surface-variant"></div>
+    </div>
+
+    <!-- Data table -->
+    <div class="flex-1 overflow-auto bg-surface relative">
+      <table class="w-full text-left border-collapse whitespace-nowrap">
+        <thead class="sticky top-0 bg-surface z-10 border-b border-outline-variant">
+          <tr>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal w-10"></th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal">Binary</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal">Product</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal">Platform</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Sources</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Sinks</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Chains</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Confirmed</th>
+            <th class="px-gutter py-2 text-data-mono-sm uppercase text-on-surface-variant font-normal text-right">Unexplored</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant/50">
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="acronis_web_installer_26.4.1.42393.exe acronis_web_installer_26.4.1.42393.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/acronis_web_installer_26_4_1_42393_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">acronis_web_installer_26.4.1.42393.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">acronis_web_installer_26.4.1.42393.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/acroniscyberprotect_agentforwindows_web_26_4_1_42393_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">acroniscyberprotect_agentforwindows_web_26.4.1.42393.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="acsock64_dec2025.sys acsock64_dec2025.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/acsock64_dec2025_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">acsock64_dec2025.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">acsock64_dec2025.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="acsock64_latest.sys acsock64_latest.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/acsock64_latest_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">acsock64_latest.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">acsock64_latest.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="acsock64_prev.sys acsock64_prev.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/acsock64_prev_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">acsock64_prev.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">acsock64_prev.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="afd_26100.8115_pre.sys afd_26100.8115_pre.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/afd_26100_8115_pre_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">afd_26100.8115_pre.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">afd_26100.8115_pre.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="afd_26100.8246_post.sys afd_26100.8246_post.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/afd_26100_8246_post_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">afd_26100.8246_post.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">afd_26100.8246_post.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="app_communicator.dll app_communicator.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/app_communicator_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">app_communicator.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">app_communicator.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="arcinstaller.exe arcinstaller.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/arcinstaller_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">arcinstaller.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">arcinstaller.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="avast_free_offline.exe avast_free_offline.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/avast_free_offline_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">avast_free_offline.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">avast_free_offline.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="avast_free_setup.exe avast_free_setup.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/avast_free_setup_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">avast_free_setup.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">avast_free_setup.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="bdappservice.dll bdappservice.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/bdappservice_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">bdappservice.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">bdappservice.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="bddci4.sys bddci4.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/bddci4_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">bddci4.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">bddci4.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="bdntwrk.exe bdntwrk.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/bdntwrk_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">bdntwrk.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">bdntwrk.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="bdprocessbroker.dll bdprocessbroker.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/bdprocessbroker_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">bdprocessbroker.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">bdprocessbroker.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="bdservicehost.exe bdservicehost.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/bdservicehost_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">bdservicehost.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">bdservicehost.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="bdtrackerscomm.dll bdtrackerscomm.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/bdtrackerscomm_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">bdtrackerscomm.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">bdtrackerscomm.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="broker broker None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/broker.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">broker</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">broker</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="bzrestore bzrestore None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/bzrestore.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">bzrestore</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">bzrestore</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="bzserv bzserv None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/bzserv.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">bzserv</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">bzserv</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="bztransmit bztransmit None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/bztransmit.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">bztransmit</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">bztransmit</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="csc-deploy-full-5.1.16.194.exe csc-deploy-full-5.1.16.194.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/csc_deploy_full_5_1_16_194_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">csc-deploy-full-5.1.16.194.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">csc-deploy-full-5.1.16.194.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="discoverysrv.exe discoverysrv.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/discoverysrv_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">discoverysrv.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">discoverysrv.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="dropbox_offline_installer.exe dropbox_offline_installer.exe None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/dropbox_offline_installer_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">dropbox_offline_installer.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">dropbox_offline_installer.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="hp_support_assistant.exe hp_support_assistant.exe None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/hp_support_assistant_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">hp_support_assistant.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">hp_support_assistant.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="install_backblaze.exe install_backblaze.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/install_backblaze_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">install_backblaze.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">install_backblaze.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="intel-driver-and-support-assistant-installer.exe intel-driver-and-support-assistant-installer.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/intel_driver_and_support_assistant_installer_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">intel-driver-and-support-assistant-installer.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">intel-driver-and-support-assistant-installer.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="iservconfig.dll iservconfig.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/iservconfig_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">iservconfig.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">iservconfig.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="latest latest None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/latest.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">latest</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">latest</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="lghub_installer_2026.exe lghub_installer_2026.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/lghub_installer_2026_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">lghub_installer_2026.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">lghub_installer_2026.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="log.dll log.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/log_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">log.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">log.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="logioptionsplus_installer_2.3.879545.exe logioptionsplus_installer_2.3.879545.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/logioptionsplus_installer_2_3_879545_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">logioptionsplus_installer_2.3.879545.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">logioptionsplus_installer_2.3.879545.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="mb5-setup-consumer-5.5.4.252.exe mb5-setup-consumer-5.5.4.252.exe None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/mb5_setup_consumer_5_5_4_252_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">mb5-setup-consumer-5.5.4.252.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">mb5-setup-consumer-5.5.4.252.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">2</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="mb-support-1.9.18.1166.exe mb-support-1.9.18.1166.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/mb_support_1_9_18_1166_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">mb-support-1.9.18.1166.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">mb-support-1.9.18.1166.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="messaging-ipc messaging-ipc None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/messaging_ipc.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">messaging-ipc</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">messaging-ipc</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="messaging_ipc.dll messaging_ipc.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/messaging_ipc_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">messaging_ipc.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">messaging_ipc.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="msgbus.dll msgbus.dll None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/msgbus_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">msgbus.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">msgbus.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="nordvpninstall_8.1.2.0.exe nordvpninstall_8.1.2.0.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/nordvpninstall_8_1_2_0_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">nordvpninstall_8.1.2.0.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">nordvpninstall_8.1.2.0.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="notion-setup-7.16.0.exe notion-setup-7.16.0.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/notion_setup_7_16_0_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">notion-setup-7.16.0.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">notion-setup-7.16.0.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="nvidia_app_v11.0.7.247.exe nvidia_app_v11.0.7.247.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/nvidia_app_v11_0_7_247_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">nvidia_app_v11.0.7.247.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">nvidia_app_v11.0.7.247.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="productagent.dll productagent.dll None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/productagent_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">productagent.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">productagent.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="productagentdp.dll productagentdp.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/productagentdp_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">productagentdp.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">productagentdp.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="productagentservice.exe productagentservice.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/productagentservice_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">productagentservice.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">productagentservice.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="productagt productagt None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/productagt.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">productagt</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">productagt</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="proxy proxy None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/proxy.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">proxy</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">proxy</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="proxy.msgbus.client.dll proxy.msgbus.client.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/proxy_msgbus_client_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">proxy.msgbus.client.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">proxy.msgbus.client.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="proxy.msgbus.server.dll proxy.msgbus.server.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/proxy_msgbus_server_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">proxy.msgbus.server.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">proxy.msgbus.server.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="safeelevatedrun.dll Bitdefender SafeElevatedRun bitdefender-total-security" data-platform="windows" data-hasconfirmed="partial unexplored " onclick="location.href='../binaries/safeelevatedrun_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-tertiary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">safeelevatedrun.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">Bitdefender SafeElevatedRun</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <a href="../products/bitdefender-total-security.html" class="text-on-surface-variant hover:text-primary text-data-mono-sm">bitdefender-total-security</a>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm">windows</span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="server2022 server2022 None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/server2022.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">server2022</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">server2022</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="servicehost servicehost None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/servicehost.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">servicehost</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">servicehost</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="setpoint6.90.66_64.exe setpoint6.90.66_64.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/setpoint6_90_66_64_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">setpoint6.90.66_64.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">setpoint6.90.66_64.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="sophossetup.exe sophossetup.exe None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/sophossetup_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">sophossetup.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">sophossetup.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="storvsc_26100.3624_sept2025_pre.sys storvsc_26100.3624_sept2025_pre.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/storvsc_26100_3624_sept2025_pre_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">storvsc_26100.3624_sept2025_pre.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">storvsc_26100.3624_sept2025_pre.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="storvsc_26100.8246_apr2026_post.sys storvsc_26100.8246_apr2026_post.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/storvsc_26100_8246_apr2026_post_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">storvsc_26100.8246_apr2026_post.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">storvsc_26100.8246_apr2026_post.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="storvsp_26100.7019_oct2025_pre-cve-2025-60708.sys storvsp_26100.7019_oct2025_pre-cve-2025-60708.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/storvsp_26100_7019_oct2025_pre_cve_2025_60708_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">storvsp_26100.7019_oct2025_pre-cve-2025-60708.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">storvsp_26100.7019_oct2025_pre-cve-2025-60708.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="storvsp_26100.7171_nov2025_post-cve-2025-60708.sys storvsp_26100.7171_nov2025_post-cve-2025-60708.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/storvsp_26100_7171_nov2025_post_cve_2025_60708_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">storvsp_26100.7171_nov2025_post-cve-2025-60708.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">storvsp_26100.7171_nov2025_post-cve-2025-60708.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="storvsp_26100.7462_dec2025_pre-cve-2026-21508.sys storvsp_26100.7462_dec2025_pre-cve-2026-21508.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/storvsp_26100_7462_dec2025_pre_cve_2026_21508_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">storvsp_26100.7462_dec2025_pre-cve-2026-21508.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">storvsp_26100.7462_dec2025_pre-cve-2026-21508.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="storvsp_26100.7705_jan2026_post-cve-2026-21508.sys storvsp_26100.7705_jan2026_post-cve-2026-21508.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/storvsp_26100_7705_jan2026_post_cve_2026_21508_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">storvsp_26100.7705_jan2026_post-cve-2026-21508.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">storvsp_26100.7705_jan2026_post-cve-2026-21508.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="storvsp_26100.7920_feb2026_live.sys storvsp_26100.7920_feb2026_live.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/storvsp_26100_7920_feb2026_live_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">storvsp_26100.7920_feb2026_live.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">storvsp_26100.7920_feb2026_live.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="teamviewer_host_setup_x64_2026.exe teamviewer_host_setup_x64_2026.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/teamviewer_host_setup_x64_2026_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">teamviewer_host_setup_x64_2026.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">teamviewer_host_setup_x64_2026.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="teamviewer_service.exe teamviewer_service.exe None" data-platform="" data-hasconfirmed="partial " onclick="location.href='../binaries/teamviewer_service_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-tertiary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">teamviewer_service.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">teamviewer_service.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">4</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">4</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="teamviewer_virtualdevicedriver.dll teamviewer_virtualdevicedriver.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/teamviewer_virtualdevicedriver_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">teamviewer_virtualdevicedriver.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">teamviewer_virtualdevicedriver.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="teamviewer_xpsdriverfilter.dll teamviewer_xpsdriverfilter.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/teamviewer_xpsdriverfilter_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">teamviewer_xpsdriverfilter.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">teamviewer_xpsdriverfilter.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="teamviewervpn.sys teamviewervpn.sys None" data-platform="" data-hasconfirmed="partial " onclick="location.href='../binaries/teamviewervpn_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-tertiary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">teamviewervpn.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">teamviewervpn.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="telegram telegram None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/telegram.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">telegram</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">telegram</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">4</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">3</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">4</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">4</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="trufos.sys trufos.sys None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/trufos_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">trufos.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">trufos.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">2</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="tvmonitor.sys tvmonitor.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/tvmonitor_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">tvmonitor.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">tvmonitor.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="tvvirtualmonitordriver.dll tvvirtualmonitordriver.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/tvvirtualmonitordriver_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">tvvirtualmonitordriver.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">tvvirtualmonitordriver.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="updater updater None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/updater.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">updater</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">updater</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="updatesrv.exe updatesrv.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/updatesrv_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">updatesrv.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">updatesrv.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vantageinstaller.exe vantageinstaller.exe None" data-platform="" data-hasconfirmed="unexplored " onclick="location.href='../binaries/vantageinstaller_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-secondary mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vantageinstaller.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vantageinstaller.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">1</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/30 rounded text-data-mono-sm">1</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vhdmp_26100.4946_pre_aug2025.sys vhdmp_26100.4946_pre_aug2025.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vhdmp_26100_4946_pre_aug2025_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vhdmp_26100.4946_pre_aug2025.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vhdmp_26100.4946_pre_aug2025.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vhdmp_26100.5074_post_aug2025.sys vhdmp_26100.5074_post_aug2025.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vhdmp_26100_5074_post_aug2025_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vhdmp_26100.5074_post_aug2025.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vhdmp_26100.5074_post_aug2025.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vhdmp_26100.7171_pre_dec2025.sys vhdmp_26100.7171_pre_dec2025.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vhdmp_26100_7171_pre_dec2025_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vhdmp_26100.7171_pre_dec2025.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vhdmp_26100.7171_pre_dec2025.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vhdmp_26100.7309_post_dec2025.sys vhdmp_26100.7309_post_dec2025.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vhdmp_26100_7309_post_dec2025_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vhdmp_26100.7309_post_dec2025.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vhdmp_26100.7309_post_dec2025.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vhdmp_26100.8115_live.sys vhdmp_26100.8115_live.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vhdmp_26100_8115_live_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vhdmp_26100.8115_live.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vhdmp_26100.8115_live.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vid_26100.5074_sept2025_pre.sys vid_26100.5074_sept2025_pre.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vid_26100_5074_sept2025_pre_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vid_26100.5074_sept2025_pre.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vid_26100.5074_sept2025_pre.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vid_26100.7920_feb2026_post.sys vid_26100.7920_feb2026_post.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vid_26100_7920_feb2026_post_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vid_26100.7920_feb2026_post.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vid_26100.7920_feb2026_post.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vkrnlintvsp_22621.2506_pre.sys vkrnlintvsp_22621.2506_pre.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vkrnlintvsp_22621_2506_pre_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vkrnlintvsp_22621.2506_pre.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vkrnlintvsp_22621.2506_pre.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vkrnlintvsp_22621.4751_post.sys vkrnlintvsp_22621.4751_post.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vkrnlintvsp_22621_4751_post_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vkrnlintvsp_22621.4751_post.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vkrnlintvsp_22621.4751_post.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vkrnlintvsp_26100.1150_pre.sys vkrnlintvsp_26100.1150_pre.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vkrnlintvsp_26100_1150_pre_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vkrnlintvsp_26100.1150_pre.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vkrnlintvsp_26100.1150_pre.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vkrnlintvsp_26100.2894_post.sys vkrnlintvsp_26100.2894_post.sys None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vkrnlintvsp_26100_2894_post_sys.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vkrnlintvsp_26100.2894_post.sys</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vkrnlintvsp_26100.2894_post.sys</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vmusrv_22621.3672_pre.dll vmusrv_22621.3672_pre.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vmusrv_22621_3672_pre_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vmusrv_22621.3672_pre.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vmusrv_22621.3672_pre.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vmusrv_22621.4830_post.dll vmusrv_22621.4830_post.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vmusrv_22621_4830_post_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vmusrv_22621.4830_post.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vmusrv_22621.4830_post.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vmusrv_26100.1150_pre.dll vmusrv_26100.1150_pre.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vmusrv_26100_1150_pre_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vmusrv_26100.1150_pre.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vmusrv_26100.1150_pre.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="vmusrv_26100.3037_post.dll vmusrv_26100.3037_post.dll None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/vmusrv_26100_3037_post_dll.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">vmusrv_26100.3037_post.dll</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">vmusrv_26100.3037_post.dll</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+          <tr class="vbn-row hover:bg-surface-container-low transition-colors group cursor-pointer" data-search="watchdog.exe watchdog.exe None" data-platform="" data-hasconfirmed="" onclick="location.href='../binaries/watchdog_exe.html'">
+            <td class="px-gutter py-2.5">
+              <div class="w-2 h-2 rounded-full bg-outline mx-auto opacity-50 group-hover:opacity-100 transition-opacity"></div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <div class="font-data-mono-md text-data-mono-md text-primary">watchdog.exe</div>
+              <div class="text-ui-sans-sm text-on-surface-variant">watchdog.exe</div>
+            </td>
+            <td class="px-gutter py-2.5">
+              <span class="text-on-surface-variant text-data-mono-sm">—</span>
+            </td>
+            <td class="px-gutter py-2.5"><span class="bg-surface-container-lowest text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase font-data-mono-sm"></span></td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right font-data-mono-md text-on-surface">0</td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+            <td class="px-gutter py-2.5 text-right">
+              <span class="text-outline text-data-mono-sm">0</span>
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Right stats panel -->
+  <aside class="w-72 bg-surface-container border-l border-outline-variant shrink-0 flex flex-col p-gutter overflow-y-auto hidden lg:flex gap-lg">
+    <div class="flex flex-col gap-sm">
+      <h3 class="text-ui-sans-sm font-bold text-on-surface uppercase tracking-wider">Catalog Overview</h3>
+      <div class="grid grid-cols-2 gap-sm">
+        <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col"><span class="text-data-mono-sm text-on-surface-variant mb-1">Binaries</span><span class="font-data-mono-md text-h2 text-primary">87</span></div>
+        <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col"><span class="text-data-mono-sm text-on-surface-variant mb-1">Products</span><span class="font-data-mono-md text-h2 text-primary">14</span></div>
+        <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col"><span class="text-data-mono-sm text-on-surface-variant mb-1">Chains</span><span class="font-data-mono-md text-h2 text-on-surface">26</span></div>
+        <div class="bg-surface-container-lowest border border-outline-variant rounded p-sm flex flex-col"><span class="text-data-mono-sm text-on-surface-variant mb-1">Confirmed</span><span class="font-data-mono-md text-h2 text-error">0</span></div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-sm">
+      <h3 class="text-ui-sans-sm font-bold text-on-surface uppercase tracking-wider">Chain Status</h3>
+      <div class="bg-surface-container-lowest border border-outline-variant rounded p-gutter flex items-center justify-center relative min-h-[140px]">
+        
+        
+        
+        
+        
+        <svg class="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" fill="transparent" r="40" stroke="#2a2a2c" stroke-width="12"></circle>
+          
+          
+          <circle cx="50" cy="50" fill="transparent" r="40" stroke="#ffb786" stroke-dasharray="67.6 251.2" stroke-dashoffset="-0.0" stroke-width="12"></circle>
+          
+          
+          <circle cx="50" cy="50" fill="transparent" r="40" stroke="#4fdbc8" stroke-dasharray="164.2 251.2" stroke-dashoffset="-67.6" stroke-width="12"></circle>
+          
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center flex-col">
+          <span class="font-data-mono-md text-primary">26</span>
+          <span class="text-[10px] text-on-surface-variant uppercase">chains</span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1 mt-2">
+        <div class="flex items-center justify-between text-ui-sans-sm"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-error"></div><span class="text-on-surface-variant">Confirmed</span></div><span class="font-data-mono-sm text-on-surface">0</span></div>
+        <div class="flex items-center justify-between text-ui-sans-sm"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-tertiary"></div><span class="text-on-surface-variant">Partial</span></div><span class="font-data-mono-sm text-on-surface">7</span></div>
+        <div class="flex items-center justify-between text-ui-sans-sm"><div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-secondary"></div><span class="text-on-surface-variant">Unexplored</span></div><span class="font-data-mono-sm text-on-surface">17</span></div>
+      </div>
+    </div>
+
+    
+    <div class="flex flex-col gap-sm">
+      <h3 class="text-ui-sans-sm font-bold text-on-surface uppercase tracking-wider">Top Source Classes</h3>
+      <div class="flex flex-col gap-2">
+        
+        
+        <div>
+          <div class="flex justify-between text-data-mono-sm mb-1"><span class="text-on-surface">I-002</span><span class="text-on-surface-variant">6</span></div>
+          <div class="h-1.5 w-full bg-surface-container-lowest rounded overflow-hidden">
+            <div class="h-full bg-primary rounded" style="width: 100.0%"></div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="flex justify-between text-data-mono-sm mb-1"><span class="text-on-surface">F-001</span><span class="text-on-surface-variant">5</span></div>
+          <div class="h-1.5 w-full bg-surface-container-lowest rounded overflow-hidden">
+            <div class="h-full bg-primary rounded" style="width: 83.0%"></div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="flex justify-between text-data-mono-sm mb-1"><span class="text-on-surface">K-001</span><span class="text-on-surface-variant">3</span></div>
+          <div class="h-1.5 w-full bg-surface-container-lowest rounded overflow-hidden">
+            <div class="h-full bg-primary rounded" style="width: 50.0%"></div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="flex justify-between text-data-mono-sm mb-1"><span class="text-on-surface">N-003</span><span class="text-on-surface-variant">2</span></div>
+          <div class="h-1.5 w-full bg-surface-container-lowest rounded overflow-hidden">
+            <div class="h-full bg-primary rounded" style="width: 33.0%"></div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="flex justify-between text-data-mono-sm mb-1"><span class="text-on-surface">F-003</span><span class="text-on-surface-variant">2</span></div>
+          <div class="h-1.5 w-full bg-surface-container-lowest rounded overflow-hidden">
+            <div class="h-full bg-primary rounded" style="width: 33.0%"></div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="flex justify-between text-data-mono-sm mb-1"><span class="text-on-surface">F-006</span><span class="text-on-surface-variant">2</span></div>
+          <div class="h-1.5 w-full bg-surface-container-lowest rounded overflow-hidden">
+            <div class="h-full bg-primary rounded" style="width: 33.0%"></div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="flex justify-between text-data-mono-sm mb-1"><span class="text-on-surface">N-004</span><span class="text-on-surface-variant">2</span></div>
+          <div class="h-1.5 w-full bg-surface-container-lowest rounded overflow-hidden">
+            <div class="h-full bg-primary rounded" style="width: 33.0%"></div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="flex justify-between text-data-mono-sm mb-1"><span class="text-on-surface">UP-001</span><span class="text-on-surface-variant">1</span></div>
+          <div class="h-1.5 w-full bg-surface-container-lowest rounded overflow-hidden">
+            <div class="h-full bg-primary rounded" style="width: 17.0%"></div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+  </aside>
+</div>
+
+<style>
+  .vbn-chip-active { background-color: #4d8eff !important; border-color: #4d8eff !important; color: white !important; }
+  .vbn-chip-active span { color: white !important; }
+  .vbn-row.vbn-hidden { display: none; }
+</style>
+
+<script>
+(function(){
+  const searchEl = document.getElementById('vbn-search');
+  const clearEl = document.getElementById('vbn-clear');
+  const chipsEl = document.getElementById('vbn-filter-chips');
+  const rows = Array.from(document.querySelectorAll('.vbn-row'));
+  const resultCount = document.getElementById('vbn-result-count');
+  const filters = { platform: '', hasconfirmed: '' };
+
+  function apply() {
+    const q = (searchEl.value || '').toLowerCase().trim();
+    let visible = 0;
+    for (const r of rows) {
+      const search = (r.dataset.search || '').toLowerCase();
+      const platform = r.dataset.platform || '';
+      const hasconfirmed = r.dataset.hasconfirmed || '';
+      let show = true;
+      if (q && !search.includes(q)) show = false;
+      if (filters.platform && platform.toLowerCase() !== filters.platform.toLowerCase()) show = false;
+      if (filters.hasconfirmed && !hasconfirmed.includes(filters.hasconfirmed)) show = false;
+      if (show) { r.classList.remove('vbn-hidden'); visible++; }
+      else { r.classList.add('vbn-hidden'); }
+    }
+    resultCount.textContent = `Showing ${visible} of ${rows.length} binaries`;
+  }
+
+  searchEl.addEventListener('input', apply);
+  clearEl.addEventListener('click', () => {
+    searchEl.value = '';
+    filters.platform = '';
+    filters.hasconfirmed = '';
+    chipsEl.querySelectorAll('.vbn-chip').forEach(c => c.classList.remove('vbn-chip-active'));
+    chipsEl.querySelectorAll('[data-filter-value=""]').forEach(c => c.classList.add('vbn-chip-active'));
+    apply();
+  });
+
+  chipsEl.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.vbn-chip');
+    if (!btn) return;
+    const key = btn.dataset.filterKey;
+    const val = btn.dataset.filterValue;
+    filters[key] = val;
+    chipsEl.querySelectorAll(`[data-filter-key="${key}"]`).forEach(c => c.classList.remove('vbn-chip-active'));
+    btn.classList.add('vbn-chip-active');
+    apply();
+  });
+
+  apply();
+})();
+</script>
+
+
+  </main>
+</div>
+</body>
+</html>

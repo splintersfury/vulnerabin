@@ -1,0 +1,566 @@
+binary: bzserv
+display_name: bzserv
+description: (Auto-seeded; replace this description.) Catalogued in 1 engagement(s).
+canonical_path: ''
+arch: ''
+platform: ''
+binary_kind: ''
+trust_boundary: ''
+versions:
+- version: ''
+  sha256: ''
+  eng: backblaze-2026-04-08
+  seen: '2026-04-08'
+  notes: 'Auto-seeded from backblaze-2026-04-08/scope.json (target: Backblaze Personal Backup)'
+sources:
+- id: SRC-001
+  name: Standard user replaces ProgramData log file with NTFS hardlink to privileged target; SYSTEM service writes through
+  source_class_id: F-003
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: ''
+  last_confirmed_version: ''
+  notes: 'Auto-enriched from backblaze-2026-04-08/001-log-file-hardlink-lpe.md. NTFS hardlink (F-003) per draft taxonomy.
+    Bugcrowd state: marked Duplicate $0.'
+- id: SRC-002
+  name: Auto-updater downloads and executes binary without Authenticode signature verification
+  source_class_id: UP-001
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: ''
+  last_confirmed_version: ''
+  notes: Auto-enriched from backblaze-2026-04-08/002-unsigned-update-execution-lpe.md. Textbook UP-001 unsigned-update execution.
+sinks:
+- id: SNK-001
+  name: Elevated file operation (write / set_acl / read)
+  cwe: CWE-269
+  function: (see finding evidence)
+  impact: arbitrary file access at privileged principal's level
+  first_seen_version: ''
+  notes: Auto-generated stub for group F. Refine with the actual sink function/line as documented in the finding.
+- id: SNK-002
+  name: Updater executes attacker-influenced binary
+  cwe: CWE-494
+  function: (see finding evidence)
+  impact: code execution at updater's privilege
+  first_seen_version: ''
+  notes: Auto-generated stub for group UP. Refine with the actual sink function/line as documented in the finding.
+chains:
+- id: CHAIN-001
+  title: Standard user replaces ProgramData log file with NTFS hardlink to privileged tar
+  source_id: SRC-001
+  sink_id: SNK-001
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: arbitrary file access at privileged principal's level
+  cwe:
+  - CWE-269
+  severity: ''
+  cvss: ''
+  status: mitigated
+  confirmed_in_version: ''
+  finding_ref: backblaze-2026-04-08/findings/001-log-file-hardlink-lpe.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+- id: CHAIN-002
+  title: Auto-updater downloads and executes binary without Authenticode signature verifi
+  source_id: SRC-002
+  sink_id: SNK-002
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: code execution at updater's privilege
+  cwe:
+  - CWE-494
+  severity: ''
+  cvss: ''
+  status: unexplored
+  confirmed_in_version: ''
+  finding_ref: backblaze-2026-04-08/findings/001-log-file-hardlink-lpe.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+_seed_meta:
+  decomp_dirs:
+  - backblaze-2026-04-08/decomp-bzserv
+  findings_seen:
+  - ref: backblaze-2026-04-08/findings/001-log-file-hardlink-lpe.md
+    eng: backblaze-2026-04-08
+    version: ''
+  - ref: backblaze-2026-04-08/findings/002-unsigned-update-execution-lpe.md
+    eng: backblaze-2026-04-08
+    version: ''
+  - ref: backblaze-2026-04-08/findings/dynamic_validation_evidence.md
+    eng: backblaze-2026-04-08
+    version: ''
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: ''
+  principal: unknown
+  start_trigger: ''
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+defenses:
+- class_id: F-003
+  defense_expected: Open with FILE_FLAG_OPEN_REPARSE_POINT, verify nNumberOfLinks == 1 via GetFileInformationByHandle; or
+    use FILE_DISPOSITION_POSIX_SEMANTICS for delete operations.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+- class_id: UP-001
+  defense_expected: WinVerifyTrust on every downloaded binary before exec; signature pinning with backup keys; refuse exec
+    on signature failure.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+class_coverage:
+- class_id: C-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: E-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-003
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+  last_checked_version: ''
+- class_id: F-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-008
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-009
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-001
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-002
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+  last_checked_version: ''
+- class_id: UP-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: W-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: W-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: W-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''

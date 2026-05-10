@@ -1,0 +1,141 @@
+binary: bddci4.sys
+display_name: Bitdefender bddci4 (kernel handle-strip)
+description: 'Kernel driver providing the handle-strip layer of BD self-protection. Registers ObRegisterCallbacks for both
+  Process and Thread objects and strips ALL access rights from any handle opened to a BD process regardless of caller privilege.
+  Confirmed live: OpenProcess(PROCESS_ALL_ACCESS) on a BD process returns a non-null handle but NtQueryObject reports granted=0x0.'
+canonical_path: C:\Windows\System32\drivers\bddci4.sys
+arch: x64
+platform: windows
+binary_kind: sys
+trust_boundary: kernel (handle-level access enforcement against BD processes)
+versions:
+- version: ''
+  sha256: ''
+  eng: bitdefender-2026-05-02
+  seen: '2026-05-02'
+  notes: ''
+- version: 27.x
+  sha256: ''
+  eng: bitdefender-total-security-2026-04-11
+  seen: '2026-04-11'
+  notes: 'Auto-seeded from bitdefender-total-security-2026-04-11/scope.json (target: Bitdefender Total Security)'
+sources: []
+sinks: []
+chains: []
+_seed_meta:
+  decomp_dirs:
+  - bitdefender-2026-05-02/decomp-bddci4
+  - bitdefender-total-security-2026-04-11/decomp-bddci4
+  findings_seen: []
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: I/O Manager at boot
+  principal: kernel
+  start_trigger: service_start (boot)
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+class_coverage:
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+product: bitdefender-total-security
+defenses:
+- class_id: K-004
+  defense_expected: ObRegisterCallbacks should defend BD process handles
+  observed: Strips access rights on Process + Thread handles. Even SeDebugPrivilege opens get granted=0x0.
+  gap: Only protects what the kernel-mode list says to protect. Same gap as bdprivmon for ProductAgentService.exe.
+  bypass_attempts: Confirmed cross-process handle access blocked at every privilege level tested. Bypassable via injection
+    BEFORE the target process establishes itself, not after.
+reverse_engineering:
+  entrypoint: ''
+  behavior: ''
+  notes: ''
+  loaded_modules: []
+  inputs:
+  - kind: ioctl
+    path: \Device\Mup\
+    direction: in
+    attacker_reachable: ''
+    reachability: ''
+    notes: Detected as string in FUN_1400141fc @ 0x1400141fc
+    id: INP-001
+  notable_strings:
+  - INBOUND
+  - OUTBOUND
+  - ntoskrnl.exe
+  - <UNKNOWN>
+  - CONNECT_REDIRECT_V6
+  - BIND_REDIRECT_V4
+  - CONNECT_REDIRECT_V4
+  - <unknown>
+  - fltmgr.sys
+  - \Device\Mup\
+  - FltMgr.sys
+  - Fwpkclnt.sys
+  - outbound
+  - inbound
+  - DisconnectData
+  - Remove
+  - Removed
+  - DisableTcpThrottling
+  - Uninitialized
+  - ClonedData
+  - NewData
+  - Allowed
+  - Consumed
+  - OutOfMemory
+  - FltDecodeParameters
+  - EnableTcpInboundThrottling
+  - '[UNKNOWN]'
+  - BIND_REDIRECT_V6
+  - Running
+  - ForceDrop
+  rva_anchors: {}

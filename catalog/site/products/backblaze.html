@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Vulnerabin · Backblaze Online Backup (Windows)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#131315",
+        background: "#0c0c0e",
+        "on-surface": "#e5e1e4",
+        "on-background": "#e5e1e4",
+        "on-surface-variant": "#c2c6d6",
+        "surface-container-lowest": "#0e0e10",
+        "surface-container-low": "#1b1b1d",
+        "surface-container": "#201f21",
+        "surface-container-high": "#2a2a2c",
+        "surface-container-highest": "#353437",
+        "surface-bright": "#39393b",
+        "surface-variant": "#353437",
+        outline: "#8c909f",
+        "outline-variant": "#424754",
+        primary: "#adc6ff",
+        "primary-fixed": "#d8e2ff",
+        "primary-fixed-dim": "#adc6ff",
+        "primary-container": "#4d8eff",
+        "on-primary": "#002e6a",
+        "on-primary-container": "#00285d",
+        secondary: "#4fdbc8",
+        "secondary-container": "#04b4a2",
+        tertiary: "#ffb786",
+        "tertiary-container": "#df7412",
+        error: "#ffb4ab",
+        "error-container": "#93000a",
+        "on-error": "#690005",
+        "on-error-container": "#ffdad6",
+        accent: "#3b82f6",
+        // Source-class group colors (matching taxonomy/binary/sources_v2.json groups)
+        "grp-F": "#fdd6d6",
+        "grp-F-stroke": "#c00",
+        "grp-I": "#fed9a3",
+        "grp-I-stroke": "#c80",
+        "grp-N": "#c5d3ff",
+        "grp-N-stroke": "#06c",
+        "grp-K": "#e0bdf2",
+        "grp-K-stroke": "#909",
+        "grp-U": "#bfeac6",
+        "grp-U-stroke": "#080",
+        "grp-T": "#cfd2d8",
+        "grp-T-stroke": "#555",
+        "grp-UP": "#fff0a3",
+        "grp-UP-stroke": "#aa0",
+        "grp-C": "#e9d4b8",
+        "grp-C-stroke": "#862",
+        "grp-E": "#a8d4ff",
+        "grp-E-stroke": "#069",
+        "grp-W": "#f4c5ff",
+        "grp-W-stroke": "#909",
+        "grp-CR": "#cccccc",
+        "grp-CR-stroke": "#333",
+      },
+      borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "9999px" },
+      spacing: { base: "4px", xs: "4px", sm: "8px", gutter: "12px", md: "16px", margin: "16px", lg: "24px", xl: "32px", unit: "4px" },
+      fontFamily: {
+        "ui-sans-md": ["Inter"], "ui-sans-sm": ["Inter"],
+        "data-mono-sm": ["JetBrains Mono"], "data-mono-md": ["JetBrains Mono"],
+        "code-block": ["JetBrains Mono"], "label-caps": ["JetBrains Mono"],
+        "code-md": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"],
+        "h1": ["Inter"], "h2": ["Inter"], "title-sm": ["Inter"],
+        "headline-md": ["Inter"], "display-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"],
+      },
+      fontSize: {
+        "h1": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "h2": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "title-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+        "ui-sans-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+        "ui-sans-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+        "data-mono-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "data-mono-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+        "code-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
+        "code-sm": ["11px", { lineHeight: "16px", fontWeight: "400" }],
+        "code-block": ["13px", { lineHeight: "22px", fontWeight: "400" }],
+        "label-caps": ["10px", { lineHeight: "12px", letterSpacing: "0.1em", fontWeight: "700" }],
+        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+        "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }],
+      },
+    },
+  },
+};
+</script>
+<style>
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a2c; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #424754; }
+.bg-custom-surface { background-color: #16171d; }
+</style>
+</head>
+<body class="bg-background text-on-background font-ui-sans-md h-screen flex flex-col overflow-hidden">
+
+<!-- Top app bar -->
+<header class="bg-surface-container border-b border-outline-variant flex justify-between items-center w-full px-lg py-sm z-50 h-14 shrink-0">
+  <div class="flex items-center gap-md">
+    <a href="../index.html" class="text-h2 font-h1 tracking-tight text-primary">Vulnerabin</a>
+    <nav class="hidden md:flex items-center gap-sm ml-lg">
+      <a class="text-primary font-bold hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../index.html">Products</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../binaries.html">Binaries</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../chains.html">Chains</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../pipeline.html">Pipeline</a>
+      <a class="text-on-surface-variant font-medium hover:text-primary hover:bg-surface-variant px-3 py-1 rounded transition-all" href="../taxonomy.html">Taxonomy</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-sm">
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">search</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">terminal</span></button>
+    <button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-variant rounded transition-all"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+  </div>
+</header>
+
+<div class="flex flex-1 overflow-hidden">
+  <!-- Side nav -->
+  <aside class="bg-surface text-on-surface font-ui-sans-sm border-r border-outline-variant flex flex-col py-md space-y-unit shrink-0 w-60 h-full overflow-y-auto">
+    <div class="px-4 mb-4">
+      <div class="font-h2 text-h2 font-black text-primary leading-tight">Vulnerabin</div>
+      <div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">v0.5.0 · catalog</div>
+    </div>
+    <nav class="flex-1 space-y-unit">
+      <a class="bg-surface-container-high text-primary border-l-2 border-primary hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../index.html">
+        <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        <span class="font-body-sm">Products</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../binaries.html">
+        <span class="material-symbols-outlined text-[18px]">memory</span>
+        <span class="font-body-sm">Binaries</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../chains.html">
+        <span class="material-symbols-outlined text-[18px]">timeline</span>
+        <span class="font-body-sm">Chains</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../pipeline.html">
+        <span class="material-symbols-outlined text-[18px]">trending_up</span>
+        <span class="font-body-sm">Pipeline</span>
+      </a>
+      <a class="text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-low px-4 py-3 flex items-center gap-3 transition-colors" href="../taxonomy.html">
+        <span class="material-symbols-outlined text-[18px]">hub</span>
+        <span class="font-body-sm">Taxonomy</span>
+      </a>
+    </nav>
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="https://github.com/anthropics/vulnerabin"><span class="material-symbols-outlined text-[16px]">menu_book</span><span class="font-body-sm">Docs</span></a>
+      <a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 hover:bg-surface-container-low transition-colors" href="#"><span class="material-symbols-outlined text-[16px]">dns</span><span class="font-body-sm">Status</span></a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 flex flex-col bg-background overflow-y-auto">
+    
+
+<div class="px-lg py-md border-b border-outline-variant bg-surface sticky top-0 z-30">
+  <div class="flex items-center gap-sm font-data-mono-sm text-on-surface-variant mb-xs">
+    <a class="hover:text-primary" href="../index.html">Catalog</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    <a class="hover:text-primary" href="../products/index.html">Products</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    <span class="text-primary">backblaze</span>
+  </div>
+  <div class="flex justify-between items-end mt-sm">
+    <div>
+      <div class="font-data-mono-sm text-on-surface-variant uppercase tracking-widest mb-xs">Backblaze</div>
+      <h1 class="font-h1 text-h1 text-primary">Backblaze Online Backup (Windows)</h1>
+    </div>
+    <div class="flex gap-base overflow-x-auto pb-1 max-w-[400px]">
+      
+      <span class="font-data-mono-sm px-2 py-1 border border-outline-variant rounded bg-surface-container-high text-primary whitespace-nowrap">10.x</span>
+      
+    </div>
+  </div>
+  
+  <p class="text-ui-sans-sm text-on-surface-variant mt-md max-w-3xl">Consumer cloud-backup client for Windows. Multi-process: a transmit daemon (bztransmit), a restore client (bzrestore), and a server-side helper (bzserv) that brokers operations. Engagement uncovered an NTFS-hardlink LPE (closed Duplicate by Bugcrowd) and an unsigned-update execution chain.</p>
+  
+</div>
+
+<div class="p-lg space-y-lg max-w-[1600px] mx-auto w-full">
+
+  <!-- Layer 4: Topology -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">hub</span>Layer 4 · Cross-product Topology</h2>
+    </div>
+    <div class="p-md">
+      <div class="bg-surface-container-lowest border border-surface-variant rounded p-md grid grid-cols-1 gap-md min-h-[420px] relative overflow-hidden">
+        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: linear-gradient(#424754 1px, transparent 1px), linear-gradient(90deg, #424754 1px, transparent 1px); background-size: 20px 20px;"></div>
+        
+        <div class="border border-dashed rounded p-sm relative border-error/40 bg-error/[0.03]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-error">SYSTEM</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            
+              
+              
+              
+              <a href="../binaries/bzserv.html" class="flex items-center gap-2 px-2 py-1 bg-surface-container border border-surface-bright rounded hover:bg-surface-container-high">
+                <div class="w-2 h-2 rounded-full bg-error"></div>
+                <span class="font-data-mono-sm text-primary">bzserv (broker)</span>
+              </a>
+              
+            
+          </div>
+        </div>
+        
+        <div class="border border-dashed rounded p-sm relative border-tertiary/40 bg-tertiary/[0.02]">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-tertiary">Admin or user</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            
+              
+              
+              
+              <a href="../binaries/bztransmit.html" class="flex items-center gap-2 px-2 py-1 bg-surface-container border border-surface-bright rounded hover:bg-surface-container-high">
+                <div class="w-2 h-2 rounded-full bg-tertiary"></div>
+                <span class="font-data-mono-sm text-primary">bztransmit</span>
+              </a>
+              
+            
+              
+              
+              
+              <a href="../binaries/bzrestore.html" class="flex items-center gap-2 px-2 py-1 bg-surface-container border border-surface-bright rounded hover:bg-surface-container-high">
+                <div class="w-2 h-2 rounded-full bg-tertiary"></div>
+                <span class="font-data-mono-sm text-primary">bzrestore</span>
+              </a>
+              
+            
+          </div>
+        </div>
+        
+        <div class="border border-dashed rounded p-sm relative border-on-surface-variant bg-surface-container/40">
+          <div class="absolute -top-3 left-2 bg-surface-container-lowest px-1 font-data-mono-sm text-on-surface-variant">Standard user attacker</div>
+          <div class="flex flex-wrap gap-sm mt-1">
+            
+              
+              
+              
+              <div class="flex items-center gap-2 px-2 py-1 bg-surface-container border border-surface-variant rounded opacity-60">
+                <div class="w-2 h-2 rounded-full bg-outline"></div>
+                <span class="font-data-mono-sm text-on-surface">(any standard-user process)</span>
+              </div>
+              
+            
+          </div>
+        </div>
+        
+      </div>
+
+      
+      <div class="mt-md">
+        <div class="text-data-mono-sm text-on-surface-variant uppercase tracking-wider mb-2">IPC edges</div>
+        <ul class="text-data-mono-sm space-y-1">
+          
+          <li class="text-on-surface-variant"><span class="text-primary">bztransmit</span> →<span class="text-on-surface mx-1">local IPC</span>→ <span class="text-error">bzserv (broker)</span></li>
+          
+          <li class="text-on-surface-variant"><span class="text-primary">bzrestore</span> →<span class="text-on-surface mx-1">local IPC</span>→ <span class="text-error">bzserv (broker)</span></li>
+          
+        </ul>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- Source-class heatmap -->
+  
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">grid_view</span>Source-class heatmap</h2>
+    </div>
+    <div class="overflow-x-auto p-md">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr>
+            <th class="font-data-mono-sm text-on-surface-variant border-b border-surface-variant pb-xs pr-sm font-normal">Binary</th>
+            
+            <th class="font-data-mono-sm text-on-surface-variant border-b border-surface-variant pb-xs px-base text-center font-normal" title="F-003">F-003</th>
+            
+            <th class="font-data-mono-sm text-on-surface-variant border-b border-surface-variant pb-xs px-base text-center font-normal" title="N-003">N-003</th>
+            
+            <th class="font-data-mono-sm text-on-surface-variant border-b border-surface-variant pb-xs px-base text-center font-normal" title="UP-001">UP-001</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr class="border-b border-surface-variant">
+            <td class="font-data-mono-sm text-primary py-xs pr-sm">bztransmit</td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                
+              </td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                
+              </td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                
+              </td>
+            
+          </tr>
+          
+          <tr class="border-b border-surface-variant">
+            <td class="font-data-mono-sm text-primary py-xs pr-sm">bzrestore</td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                
+              </td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-bright text-primary text-center font-data-mono-sm rounded-sm py-[2px]">1</div>
+                
+              </td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                
+              </td>
+            
+          </tr>
+          
+          <tr class="border-b border-surface-variant">
+            <td class="font-data-mono-sm text-primary py-xs pr-sm">bzserv</td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-bright text-primary text-center font-data-mono-sm rounded-sm py-[2px]">1</div>
+                
+              </td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                
+              </td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-bright text-primary text-center font-data-mono-sm rounded-sm py-[2px]">1</div>
+                
+              </td>
+            
+          </tr>
+          
+          <tr class="border-b border-surface-variant">
+            <td class="font-data-mono-sm text-primary py-xs pr-sm">install_backblaze.exe</td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                
+              </td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                
+              </td>
+            
+              
+              <td class="py-xs px-base">
+                <div class="bg-surface-container-lowest text-on-surface-variant text-center font-data-mono-sm rounded-sm py-[2px] opacity-30">·</div>
+                
+              </td>
+            
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </section>
+  
+
+  <!-- Defense distribution -->
+  
+  <section>
+    <h2 class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-gutter flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">shield</span>Defense distribution</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+      
+      <div class="bg-surface-container-low border border-surface-variant rounded p-sm flex flex-col gap-sm">
+        <div class="font-ui-sans-md text-primary">bzserv</div>
+        <div class="flex flex-col gap-xs font-data-mono-sm">
+          
+            
+            <div class="text-on-surface">elevated broker for backup operations; runs SYSTEM</div>
+            
+          
+            
+            <div class="flex items-start gap-1 text-error"><span class="bg-error-container/40 text-on-error-container px-1 rounded shrink-0">GAP</span><span>hardlink substitution on log/state file paths (F-003) — submitted but Duplicate</span></div>
+            
+          
+        </div>
+      </div>
+      
+      <div class="bg-surface-container-low border border-surface-variant rounded p-sm flex flex-col gap-sm">
+        <div class="font-ui-sans-md text-primary">auto_updater</div>
+        <div class="flex flex-col gap-xs font-data-mono-sm">
+          
+            
+            <div class="text-on-surface">fetches update binary from vendor URL</div>
+            
+          
+            
+            <div class="flex items-start gap-1 text-error"><span class="bg-error-container/40 text-on-error-container px-1 rounded shrink-0">GAP</span><span>signature verification absent before exec — UP-001 confirmed (finding 002)</span></div>
+            
+          
+            
+            <div class="flex items-start gap-1 text-error"><span class="bg-error-container/40 text-on-error-container px-1 rounded shrink-0">GAP</span><span>malicious-server / MITM model — N-003 layered with UP-001</span></div>
+            
+          
+        </div>
+      </div>
+      
+    </div>
+  </section>
+  
+
+  <!-- Vulnerabilities ledger -->
+  
+  <section>
+    <h2 class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-gutter flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">list_alt</span>Vulnerabilities ledger</h2>
+    <div class="bg-surface-container border border-outline-variant rounded overflow-hidden">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-surface-container-high border-b border-outline-variant">
+          <tr>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Binary</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Finding</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Classes</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Severity</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Status</th>
+            <th class="font-data-mono-sm text-on-surface-variant py-2 px-4 font-normal">Submission</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-variant font-data-mono-sm text-on-surface">
+          
+          <tr class="hover:bg-surface-container-high transition-colors">
+            <td class="py-2 px-4 text-primary">bzserv</td>
+            <td class="py-2 px-4 text-on-surface-variant truncate max-w-md" title="backblaze-2026-04-08/findings/001-hardlink-lpe.md">backblaze-2026-04-08/findings/001-hardlink-lpe.md</td>
+            <td class="py-2 px-4"><span class="bg-surface-container-lowest text-on-surface px-1 rounded text-[10px] mr-1">F-003</span></td>
+            <td class="py-2 px-4"><span class="text-on-surface-variant">TBD</span></td>
+            <td class="py-2 px-4">
+              <span class="bg-on-surface-variant/10 text-on-surface-variant px-1.5 py-0.5 rounded">⚠ dropped</span>
+              
+            </td>
+            <td class="py-2 px-4 text-on-surface-variant">bugcrowd:Backblaze-v10 (Duplicate)</td>
+          </tr>
+          
+          <tr class="hover:bg-surface-container-high transition-colors">
+            <td class="py-2 px-4 text-primary">bztransmit</td>
+            <td class="py-2 px-4 text-on-surface-variant truncate max-w-md" title="backblaze-2026-04-08/findings/002-unsigned-update-execution-lpe.md">backblaze-2026-04-08/findings/002-unsigned-update-executi...</td>
+            <td class="py-2 px-4"><span class="bg-surface-container-lowest text-on-surface px-1 rounded text-[10px] mr-1">UP-001</span><span class="bg-surface-container-lowest text-on-surface px-1 rounded text-[10px] mr-1">N-003</span></td>
+            <td class="py-2 px-4"><span class="text-on-surface-variant">TBD</span></td>
+            <td class="py-2 px-4">
+              <span class="bg-surface-container-lowest text-on-surface-variant px-1.5 py-0.5 rounded">⏸ not submitted</span>
+              
+            </td>
+            <td class="py-2 px-4 text-on-surface-variant"></td>
+          </tr>
+          
+          <tr class="hover:bg-surface-container-high transition-colors">
+            <td class="py-2 px-4 text-primary">bzrestore</td>
+            <td class="py-2 px-4 text-on-surface-variant truncate max-w-md" title="backblaze-2026-04-08/findings/003-restore-malicious-server.md">backblaze-2026-04-08/findings/003-restore-malicious-server.md</td>
+            <td class="py-2 px-4"><span class="bg-surface-container-lowest text-on-surface px-1 rounded text-[10px] mr-1">N-003</span><span class="bg-surface-container-lowest text-on-surface px-1 rounded text-[10px] mr-1">N-004</span></td>
+            <td class="py-2 px-4"><span class="text-on-surface-variant">TBD</span></td>
+            <td class="py-2 px-4">
+              <span class="bg-surface-container-lowest text-on-surface-variant px-1.5 py-0.5 rounded">⏸ not submitted</span>
+              
+            </td>
+            <td class="py-2 px-4 text-on-surface-variant"></td>
+          </tr>
+          
+          <tr class="hover:bg-surface-container-high transition-colors">
+            <td class="py-2 px-4 text-primary">bzserv</td>
+            <td class="py-2 px-4 text-on-surface-variant truncate max-w-md" title="backblaze-2026-04-08/findings/004-related-finding.md">backblaze-2026-04-08/findings/004-related-finding.md</td>
+            <td class="py-2 px-4"><span class="bg-surface-container-lowest text-on-surface px-1 rounded text-[10px] mr-1">F-003</span></td>
+            <td class="py-2 px-4"><span class="text-on-surface-variant">TBD</span></td>
+            <td class="py-2 px-4">
+              <span class="bg-surface-container-lowest text-on-surface-variant px-1.5 py-0.5 rounded">⏸ not submitted</span>
+              
+            </td>
+            <td class="py-2 px-4 text-on-surface-variant"></td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </section>
+  
+
+  
+  <section>
+    <h2 class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-gutter flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">help</span>Open angles</h2>
+    <ul class="text-ui-sans-sm space-y-2">
+      <li class="text-on-surface-variant">— auto-updater HTTPS cert pinning status not fully audited</li><li class="text-on-surface-variant">— restore protocol payload-level fuzzing not performed</li><li class="text-on-surface-variant">— bzserv broker IPC ACL not enumerated for I-002 surface</li>
+    </ul>
+  </section>
+  
+
+  <!-- Binaries in this product -->
+  
+  <section>
+    <h2 class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-gutter flex items-center gap-2"><span class="material-symbols-outlined text-[14px] text-primary">memory</span>Binaries in this product</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-gutter">
+      
+        
+        
+        <a href="../binaries/bztransmit.html" class="bg-surface-container border border-outline-variant rounded p-sm hover:bg-surface-container-high transition-colors">
+          <div class="font-data-mono-sm text-primary">bztransmit</div>
+          <div class="text-[10px] text-on-surface-variant mt-1">catalogued</div>
+        </a>
+        
+      
+        
+        
+        <a href="../binaries/bzrestore.html" class="bg-surface-container border border-outline-variant rounded p-sm hover:bg-surface-container-high transition-colors">
+          <div class="font-data-mono-sm text-primary">bzrestore</div>
+          <div class="text-[10px] text-on-surface-variant mt-1">catalogued</div>
+        </a>
+        
+      
+        
+        
+        <a href="../binaries/bzserv.html" class="bg-surface-container border border-outline-variant rounded p-sm hover:bg-surface-container-high transition-colors">
+          <div class="font-data-mono-sm text-primary">bzserv</div>
+          <div class="text-[10px] text-on-surface-variant mt-1">catalogued</div>
+        </a>
+        
+      
+        
+        
+        <a href="../binaries/install_backblaze_exe.html" class="bg-surface-container border border-outline-variant rounded p-sm hover:bg-surface-container-high transition-colors">
+          <div class="font-data-mono-sm text-primary">install_backblaze.exe</div>
+          <div class="text-[10px] text-on-surface-variant mt-1">catalogued</div>
+        </a>
+        
+      
+    </div>
+  </section>
+  
+
+</div>
+
+
+  </main>
+</div>
+</body>
+</html>

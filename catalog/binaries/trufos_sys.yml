@@ -1,0 +1,166 @@
+binary: trufos.sys
+display_name: Bitdefender trufos (file-system minifilter)
+description: 'FileSystem minifilter driver. Exposes a communication port `\TRFCOMMPORT` accessed via FilterSendMessage. Engagement
+  filed an info-leak: handler returns IRP->IoStatus.Information (a NonPagedPool block address) without zeroing on error path,
+  leaking a kernel pool address to standard users. CVE assigned-class but Bitdefender triaged as P3 Not Applicable.'
+canonical_path: C:\Windows\System32\drivers\trufos.sys
+arch: x64
+platform: windows
+binary_kind: sys
+trust_boundary: kernel (minifilter; user-mode reaches via FilterSendMessage)
+versions:
+- version: ''
+  sha256: ''
+  eng: bitdefender-2026-05-02
+  seen: '2026-05-02'
+  notes: ''
+- version: 27.x
+  sha256: ''
+  eng: bitdefender-total-security-2026-04-11
+  seen: '2026-04-11'
+  notes: 'Auto-seeded from bitdefender-total-security-2026-04-11/scope.json (target: Bitdefender Total Security)'
+sources:
+- id: SRC-001
+  name: FilterSendMessage on \TRFCOMMPORT
+  source_class_id: K-002
+  co_class_ids: []
+  via: minifilter port; default DACL grants standard users
+  type: byte_buffer
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: FUN_140042c5c (port message handler)
+  first_seen_version: 27.x
+  last_confirmed_version: 27.x
+  notes: Submitted to Bugcrowd as c100b59d; closed P3 Not Applicable (info-leak only, no chained primitive)
+sinks:
+- id: SNK-001
+  name: Returns NonPagedPool address via lpBytesReturned (FilterSendMessage out parameter)
+  cwe: CWE-200
+  function: FUN_140042c5c never zeroes *param_6 on error path
+  impact: Defeats KASLR (leaks NonPagedPool block address to standard users)
+  first_seen_version: 27.x
+  notes: Single primitive; no follow-on read/write chained.
+chains:
+- id: CHAIN-001
+  title: FUN_140042c5c error-path returns IRP->IoStatus.Information (kernel pool address) without zeroing
+  source_id: SRC-001
+  sink_id: SNK-001
+  conditions:
+  - Standard user opens FilterConnectCommunicationPort on \TRFCOMMPORT (default minifilter port DACL allows it)
+  - FilterSendMessage with a crafted opcode reaches the error path
+  - Handler sets lpBytesReturned to IRP->IoStatus.Information (a kernel pool address) instead of zero
+  impact: 'KASLR defeat: standard user obtains a NonPagedPool block address'
+  cwe:
+  - CWE-200
+  severity: P3
+  cvss: 6.5 / AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:N/A:N
+  status: mitigated
+  confirmed_in_version: 27.x
+  finding_ref: bitdefender-total-security-2026-04-11/findings/004-trufos-kernel-infoleak.md
+  submission_ref: bugcrowd:c100b59d (P3 Not Applicable)
+  bypasses_required: []
+  poc:
+    status: tested
+    path: engagements/bitdefender-total-security-2026-04-11/pocs/004/
+    commands: 'python3 kaslr_leak_poc.py  # standard user; calls FilterSendMessage and reads back lpBytesReturned'
+    notes: KASLR leak deterministically reproducible; output captured.
+  outcome:
+    boundary_crossed: 'yes'
+    evidence: engagements/bitdefender-total-security-2026-04-11/pocs/004/output.txt
+    notes: Standard user obtained kernel pool address. Vendor closed as P3 Not Applicable — apparently considered low-severity
+      given no follow-on primitive.
+  notes: Single-primitive info-leak. Vendor decision was Not Applicable, not Mitigated; chain class still real but low-yield
+    without a follow-on R/W.
+_seed_meta:
+  decomp_dirs:
+  - bitdefender-2026-05-02/decomp-trufos
+  - bitdefender-total-security-2026-04-11/decomp-trufos
+  findings_seen:
+  - ref: bitdefender-total-security-2026-04-11/findings/003-trufos-kernel-ioctl.md
+    eng: bitdefender-total-security-2026-04-11
+    version: 27.x
+  - ref: bitdefender-total-security-2026-04-11/findings/004-trufos-kernel-infoleak.md
+    eng: bitdefender-total-security-2026-04-11
+    version: 27.x
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: I/O Manager at boot via FltMgr
+  principal: kernel
+  start_trigger: service_start (boot)
+  parent_processes: []
+  ipc_peers:
+  - name: (any standard-user process)
+    principal: loggedInUser
+    via: FilterConnectCommunicationPort + FilterSendMessage on \TRFCOMMPORT
+  impersonation_seen: false
+  ppl_protected: false
+defenses:
+- class_id: K-001
+  defense_expected: IoCreateDeviceSecure with admin-only SDDL; SeAccessCheck per IOCTL; METHOD_BUFFERED default; ProbeForRead/ProbeForWrite
+    for METHOD_NEITHER inside __try/__except; integer-overflow checks on user-supplied lengths.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+- class_id: K-002
+  defense_expected: SDDL on the port; per-message authentication; bounds-check input/output sizes; FltGetFilterFromName ACL
+    check.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+class_coverage:
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-001
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+  last_checked_version: ''
+- class_id: K-002
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-002
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+  last_checked_version: ''
+- class_id: K-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+product: bitdefender-total-security

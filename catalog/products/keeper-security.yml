@@ -1,0 +1,55 @@
+product: keeper-security
+display_name: Keeper Password Manager (Desktop)
+vendor: Keeper Security
+description: >
+  Cross-platform password manager. Engagement keeper-security-2026-04-09:
+  TLS cert validation MITM in update flow (P5 Informational); two ipcMain channel
+  surfaces explored (E-001).
+
+versions_seen:
+  - version: "2026.x"
+    eng: keeper-security-2026-04-09
+    seen: 2026-04-09
+
+binaries:
+  - keeper_desktop.exe (Electron app)
+
+topology:
+  trust_zones:
+    LoggedInUser:
+      - keeper_desktop.exe (Electron main + renderer)
+    Standard_user_attacker:
+      - "(any standard-user process)"
+
+  defenses:
+    keeper_updater:
+      - "fetches update manifest"
+      - "GAP: N-003 — TLS cert validation lax; allows MITM. Submitted P5 Informational."
+    ipc_main:
+      - "ipcMain.on/handle channels exposed to renderer"
+      - "GAP: E-001 — channels reaching node fs/exec; renderer XSS path uncertain"
+
+vulnerabilities:
+  - finding_ref: keeper-security-2026-04-09/findings/001-mitm-rce-cert-bypass.md
+    binary: keeper_desktop.exe (Electron app)
+    classes: [N-003, UP-003]
+    severity: P5
+    status: submitted_dropped
+    submission_ref: bugcrowd:keeper-mitm (P5 Informational)
+  - finding_ref: keeper-security-2026-04-09/findings/002-globalpropset-bgnav.md
+    binary: keeper_desktop.exe (Electron app)
+    classes: [E-001]
+    severity: TBD
+    status: submitted_dropped
+    submission_ref: "(GLOBAL_PROP_SET dropped 2026-04-29: defense-in-depth only)"
+  - finding_ref: keeper-security-2026-04-09/findings/003-...md
+    binary: keeper_desktop.exe (Electron app)
+    classes: [E-001]
+    severity: TBD
+    status: not_submitted
+    submission_ref: ""
+
+open_angles:
+  - "DevTools port — defaults closed; if any dev build leaks port, GLOBAL_PROP_SET would re-emerge"
+  - "context-isolation defaults — modern Electron, but should re-verify"
+  - "auto-updater feed signature — if absent, MITM still bypasses"
