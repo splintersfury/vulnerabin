@@ -126,6 +126,57 @@ capabilities:
     confirmed: false                   # false = auto-synthesised candidate
     notes: ""
 
+# ----- Features (NEW — the user-facing layer above capabilities) -----
+# What the binary actually DOES from a user's point of view. One feature
+# typically aggregates multiple capabilities (e.g. "Auto-update product"
+# uses CAP-001 spawn-process + CAP-007 file-write + CAP-012 network-fetch).
+# Auto-suggested by detectors in scripts/feat_detectors/; researcher
+# confirms via `vb walk <binary>` (stage 2c).
+features:
+  - id: FEAT-001
+    slug: ""                            # human-stable, e.g. "auto-update" — survives renames
+    product_feature_id: ""              # canonical across binaries in same product (PFEAT-*)
+    name: ""                            # human-readable
+    description: ""                     # 1-3 sentences
+    status: ""                          # active | deprecated | mitigated | hypothesised | unexplored
+    first_seen_version: ""
+    last_confirmed_version: ""
+    deprecated_in_version: ""
+    deprecation_note: ""
+    capabilities: []                    # CAP-* IDs
+    sources: []                         # SRC-* IDs
+    inputs: []                          # INP-* IDs
+    implementation_anchors:
+      - function: ""
+        rva: ""
+        role: ""                        # orchestrator | source | sink | helper | dispatcher
+    cwe: []
+    severity_ceiling: ""                # High | Critical | Medium | Low
+    ux_strings: []                      # literal UI strings proving the feature exists user-side
+    disabled_by_default: false
+    signal_sources:
+      - detector: ""
+        detector_version: ""
+        evidence_type: ""               # rpc_uuid|com_clsid|service_name|string|rva|registry_key|export|symbol|task_xml|systemd_unit|dbus_interface
+        evidence_value: ""
+        weight: 0                       # 1=weak, 2=medium, 3=strong
+        last_detected_at: ""
+    confidence: ""                      # high | medium | low (auto from sum-of-weights)
+    confirmed: false
+    rejected: false
+    rejection_reason: ""
+    rejected_at: ""
+    user_observable: ""
+    notes: ""
+    confirmation_review:
+      required: false
+      agent_id: ""
+      reviewed_by: ""
+      verdict: ""                       # auto-confirm | ship | hedge-then-applied | human-override
+      reviewed_at: ""
+      artifact_path: ""
+      trigger_reason: ""
+
 # ----- Chains -----
 # Source → conditions → sink. The catalog content. Stable IDs (CHAIN-NNN).
 chains:
@@ -147,6 +198,43 @@ chains:
     bypasses_required:                 # what defenses must be bypassed to fire the chain
       - ""
     notes: ""
+
+# Reverse pointers: every chain MAY carry feature_ids: [] back to the FEATs
+# it implements. Same for sinks[].feature_ids, sources[].feature_ids,
+# capabilities[].feature_ids, reverse_engineering.inputs[].feature_ids.
+# These are written by `vb walk confirm` automatically and never by hand.
+
+# ----- Walk state (NEW — drives `vb walk` stage gating) -----
+walk_state:
+  stages:
+    "2a-inputs":
+      status: ""                        # not_started | open | closed
+      opened_at: ""
+      closed_at: ""
+      reopened_at: ""
+    "2b-sinks":
+      status: ""
+      opened_at: ""
+      closed_at: ""
+      reopened_at: ""
+    "2c-features":
+      status: ""
+      opened_at: ""
+      closed_at: ""
+      reopened_at: ""
+  pending_counts:
+    inputs_unconfirmed: 0
+    sinks_unconfirmed: 0
+    features_unconfirmed: 0
+  history:
+    - stage: ""
+      action: ""                        # opened | closed | reopened | human-override-reject | human-override-confirm
+      at: ""
+      actor: ""                         # claude | human | inspect-worker-<id> | skeptic-<id>
+      target: ""                        # FEAT-* | INP-* | SNK-*
+      reason: ""
+      confirmed: 0
+      rejected: 0
 
 # ----- Defenses (Layer 3 visualization input) -----
 # Per-source-class defense audit. One entry per class touching this binary.
