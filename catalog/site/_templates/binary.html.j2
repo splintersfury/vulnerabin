@@ -20,6 +20,25 @@
   <div class="flex justify-between items-start mt-sm">
     <div>
       <h1 class="font-data-mono-md text-primary text-[20px] font-bold tracking-tight">{{ binary.binary }}</h1>
+      {% set ws = binary.walk_state or {} %}
+      {% if ws.stages %}
+      <div class="vbn-walk-header bg-base-200 rounded p-3 mb-4 text-sm">
+        <strong>Walk:</strong>
+        {% set stage_2a = (ws.stages['2a-inputs'] or {}).status or 'not_started' %}
+        {% set stage_2b = (ws.stages['2b-sinks'] or {}).status or 'not_started' %}
+        {% set stage_2c = (ws.stages['2c-features'] or {}).status or 'not_started' %}
+        <span class="vbn-walk-stage stage-{{ stage_2a }}">2a-inputs: {{ stage_2a }}</span>
+        &middot;
+        <span class="vbn-walk-stage stage-{{ stage_2b }}">2b-sinks: {{ stage_2b }}</span>
+        &middot;
+        <span class="vbn-walk-stage stage-{{ stage_2c }}">2c-features: {{ stage_2c }}</span>
+        {% set pc = ws.pending_counts or {} %}
+        &middot; pending:
+        inputs={{ pc.inputs_unconfirmed or 0 }},
+        sinks={{ pc.sinks_unconfirmed or 0 }},
+        features={{ pc.features_unconfirmed or 0 }}
+      </div>
+      {% endif %}
       <div class="text-ui-sans-sm text-on-surface-variant mt-xs">{{ binary.display_name | default('') }}</div>
       <div class="flex flex-wrap gap-xs mt-sm">
         <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>{{ binary.platform | default('?') }}</span>
@@ -226,6 +245,93 @@
         </tbody>
       </table>
     </div>
+  </section>
+  {% endif %}
+
+  <!-- Features (FEAT-* layer: user-facing behaviour clusters) -->
+  {% if binary.features %}
+  <section class="vbn-features mt-8">
+    <h2 class="text-2xl font-bold">Features</h2>
+    <p class="text-sm opacity-70 mb-3">User-facing behaviours; clusters of capabilities that together implement what the user perceives as one feature.</p>
+    {% for f in binary.features %}
+    {% if not f.rejected %}
+    <article class="vbn-feature-card border rounded p-3 mb-3 bg-base-100"
+             data-feat-id="{{ f.id }}" data-confirmed="{{ f.confirmed }}">
+      <header class="flex items-baseline gap-2">
+        <span class="font-mono text-xs opacity-60">{{ f.id }}</span>
+        <span class="font-bold">{{ f.name or f.slug }}</span>
+        {% if f.status %}<span class="badge badge-{{ f.status }}">{{ f.status }}</span>{% endif %}
+        {% if f.confidence %}<span class="badge badge-confidence-{{ f.confidence }}">{{ f.confidence }}</span>{% endif %}
+        {% if not f.confirmed %}<span class="badge badge-warning">unconfirmed</span>{% endif %}
+      </header>
+      {% if f.description %}<p class="mt-2">{{ f.description }}</p>{% endif %}
+      {% if f.user_observable %}
+      <p class="text-sm opacity-80 mt-1"><em>User observes:</em> {{ f.user_observable }}</p>
+      {% endif %}
+      {% if f.ux_strings %}
+      <p class="text-sm mt-1"><em>UX strings:</em>
+        {% for s in f.ux_strings %}<code>{{ s }}</code>{% if not loop.last %}, {% endif %}{% endfor %}
+      </p>
+      {% endif %}
+      {% if f.cwe %}
+      <p class="text-sm mt-1"><em>CWE:</em>
+        {% for c in f.cwe %}<code>{{ c }}</code>{% if not loop.last %}, {% endif %}{% endfor %}
+        {% if f.severity_ceiling %} &middot; ceiling: <strong>{{ f.severity_ceiling }}</strong>{% endif %}
+      </p>
+      {% endif %}
+      {% if f.implementation_anchors %}
+      <details class="mt-2">
+        <summary class="text-sm cursor-pointer">Implementation anchors ({{ f.implementation_anchors|length }})</summary>
+        <table class="text-xs mt-1">
+          <thead><tr><th>Function</th><th>RVA</th><th>Role</th></tr></thead>
+          <tbody>
+            {% for a in f.implementation_anchors %}
+            <tr><td><code>{{ a.function }}</code></td><td><code>{{ a.rva }}</code></td><td>{{ a.role }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </details>
+      {% endif %}
+      {% if f.signal_sources %}
+      <details class="mt-2">
+        <summary class="text-sm cursor-pointer">Signal sources ({{ f.signal_sources|length }})</summary>
+        <ul class="text-xs mt-1">
+          {% for s in f.signal_sources %}
+          <li><code>{{ s.detector }}@{{ s.detector_version }}</code> &mdash; {{ s.evidence_type }}=<code>{{ s.evidence_value }}</code> (weight {{ s.weight }}; last seen {{ s.last_detected_at }})</li>
+          {% endfor %}
+        </ul>
+      </details>
+      {% endif %}
+      {% if f.confirmation_review and f.confirmation_review.verdict %}
+      <details class="mt-2 text-xs opacity-80">
+        <summary class="cursor-pointer">Confirmation review ({{ f.confirmation_review.verdict }})</summary>
+        <p>Inspect agent: <code>{{ f.confirmation_review.agent_id }}</code></p>
+        {% if f.confirmation_review.reviewed_by %}
+        <p>Skeptic agent: <code>{{ f.confirmation_review.reviewed_by }}</code></p>
+        {% endif %}
+        {% if f.confirmation_review.trigger_reason %}
+        <p>Trigger: {{ f.confirmation_review.trigger_reason }}</p>
+        {% endif %}
+        {% if f.confirmation_review.artifact_path %}
+        <p>Artifact: <code>{{ f.confirmation_review.artifact_path }}</code></p>
+        {% endif %}
+      </details>
+      {% endif %}
+    </article>
+    {% endif %}
+    {% endfor %}
+
+    {% set rejected_features = binary.features|selectattr("rejected")|list %}
+    {% if rejected_features %}
+    <details class="mt-3">
+      <summary class="cursor-pointer text-sm opacity-70">Rejected features ({{ rejected_features|length }})</summary>
+      <ul class="text-xs mt-1">
+        {% for f in rejected_features %}
+        <li><code>{{ f.id }}</code> {{ f.slug }} &mdash; <em>{{ f.rejection_reason }}</em></li>
+        {% endfor %}
+      </ul>
+    </details>
+    {% endif %}
   </section>
   {% endif %}
 
