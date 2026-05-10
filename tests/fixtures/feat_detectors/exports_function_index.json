@@ -1,0 +1,12 @@
+{
+  "binary": "test.dll",
+  "platform": "windows",
+  "exports": [
+    {"name": "Bd_Update_Run", "rva": "0x10001000"},
+    {"name": "Bd_Update_Cancel", "rva": "0x10001100"},
+    {"name": "Bd_Update_Status", "rva": "0x10001200"},
+    {"name": "Bd_Policy_Apply", "rva": "0x10002000"},
+    {"name": "Bd_Policy_Refresh", "rva": "0x10002100"},
+    {"name": "Generic_Init", "rva": "0x10003000"}
+  ]
+}
