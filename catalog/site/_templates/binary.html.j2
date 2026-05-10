@@ -336,6 +336,8 @@
   {% endif %}
 
   <!-- Coverage Matrix (the holistic view: inputs × capabilities) -->
+  {% if not binary.features %}
+  {# fall back to legacy inputs × capabilities matrix when no features defined #}
   {% if matrix_inputs and matrix_capabilities %}
   <section class="bg-surface border border-outline-variant rounded">
     <div class="px-sm py-xs border-b border-outline-variant flex justify-between items-center bg-surface-container">
@@ -383,6 +385,53 @@
         </table>
       </div>
     </div>
+  </section>
+  {% endif %}
+  {% endif %}
+
+  {% if binary.features %}
+  <section class="vbn-matrix-features mt-6">
+    <h2 class="text-xl font-bold">Coverage matrix &mdash; inputs × features</h2>
+    {% set inputs = (binary.reverse_engineering or {}).get('inputs') or [] %}
+    {% set features = binary.features|rejectattr('rejected')|list %}
+    {% if inputs and features %}
+    <div class="vbn-feature-grid"
+         style="display:grid;grid-template-columns: 8em repeat({{ features|length }}, minmax(4em, 1fr));gap:1px;background:#ddd;font-size:11px;">
+      <div class="vbn-cell vbn-corner" style="background:white;">&nbsp;</div>
+      {% for f in features %}
+      <div class="vbn-cell vbn-feat-header" style="background:white;text-align:center;padding:2px;">
+        <code>{{ f.id }}</code><br>{{ f.slug }}
+      </div>
+      {% endfor %}
+      {% for inp in inputs %}
+      <div class="vbn-cell vbn-input-header" style="background:white;padding:2px;">
+        <code>{{ inp.id }}</code><br>{{ inp.kind }}
+      </div>
+      {% for f in features %}
+        {% set in_f_inputs = inp.id in (f.inputs or []) %}
+        {% set ns = namespace(found=false) %}
+        {% if binary.chains %}
+          {% for ch in binary.chains %}
+            {% if not ns.found and (f.id in (ch.feature_ids or [])) %}
+              {% set ns.found = true %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        {% set chain_exists = ns.found %}
+        {% if in_f_inputs and chain_exists %}
+        <div class="vbn-cell" style="background:#16a34a;color:white;text-align:center;" title="chain exists">●</div>
+        {% elif in_f_inputs %}
+        <div class="vbn-cell" style="background:#fb923c;color:white;text-align:center;" title="reachable, no chain">≈</div>
+        {% else %}
+        <div class="vbn-cell" style="background:#f3f4f6;text-align:center;" title="unexplored">?</div>
+        {% endif %}
+      {% endfor %}
+      {% endfor %}
+    </div>
+    <p class="text-xs mt-1 opacity-70">● chain exists &middot; ≈ reachable, no chain &middot; ? unexplored &middot; ⊘ unreachable</p>
+    {% else %}
+    <p class="text-sm opacity-70">No inputs or features defined yet.</p>
+    {% endif %}
   </section>
   {% endif %}
 
