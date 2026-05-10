@@ -144,3 +144,76 @@ def test_close_stage_succeeds_when_clean(tmp_path):
     after = yaml.safe_load(yaml_path.read_text())
     assert after["walk_state"]["stages"]["2c-features"]["status"] == "closed"
     assert after["walk_state"]["stages"]["2c-features"]["closed_at"]
+
+
+def test_confirm_low_stakes_writes_directly(tmp_path):
+    yaml_path = _make_binary_yaml(tmp_path, "t", {
+        "binary": "t.dll", "platform": "windows", "binary_kind": "dll",
+        "features": [{"id": "FEAT-001", "slug": "a", "confirmed": False, "rejected": False,
+                      "signal_sources": []}],
+        "walk_state": {"stages": {
+            "2a-inputs": {"status": "closed"}, "2b-sinks": {"status": "closed"},
+            "2c-features": {"status": "open"},
+        }},
+    })
+    r = _run_walk(["confirm", "t", "FEAT-001",
+                   "--description", "auto update orchestrator",
+                   "--confidence", "high",
+                   "--inspect-worker", "agent-abc"], cwd=tmp_path)
+    assert r.returncode == 0, r.stderr
+    after = yaml.safe_load(yaml_path.read_text())
+    f = after["features"][0]
+    assert f["confirmed"] is True
+    assert f["description"] == "auto update orchestrator"
+    assert f["confirmation_review"]["verdict"] == "auto-confirm"
+    assert f["confirmation_review"]["agent_id"] == "agent-abc"
+
+
+def test_confirm_high_severity_requires_review(tmp_path):
+    _make_binary_yaml(tmp_path, "t", {
+        "binary": "t.dll", "platform": "windows", "binary_kind": "dll",
+        "features": [{"id": "FEAT-001", "slug": "a", "confirmed": False, "rejected": False,
+                      "signal_sources": []}],
+        "walk_state": {"stages": {
+            "2a-inputs": {"status": "closed"}, "2b-sinks": {"status": "closed"},
+            "2c-features": {"status": "open"},
+        }},
+    })
+    r = _run_walk(["confirm", "t", "FEAT-001",
+                   "--description", "kernel ioctl spawn",
+                   "--severity-ceiling", "High",
+                   "--inspect-worker", "agent-abc"], cwd=tmp_path)
+    assert r.returncode != 0
+    assert "review" in (r.stderr + r.stdout).lower()
+
+
+def test_confirm_with_review_artifact(tmp_path):
+    yaml_path = _make_binary_yaml(tmp_path, "t", {
+        "binary": "t.dll", "platform": "windows", "binary_kind": "dll",
+        "features": [{"id": "FEAT-001", "slug": "a", "confirmed": False, "rejected": False,
+                      "signal_sources": []}],
+        "walk_state": {"stages": {
+            "2a-inputs": {"status": "closed"}, "2b-sinks": {"status": "closed"},
+            "2c-features": {"status": "open"},
+        }},
+    })
+    review_path = tmp_path / "review.json"
+    review_path.write_text(json.dumps({
+        "agent_id": "skeptic-xyz",
+        "binary": "t.dll",
+        "candidate_id": "FEAT-001",
+        "verdict": "ship",
+        "confidence": "high",
+        "rationale": "anchors honest, signals match",
+    }))
+    r = _run_walk(["confirm", "t", "FEAT-001",
+                   "--description", "kernel ioctl spawn",
+                   "--severity-ceiling", "High",
+                   "--inspect-worker", "agent-abc",
+                   "--review-verdict", str(review_path)], cwd=tmp_path)
+    assert r.returncode == 0, r.stderr
+    after = yaml.safe_load(yaml_path.read_text())
+    f = after["features"][0]
+    assert f["confirmed"] is True
+    assert f["confirmation_review"]["verdict"] == "ship"
+    assert f["confirmation_review"]["reviewed_by"] == "skeptic-xyz"

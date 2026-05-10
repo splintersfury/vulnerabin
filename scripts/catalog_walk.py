@@ -179,6 +179,121 @@ def cmd_close_stage(args) -> int:
     return 0
 
 
+def _stake_gated(payload: dict) -> tuple[bool, str]:
+    reasons = []
+    sev = (payload.get("severity_ceiling") or "").lower()
+    if sev in ("high", "critical"):
+        reasons.append(f"severity={payload['severity_ceiling']}")
+    if payload.get("cwe"):
+        reasons.append(f"cwe={','.join(payload['cwe'])}")
+    if payload.get("product_feature_id"):
+        reasons.append("product_feature_id-set")
+    if (payload.get("confidence") or "").lower() == "low":
+        reasons.append("confidence=low")
+    return (bool(reasons), ",".join(reasons))
+
+
+def cmd_confirm(args) -> int:
+    p, data = _load_binary(args.binary)
+    feat = None
+    items = _stage_items(data, "2c-features")
+    for it in items:
+        if it.get("id") == args.id:
+            feat = it
+            break
+    if feat is None:
+        print(f"id not found in features: {args.id}", file=sys.stderr)
+        return 1
+
+    payload = {
+        "description": args.description,
+        "cwe": [c.strip() for c in (args.cwe or "").split(",") if c.strip()],
+        "severity_ceiling": args.severity_ceiling or "",
+        "product_feature_id": args.product_feature_id or "",
+        "confidence": args.confidence or "",
+        "user_observable": args.user_observable or "",
+        "capabilities": [c.strip() for c in (args.capabilities or "").split(",") if c.strip()],
+        "sources": [c.strip() for c in (args.sources or "").split(",") if c.strip()],
+        "inputs": [c.strip() for c in (args.inputs or "").split(",") if c.strip()],
+    }
+
+    needs_review, trigger = _stake_gated(payload)
+    review_data = None
+    if needs_review:
+        if not args.review_verdict:
+            print(f"stake-gated confirm requires --review-verdict (triggers: {trigger})",
+                  file=sys.stderr)
+            return 1
+        rp = Path(args.review_verdict)
+        if not rp.exists():
+            print(f"review verdict file not found: {rp}", file=sys.stderr)
+            return 1
+        try:
+            review_data = json.loads(rp.read_text())
+        except json.JSONDecodeError as e:
+            print(f"review verdict not valid JSON: {e}", file=sys.stderr)
+            return 1
+        if review_data.get("verdict") != "ship":
+            print(f"review verdict is {review_data.get('verdict')!r}; not confirming",
+                  file=sys.stderr)
+            return 1
+        if review_data.get("candidate_id") and review_data["candidate_id"] != args.id:
+            print(f"review verdict is for {review_data.get('candidate_id')}, not {args.id}",
+                  file=sys.stderr)
+            return 1
+
+    feat["confirmed"] = True
+    feat["rejected"] = False
+    if payload["description"]:
+        feat["description"] = payload["description"]
+    for k in ("severity_ceiling", "product_feature_id", "user_observable", "confidence"):
+        if payload[k]:
+            feat[k] = payload[k]
+    if payload["cwe"]:
+        feat["cwe"] = payload["cwe"]
+    for k in ("capabilities", "sources", "inputs"):
+        if payload[k]:
+            feat[k] = payload[k]
+
+    cr = feat.setdefault("confirmation_review", {})
+    cr["required"] = needs_review
+    cr["agent_id"] = args.inspect_worker
+    cr["reviewed_at"] = _now()
+    cr["trigger_reason"] = trigger
+    if review_data:
+        cr["reviewed_by"] = review_data.get("agent_id", "")
+        cr["verdict"] = "ship"
+        cr["artifact_path"] = str(rp)
+    else:
+        cr["reviewed_by"] = ""
+        cr["verdict"] = "auto-confirm"
+        cr["artifact_path"] = ""
+
+    # Reverse-pointer backfill: append FEAT-id to capabilities[].feature_ids etc.
+    for cap_id in payload["capabilities"]:
+        for cap in data.get("capabilities") or []:
+            if cap.get("id") == cap_id:
+                fids = cap.setdefault("feature_ids", [])
+                if args.id not in fids:
+                    fids.append(args.id)
+    for src_id in payload["sources"]:
+        for src in data.get("sources") or []:
+            if src.get("id") == src_id:
+                fids = src.setdefault("feature_ids", [])
+                if args.id not in fids:
+                    fids.append(args.id)
+    for inp_id in payload["inputs"]:
+        re_block = data.setdefault("reverse_engineering", {})
+        for inp in re_block.get("inputs") or []:
+            if inp.get("id") == inp_id:
+                fids = inp.setdefault("feature_ids", [])
+                if args.id not in fids:
+                    fids.append(args.id)
+
+    _save_binary(p, data)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="vb walk", description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -205,6 +320,22 @@ def main(argv: list[str] | None = None) -> int:
     sp.add_argument("binary")
     sp.add_argument("--stage", required=True, choices=list(STAGE_KEY_MAP))
     sp.set_defaults(func=cmd_close_stage)
+
+    sp = sub.add_parser("confirm", help="confirm a feature (gate-checked)")
+    sp.add_argument("binary")
+    sp.add_argument("id")
+    sp.add_argument("--description", default="")
+    sp.add_argument("--cwe", default="")
+    sp.add_argument("--severity-ceiling", default="")
+    sp.add_argument("--product-feature-id", default="")
+    sp.add_argument("--confidence", default="")
+    sp.add_argument("--user-observable", default="")
+    sp.add_argument("--capabilities", default="")
+    sp.add_argument("--sources", default="")
+    sp.add_argument("--inputs", default="")
+    sp.add_argument("--inspect-worker", required=True)
+    sp.add_argument("--review-verdict", default="")
+    sp.set_defaults(func=cmd_confirm)
 
     args = p.parse_args(argv)
     return args.func(args)
