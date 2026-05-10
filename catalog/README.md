@@ -11,6 +11,22 @@ Engagement folders capture the work *for one product version at one moment*. The
 - **Triage prioritisation**: chains marked `unexplored` or `partial` are the obvious next targets when you re-engage.
 - **Submission scaffolding**: a confirmed chain in the catalog cross-links to the finding markdown and the disclosure thread.
 
+## Six-layer model
+
+The catalog uses a six-layer model:
+
+- **INP-*** — interaction surfaces (the things attackers physically poke: IOCTLs, pipes, files, registry)
+- **SRC-*** — source code entries (where each input lands in the binary's code)
+- **chains/conditions** — what must hold for an input to reach a sink
+- **SNK-*** — atomic dangerous API calls (CreateProcess, WriteFile, RpcServerRegisterIf*)
+- **CAP-*** — capability groupings of sinks ("what the binary CAN do")
+- **FEAT-*** — user-facing features ("what the binary actually DOES" — Auto-update, Apply policy, Authenticate)
+
+FEAT-* sits one level above CAP-*; one feature typically aggregates several
+capabilities. Auto-detected by `scripts/feat_detectors/` and walked via
+`vb walk <binary>`. See `docs/superpowers/specs/2026-05-10-feat-layer-design.md`
+for the full design.
+
 ## Layout
 
 ```
@@ -119,6 +135,35 @@ chains:
 - `hypothesised` — pattern-match candidate. No PoC yet. Useful for marking surface that smells wrong but hasn't been deep-dived.
 - `unexplored` — known source-to-sink edge that hasn't been investigated. Use these to prioritise the next pass.
 - `mitigated` — vendor patched or upstream defense closed the chain. Keep it for historical reference and to flag potential patch-bypass research.
+
+## Walk pipeline (`vb walk`)
+
+After `catalog_re_extract.py` populates auto-detected candidates (inputs,
+sinks, features), researchers (or Claude) walk through them in three
+gated stages:
+
+| Stage | Walks | Closes when |
+|---|---|---|
+| `2a-inputs` | `reverse_engineering.inputs[]` | every input is confirmed or rejected |
+| `2b-sinks` | `sinks[]` | every sink is confirmed or rejected |
+| `2c-features` | `features[]` | every feature is confirmed or rejected |
+
+CLI primitives:
+
+```bash
+vb walk status      <binary> --json
+vb walk pending     <binary> --stage 2c-features --json
+vb walk inspect     <binary> FEAT-001 --json
+vb walk confirm     <binary> FEAT-001 --description "..." --inspect-worker <id>
+vb walk reject      <binary> FEAT-001 --reason "..."
+vb walk close-stage <binary> --stage 2a-inputs
+vb walk refresh     <binary>
+```
+
+`confirm` is **stake-gated**: if the proposed payload has
+`severity_ceiling >= High`, attached `cwe[]`, `product_feature_id` set,
+or `confidence: low`, the CLI refuses without `--review-verdict <path>`
+pointing at a skeptic-agent verdict file.
 
 ## Workflow
 

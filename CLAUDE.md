@@ -23,6 +23,8 @@ Verdict: CONFIRMED / LIKELY / UNCERTAIN / FALSE_POSITIVE with HIGH / MEDIUM / LO
 
 ## Pipeline Phases
 
+Phase order: `acquisition → preparation → walk → triage → deep → validation → exec_validation → skeptic_review → report → kb_ingest`
+
 ### Phase 1: Acquisition & Detection
 When the user says `/hunt <target>` or describes a target:
 1. Create engagement folder: `engagements/<target-slug>-<YYYY-MM-DD>/`
@@ -51,6 +53,21 @@ Based on detected type:
 2. Read the output — it lists priority targets (CGI endpoints, setuid binaries, daemons)
 3. For each priority target, run the native binary pipeline above
 4. Check credential findings in the output — hardcoded passwords in config files
+
+### Walk phase (NEW)
+
+Between `preparation` and `triage`, the walk phase populates and confirms
+auto-detected candidates (inputs, sinks, features) for the binary.
+Strategist drives `vb walk` (see `prompts/phases/walk_strategist.md`),
+dispatching `walk_inspect_candidate` workers per candidate. Stake-gated
+confirms (severity High+, attached CWE, product_feature_id set, or
+low-confidence) get an inline `walk_confirm_review` skeptic.
+
+Gates:
+- `walk_state_started` (pre): `walk_state.stages.2a-inputs.opened_at` set
+- `walk_state_done` (post): all three stages closed
+
+CLI: see `catalog/README.md` for full `vb walk` reference.
 
 ### Phase 3: Triage
 Systematically analyze every file (Electron) or function (binary):
@@ -173,6 +190,19 @@ python3 scripts/run_kong.py <binary> --output <output-dir>
 
 # Extract firmware image
 python3 scripts/extract_firmware.py <firmware-image> --output <output-dir>
+```
+
+## vb-add CLI
+
+Incremental catalog updates while reversing. Each subcommand appends one
+entry, auto-assigns a stable ID, and writes to the binary YAML.
+
+```bash
+vb-add feature      --binary <stem> --slug "..." --name "..." --description "..." \
+                    --capabilities CAP-001 --sources SRC-001 --inputs INP-001 \
+                    --cwe CWE-78 --severity-ceiling High --user-observable "..."
+vb-add unreachable  --binary <stem> --input INP-001 --feature FEAT-001 \
+                    --reason "Input INP-001 is admin-only; feature is for low-priv attackers"
 ```
 
 ## Taxonomy Files
