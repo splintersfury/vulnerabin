@@ -19,6 +19,55 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PIPELINE = ROOT / "pipeline.yml"
 ENG_ROOT = ROOT / "engagements"
+CATALOG_BINARIES = ROOT / "catalog" / "binaries"
+
+
+def _check_walk_state_started() -> tuple[bool, str]:
+    """True if at least one binary in catalog/binaries has 2a-inputs opened.
+
+    Returns (ok, evidence_string).
+    """
+    try:
+        import yaml as _y  # type: ignore
+    except Exception as e:
+        return False, f"PyYAML unavailable: {e}"
+    if not CATALOG_BINARIES.is_dir():
+        return False, "catalog/binaries/ not present"
+    binary_yamls = list(CATALOG_BINARIES.glob("*.yml"))
+    opened = 0
+    for p in binary_yamls:
+        try:
+            d = _y.safe_load(p.read_text()) or {}
+        except Exception:
+            continue
+        s = ((d.get("walk_state") or {}).get("stages") or {}).get("2a-inputs") or {}
+        if s.get("opened_at"):
+            opened += 1
+    return opened > 0, f"{opened}/{len(binary_yamls)} binaries have 2a-inputs.opened_at"
+
+
+def _check_walk_state_done() -> tuple[bool, str]:
+    """True if every binary in catalog/binaries has all three stages closed."""
+    try:
+        import yaml as _y  # type: ignore
+    except Exception as e:
+        return False, f"PyYAML unavailable: {e}"
+    if not CATALOG_BINARIES.is_dir():
+        return False, "catalog/binaries/ not present"
+    binary_yamls = list(CATALOG_BINARIES.glob("*.yml"))
+    if not binary_yamls:
+        return False, "no binaries in catalog/binaries/"
+    closed = 0
+    for p in binary_yamls:
+        try:
+            d = _y.safe_load(p.read_text()) or {}
+        except Exception:
+            return False, f"parse error on {p.name}"
+        stages = ((d.get("walk_state") or {}).get("stages") or {})
+        if all((stages.get(k) or {}).get("status") == "closed"
+               for k in ("2a-inputs", "2b-sinks", "2c-features")):
+            closed += 1
+    return closed == len(binary_yamls), f"{closed}/{len(binary_yamls)} binaries fully closed"
 
 # Reuse the tiny YAML loader from route_model
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -143,6 +192,12 @@ def gate_status(eng: str, eng_dir: Path, phase_name: str, phase_def: dict) -> li
                 evidence = f"{len(with_v)}/{len(results)} result.json have verdict+hash"
             else:
                 evidence = "no exec/ dir"
+
+        elif gid == "walk_state_started":
+            ok, evidence = _check_walk_state_started()
+
+        elif gid == "walk_state_done":
+            ok, evidence = _check_walk_state_done()
 
         elif gid == "exec_required_or_justified":
             findings_dir = eng_dir / "findings"

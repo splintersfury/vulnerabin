@@ -26,7 +26,26 @@ phases:
       - decomp/
       - extracted/
       - firmware/
-    next: [triage, junction_hunt]
+    next: [walk, junction_hunt]
+
+  walk:
+    prompt: prompts/phases/walk.md
+    requires_artifacts_any: [decomp/, extracted/, firmware/]
+    produces_artifacts: []
+    gates:
+      - id: walk_state_started
+        kind: pre
+        check: "walk_state.stages.2a-inputs.opened_at set on at least one catalog binary"
+        rationale: |
+          Three-stage gated walk (2a-inputs -> 2b-sinks -> 2c-features) cannot
+          begin until the inputs stage is opened on at least one binary.
+      - id: walk_state_done
+        kind: post
+        check: "walk_state.stages.{2a-inputs,2b-sinks,2c-features}.status == closed on every catalog binary"
+        rationale: |
+          Walk is complete only when all three stages are closed across the
+          binaries the engagement covers (catalog/binaries/*.yml).
+    next: [triage]
 
   triage:
     prompt: prompts/phases/triage.md
