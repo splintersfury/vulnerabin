@@ -743,6 +743,126 @@ def merge_capabilities(existing: list[dict], new: list[dict],
     return existing + additions, len(additions)
 
 
+def process_features(binary_yaml: dict, ctx) -> dict:
+    """Run the FEAT detector framework against ctx and merge results into binary_yaml.
+
+    Idempotent. Existing FEATs are matched by (detector, evidence_type, evidence_value)
+    and updated in place; new candidates are appended with the next free FEAT-* ID.
+    Hand-edited fields (description, user_observable, cwe, severity_ceiling,
+    confirmed/rejected flags, confirmation_review block) are never overwritten.
+
+    Returns the modified binary_yaml.
+    """
+    import sys
+    from pathlib import Path as _Path
+    from datetime import datetime, timezone
+
+    sys.path.insert(0, str(_Path(__file__).parent))
+    import feat_detectors
+    # Force-import known tier packages so they self-register on import.
+    # Add new tier modules here as they are written.
+    from feat_detectors.tier1_universal import exports as _exports  # noqa: F401
+
+    platform = (binary_yaml.get("platform") or "").lower()
+    binary_kind = (binary_yaml.get("binary_kind") or "").lower()
+    detectors = feat_detectors.load_detectors(platform, binary_kind)
+    if not detectors:
+        return binary_yaml
+
+    existing = binary_yaml.setdefault("features", []) or []
+
+    def _evidence_key(feat):
+        sigs = feat.get("signal_sources") or []
+        if not sigs:
+            return None
+        s = sigs[0]
+        return (s.get("detector"), s.get("evidence_type"), s.get("evidence_value"))
+
+    by_evidence = {}
+    rejected_evidence = set()
+    for f in existing:
+        k = _evidence_key(f)
+        if k is None:
+            continue
+        by_evidence[k] = f
+        if f.get("rejected"):
+            rejected_evidence.add(k)
+
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    next_id = max(
+        (int(f["id"].split("-")[1]) for f in existing if f.get("id", "").startswith("FEAT-")),
+        default=0,
+    ) + 1
+
+    new_candidates = []
+    for d in detectors:
+        for cand in d.detect(ctx):
+            key = (cand.detector, cand.evidence_type, cand.evidence_value)
+            if key in rejected_evidence:
+                continue
+            if key in by_evidence:
+                # Update last_detected_at on existing entry's matching signal source.
+                feat = by_evidence[key]
+                for sig in feat.get("signal_sources") or []:
+                    if (sig.get("detector"), sig.get("evidence_type"),
+                            sig.get("evidence_value")) == key:
+                        sig["last_detected_at"] = now
+                continue
+            # Append new candidate as confirmed=false.
+            feat_id = f"FEAT-{next_id:03d}"
+            next_id += 1
+            new_candidates.append({
+                "id": feat_id,
+                "slug": cand.slug,
+                "product_feature_id": "",
+                "name": cand.name,
+                "description": cand.description,
+                "status": "unexplored",
+                "first_seen_version": "",
+                "last_confirmed_version": "",
+                "deprecated_in_version": "",
+                "deprecation_note": "",
+                "capabilities": list(cand.capability_hints),
+                "sources": list(cand.source_hints),
+                "inputs": list(cand.input_hints),
+                "implementation_anchors": list(cand.anchor_hints),
+                "cwe": [],
+                "severity_ceiling": "",
+                "ux_strings": list(cand.ux_string_hints),
+                "disabled_by_default": False,
+                "signal_sources": [{
+                    "detector": cand.detector,
+                    "detector_version": cand.detector_version,
+                    "evidence_type": cand.evidence_type,
+                    "evidence_value": cand.evidence_value,
+                    "weight": cand.weight,
+                    "last_detected_at": now,
+                }],
+                "confidence": "low" if cand.weight < 3 else "medium",
+                "confirmed": False,
+                "rejected": False,
+                "rejection_reason": "",
+                "rejected_at": "",
+                "user_observable": cand.user_observable,
+                "notes": "",
+                "confirmation_review": {
+                    "required": False,
+                    "agent_id": "",
+                    "reviewed_by": "",
+                    "verdict": "",
+                    "reviewed_at": "",
+                    "artifact_path": "",
+                    "trigger_reason": "",
+                },
+            })
+
+    if new_candidates:
+        existing.extend(new_candidates)
+        binary_yaml["features"] = existing
+
+    return binary_yaml
+
+
 def assign_input_ids(inputs: list[dict], existing_ids: set[str]) -> list[dict]:
     """Assign INP-NNN to entries lacking an ID; preserve existing IDs."""
     used = set(existing_ids)
@@ -933,6 +1053,40 @@ def process_one(eng_dir: Path, binary: str, decomp_dir: Path | None,
     existing_caps = existing_yaml.get("capabilities") or []
     merged_caps, caps_added = merge_capabilities(existing_caps, new_caps, sink_name_to_id)
 
+    # Run FEAT detector framework against the gathered context.
+    try:
+        from feat_detectors.base import DetectorContext
+        try:
+            full_function_index = json.loads((decomp_dir / "function_index.json").read_text())
+        except (OSError, json.JSONDecodeError):
+            full_function_index = {"functions": d.functions}
+        # Use a working copy that has the merged RE block + capabilities for
+        # detectors that read existing_yaml, then merge results back.
+        feat_yaml = dict(existing_yaml) if existing_yaml else {
+            "binary": binary,
+            "platform": "windows",
+            "binary_kind": ("exe" if binary.endswith(".exe")
+                            else "dll" if binary.endswith(".dll")
+                            else "sys" if binary.endswith(".sys") else ""),
+        }
+        feat_yaml["features"] = list(existing_yaml.get("features") or [])
+        ctx = DetectorContext(
+            binary_path=Path(existing_yaml.get("canonical_path") or binary),
+            decomp_dir=decomp_dir,
+            function_index=full_function_index,
+            chains=d.chains,
+            re_block=merged_re,
+            existing_yaml=feat_yaml,
+        )
+        feat_yaml = process_features(feat_yaml, ctx)
+        merged_features = feat_yaml.get("features") or []
+        features_added = max(0, len(merged_features) - len(existing_yaml.get("features") or []))
+    except Exception as _feat_err:  # pragma: no cover - defensive
+        merged_features = list(existing_yaml.get("features") or [])
+        features_added = 0
+        if verbose:
+            print(f"[feat] detector pass skipped: {_feat_err}", file=sys.stderr)
+
     summary = {
         "binary": binary,
         "decomp_dir": str(decomp_dir.relative_to(ROOT)),
@@ -945,6 +1099,8 @@ def process_one(eng_dir: Path, binary: str, decomp_dir: Path | None,
         "sinks_added": sinks_added,
         "capabilities_total": len(merged_caps),
         "capabilities_added": caps_added,
+        "features_total": len(merged_features),
+        "features_added": features_added,
         "notable_strings": len(merged_re.get("notable_strings") or []),
         "rva_anchors": len(merged_re.get("rva_anchors") or {}),
     }
@@ -953,6 +1109,8 @@ def process_one(eng_dir: Path, binary: str, decomp_dir: Path | None,
         existing_yaml["reverse_engineering"] = merged_re
         existing_yaml["sinks"] = merged_sinks
         existing_yaml["capabilities"] = merged_caps
+        if merged_features:
+            existing_yaml["features"] = merged_features
         added = derive_back_links(existing_yaml)
         summary["derived_from_added"] = added
         yaml_path.write_text(yaml.safe_dump(existing_yaml, sort_keys=False, width=120))
