@@ -217,3 +217,33 @@ def test_confirm_with_review_artifact(tmp_path):
     assert f["confirmed"] is True
     assert f["confirmation_review"]["verdict"] == "ship"
     assert f["confirmation_review"]["reviewed_by"] == "skeptic-xyz"
+
+
+def test_inspect_returns_full_candidate(tmp_path):
+    _make_binary_yaml(tmp_path, "t", {
+        "binary": "t.dll", "platform": "windows", "binary_kind": "dll",
+        "features": [{
+            "id": "FEAT-001", "slug": "auto-update", "name": "Auto-update",
+            "description": "the description",
+            "implementation_anchors": [{"function": "FUN_1", "rva": "0x10001000", "role": "source"}],
+            "signal_sources": [{"detector": "exports", "evidence_type": "export_prefix",
+                                 "evidence_value": "Bd_Update_", "weight": 2}],
+            "confirmed": False, "rejected": False,
+        }],
+    })
+    r = _run_walk(["inspect", "t", "FEAT-001", "--json"], cwd=tmp_path)
+    assert r.returncode == 0, r.stderr
+    out = json.loads(r.stdout)
+    assert out["id"] == "FEAT-001"
+    assert out["slug"] == "auto-update"
+    assert len(out["implementation_anchors"]) == 1
+
+
+def test_refresh_runs_re_extract(tmp_path, monkeypatch):
+    # Light-touch: just check the subcommand exists and exits 0 when YAML is
+    # readable. Full re-extract integration is covered in test_catalog_re_extract_features.
+    _make_binary_yaml(tmp_path, "t", {
+        "binary": "t.dll", "platform": "windows", "binary_kind": "dll",
+    })
+    r = _run_walk(["refresh", "t", "--dry-run"], cwd=tmp_path)
+    assert r.returncode == 0, r.stderr

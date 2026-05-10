@@ -294,6 +294,57 @@ def cmd_confirm(args) -> int:
     return 0
 
 
+def cmd_inspect(args) -> int:
+    _, data = _load_binary(args.binary)
+    for stage in STAGE_KEY_MAP:
+        for it in _stage_items(data, stage):
+            if it.get("id") == args.id:
+                if args.json:
+                    print(json.dumps(it, indent=2))
+                else:
+                    print(yaml.safe_dump(it, sort_keys=False))
+                return 0
+    print(f"id not found: {args.id}", file=sys.stderr)
+    return 1
+
+
+def cmd_refresh(args) -> int:
+    if args.dry_run:
+        print(f"(dry-run) would re-run detector framework against {args.binary}")
+        return 0
+    # Real run: import process_features and apply.
+    sys.path.insert(0, str(Path(__file__).parent))
+    import importlib.util
+    re_path = Path(__file__).parent / "catalog_re_extract.py"
+    spec = importlib.util.spec_from_file_location("catalog_re_extract", re_path)
+    if spec is None or spec.loader is None:
+        print("could not import catalog_re_extract", file=sys.stderr)
+        return 1
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    p, data = _load_binary(args.binary)
+    # Build a minimal DetectorContext: function_index from existing
+    # reverse_engineering, decomp_dir from coverage[].decomp_dirs[0] if any.
+    from feat_detectors.base import DetectorContext  # type: ignore
+    fi = data.get("reverse_engineering", {}) or {}
+    coverage = data.get("coverage") or {}
+    decomp_dirs = coverage.get("decomp_dirs") or []
+    decomp_dir = Path(decomp_dirs[0]) if decomp_dirs else None
+    ctx = DetectorContext(
+        binary_path=Path(data.get("canonical_path") or ""),
+        decomp_dir=decomp_dir,
+        function_index=fi,
+        chains=None,
+        re_block=fi,
+        existing_yaml=data,
+    )
+    out = mod.process_features(data, ctx)
+    _save_binary(p, out)
+    print(f"refreshed; features now: {len(out.get('features', []))}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="vb walk", description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -336,6 +387,17 @@ def main(argv: list[str] | None = None) -> int:
     sp.add_argument("--inspect-worker", required=True)
     sp.add_argument("--review-verdict", default="")
     sp.set_defaults(func=cmd_confirm)
+
+    sp = sub.add_parser("inspect", help="full context for one candidate")
+    sp.add_argument("binary")
+    sp.add_argument("id")
+    sp.add_argument("--json", action="store_true")
+    sp.set_defaults(func=cmd_inspect)
+
+    sp = sub.add_parser("refresh", help="re-run detectors against this binary")
+    sp.add_argument("binary")
+    sp.add_argument("--dry-run", action="store_true")
+    sp.set_defaults(func=cmd_refresh)
 
     args = p.parse_args(argv)
     return args.func(args)
