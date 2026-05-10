@@ -66,3 +66,81 @@ def test_status_open_2a_reports_pending_inputs(tmp_path):
     out = json.loads(r.stdout)
     assert out["current_stage"] == "2a-inputs"
     assert out["pending_counts"]["inputs_unconfirmed"] == 1
+
+
+def test_pending_lists_unconfirmed_features(tmp_path):
+    _make_binary_yaml(tmp_path, "t", {
+        "binary": "t.dll", "platform": "windows", "binary_kind": "dll",
+        "features": [
+            {"id": "FEAT-001", "slug": "a", "name": "A", "confirmed": False, "rejected": False,
+             "signal_sources": [{"detector": "exports", "evidence_type": "export_prefix",
+                                  "evidence_value": "A_", "weight": 2}]},
+            {"id": "FEAT-002", "slug": "b", "name": "B", "confirmed": True, "rejected": False,
+             "signal_sources": []},
+        ],
+        "walk_state": {"stages": {
+            "2a-inputs": {"status": "closed"},
+            "2b-sinks": {"status": "closed"},
+            "2c-features": {"status": "open"},
+        }},
+    })
+    r = _run_walk(["pending", "t", "--stage", "2c-features", "--json"], cwd=tmp_path)
+    assert r.returncode == 0, r.stderr
+    out = json.loads(r.stdout)
+    assert len(out) == 1
+    assert out[0]["id"] == "FEAT-001"
+
+
+def test_reject_writes_rejection(tmp_path):
+    yaml_path = _make_binary_yaml(tmp_path, "t", {
+        "binary": "t.dll", "platform": "windows", "binary_kind": "dll",
+        "features": [{"id": "FEAT-001", "slug": "a", "confirmed": False, "rejected": False,
+                      "signal_sources": [{"detector": "exports", "evidence_type": "export_prefix",
+                                           "evidence_value": "A_"}]}],
+        "walk_state": {"stages": {
+            "2a-inputs": {"status": "closed"},
+            "2b-sinks": {"status": "closed"},
+            "2c-features": {"status": "open"},
+        }},
+    })
+    r = _run_walk(["reject", "t", "FEAT-001", "--reason", "internal dispatcher only"], cwd=tmp_path)
+    assert r.returncode == 0, r.stderr
+    after = yaml.safe_load(yaml_path.read_text())
+    f = after["features"][0]
+    assert f["rejected"] is True
+    assert f["rejection_reason"] == "internal dispatcher only"
+    assert f["rejected_at"]
+
+
+def test_close_stage_refuses_with_pending(tmp_path):
+    _make_binary_yaml(tmp_path, "t", {
+        "binary": "t.dll", "platform": "windows", "binary_kind": "dll",
+        "features": [{"id": "FEAT-001", "confirmed": False, "rejected": False,
+                      "signal_sources": []}],
+        "walk_state": {"stages": {
+            "2a-inputs": {"status": "closed"},
+            "2b-sinks": {"status": "closed"},
+            "2c-features": {"status": "open"},
+        }},
+    })
+    r = _run_walk(["close-stage", "t", "--stage", "2c-features"], cwd=tmp_path)
+    assert r.returncode != 0
+    assert "pending" in (r.stderr + r.stdout).lower()
+
+
+def test_close_stage_succeeds_when_clean(tmp_path):
+    yaml_path = _make_binary_yaml(tmp_path, "t", {
+        "binary": "t.dll", "platform": "windows", "binary_kind": "dll",
+        "features": [{"id": "FEAT-001", "confirmed": True, "rejected": False,
+                      "signal_sources": []}],
+        "walk_state": {"stages": {
+            "2a-inputs": {"status": "closed"},
+            "2b-sinks": {"status": "closed"},
+            "2c-features": {"status": "open"},
+        }},
+    })
+    r = _run_walk(["close-stage", "t", "--stage", "2c-features"], cwd=tmp_path)
+    assert r.returncode == 0, r.stderr
+    after = yaml.safe_load(yaml_path.read_text())
+    assert after["walk_state"]["stages"]["2c-features"]["status"] == "closed"
+    assert after["walk_state"]["stages"]["2c-features"]["closed_at"]

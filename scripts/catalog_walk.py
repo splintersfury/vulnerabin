@@ -91,6 +91,94 @@ def cmd_status(args) -> int:
     return 0
 
 
+STAGE_KEY_MAP = {
+    "2a-inputs":   ("reverse_engineering", "inputs"),
+    "2b-sinks":    (None, "sinks"),
+    "2c-features": (None, "features"),
+}
+
+
+def _stage_items(data: dict, stage: str) -> list:
+    container, key = STAGE_KEY_MAP[stage]
+    parent = data.get(container) if container else data
+    if not isinstance(parent, dict):
+        parent = {}
+    return parent.get(key) or []
+
+
+def _save_binary(path: Path, data: dict) -> None:
+    path.write_text(yaml.safe_dump(data, sort_keys=False))
+
+
+def cmd_pending(args) -> int:
+    _, data = _load_binary(args.binary)
+    items = _stage_items(data, args.stage)
+    pending = [it for it in items if not it.get("confirmed") and not it.get("rejected")]
+    if args.json:
+        print(json.dumps(pending, indent=2))
+    else:
+        for it in pending:
+            print(f"{it.get('id', '?')}: {it.get('slug') or it.get('name') or ''}")
+    return 0
+
+
+def _now() -> str:
+    from datetime import datetime, timezone
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+
+def cmd_reject(args) -> int:
+    p, data = _load_binary(args.binary)
+    if not args.reason or len(args.reason.strip()) < 5:
+        print("--reason must be at least 5 chars", file=sys.stderr)
+        return 1
+    found = False
+    for stage in STAGE_KEY_MAP:
+        items = _stage_items(data, stage)
+        for it in items:
+            if it.get("id") == args.id:
+                it["rejected"] = True
+                it["confirmed"] = False
+                it["rejection_reason"] = args.reason.strip()
+                it["rejected_at"] = _now()
+                found = True
+                break
+        if found:
+            break
+    if not found:
+        print(f"id not found: {args.id}", file=sys.stderr)
+        return 1
+    _save_binary(p, data)
+    return 0
+
+
+def cmd_close_stage(args) -> int:
+    p, data = _load_binary(args.binary)
+    items = _stage_items(data, args.stage)
+    pending = [it for it in items if not it.get("confirmed") and not it.get("rejected")]
+    if pending:
+        print(f"refusing to close: {len(pending)} pending entries in {args.stage}",
+              file=sys.stderr)
+        return 1
+    ws = data.setdefault("walk_state", {}).setdefault("stages", {})
+    s = ws.setdefault(args.stage, {})
+    s["status"] = "closed"
+    s["closed_at"] = _now()
+    history = data["walk_state"].setdefault("history", [])
+    history.append({
+        "stage": args.stage,
+        "action": "closed",
+        "at": s["closed_at"],
+        "actor": "claude",
+        "target": "",
+        "reason": "",
+        "confirmed": sum(1 for it in items if it.get("confirmed")),
+        "rejected": sum(1 for it in items if it.get("rejected")),
+    })
+    _save_binary(p, data)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="vb walk", description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -100,6 +188,23 @@ def main(argv: list[str] | None = None) -> int:
     sp.add_argument("binary")
     sp.add_argument("--json", action="store_true")
     sp.set_defaults(func=cmd_status)
+
+    sp = sub.add_parser("pending", help="list pending candidates for a stage")
+    sp.add_argument("binary")
+    sp.add_argument("--stage", required=True, choices=list(STAGE_KEY_MAP))
+    sp.add_argument("--json", action="store_true")
+    sp.set_defaults(func=cmd_pending)
+
+    sp = sub.add_parser("reject", help="reject a candidate")
+    sp.add_argument("binary")
+    sp.add_argument("id")
+    sp.add_argument("--reason", required=True)
+    sp.set_defaults(func=cmd_reject)
+
+    sp = sub.add_parser("close-stage", help="close a stage (refuses with pending entries)")
+    sp.add_argument("binary")
+    sp.add_argument("--stage", required=True, choices=list(STAGE_KEY_MAP))
+    sp.set_defaults(func=cmd_close_stage)
 
     args = p.parse_args(argv)
     return args.func(args)
