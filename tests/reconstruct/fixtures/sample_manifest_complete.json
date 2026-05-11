@@ -1,0 +1,79 @@
+{
+  "binary": {
+    "stem": "samplebin",
+    "version_tag": "v1_2_3",
+    "status": "partial"
+  },
+  "passes": [
+    {
+      "pass": "pass0",
+      "started_at": "2026-05-11T16:00:00Z",
+      "ended_at": "2026-05-11T16:00:42Z",
+      "tools_used": ["project_discovery", "iat_wrapper_detection", "pcode_hash_carryforward"],
+      "renames_applied": 0,
+      "proposed_renames": [
+        {
+          "addr": "0x140002000",
+          "from": "FUN_140002000",
+          "to": "RtlAllocateHeap_wrapper",
+          "confidence": "medium",
+          "source": "iat_wrapper_detection",
+          "rationale": "2-instruction function with single external callee RtlAllocateHeap"
+        },
+        {
+          "addr": "0x140004000",
+          "from": "FUN_140004000",
+          "to": "CreateFileW_wrapper",
+          "confidence": "medium",
+          "source": "iat_wrapper_detection",
+          "rationale": "1-instruction function with single external callee CreateFileW"
+        },
+        {
+          "addr": "0x140003000",
+          "from": "FUN_140003000",
+          "to": "DispatchCommand",
+          "confidence": "high",
+          "source": "pcode_hash_carryforward",
+          "rationale": "pcode_hash match with prior version v1_2_2 at 0x140003000 (previously named DispatchCommand)"
+        }
+      ],
+      "renames_by_source": {
+        "iat_wrapper_detection": 2,
+        "pcode_hash_carryforward": 1
+      },
+      "tokens_spent": 0,
+      "snapshot": null,
+      "prior_version_consulted": "samplebin_v1_2_2"
+    }
+  ],
+  "project_discovery": {
+    "binary": "samplebin.exe",
+    "arch": "x86_64",
+    "format": "PE",
+    "address_size": 64,
+    "function_counts": {"total": 12, "user_defined": 8, "external": 3, "thunk": 1},
+    "exports": [
+      {"name": "DllMain", "address": "0x140006000"},
+      {"name": "Ordinal_42", "address": "0x140007000"},
+      {"name": "entry", "address": "0x140001000"}
+    ],
+    "entrypoints": ["0x140001000"],
+    "reachable_user_defined": [
+      "0x140001000", "0x140002000", "0x140003000", "0x140004000",
+      "0x140005000", "0x140006000", "0x140007000"
+    ],
+    "strings_by_function": {
+      "0x140040000": ["Initializing config", "C:\\ProgramData\\sample\\config.json"]
+    }
+  },
+  "pcode_hashes_by_addr": {
+    "0x140001000": "hash_entry",
+    "0x140002000": "hash_2000",
+    "0x140003000": "hash_3000",
+    "0x140004000": "hash_4000",
+    "0x140005000": "hash_5000",
+    "0x140006000": "hash_6000",
+    "0x140007000": "hash_7000",
+    "0x140040000": "hash_orphan"
+  }
+}

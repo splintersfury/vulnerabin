@@ -1,0 +1,14 @@
+{
+  "hard_gate_pass": false,
+  "soft_gate_pass": false,
+  "totals": {
+    "user_defined_functions": 8,
+    "external_imports_skipped": 3,
+    "thunks_skipped": 1
+  },
+  "named": {
+    "total_named": 6,
+    "from_pass0": 3
+  },
+  "low_confidence_named_addresses": []
+}
