@@ -35,3 +35,21 @@ def test_reconstruct_phase_has_all_four_gates():
         "reachable_named_100pct",
         "tail_named_80pct",
     }
+
+
+def test_reconstruct_reachability_roots_declared_at_top_level():
+    """Reachability roots are a top-level sibling of `phases:`, consumed by Pass 0."""
+    cfg = _load_yaml(REPO_ROOT / "pipeline.yml")
+    roots = cfg.get("reconstruct_reachability_roots")
+    assert roots is not None, "pipeline.yml must declare top-level reconstruct_reachability_roots"
+    assert isinstance(roots, dict)
+    expected_kinds = {
+        "windows_sys", "windows_exe", "windows_dll",
+        "linux_elf_exec", "linux_elf_so",
+    }
+    assert set(roots.keys()) >= expected_kinds, (
+        f"missing binary kinds: {expected_kinds - set(roots.keys())}"
+    )
+    # Each kind must declare a non-empty list of root identifiers.
+    for kind, root_list in roots.items():
+        assert isinstance(root_list, list) and root_list, f"{kind} must be a non-empty list"

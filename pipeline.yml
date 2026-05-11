@@ -77,10 +77,11 @@ phases:
           and typed for downstream walk/triage to operate reliably.
       - id: tail_named_80pct
         kind: post
-        check: "coverage.json#tail_soft_gate_pass == true (>=80% of non-reachable user-defined functions named)"
+        check: "coverage.json#tail_soft_gate_pass == true"
         rationale: |
-          Soft gate: warns but does not block. Below threshold, downstream
-          analysis still proceeds with degraded mental model.
+          Soft gate: ≥80% of non-reachable user-defined functions must be
+          named. Below threshold, downstream analysis still proceeds with a
+          degraded mental model — warns but does not block.
     next: [walk]
 
   walk:
