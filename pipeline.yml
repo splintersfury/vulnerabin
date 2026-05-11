@@ -71,13 +71,13 @@ phases:
           project would cause corruption; refuse to start if so.
       - id: reachable_named_100pct
         kind: post
-        check: "coverage.json#reachable_hard_gate_pass == true"
+        check: "coverage.json#hard_gate_pass == true"
         rationale: |
           Every entrypoint-reachable user-defined function must be named
           and typed for downstream walk/triage to operate reliably.
       - id: tail_named_80pct
         kind: post
-        check: "coverage.json#tail_soft_gate_pass == true"
+        check: "coverage.json#soft_gate_pass == true"
         rationale: |
           Soft gate: ≥80% of non-reachable user-defined functions must be
           named. Below threshold, downstream analysis still proceeds with a

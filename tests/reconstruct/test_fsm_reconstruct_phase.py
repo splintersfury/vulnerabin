@@ -66,8 +66,8 @@ import subprocess
 def test_fsm_libghidra_alive_gate_returns_evidence(tmp_path):
     """The libghidra_alive gate must run when reconstruct is the current phase.
 
-    For foundation: returns ok=False with evidence string mentioning libghidra.
-    A real healthz probe is wired in sub-plan 3.
+    When LIBGHIDRA_HEALTHZ_URL is unset, gate returns ok=False with evidence
+    mentioning "not set" / "not configured".
     """
     eng_dir = tmp_path / "engagements" / "fixture"
     eng_dir.mkdir(parents=True)
@@ -241,3 +241,24 @@ def test_tail_named_gate_reads_soft_gate_flag(tmp_path, monkeypatch):
     )
     g = next(s for s in statuses if s["id"] == "tail_named_80pct")
     assert g["ok"] is False
+
+
+def test_fsm_libghidra_alive_gate_with_down_endpoint_fails(tmp_path, monkeypatch):
+    """When LIBGHIDRA_HEALTHZ_URL points at a dead port, gate returns False with FAILED evidence."""
+    eng_dir = tmp_path / "engagements" / "fixture"
+    eng_dir.mkdir(parents=True)
+    (eng_dir / "scope.json").write_text('{"binary": "test", "target_type": "binary"}')
+    (eng_dir / "decomp").mkdir()
+    (eng_dir / "decomp" / "function_index.json").write_text('{"functions": []}')
+
+    monkeypatch.setenv("LIBGHIDRA_HEALTHZ_URL", "http://127.0.0.1:1/libghidra/healthz")
+
+    import sys
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import fsm  # type: ignore
+    monkeypatch.setattr(fsm, "ENG_ROOT", tmp_path / "engagements")
+    cfg = fsm.load_pipeline()
+    statuses = fsm.gate_status("fixture", eng_dir, "reconstruct", cfg["phases"]["reconstruct"])
+    libg = next(s for s in statuses if s["id"] == "libghidra_alive")
+    assert libg["ok"] is False
+    assert "failed" in libg["evidence"].lower() or "not set" in libg["evidence"].lower()
