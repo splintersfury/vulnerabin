@@ -1,0 +1,17 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_001",
+  "renames": [
+    {
+      "addr": "0x140007000",
+      "to": "",
+      "confidence": "unknown",
+      "rationale": "Empty name with bogus confidence"
+    },
+    {
+      "to": "MissingAddr",
+      "confidence": "high",
+      "rationale": "addr key missing"
+    }
+  ]
+}

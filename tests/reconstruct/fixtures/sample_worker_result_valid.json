@@ -1,0 +1,24 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_000",
+  "renames": [
+    {
+      "addr": "0x140003000",
+      "to": "DispatchCommand",
+      "confidence": "high",
+      "rationale": "Receives an IPC request header and dispatches by type tag"
+    },
+    {
+      "addr": "0x140004000",
+      "to": "OpenConfigFile",
+      "confidence": "medium",
+      "rationale": "Wraps CreateFileW with a hard-coded path under ProgramData"
+    },
+    {
+      "addr": "0x140005000",
+      "to": "ProcessRequest",
+      "confidence": "low",
+      "rationale": "Calls Alloc/Open/memcpy but purpose unclear"
+    }
+  ]
+}
