@@ -177,3 +177,51 @@ def test_cli_refuses_unknown_target(tmp_path):
     )
     assert result.returncode != 0
     assert "not found" in (result.stderr + result.stdout).lower()
+
+
+def test_site_render_emits_reconstruction_html(tmp_path):
+    """Drive catalog_site_render.py via subprocess and verify it writes the
+    Layer 8 HTML for a seeded reconstruction.
+    """
+    # Mirror the bare-minimum repo layout that catalog_site_render expects.
+    (tmp_path / "catalog" / "binaries").mkdir(parents=True)
+    (tmp_path / "catalog" / "products").mkdir(parents=True)
+    (tmp_path / "taxonomy" / "binary").mkdir(parents=True)
+    # Copy the real defense_library.json + templates so the existing render
+    # functions don't crash for lack of inputs.
+    shutil.copy(
+        REPO_ROOT / "taxonomy" / "binary" / "defense_library.json",
+        tmp_path / "taxonomy" / "binary" / "defense_library.json",
+    )
+    shutil.copytree(REPO_ROOT / "catalog" / "site" / "_templates",
+                    tmp_path / "catalog" / "site" / "_templates")
+
+    # Seed a binary YAML that references our reconstruction.
+    (tmp_path / "catalog" / "binaries" / "samplebin.yml").write_text(yaml.safe_dump({
+        "binary": "samplebin",
+        "product": "test",
+        "reconstruction": {
+            "ref": "catalog/reconstructed/samplebin_v1_2_3",
+            "version_tag": "v1_2_3",
+            "status": "partial",
+        },
+    }))
+    _seed_recon_dir(tmp_path, stem="samplebin", tag="v1_2_3")
+
+    env = {**os.environ, "VULNERABIN_ROOT": str(tmp_path)}
+    # Some downstream rendering reads other source data; let it fail
+    # gracefully but require that reconstructed/ specifically is emitted.
+    result = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "catalog_site_render.py")],
+        env=env, capture_output=True, text=True,
+    )
+    # Non-zero exit is acceptable here as long as the reconstructed HTML
+    # was produced — the renderer may bail on missing product YAMLs etc.
+    html = tmp_path / "catalog" / "site" / "reconstructed" / "samplebin_v1_2_3.html"
+    assert html.is_file(), (
+        f"reconstructed HTML not emitted. stdout={result.stdout!r} stderr={result.stderr!r}"
+    )
+    text = html.read_text()
+    assert "samplebin" in text
+    assert "v1_2_3" in text
+    assert "Reconstruction" in text

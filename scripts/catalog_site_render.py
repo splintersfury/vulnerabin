@@ -33,7 +33,8 @@ from pathlib import Path
 import yaml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-ROOT = Path(__file__).resolve().parent.parent
+import os as _os
+ROOT = Path(_os.environ.get("VULNERABIN_ROOT") or Path(__file__).resolve().parent.parent)
 CATALOG = ROOT / "catalog"
 SITE = CATALOG / "site"
 TEMPLATES = SITE / "_templates"
@@ -718,6 +719,37 @@ def render_taxonomy_page(env: Environment, lib: dict):
     print(f"wrote {out.relative_to(ROOT)}")
 
 
+def render_reconstructed_pages(env: Environment) -> int:
+    """Render the Layer 8 reconstruction detail page for every catalog
+    reconstruct dir that has a manifest.json. Returns the count rendered.
+    """
+    import importlib.util as _ilu
+    import sys as _sys
+
+    # Ensure scripts/ is on sys.path so catalog_reconstruct_render can be imported
+    scripts_dir = str(ROOT / "scripts")
+    if scripts_dir not in _sys.path:
+        _sys.path.insert(0, scripts_dir)
+
+    import catalog_reconstruct_render as crr  # type: ignore
+
+    base = ROOT / "catalog" / "reconstructed"
+    if not base.is_dir():
+        return 0
+    out_dir = SITE / "reconstructed"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    tmpl = env.get_template("reconstructed.html.j2")
+    count = 0
+    for d in sorted(base.iterdir()):
+        if not d.is_dir() or not (d / "manifest.json").is_file():
+            continue
+        ctx = crr.build_context(d)
+        html = tmpl.render(**ctx)
+        (out_dir / f"{d.name}.html").write_text(html)
+        count += 1
+    return count
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--serve", type=int, default=None, help="after rendering, spawn `python3 -m http.server N` on the given port")
@@ -740,6 +772,9 @@ def main() -> int:
     render_chains_index(env, binaries)
     # Detail pages
     render_binaries(env, binaries, lib)
+    n_recon = render_reconstructed_pages(env)
+    if n_recon:
+        print(f"rendered {n_recon} reconstructed page(s)")
     render_chain_pages(env, binaries)
     render_products(env, products, binaries)
     render_taxonomy_page(env, lib)
