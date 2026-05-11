@@ -97,3 +97,82 @@ def test_fsm_libghidra_alive_gate_returns_evidence(tmp_path):
     libg = next(s for s in statuses if s["id"] == "libghidra_alive")
     assert libg["ok"] is False
     assert "libghidra" in libg["evidence"].lower() or "endpoint" in libg["evidence"].lower()
+
+
+def test_no_concurrent_writer_gate_no_lock_passes(tmp_path, monkeypatch):
+    """When no lock file exists, gate passes (nothing to conflict with)."""
+    eng_dir = tmp_path / "engagements" / "fixture"
+    eng_dir.mkdir(parents=True)
+    (eng_dir / "scope.json").write_text(
+        '{"binary": "test_stem", "target_type": "binary"}'
+    )
+    (eng_dir / "decomp").mkdir()
+    (eng_dir / "decomp" / "function_index.json").write_text('{"functions": []}')
+
+    catalog = tmp_path / "catalog"
+    (catalog / "binaries").mkdir(parents=True)
+    (catalog / "binaries" / "test_stem.yml").write_text(
+        "reconstruction:\n  ref: catalog/reconstructed/test_stem_vfoundation\n"
+        "  status: not_started\n"
+    )
+    (catalog / "reconstructed" / "test_stem_vfoundation").mkdir(parents=True)
+
+    import sys
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import fsm  # type: ignore
+    monkeypatch.setattr(fsm, "ENG_ROOT", tmp_path / "engagements")
+    monkeypatch.setattr(fsm, "CATALOG_BINARIES", catalog / "binaries")
+    monkeypatch.setattr(fsm, "ROOT", tmp_path)
+
+    cfg = fsm.load_pipeline()
+    phase_def = cfg["phases"]["reconstruct"]
+    statuses = fsm.gate_status("fixture", eng_dir, "reconstruct", phase_def)
+
+    g = next(s for s in statuses if s["id"] == "no_concurrent_writer")
+    assert g["ok"] is True
+    assert "no lock" in g["evidence"].lower() or "not held" in g["evidence"].lower()
+
+
+def test_no_concurrent_writer_gate_held_lock_fails(tmp_path, monkeypatch):
+    """When .lock exists AND is flock-held by another process, gate fails."""
+    import fcntl
+
+    eng_dir = tmp_path / "engagements" / "fixture"
+    eng_dir.mkdir(parents=True)
+    (eng_dir / "scope.json").write_text(
+        '{"binary": "test_stem", "target_type": "binary"}'
+    )
+    (eng_dir / "decomp").mkdir()
+    (eng_dir / "decomp" / "function_index.json").write_text('{"functions": []}')
+
+    catalog = tmp_path / "catalog"
+    (catalog / "binaries").mkdir(parents=True)
+    (catalog / "binaries" / "test_stem.yml").write_text(
+        "reconstruction:\n  ref: catalog/reconstructed/test_stem_vfoundation\n"
+        "  status: not_started\n"
+    )
+    recon_dir = catalog / "reconstructed" / "test_stem_vfoundation"
+    recon_dir.mkdir(parents=True)
+    lock_path = recon_dir / ".lock"
+    lock_path.touch()
+
+    # Acquire the lock in the test process; the gate should see it held.
+    lf = open(lock_path, "w")
+    fcntl.flock(lf, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    try:
+        import sys
+        sys.path.insert(0, str(REPO_ROOT / "scripts"))
+        import fsm  # type: ignore
+        monkeypatch.setattr(fsm, "ENG_ROOT", tmp_path / "engagements")
+        monkeypatch.setattr(fsm, "CATALOG_BINARIES", catalog / "binaries")
+        monkeypatch.setattr(fsm, "ROOT", tmp_path)
+
+        cfg = fsm.load_pipeline()
+        phase_def = cfg["phases"]["reconstruct"]
+        statuses = fsm.gate_status("fixture", eng_dir, "reconstruct", phase_def)
+        g = next(s for s in statuses if s["id"] == "no_concurrent_writer")
+        assert g["ok"] is False
+        assert "held" in g["evidence"].lower() or "locked" in g["evidence"].lower()
+    finally:
+        fcntl.flock(lf, fcntl.LOCK_UN)
+        lf.close()

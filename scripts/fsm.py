@@ -213,6 +213,54 @@ def gate_status(eng: str, eng_dir: Path, phase_name: str, phase_def: dict) -> li
                 ok = False
                 evidence = f"libghidra endpoint configured at {url} but probe not yet implemented"
 
+        elif gid == "no_concurrent_writer":
+            import fcntl, json as _json
+            try:
+                import yaml as _y  # type: ignore
+            except Exception as e:
+                ok, evidence = False, f"PyYAML unavailable: {e}"
+            else:
+                scope = eng_dir / "scope.json"
+                stem = ""
+                if scope.is_file():
+                    try:
+                        stem = _json.loads(scope.read_text()).get("binary", "")
+                    except Exception:
+                        stem = ""
+                if not stem:
+                    ok, evidence = False, "scope.json#binary not set"
+                else:
+                    yml = CATALOG_BINARIES / f"{stem}.yml"
+                    if not yml.is_file():
+                        ok, evidence = True, f"no lock to check: catalog/binaries/{stem}.yml absent"
+                    else:
+                        try:
+                            ydata = _y.safe_load(yml.read_text()) or {}
+                        except Exception as e:
+                            ok, evidence = False, f"parse error on {yml.name}: {e}"
+                        else:
+                            ref = (ydata.get("reconstruction") or {}).get("ref")
+                            if not ref:
+                                ok, evidence = True, "no reconstruction.ref set; no lock to check"
+                            else:
+                                lock_path = ROOT / ref / ".lock"
+                                if not lock_path.is_file():
+                                    ok, evidence = True, f"no lock file at {lock_path.relative_to(ROOT)}"
+                                else:
+                                    # Try to acquire non-blocking exclusive flock; release immediately.
+                                    try:
+                                        lf = open(lock_path, "w")
+                                        try:
+                                            fcntl.flock(lf, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                                            fcntl.flock(lf, fcntl.LOCK_UN)
+                                            ok, evidence = True, f"lock file present but not held: {lock_path.name}"
+                                        except BlockingIOError:
+                                            ok, evidence = False, f"lock held by another process on {lock_path.relative_to(ROOT)}"
+                                        finally:
+                                            lf.close()
+                                    except Exception as e:
+                                        ok, evidence = False, f"flock probe error: {e}"
+
         elif gid == "exec_required_or_justified":
             findings_dir = eng_dir / "findings"
             confirmed: list[str] = []
