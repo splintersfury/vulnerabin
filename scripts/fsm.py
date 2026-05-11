@@ -199,6 +199,20 @@ def gate_status(eng: str, eng_dir: Path, phase_name: str, phase_def: dict) -> li
         elif gid == "walk_state_done":
             ok, evidence = _check_walk_state_done()
 
+        elif gid == "libghidra_alive":
+            # Foundation: stub. Real healthz probe wired in sub-plan 3.
+            # Reads LIBGHIDRA_HEALTHZ_URL env var; if unset, gate fails with
+            # explicit evidence so operator knows to configure it.
+            import os
+            url = os.environ.get("LIBGHIDRA_HEALTHZ_URL", "")
+            if not url:
+                ok = False
+                evidence = "LIBGHIDRA_HEALTHZ_URL not set; libghidra endpoint not configured"
+            else:
+                # Probe deferred to sub-plan 3 — for now treat as configured-but-unverified.
+                ok = False
+                evidence = f"libghidra endpoint configured at {url} but probe not yet implemented"
+
         elif gid == "exec_required_or_justified":
             findings_dir = eng_dir / "findings"
             confirmed: list[str] = []

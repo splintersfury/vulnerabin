@@ -58,3 +58,42 @@ def test_reconstruct_reachability_roots_declared_at_top_level():
 def test_journal_allows_reconstruct_phase():
     import journal  # type: ignore
     assert "reconstruct" in journal.PHASES
+
+
+import subprocess
+
+
+def test_fsm_libghidra_alive_gate_returns_evidence(tmp_path):
+    """The libghidra_alive gate must run when reconstruct is the current phase.
+
+    For foundation: returns ok=False with evidence string mentioning libghidra.
+    A real healthz probe is wired in sub-plan 3.
+    """
+    eng_dir = tmp_path / "engagements" / "fixture"
+    eng_dir.mkdir(parents=True)
+    (eng_dir / "scope.json").write_text('{"binary": "test", "target_type": "binary"}')
+    (eng_dir / "target").mkdir()
+    (eng_dir / "decomp").mkdir()
+    (eng_dir / "decomp" / "function_index.json").write_text('{"functions": []}')
+
+    # Drive fsm.py state with a custom engagement root via env.
+    # The script computes ENG_ROOT from its own location, so we test the
+    # gate_status function in-process instead.
+    import sys
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import fsm  # type: ignore
+    cfg = fsm.load_pipeline()
+    phase_def = cfg["phases"]["reconstruct"]
+    # Monkeypatch the ENG_ROOT so gate checks point at our fixture.
+    orig = fsm.ENG_ROOT
+    try:
+        fsm.ENG_ROOT = tmp_path / "engagements"
+        statuses = fsm.gate_status("fixture", eng_dir, "reconstruct", phase_def)
+    finally:
+        fsm.ENG_ROOT = orig
+
+    gate_ids = {s["id"] for s in statuses}
+    assert "libghidra_alive" in gate_ids
+    libg = next(s for s in statuses if s["id"] == "libghidra_alive")
+    assert libg["ok"] is False
+    assert "libghidra" in libg["evidence"].lower() or "endpoint" in libg["evidence"].lower()
