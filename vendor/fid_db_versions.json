@@ -1,0 +1,12 @@
+{
+  "msvc_crt_19": {
+    "version": "0.0.0",
+    "sha256": "TO_BE_SET_DURING_FIRST_INSTALL",
+    "source": "Built from MSVC 19.x .lib files; generation steps documented in fid_db/README.md (Pass 0 sub-plan)."
+  },
+  "winapi_thunks": {
+    "version": "0.0.0",
+    "sha256": "TO_BE_SET_DURING_FIRST_INSTALL",
+    "source": "Generated from Windows SDK 10 import thunks; see fid_db/README.md."
+  }
+}

@@ -1,0 +1,5 @@
+# LibGhidra Java extension pin.
+# Update by running `vendor/bootstrap.sh --install` after editing this file.
+url=https://github.com/0xeb/libghidra
+commit=TO_BE_SET_DURING_FIRST_INSTALL
+sha256=TO_BE_SET_DURING_FIRST_INSTALL
