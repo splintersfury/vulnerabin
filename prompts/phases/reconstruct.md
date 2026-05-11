@@ -116,6 +116,31 @@ Pass 2 caveats:
 - Pass 2 does NOT modify Pass 0/1 renames; it ADDS type info to functions that are already named.
 - Struct hypotheses are NOT collected in this MVP. They ship with Pass 3a structify in a follow-on sub-plan.
 
+## Pass 3a sequence
+
+### Step 1 — emit batches
+
+```
+python3 scripts/reconstruct_pass3a_batch.py \
+    --binary <stem> --version <tag>
+```
+
+Reads `manifest.json#passes[].pass2.retypes`, clusters by candidate struct base name (UPPERCASE_WITH_UNDERSCORES, stripping `*` and `const`; Windows builtins like LPCWSTR/HANDLE/NTSTATUS are NOT clustered as structs), writes one batch per cluster.
+
+### Step 2 — dispatch one worker per cluster
+
+For each pending batch, dispatch a worker using `prompts/workers/reconstruct_structify.md`. Save the result to `pass3a_batches/result_NNN.json`.
+
+### Step 3 — apply
+
+```
+python3 scripts/reconstruct_pass3a_apply.py \
+    --binary <stem> --version <tag> \
+    --result catalog/reconstructed/<stem>_<tag>/pass3a_batches/result_NNN.json
+```
+
+Each apply call validates the result and merges the consolidated typedef into `manifest.json#passes[].pass3a.structs[]`. Pass 3a does NOT add to `proposed_renames` or `retypes`; it adds a new `structs[]` schema. Coverage gates are unaffected (structs are enrichment, not naming).
+
 ## What this phase does NOT do (yet)
 
 - Apply renames to a Ghidra project (`.gpr` mutation requires LibGhidra integration).

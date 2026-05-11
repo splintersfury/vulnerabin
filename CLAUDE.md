@@ -323,6 +323,29 @@ The Pass 0 orchestrator (`reconstruct.py`) and the Pass 1/2 apply scripts both c
 
 **Predicate details:** Pass 0 deterministic low-confidence renames (e.g., from `string_xref` heuristics) do NOT count toward gate satisfaction — they're noisy. LLM renames count at any confidence level because the LLM's signal is more reliable than a regex on a single string xref. See `prompts/phases/reconstruct.md` for the full spec.
 
+### Pass 3a — LLM struct consolidation
+
+After Pass 2 proposes per-function struct-pointer retypes (e.g., `IPC_REQUEST_HEADER *` across multiple functions), Pass 3a clusters those proposals by candidate struct base name and produces a single consolidated typedef with named fields.
+
+```bash
+# 1. Emit one batch per struct cluster.
+python3 scripts/reconstruct_pass3a_batch.py --binary <stem> --version <tag>
+
+# 2. Strategist dispatches one Agent per batch using prompts/workers/reconstruct_structify.md,
+#    writing each worker's JSON output to pass3a_batches/result_<NNN>.json.
+
+# 3. Apply each result to manifest.json.
+python3 scripts/reconstruct_pass3a_apply.py --binary <stem> --version <tag> \
+    --result catalog/reconstructed/<stem>_<tag>/pass3a_batches/result_000.json
+```
+
+Pass 3a produces:
+- `manifest.json#passes[]` gains a `pass3a` entry with `structs[]` (NEW schema; not in proposed_renames or retypes).
+- Each struct has `name`, `supporting_functions`, `fields[{offset, type, name, rationale}]`, `confidence`, `source: "llm_structify"`, `rationale`.
+- Apply is idempotent (re-running same result is no-op); later results for the same struct name override earlier (full-replace, no per-field merge).
+
+Pass 3a does NOT affect coverage gates — structs are enrichment, not naming. Windows builtin types (`LPCWSTR`, `HANDLE`, `NTSTATUS`, `DWORD`, …) are intentionally NOT clustered as candidate structs.
+
 ## Taxonomy Files
 
 Located in `taxonomy/<type>/`:
