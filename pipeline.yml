@@ -10,6 +10,30 @@
 
 version: 1
 
+# Per-binary-kind reachability roots used by Pass 0 to compute the
+# transitive closure that the reachable_named_100pct gate keys on.
+reconstruct_reachability_roots:
+  windows_sys:
+    - DriverEntry
+    - "IRP_MJ_*"           # registered in DriverObject->MajorFunction[]
+    - ioctl_dispatch_arms  # reached from IRP_MJ_DEVICE_CONTROL handler
+  windows_exe:
+    - pe_entrypoint
+    - "*"                  # every export
+    - thread_function_args # CreateThread/RtlCreateUserThread targets
+    - ipc_server_entrypoints
+  windows_dll:
+    - DllMain
+    - "*"                  # every export
+    - callback_registrations
+  linux_elf_exec:
+    - main
+    - dynsym_entries
+    - init_array_entries
+  linux_elf_so:
+    - dynsym_entries
+    - init_array_entries
+
 phases:
   acquisition:
     prompt: prompts/phases/acquisition.md
@@ -26,7 +50,38 @@ phases:
       - decomp/
       - extracted/
       - firmware/
-    next: [walk, junction_hunt]
+    next: [reconstruct, junction_hunt]
+
+  reconstruct:
+    prompt: prompts/phases/reconstruct.md
+    requires_artifacts_any: [decomp/, extracted/, firmware/]
+    produces_artifacts: []
+    gates:
+      - id: libghidra_alive
+        kind: pre
+        check: "LibGhidra API host responds to healthz probe"
+        rationale: |
+          Reconstruct phase cannot run without LibGhidra. healthz must
+          pass before any pass dispatches.
+      - id: no_concurrent_writer
+        kind: pre
+        check: "No other process holds the .lock in catalog/reconstructed/<stem>_<tag>/"
+        rationale: |
+          The Ghidra project is single-writer. MCP attached to the same
+          project would cause corruption; refuse to start if so.
+      - id: reachable_named_100pct
+        kind: post
+        check: "coverage.json#reachable_hard_gate_pass == true"
+        rationale: |
+          Every entrypoint-reachable user-defined function must be named
+          and typed for downstream walk/triage to operate reliably.
+      - id: tail_named_80pct
+        kind: post
+        check: "coverage.json#tail_soft_gate_pass == true (>=80% of non-reachable user-defined functions named)"
+        rationale: |
+          Soft gate: warns but does not block. Below threshold, downstream
+          analysis still proceeds with degraded mental model.
+    next: [walk]
 
   walk:
     prompt: prompts/phases/walk.md
