@@ -208,6 +208,30 @@ vb-add reconstruction --binary <stem> --version <tag>
                                                 # and add reconstruction: block to binary YAML.
 ```
 
+## Reconstruct phase (Pass 0 MVP)
+
+After running `vb-add reconstruction` to scaffold the catalog dir, drive Pass 0 against an existing engagement's decompilation output:
+
+```bash
+python3 scripts/reconstruct.py \
+    --engagement <eng-slug> \
+    --binary <stem> \
+    --version <tag>
+```
+
+Pass 0 is deterministic and pure-Python — it requires no LibGhidra install. It runs three detectors:
+
+1. **Project discovery** — derives entrypoints, exports, reachable user-defined function set, and per-function strings from `engagements/<eng>/decomp/function_index.json`.
+2. **IAT wrapper detection** — proposes `<ImportName>_wrapper` renames for 1-2 instruction `FUN_*` functions that forward to a single external API.
+3. **Pcode-hash carryforward** — if a prior reconstruction directory exists for the same binary stem, ports renames forward by matching functions on their structural hash.
+
+Pass 0 produces:
+- `catalog/reconstructed/<stem>_<tag>/manifest.json` — Pass 0 entry added to `passes[]` with `proposed_renames`, `project_discovery`, `pcode_hashes_by_addr`
+- `catalog/reconstructed/<stem>_<tag>/coverage.json` — `hard_gate_pass: false` and `soft_gate_pass: false` (both gates require LLM passes 1-4 to satisfy)
+- Updates `catalog/binaries/<stem>.yml#reconstruction.status` to `partial`
+
+Pass 0 does NOT apply renames to a Ghidra project — they are produced as data. Applying renames to Ghidra (FID/BSim/`.gpr` snapshot/re-emit) is a separate sub-plan once `vendor/bootstrap.sh --install` ships.
+
 ## Taxonomy Files
 
 Located in `taxonomy/<type>/`:
