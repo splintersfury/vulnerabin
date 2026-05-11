@@ -141,6 +141,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--binary", required=True)
     ap.add_argument("--version", required=True)
     ap.add_argument("--batch-size", type=int, default=BATCH_SIZE)
+    ap.add_argument("--decomp-dir", default="decomp",
+                    help="Decomp subdirectory under engagements/<eng>/ (default: 'decomp')")
     args = ap.parse_args(argv)
 
     recon_dir = ROOT / "catalog" / "reconstructed" / f"{args.binary}_{args.version}"
@@ -153,7 +155,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     manifest = json.loads(manifest_path.read_text())
 
-    fi_path = ROOT / "engagements" / args.engagement / "decomp" / "function_index.json"
+    fi_path = ROOT / "engagements" / args.engagement / args.decomp_dir / "function_index.json"
     if not fi_path.is_file():
         print(f"error: function_index.json missing at {fi_path}", file=sys.stderr)
         return 2

@@ -199,8 +199,8 @@ def recompute_coverage(function_index: dict, manifest: dict) -> dict:
     }
 
 
-def _load_function_index(engagement: str) -> dict:
-    p = ROOT / "engagements" / engagement / "decomp" / "function_index.json"
+def _load_function_index(engagement: str, decomp_dir: str = "decomp") -> dict:
+    p = ROOT / "engagements" / engagement / decomp_dir / "function_index.json"
     if not p.is_file():
         raise SystemExit(f"function_index.json missing: {p}")
     return json.loads(p.read_text())
@@ -225,6 +225,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--version", required=True)
     ap.add_argument("--result", required=True,
                     help="Path to worker result JSON (relative to ROOT or absolute)")
+    ap.add_argument("--decomp-dir", default="decomp",
+                    help="Decomp subdirectory under engagements/<eng>/ (default: 'decomp')")
     args = ap.parse_args(argv)
 
     recon_dir = ROOT / "catalog" / "reconstructed" / f"{args.binary}_{args.version}"
@@ -248,7 +250,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  - {e}", file=sys.stderr)
         return 3
 
-    function_index = _load_function_index(args.engagement)
+    function_index = _load_function_index(args.engagement, args.decomp_dir)
     manifest = json.loads(manifest_path.read_text())
     new_manifest = merge_into_manifest(manifest, result, function_index)
     manifest_path.write_text(json.dumps(new_manifest, indent=2))
