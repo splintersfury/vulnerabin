@@ -69,17 +69,27 @@ def _find_prior_version(stem: str, current_version_tag: str) -> tuple[str | None
     return prior_tag, json.loads(m.read_text())
 
 
+def _normalize_addr(a: str) -> str:
+    """Canonical lowercase 0x-prefixed hex, no leading-zero padding."""
+    if not a:
+        return a
+    s = a.lower()
+    if s.startswith("0x"):
+        s = "0x" + s[2:].lstrip("0") or "0x0"
+    return s
+
+
 def _compute_coverage(function_index: dict, proposed_renames: list[dict]) -> dict:
     fns = function_index.get("functions", [])
     user_defined = [r for r in fns if not r.get("is_external") and not r.get("is_thunk")]
-    renamed_addrs = {r["addr"] for r in proposed_renames}
+    renamed_addrs = {_normalize_addr(r["addr"]) for r in proposed_renames}
     # Reachable set = user-defined functions reachable from exports (computed in discovery).
     # For coverage purposes here, we approximate "named" as: not FUN_* OR appears in proposed_renames.
     import re
     fun_re = re.compile(r"^FUN_[0-9a-fA-F]+$")
     named_total = sum(
         1 for r in user_defined
-        if not fun_re.match(r.get("name", "")) or r["address"] in renamed_addrs
+        if not fun_re.match(r.get("name", "")) or _normalize_addr(r["address"]) in renamed_addrs
     )
     return {
         "hard_gate_pass": False,   # Pass 0 alone cannot satisfy hard gate; needs LLM passes.
