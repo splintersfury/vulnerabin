@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -45,3 +46,27 @@ def test_vendor_readme_present():
     text = p.read_text()
     assert "libghidra" in text.lower()
     assert "ghidrasql" in text.lower()
+
+
+def test_bootstrap_check_reports_missing_when_install_not_run():
+    """--check exits non-zero and reports each missing dep when nothing is installed."""
+    result = subprocess.run(
+        ["bash", str(VENDOR / "bootstrap.sh"), "--check"],
+        capture_output=True,
+        text=True,
+    )
+    # When commit/sha are placeholders, --check should fail with clear evidence.
+    assert result.returncode != 0
+    out = result.stdout + result.stderr
+    assert "libghidra" in out.lower()
+    assert "ghidrasql" in out.lower()
+
+
+def test_bootstrap_check_help_flag_works():
+    result = subprocess.run(
+        ["bash", str(VENDOR / "bootstrap.sh"), "--help"],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    assert "--check" in result.stdout
