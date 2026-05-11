@@ -73,3 +73,34 @@ def test_check_version_pin_rejects_placeholder_values(tmp_path):
     )
     parsed = libghidra_connect.read_pin_file(pin)
     assert libghidra_connect.is_placeholder_pin(parsed) is True
+
+
+def test_acquire_exclusive_lock_returns_handle_when_free(tmp_path):
+    lock = tmp_path / "test.lock"
+    lf = libghidra_connect.acquire_exclusive_lock(lock)
+    try:
+        assert lf is not None
+        assert lock.is_file()
+    finally:
+        libghidra_connect.release_lock(lf)
+
+
+def test_acquire_exclusive_lock_returns_none_when_held(tmp_path):
+    lock = tmp_path / "test.lock"
+    first = libghidra_connect.acquire_exclusive_lock(lock)
+    try:
+        # Second non-blocking attempt must return None.
+        second = libghidra_connect.acquire_exclusive_lock(lock, blocking=False)
+        assert second is None
+    finally:
+        libghidra_connect.release_lock(first)
+
+
+def test_lock_can_be_reacquired_after_release(tmp_path):
+    lock = tmp_path / "test.lock"
+    first = libghidra_connect.acquire_exclusive_lock(lock)
+    assert first is not None
+    libghidra_connect.release_lock(first)
+    second = libghidra_connect.acquire_exclusive_lock(lock)
+    assert second is not None
+    libghidra_connect.release_lock(second)
