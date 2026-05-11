@@ -176,3 +176,68 @@ def test_no_concurrent_writer_gate_held_lock_fails(tmp_path, monkeypatch):
     finally:
         fcntl.flock(lf, fcntl.LOCK_UN)
         lf.close()
+
+
+def _make_coverage_fixture(tmp_path, monkeypatch, hard: bool, soft: bool):
+    eng_dir = tmp_path / "engagements" / "fixture"
+    eng_dir.mkdir(parents=True)
+    (eng_dir / "scope.json").write_text(
+        '{"binary": "test_stem", "target_type": "binary"}'
+    )
+    (eng_dir / "decomp").mkdir()
+    (eng_dir / "decomp" / "function_index.json").write_text('{"functions": []}')
+
+    catalog = tmp_path / "catalog"
+    (catalog / "binaries").mkdir(parents=True)
+    (catalog / "binaries" / "test_stem.yml").write_text(
+        "reconstruction:\n  ref: catalog/reconstructed/test_stem_vfix\n"
+        "  status: complete\n"
+    )
+    recon_dir = catalog / "reconstructed" / "test_stem_vfix"
+    recon_dir.mkdir(parents=True)
+    import json as _json
+    (recon_dir / "coverage.json").write_text(_json.dumps({
+        "hard_gate_pass": hard,
+        "soft_gate_pass": soft,
+        "reachable": {"function_count": 100, "named": 100 if hard else 90},
+        "tail": {"function_count": 1000, "named": 850 if soft else 700},
+    }))
+
+    import sys
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    import fsm  # type: ignore
+    monkeypatch.setattr(fsm, "ENG_ROOT", tmp_path / "engagements")
+    monkeypatch.setattr(fsm, "CATALOG_BINARIES", catalog / "binaries")
+    monkeypatch.setattr(fsm, "ROOT", tmp_path)
+    return fsm, eng_dir
+
+
+def test_reachable_named_gate_passes_when_coverage_says_so(tmp_path, monkeypatch):
+    fsm, eng_dir = _make_coverage_fixture(tmp_path, monkeypatch, hard=True, soft=True)
+    cfg = fsm.load_pipeline()
+    statuses = fsm.gate_status(
+        "fixture", eng_dir, "reconstruct", cfg["phases"]["reconstruct"]
+    )
+    g = next(s for s in statuses if s["id"] == "reachable_named_100pct")
+    assert g["ok"] is True
+
+
+def test_reachable_named_gate_fails_when_coverage_says_so(tmp_path, monkeypatch):
+    fsm, eng_dir = _make_coverage_fixture(tmp_path, monkeypatch, hard=False, soft=True)
+    cfg = fsm.load_pipeline()
+    statuses = fsm.gate_status(
+        "fixture", eng_dir, "reconstruct", cfg["phases"]["reconstruct"]
+    )
+    g = next(s for s in statuses if s["id"] == "reachable_named_100pct")
+    assert g["ok"] is False
+    assert "90" in g["evidence"] or "100" in g["evidence"]
+
+
+def test_tail_named_gate_reads_soft_gate_flag(tmp_path, monkeypatch):
+    fsm, eng_dir = _make_coverage_fixture(tmp_path, monkeypatch, hard=True, soft=False)
+    cfg = fsm.load_pipeline()
+    statuses = fsm.gate_status(
+        "fixture", eng_dir, "reconstruct", cfg["phases"]["reconstruct"]
+    )
+    g = next(s for s in statuses if s["id"] == "tail_named_80pct")
+    assert g["ok"] is False

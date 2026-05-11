@@ -261,6 +261,54 @@ def gate_status(eng: str, eng_dir: Path, phase_name: str, phase_def: dict) -> li
                                     except Exception as e:
                                         ok, evidence = False, f"flock probe error: {e}"
 
+        elif gid in ("reachable_named_100pct", "tail_named_80pct"):
+            import json as _json
+            try:
+                import yaml as _y  # type: ignore
+            except Exception as e:
+                ok, evidence = False, f"PyYAML unavailable: {e}"
+            else:
+                scope = eng_dir / "scope.json"
+                stem = ""
+                if scope.is_file():
+                    try:
+                        stem = _json.loads(scope.read_text()).get("binary", "")
+                    except Exception:
+                        stem = ""
+                if not stem:
+                    ok, evidence = False, "scope.json#binary not set"
+                else:
+                    yml = CATALOG_BINARIES / f"{stem}.yml"
+                    if not yml.is_file():
+                        ok, evidence = False, f"catalog/binaries/{stem}.yml missing"
+                    else:
+                        try:
+                            ydata = _y.safe_load(yml.read_text()) or {}
+                        except Exception as e:
+                            ok, evidence = False, f"parse error on {yml.name}: {e}"
+                        else:
+                            ref = (ydata.get("reconstruction") or {}).get("ref")
+                            if not ref:
+                                ok, evidence = False, "no reconstruction.ref in binary YAML"
+                            else:
+                                cov_path = ROOT / ref / "coverage.json"
+                                if not cov_path.is_file():
+                                    ok, evidence = False, f"coverage.json missing at {cov_path.relative_to(ROOT)}"
+                                else:
+                                    try:
+                                        cov = _json.loads(cov_path.read_text())
+                                    except Exception as e:
+                                        ok, evidence = False, f"parse error on coverage.json: {e}"
+                                    else:
+                                        if gid == "reachable_named_100pct":
+                                            ok = bool(cov.get("hard_gate_pass"))
+                                            r = cov.get("reachable", {})
+                                            evidence = f"reachable named {r.get('named', '?')}/{r.get('function_count', '?')}"
+                                        else:  # tail_named_80pct
+                                            ok = bool(cov.get("soft_gate_pass"))
+                                            t = cov.get("tail", {})
+                                            evidence = f"tail named {t.get('named', '?')}/{t.get('function_count', '?')}"
+
         elif gid == "exec_required_or_justified":
             findings_dir = eng_dir / "findings"
             confirmed: list[str] = []
