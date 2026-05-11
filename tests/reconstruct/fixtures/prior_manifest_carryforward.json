@@ -1,0 +1,41 @@
+{
+  "binary": {
+    "stem": "sample",
+    "version_tag": "vprior",
+    "status": "complete"
+  },
+  "passes": [
+    {
+      "pass": "pass0",
+      "started_at": "2026-01-01T00:00:00Z",
+      "ended_at": "2026-01-01T00:00:30Z",
+      "tools_used": ["iat_wrapper_detection"],
+      "renames_applied": 0,
+      "proposed_renames": [
+        {
+          "addr": "0x140002000",
+          "from": "FUN_140002000",
+          "to": "AllocBufferHelper",
+          "confidence": "medium",
+          "source": "iat_wrapper_detection",
+          "rationale": "[prior version evidence]"
+        },
+        {
+          "addr": "0x140003000",
+          "from": "FUN_140003000",
+          "to": "DispatchCommand",
+          "confidence": "high",
+          "source": "llm_rename",
+          "rationale": "[prior version evidence]"
+        }
+      ],
+      "tokens_spent": 0,
+      "snapshot": null
+    }
+  ],
+  "pcode_hashes_by_addr": {
+    "0x140002000": "PRIOR_HASH_FOR_2000",
+    "0x140003000": "PRIOR_HASH_FOR_3000",
+    "0x140004000": "PRIOR_HASH_FOR_4000_OBSOLETE"
+  }
+}
