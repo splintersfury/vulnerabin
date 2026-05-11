@@ -1,0 +1,95 @@
+{
+  "binary": {
+    "stem": "samplebin",
+    "version_tag": "v1_2_3",
+    "status": "partial"
+  },
+  "passes": [
+    {
+      "pass": "pass0",
+      "started_at": "2026-05-11T16:00:00Z",
+      "ended_at": "2026-05-11T16:00:42Z",
+      "tools_used": ["project_discovery", "iat_wrapper_detection"],
+      "renames_applied": 0,
+      "proposed_renames": [
+        {
+          "addr": "0x140002000",
+          "from": "FUN_140002000",
+          "to": "RtlAllocateHeap_wrapper",
+          "confidence": "medium",
+          "source": "iat_wrapper_detection",
+          "rationale": "2-instruction function with single external callee RtlAllocateHeap"
+        }
+      ],
+      "renames_by_source": {"iat_wrapper_detection": 1},
+      "tokens_spent": 0,
+      "snapshot": null,
+      "prior_version_consulted": null
+    },
+    {
+      "pass": "pass1",
+      "started_at": "2026-05-11T17:00:00Z",
+      "ended_at": "2026-05-11T17:05:00Z",
+      "tools_used": ["llm_rename"],
+      "renames_applied": 0,
+      "proposed_renames": [
+        {
+          "addr": "0x140003000",
+          "from": "FUN_140003000",
+          "to": "DispatchCommand",
+          "confidence": "high",
+          "source": "llm_rename",
+          "rationale": "Receives an IPC request header and dispatches by type tag"
+        },
+        {
+          "addr": "0x140004000",
+          "from": "FUN_140004000",
+          "to": "OpenConfigFile",
+          "confidence": "medium",
+          "source": "llm_rename",
+          "rationale": "Wraps CreateFileW with hard-coded path under ProgramData"
+        },
+        {
+          "addr": "0x140005000",
+          "from": "FUN_140005000",
+          "to": "ProcessRequest",
+          "confidence": "low",
+          "source": "llm_rename",
+          "rationale": "Calls Alloc/Open/memcpy but purpose unclear"
+        }
+      ],
+      "renames_by_source": {"llm_rename": 3},
+      "tokens_spent": 0,
+      "snapshot": null,
+      "prior_version_consulted": null
+    }
+  ],
+  "project_discovery": {
+    "binary": "samplebin.exe",
+    "arch": "x86_64",
+    "format": "PE",
+    "function_counts": {"total": 12, "user_defined": 8, "external": 3, "thunk": 1},
+    "exports": [
+      {"name": "entry", "address": "0x140001000"},
+      {"name": "DllMain", "address": "0x140006000"}
+    ],
+    "entrypoints": ["0x140001000"],
+    "reachable_user_defined": [
+      "0x140001000", "0x140002000", "0x140003000", "0x140004000",
+      "0x140005000", "0x140006000", "0x140007000"
+    ],
+    "strings_by_function": {
+      "0x140040000": ["Initializing config", "C:\\ProgramData\\sample\\config.json"]
+    }
+  },
+  "pcode_hashes_by_addr": {
+    "0x140001000": "hash_entry",
+    "0x140002000": "hash_2000",
+    "0x140003000": "hash_3000",
+    "0x140004000": "hash_4000",
+    "0x140005000": "hash_5000",
+    "0x140006000": "hash_6000",
+    "0x140007000": "hash_7000",
+    "0x140040000": "hash_orphan"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "pass": "pass2",
+  "batch_id": "batch_000",
+  "retypes": [
+    {
+      "addr": "0x140003000",
+      "params": [
+        {"index": 0, "from": "undefined4 *", "to": "IPC_REQUEST_HEADER *", "confidence": "medium", "rationale": "Name DispatchCommand + signature suggests IPC header pointer"}
+      ],
+      "locals": [
+        {"name": "local_18", "from": "DWORD", "to": "NTSTATUS", "confidence": "medium", "rationale": "Compared against STATUS_* constants in callers"}
+      ]
+    },
+    {
+      "addr": "0x140004000",
+      "params": [
+        {"index": 0, "from": "char *", "to": "LPCWSTR", "confidence": "high", "rationale": "Wrapper for CreateFileW; first arg is wide path"}
+      ],
+      "locals": []
+    }
+  ]
+}
