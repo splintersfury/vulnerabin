@@ -1,0 +1,301 @@
+{% extends "_base.html.j2" %}
+{% set active = 'binary' %}
+{% set root = root | default('../../') %}
+
+{% block title %}Vulnerabin · Reconstruction — {{ stem }} @ {{ version_tag }}{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumbs + header -->
+<div class="px-lg py-md border-b border-outline-variant bg-surface sticky top-0 z-30">
+  <div class="flex items-center gap-sm font-data-mono-sm text-on-surface-variant mb-xs">
+    <a class="hover:text-primary" href="{{ root }}index.html">Products</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    <a class="hover:text-primary" href="{{ root }}binaries.html">Binaries</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    <a class="hover:text-primary" href="{{ root }}binaries/{{ stem }}.html">{{ stem }}</a>
+    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+    <span class="text-primary">Reconstruction @ {{ version_tag }}</span>
+  </div>
+  <div class="flex justify-between items-start mt-sm">
+    <div>
+      <h1 class="font-data-mono-md text-primary text-[20px] font-bold tracking-tight">
+        Reconstruction — {{ stem }} @ {{ version_tag }}
+      </h1>
+      <div class="text-ui-sans-sm text-on-surface-variant mt-xs">Layer 8 · naming coverage &amp; pass log</div>
+    </div>
+    {% if status %}
+    <div class="shrink-0">
+      {% if status == 'complete' %}
+      <span class="bg-secondary-container/20 border border-secondary text-secondary font-data-mono-sm px-2 py-0.5 rounded">{{ status }}</span>
+      {% elif status == 'partial' %}
+      <span class="bg-tertiary-container/20 border border-tertiary text-tertiary font-data-mono-sm px-2 py-0.5 rounded">{{ status }}</span>
+      {% elif status == 'in_progress' %}
+      <span class="bg-primary-container/20 border border-primary text-primary font-data-mono-sm px-2 py-0.5 rounded">{{ status }}</span>
+      {% elif status == 'opt_out' %}
+      <span class="bg-surface-container border border-outline-variant text-on-surface-variant font-data-mono-sm px-2 py-0.5 rounded">{{ status }}</span>
+      {% else %}
+      <span class="bg-error-container/20 border border-error text-error font-data-mono-sm px-2 py-0.5 rounded">{{ status }}</span>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="p-lg space-y-lg max-w-[1400px] mx-auto w-full">
+
+  {% if coverage %}
+  <!-- Coverage section -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container flex justify-between items-center">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-[14px] text-tertiary">analytics</span>Coverage
+      </h2>
+      {% set gate_ok = coverage.hard_gate_pass and coverage.soft_gate_pass %}
+      <span class="text-data-mono-sm {% if gate_ok %}text-secondary{% else %}text-error{% endif %}">
+        {% if gate_ok %}all gates pass{% else %}gate failure{% endif %}
+      </span>
+    </div>
+    <div class="p-md grid grid-cols-2 gap-md md:grid-cols-4">
+      <div class="bg-surface-container-low rounded p-md">
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-1">Hard gate</div>
+        <div class="font-headline-md {% if coverage.hard_gate_pass %}text-secondary{% else %}text-error{% endif %}">
+          {{ 'pass' if coverage.hard_gate_pass else 'fail' }}
+        </div>
+        <div class="text-ui-sans-sm text-on-surface-variant mt-xs">reachable named 100 %</div>
+      </div>
+      <div class="bg-surface-container-low rounded p-md">
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-1">Soft gate</div>
+        <div class="font-headline-md {% if coverage.soft_gate_pass %}text-secondary{% else %}text-tertiary{% endif %}">
+          {{ 'pass' if coverage.soft_gate_pass else 'fail' }}
+        </div>
+        <div class="text-ui-sans-sm text-on-surface-variant mt-xs">tail named ≥ 80 %</div>
+      </div>
+      <div class="bg-surface-container-low rounded p-md">
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-1">Named</div>
+        <div class="font-headline-md text-on-surface">
+          {{ coverage.named_total }}<span class="text-on-surface-variant font-data-mono-sm">/{{ coverage.totals.user_defined_functions or 0 }}</span>
+        </div>
+        <div class="text-ui-sans-sm text-on-surface-variant mt-xs">{{ coverage.named_pct }}% of user-defined</div>
+      </div>
+      <div class="bg-surface-container-low rounded p-md">
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-1">From Pass 0</div>
+        <div class="font-headline-md text-on-surface">{{ coverage.from_pass0 }}</div>
+        <div class="text-ui-sans-sm text-on-surface-variant mt-xs">carryforward + wrapper</div>
+      </div>
+    </div>
+    {% if coverage.totals %}
+    <div class="px-md pb-md">
+      <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Totals</div>
+      <div class="flex flex-wrap gap-sm text-data-mono-sm text-on-surface">
+        <span class="bg-surface-container px-2 py-0.5 rounded">total: {{ coverage.totals.get('total_functions', coverage.totals.get('total', '—')) }}</span>
+        <span class="bg-surface-container px-2 py-0.5 rounded">user-defined: {{ coverage.totals.get('user_defined_functions', '—') }}</span>
+        <span class="bg-surface-container px-2 py-0.5 rounded">externals skipped: {{ coverage.totals.get('external_imports_skipped', '—') }}</span>
+        <span class="bg-surface-container px-2 py-0.5 rounded">thunks skipped: {{ coverage.totals.get('thunks_skipped', '—') }}</span>
+      </div>
+    </div>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  <!-- Carryforward section -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-[14px] text-tertiary">history</span>Carryforward
+      </h2>
+    </div>
+    <div class="p-md text-ui-sans-sm text-on-surface">
+      {% if carryforward.prior_version_consulted %}
+      <p>Prior version consulted: <code class="font-data-mono-sm bg-surface-container-low px-1 rounded">{{ carryforward.prior_version_consulted }}</code></p>
+      <p class="mt-xs text-on-surface-variant">{{ carryforward.renames_ported }} rename{{ 's' if carryforward.renames_ported != 1 else '' }} ported via pcode-hash matching.</p>
+      {% else %}
+      <p class="text-on-surface-variant">No prior version found — this is the first reconstruction of this binary.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Pass log section -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container flex justify-between items-center">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-[14px] text-tertiary">format_list_numbered</span>Pass log
+      </h2>
+      <span class="text-data-mono-sm text-on-surface-variant">{{ pass_log | length }} pass{{ 'es' if pass_log | length != 1 else '' }}</span>
+    </div>
+    {% if pass_log %}
+    <div class="overflow-x-auto">
+      <table class="w-full text-data-mono-sm">
+        <thead class="bg-surface-container-low text-on-surface-variant">
+          <tr>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">Pass</th>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">Started</th>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">Duration</th>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">Tools</th>
+            <th class="text-right px-sm py-xs font-label-caps uppercase tracking-wider">Renames</th>
+            <th class="text-right px-sm py-xs font-label-caps uppercase tracking-wider">Tokens</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in pass_log %}
+          <tr class="border-t border-outline-variant hover:bg-surface-container-low transition-colors">
+            <td class="px-sm py-xs text-primary font-bold"><code>{{ p['pass'] }}</code></td>
+            <td class="px-sm py-xs text-on-surface-variant">{{ p.started_at or '—' }}</td>
+            <td class="px-sm py-xs text-on-surface">{{ (p.duration_seconds | string + 's') if p.duration_seconds is not none else '—' }}</td>
+            <td class="px-sm py-xs text-on-surface">
+              {% if p.tools_used %}
+              <div class="flex flex-wrap gap-xs">
+                {% for t in p.tools_used %}
+                <span class="bg-surface-container px-1 rounded text-on-surface-variant">{{ t }}</span>
+                {% endfor %}
+              </div>
+              {% else %}—{% endif %}
+            </td>
+            <td class="px-sm py-xs text-right text-on-surface">{{ p.renames_proposed }}</td>
+            <td class="px-sm py-xs text-right text-on-surface-variant">{{ p.tokens_spent }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="p-md text-ui-sans-sm text-on-surface-variant">(no passes recorded)</p>
+    {% endif %}
+  </section>
+
+  {% if project_discovery %}
+  <!-- Project discovery section -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-[14px] text-tertiary">search</span>Project discovery
+      </h2>
+    </div>
+    <div class="p-md space-y-md">
+      {% set fc = project_discovery.function_counts or {} %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Binary</div>
+        <div class="flex flex-wrap gap-sm text-data-mono-sm">
+          <span class="bg-surface-container-low border border-outline-variant px-2 py-0.5 rounded text-primary">{{ project_discovery.binary or '?' }}</span>
+          <span class="bg-surface-container-low border border-outline-variant px-2 py-0.5 rounded text-on-surface">{{ project_discovery.arch or '?' }}</span>
+          <span class="bg-surface-container-low border border-outline-variant px-2 py-0.5 rounded text-on-surface">{{ project_discovery.format or '?' }}</span>
+        </div>
+      </div>
+      {% if fc %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Function counts</div>
+        <div class="flex flex-wrap gap-sm text-data-mono-sm">
+          <span class="bg-surface-container px-2 py-0.5 rounded">total: {{ fc.get('total', 0) }}</span>
+          <span class="bg-surface-container px-2 py-0.5 rounded">user-defined: {{ fc.get('user_defined', 0) }}</span>
+          <span class="bg-surface-container px-2 py-0.5 rounded">external: {{ fc.get('external', 0) }}</span>
+          <span class="bg-surface-container px-2 py-0.5 rounded">thunk: {{ fc.get('thunk', 0) }}</span>
+        </div>
+      </div>
+      {% endif %}
+      {% set entrypoints = project_discovery.entrypoints or [] %}
+      {% if entrypoints %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Entrypoints ({{ entrypoints | length }})</div>
+        <div class="flex flex-wrap gap-xs text-data-mono-sm">
+          {% for ep in entrypoints[:10] %}
+          <code class="bg-surface-container-low border border-outline-variant px-2 py-0.5 rounded text-on-surface">{{ ep }}</code>
+          {% endfor %}
+          {% if entrypoints | length > 10 %}
+          <span class="text-on-surface-variant px-2 py-0.5">+{{ entrypoints | length - 10 }} more</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+      {% set exports = project_discovery.exports or [] %}
+      {% if exports %}
+      <div>
+        <div class="font-label-caps uppercase tracking-wider text-on-surface-variant mb-2">Exports ({{ exports | length }})</div>
+        <div class="flex flex-wrap gap-xs text-data-mono-sm">
+          {% for exp in exports[:10] %}
+          <code class="bg-surface-container-low border border-outline-variant px-2 py-0.5 rounded text-on-surface">{{ exp.name if exp is mapping else exp }}</code>
+          {% endfor %}
+          {% if exports | length > 10 %}
+          <span class="text-on-surface-variant px-2 py-0.5">+{{ exports | length - 10 }} more</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+      {% set reachable = project_discovery.reachable_user_defined or [] %}
+      {% if reachable %}
+      <div class="text-ui-sans-sm text-on-surface-variant">
+        Reachable user-defined: <span class="text-on-surface">{{ reachable | length }}</span>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Proposed renames section -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container flex justify-between items-center">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-[14px] text-tertiary">edit</span>Proposed renames
+      </h2>
+      <span class="text-data-mono-sm text-on-surface-variant">{{ proposed_renames | length }} total</span>
+    </div>
+    {% if proposed_renames %}
+    <div class="overflow-x-auto">
+      <table class="w-full text-data-mono-sm">
+        <thead class="bg-surface-container-low text-on-surface-variant">
+          <tr>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">Addr</th>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">From</th>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">To</th>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">Conf</th>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">Source</th>
+            <th class="text-left px-sm py-xs font-label-caps uppercase tracking-wider">Rationale</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in proposed_renames %}
+          <tr class="border-t border-outline-variant hover:bg-surface-container-low transition-colors">
+            <td class="px-sm py-xs"><code class="text-tertiary">{{ r.addr }}</code></td>
+            <td class="px-sm py-xs text-on-surface-variant"><code>{{ r['from'] }}</code></td>
+            <td class="px-sm py-xs text-primary"><code>{{ r.to }}</code></td>
+            <td class="px-sm py-xs">
+              {% if r.confidence == 'high' %}
+              <span class="text-secondary">{{ r.confidence }}</span>
+              {% elif r.confidence == 'medium' %}
+              <span class="text-tertiary">{{ r.confidence }}</span>
+              {% else %}
+              <span class="text-on-surface-variant">{{ r.confidence }}</span>
+              {% endif %}
+            </td>
+            <td class="px-sm py-xs text-on-surface-variant">{{ r.source }}</td>
+            <td class="px-sm py-xs text-on-surface">{{ r.rationale }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="p-md text-ui-sans-sm text-on-surface-variant">(none proposed yet)</p>
+    {% endif %}
+  </section>
+
+  {% if renames_by_source_totals %}
+  <!-- Renames by source section -->
+  <section class="bg-surface border border-outline-variant rounded">
+    <div class="px-sm py-xs border-b border-outline-variant bg-surface-container">
+      <h2 class="font-label-caps uppercase tracking-wider text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-[14px] text-tertiary">pie_chart</span>Renames by source
+      </h2>
+    </div>
+    <div class="p-md flex flex-wrap gap-sm">
+      {% for src, n in renames_by_source_totals | dictsort %}
+      <div class="bg-surface-container-low border border-outline-variant rounded p-sm text-center min-w-[120px]">
+        <div class="font-data-mono-sm text-on-surface font-bold text-[16px]">{{ n }}</div>
+        <div class="text-ui-sans-sm text-on-surface-variant mt-xs">{{ src }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+</div>
+{% endblock %}
