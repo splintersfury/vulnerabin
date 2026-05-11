@@ -255,6 +255,35 @@ Layer 8 surfaces:
 
 The per-binary catalog page (`catalog/site/binaries/<stem>.html`) gains a status banner near the top with a link to Layer 8: green for `complete`, amber for `partial`, info for `in_progress`, red for `not_started`, gray for `opt_out`.
 
+### Pass 1 — LLM rename (proposed-renames as data)
+
+After Pass 0 completes, the strategist drives Pass 1 to propose semantic names for the remaining `FUN_*` survivors. The Python plumbing batches input on disk and merges results; the actual LLM call happens via Claude Code's Task tool dispatched by the strategist session.
+
+```bash
+# 1. Emit per-batch input bundles under catalog/reconstructed/<stem>_<tag>/pass1_batches/
+python3 scripts/reconstruct_pass1_batch.py \
+    --engagement <eng-slug> --binary <stem> --version <tag>
+
+# 2. Strategist dispatches one Agent per batch using prompts/workers/reconstruct_rename.md,
+#    writing each worker's JSON output to pass1_batches/result_<NNN>.json.
+
+# 3. Apply each worker result to manifest.json and recompute coverage.json.
+python3 scripts/reconstruct_pass1_apply.py \
+    --engagement <eng-slug> --binary <stem> --version <tag> \
+    --result catalog/reconstructed/<stem>_<tag>/pass1_batches/result_000.json
+```
+
+Pass 1 produces:
+- `manifest.json#passes[]` gains a `pass1` entry with proposed renames (`source: "llm_rename"`).
+- `coverage.json` updated: `named.from_pass1` reflects new names; `named.total_named` increases.
+- `pass1_batches/index.json` tracks batch status (`pending` → `applied`).
+
+Apply step is **idempotent**: re-applying the same `result_NNN.json` does not duplicate renames; re-applying with a different name for the same address overrides the earlier proposal.
+
+Pass 1 does NOT override Pass 0 renames at confidence ≥ medium. Pass 0 names with confidence `low` (e.g., string-xref heuristics) ARE eligible for Pass 1 override.
+
+The worker contract lives at `prompts/workers/reconstruct_rename.md`; the strategist orchestration prompt at `prompts/phases/reconstruct.md`.
+
 ## Taxonomy Files
 
 Located in `taxonomy/<type>/`:
