@@ -182,6 +182,8 @@ tailwind.config = {
   <div class="flex justify-between items-start mt-sm">
     <div>
       <h1 class="font-data-mono-md text-primary text-[20px] font-bold tracking-tight">bddci4.sys</h1>
+      
+      
       <div class="text-ui-sans-sm text-on-surface-variant mt-xs">Bitdefender bddci4 (kernel handle-strip)</div>
       <div class="flex flex-wrap gap-xs mt-sm">
         <span class="bg-surface-container border border-outline-variant text-on-surface font-data-mono-sm px-2 py-0.5 rounded flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>windows</span>
@@ -201,6 +203,8 @@ tailwind.config = {
   <p class="text-ui-sans-sm text-on-surface-variant mt-md max-w-3xl">Kernel driver providing the handle-strip layer of BD self-protection. Registers ObRegisterCallbacks for both Process and Thread objects and strips ALL access rights from any handle opened to a BD process regardless of caller privilege. Confirmed live: OpenProcess(PROCESS_ALL_ACCESS) on a BD process returns a non-null handle but NtQueryObject reports granted=0x0.</p>
   
 </div>
+
+
 
 <div class="p-lg space-y-lg max-w-[1600px] mx-auto w-full">
 
@@ -281,7 +285,15 @@ tailwind.config = {
   <!-- Capabilities (the BACKWARD view: what can this binary DO?) -->
   
 
+  <!-- Features (FEAT-* layer: user-facing behaviour clusters) -->
+  
+
   <!-- Coverage Matrix (the holistic view: inputs × capabilities) -->
+  
+  
+  
+  
+
   
 
   <!-- Coverage Gaps (the forcing function) -->
