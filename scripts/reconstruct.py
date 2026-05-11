@@ -82,18 +82,29 @@ def _normalize_addr(a: str) -> str:
 def _compute_coverage(function_index: dict, proposed_renames: list[dict]) -> dict:
     fns = function_index.get("functions", [])
     user_defined = [r for r in fns if not r.get("is_external") and not r.get("is_thunk")]
-    renamed_addrs = {_normalize_addr(r["addr"]) for r in proposed_renames}
-    # Reachable set = user-defined functions reachable from exports (computed in discovery).
-    # For coverage purposes here, we approximate "named" as: not FUN_* OR appears in proposed_renames.
     import re
     fun_re = re.compile(r"^FUN_[0-9a-fA-F]+$")
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import reconstruct_gates as gates  # type: ignore
+
+    synthetic_manifest = {
+        "passes": [{"pass": "pass0", "proposed_renames": proposed_renames}],
+        "project_discovery": {
+            "reachable_user_defined": _reachable_from_exports(fns),
+        },
+    }
+    gate_state = gates.compute_gate_state(function_index, synthetic_manifest)
+
+    renamed_addrs = {_normalize_addr(r["addr"]) for r in proposed_renames}
     named_total = sum(
         1 for r in user_defined
         if not fun_re.match(r.get("name", "")) or _normalize_addr(r["address"]) in renamed_addrs
     )
     return {
-        "hard_gate_pass": False,   # Pass 0 alone cannot satisfy hard gate; needs LLM passes.
-        "soft_gate_pass": False,
+        "hard_gate_pass": gate_state["hard_gate_pass"],
+        "soft_gate_pass": gate_state["soft_gate_pass"],
+        "recommended_status": gate_state["recommended_status"],
         "totals": {
             "user_defined_functions": len(user_defined),
             "external_imports_skipped": sum(1 for r in fns if r.get("is_external")),
@@ -107,6 +118,31 @@ def _compute_coverage(function_index: dict, proposed_renames: list[dict]) -> dic
             r["addr"] for r in proposed_renames if r.get("confidence") == "low"
         ],
     }
+
+
+def _reachable_from_exports(records: list[dict]) -> list[str]:
+    """Lightweight reachability walk used by _compute_coverage.
+    Mirrors reconstruct_pass0_discovery._reachable_user_defined logic."""
+    by_addr = {r["address"]: r for r in records}
+    user_defined = [
+        r for r in records
+        if not r.get("is_external") and not r.get("is_thunk")
+    ]
+    roots = [r["address"] for r in user_defined if r.get("is_exported")]
+    seen: set[str] = set()
+    stack = list(roots)
+    while stack:
+        addr = stack.pop()
+        if addr in seen:
+            continue
+        rec = by_addr.get(addr)
+        if rec is None or rec.get("is_external") or rec.get("is_thunk"):
+            continue
+        seen.add(addr)
+        for callee in rec.get("callees", []) or []:
+            if callee not in seen:
+                stack.append(callee)
+    return sorted(seen)
 
 
 def _set_status(binary_yaml: Path, status: str) -> None:
@@ -194,7 +230,7 @@ def main(argv: list[str] | None = None) -> int:
         coverage = _compute_coverage(function_index, pass0_result["proposed_renames"])
         (recon_dir / "coverage.json").write_text(json.dumps(coverage, indent=2))
 
-        _set_status(binary_yaml, "partial")
+        _set_status(binary_yaml, coverage.get("recommended_status", "partial"))
 
         print(f"pass0 complete: {len(pass0_result['proposed_renames'])} renames proposed "
               f"({pass0_result['renames_by_source']}); "

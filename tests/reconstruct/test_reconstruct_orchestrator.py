@@ -173,3 +173,60 @@ def test_orchestrator_carries_forward_from_prior_version(tmp_path, monkeypatch):
     # but the orchestrator should still record that the prior version was
     # consulted in pass0 metadata.
     assert p0.get("prior_version_consulted") == f"{seed['stem']}_vprior"
+
+
+def test_orchestrator_promotes_status_to_complete_when_gates_pass(tmp_path):
+    """If a binary has all-reachable functions originally named (no FUN_*
+    survivors and no tail), Pass 0 should compute hard_gate_pass=True,
+    soft_gate_pass=True, and flip status to 'complete'.
+    """
+    eng = tmp_path / "engagements" / "complete-eng"
+    eng.mkdir(parents=True)
+    (eng / "scope.json").write_text(json.dumps({"binary": "fullyNamed", "target_type": "binary"}))
+    (eng / "decomp").mkdir()
+    fi = {
+        "binary": "fullyNamed.exe",
+        "arch": "x86_64",
+        "format": "PE",
+        "functions": [
+            {"address": "0x140001000", "name": "entry",
+             "callees": ["0x140002000"], "callers": [],
+             "is_external": False, "is_thunk": False, "is_exported": True,
+             "code_hash": "h1", "instruction_count": 10, "size": 32, "strings": []},
+            {"address": "0x140002000", "name": "DoWork",
+             "callees": [], "callers": ["0x140001000"],
+             "is_external": False, "is_thunk": False, "is_exported": False,
+             "code_hash": "h2", "instruction_count": 20, "size": 64, "strings": []},
+        ],
+    }
+    (eng / "decomp" / "function_index.json").write_text(json.dumps(fi))
+
+    (tmp_path / "catalog" / "binaries").mkdir(parents=True)
+    (tmp_path / "catalog" / "binaries" / "fullyNamed.yml").write_text(yaml.safe_dump({
+        "binary": "fullyNamed", "product": "x",
+    }))
+
+    env = {**os.environ, "VULNERABIN_ROOT": str(tmp_path)}
+    subprocess.run(
+        [sys.executable, str(CATALOG_ADD), "reconstruction",
+         "--binary", "fullyNamed", "--version", "vfull"],
+        env=env, check=True, capture_output=True, text=True,
+    )
+    r = subprocess.run(
+        [sys.executable, str(RECONSTRUCT),
+         "--engagement", "complete-eng",
+         "--binary", "fullyNamed", "--version", "vfull"],
+        env=env, capture_output=True, text=True,
+    )
+    assert r.returncode == 0, r.stderr
+
+    cov = json.loads(
+        (tmp_path / "catalog" / "reconstructed" / "fullyNamed_vfull" / "coverage.json").read_text()
+    )
+    assert cov["hard_gate_pass"] is True
+    assert cov["soft_gate_pass"] is True
+
+    yml = yaml.safe_load(
+        (tmp_path / "catalog" / "binaries" / "fullyNamed.yml").read_text()
+    )
+    assert yml["reconstruction"]["status"] == "complete"
