@@ -225,3 +225,42 @@ def test_site_render_emits_reconstruction_html(tmp_path):
     assert "samplebin" in text
     assert "v1_2_3" in text
     assert "Reconstruction" in text
+
+
+def test_binary_page_includes_reconstruction_banner(tmp_path):
+    """The per-binary HTML page must contain the reconstruction banner
+    when the binary YAML has reconstruction.ref.
+    """
+    (tmp_path / "catalog" / "binaries").mkdir(parents=True)
+    (tmp_path / "catalog" / "products").mkdir(parents=True)
+    (tmp_path / "taxonomy" / "binary").mkdir(parents=True)
+    shutil.copy(
+        REPO_ROOT / "taxonomy" / "binary" / "defense_library.json",
+        tmp_path / "taxonomy" / "binary" / "defense_library.json",
+    )
+    shutil.copytree(REPO_ROOT / "catalog" / "site" / "_templates",
+                    tmp_path / "catalog" / "site" / "_templates")
+
+    (tmp_path / "catalog" / "binaries" / "samplebin.yml").write_text(yaml.safe_dump({
+        "binary": "samplebin",
+        "product": "test",
+        "reconstruction": {
+            "ref": "catalog/reconstructed/samplebin_v1_2_3",
+            "version_tag": "v1_2_3",
+            "status": "partial",
+        },
+    }))
+    _seed_recon_dir(tmp_path, stem="samplebin", tag="v1_2_3")
+
+    env = {**os.environ, "VULNERABIN_ROOT": str(tmp_path)}
+    subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "catalog_site_render.py")],
+        env=env, capture_output=True, text=True,
+    )
+    bin_html = tmp_path / "catalog" / "site" / "binaries" / "samplebin.html"
+    assert bin_html.is_file(), "binary HTML page not emitted"
+    text = bin_html.read_text()
+    # Banner must say something about partial reconstruction OR mention v1_2_3.
+    assert "Partial reconstruction" in text or "v1_2_3" in text
+    # Banner must link to the Layer 8 page.
+    assert "Layer 8" in text or "reconstructed/" in text

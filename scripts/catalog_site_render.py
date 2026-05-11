@@ -613,9 +613,20 @@ def render_binaries(env: Environment, binaries: list[dict], lib: dict):
         grouped, cov_stats = build_class_coverage_grouped(b, lib)
         re_ctx = build_re_context(b)
         matrix_ctx = build_coverage_matrix(b)
+        # Reconstruction status — None if the binary has no reconstruction.ref.
+        recon_block = (b.get("reconstruction") or {})
+        ctx_reconstruction = None
+        if recon_block.get("ref"):
+            ctx_reconstruction = {
+                "version_tag": recon_block.get("version_tag", ""),
+                "status": recon_block.get("status", "not_started"),
+                "ref": recon_block.get("ref"),
+                "page_relative": f"../reconstructed/{Path(recon_block.get('ref', '')).name}.html",
+            }
         out = bdir / f"{b['page_stem']}.html"
         out.write_text(tpl.render(binary=b, class_coverage_grouped=grouped, coverage_stats=cov_stats,
-                                  root="../", **re_ctx, **matrix_ctx))
+                                  root="../", reconstruction=ctx_reconstruction,
+                                  **re_ctx, **matrix_ctx))
         print(f"wrote {out.relative_to(ROOT)}")
 
 

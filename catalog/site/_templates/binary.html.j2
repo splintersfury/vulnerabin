@@ -61,6 +61,31 @@
   {% endif %}
 </div>
 
+{% if reconstruction %}
+{% set _rs = reconstruction.status %}
+{% set _classes = {
+  "complete":    "bg-secondary-container/20 border-secondary text-secondary",
+  "partial":     "bg-tertiary-container/20 border-tertiary text-tertiary",
+  "in_progress": "bg-primary-container/20 border-primary text-primary",
+  "not_started": "bg-error-container/20 border-error text-error",
+  "opt_out":     "bg-surface-container border-outline-variant text-on-surface-variant"
+} %}
+{% set _msgs = {
+  "complete":    "Reconstructed " ~ reconstruction.version_tag,
+  "partial":     "Partial reconstruction " ~ reconstruction.version_tag,
+  "in_progress": "Reconstruction in progress (" ~ reconstruction.version_tag ~ ")",
+  "not_started": "Reconstruction scaffolded but not run (" ~ reconstruction.version_tag ~ ")",
+  "opt_out":     "Reconstruction skipped (" ~ reconstruction.version_tag ~ ")"
+} %}
+<div class="border rounded px-sm py-xs mx-lg mt-md flex items-center gap-md font-data-mono-sm
+            {{ _classes.get(_rs, 'bg-surface-container border-outline-variant text-on-surface-variant') }}">
+  <span class="font-medium">{{ _msgs.get(_rs, 'Reconstruction status: ' ~ _rs) }}</span>
+  {% if _rs != 'opt_out' %}
+  <a href="{{ reconstruction.page_relative }}" class="text-ui-sans-sm hover:underline">View Layer 8 detail →</a>
+  {% endif %}
+</div>
+{% endif %}
+
 <div class="p-lg space-y-lg max-w-[1600px] mx-auto w-full">
 
   <!-- Reverse engineering brief (the RE journey that PRECEDES sources/sinks) -->
