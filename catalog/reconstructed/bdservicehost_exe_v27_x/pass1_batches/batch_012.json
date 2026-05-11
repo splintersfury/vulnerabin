@@ -1,0 +1,462 @@
+{
+  "functions": [
+    {
+      "addr": "1400120c0",
+      "name": "FUN_1400120c0",
+      "instruction_count": 64,
+      "size": 207,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140005940"
+        ],
+        "callees": [
+          "FUN_140001fc0",
+          "FUN_14002e3c0",
+          "FUN_1400053c0",
+          "FUN_14000e850"
+        ]
+      }
+    },
+    {
+      "addr": "140012190",
+      "name": "FUN_140012190",
+      "instruction_count": 230,
+      "size": 898,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140005f40"
+        ],
+        "callees": [
+          "FUN_140003820",
+          "FUN_1400039f0",
+          "CloseHandle",
+          "CreateFileW",
+          "FreeLibrary",
+          "FUN_14002f160",
+          "GetLastError",
+          "FUN_140005250",
+          "FUN_1400045c0"
+        ]
+      }
+    },
+    {
+      "addr": "140012520",
+      "name": "FUN_140012520",
+      "instruction_count": 274,
+      "size": 1119,
+      "strings": [
+        "BdCreateObject",
+        "BdDestroyObject",
+        "productinfo",
+        "productinfo",
+        "productinfo",
+        "productinfo"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140009410",
+          "FUN_140007f90"
+        ],
+        "callees": [
+          "FUN_140010340",
+          "LoadLibraryExW",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "LoadLibraryW",
+          "operator_new",
+          "_guard_dispatch_icall",
+          "FreeLibrary",
+          "FUN_14002f160",
+          "GetLastError",
+          "GetProcAddress",
+          "FUN_140005730"
+        ]
+      }
+    },
+    {
+      "addr": "140012980",
+      "name": "FUN_140012980",
+      "instruction_count": 48,
+      "size": 174,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "_guard_dispatch_icall",
+          "_CxxThrowException"
+        ]
+      }
+    },
+    {
+      "addr": "140012a30",
+      "name": "FUN_140012a30",
+      "instruction_count": 171,
+      "size": 579,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090",
+          "FUN_140016f80",
+          "FUN_14000ac10",
+          "FUN_14000b2a0",
+          "FUN_14000b390",
+          "FUN_140016b80",
+          "FUN_14002c000",
+          "FUN_14002c1f0",
+          "FUN_14002cd20",
+          "FUN_14000a900",
+          "FUN_14002a810"
+        ],
+        "callees": [
+          "FUN_14000ff70",
+          "_guard_dispatch_icall",
+          "FUN_140002cd0",
+          "__uncaught_exception",
+          "FUN_140011c80"
+        ]
+      }
+    },
+    {
+      "addr": "140012c90",
+      "name": "FUN_140012c90",
+      "instruction_count": 11,
+      "size": 35,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400144b0"
+        ]
+      }
+    },
+    {
+      "addr": "140012cc0",
+      "name": "FUN_140012cc0",
+      "instruction_count": 151,
+      "size": 550,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_1400083c0"
+        ],
+        "callees": [
+          "_guard_dispatch_icall",
+          "FUN_140014450",
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140014a20",
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140012ef0",
+      "name": "FUN_140012ef0",
+      "instruction_count": 82,
+      "size": 317,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000e200",
+          "FUN_140014c60"
+        ],
+        "callees": [
+          "_guard_dispatch_icall",
+          "_Facet_Register",
+          "~_Lockit",
+          "FUN_14002d9b4",
+          "FUN_14002f160",
+          "FUN_140014290",
+          "_Lockit",
+          "FUN_140002320"
+        ]
+      }
+    },
+    {
+      "addr": "140013030",
+      "name": "FUN_140013030",
+      "instruction_count": 108,
+      "size": 404,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_1400054f0"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140001a20",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "1400131d0",
+      "name": "FUN_1400131d0",
+      "instruction_count": 118,
+      "size": 435,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000e630",
+          "FUN_1400054f0"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140001a20",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "140013390",
+      "name": "FUN_140013390",
+      "instruction_count": 93,
+      "size": 330,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140005940",
+          "FUN_14002a6a0"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140001a20",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "1400134e0",
+      "name": "FUN_1400134e0",
+      "instruction_count": 82,
+      "size": 317,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140010c50",
+          "FUN_14000fb50",
+          "FUN_140011360"
+        ],
+        "callees": [
+          "_guard_dispatch_icall",
+          "FUN_140013fd0",
+          "_Facet_Register",
+          "~_Lockit",
+          "FUN_14002d9b4",
+          "FUN_14002f160",
+          "_Lockit",
+          "FUN_140002320"
+        ]
+      }
+    },
+    {
+      "addr": "140013620",
+      "name": "FUN_140013620",
+      "instruction_count": 118,
+      "size": 440,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140003ba0",
+          "FUN_140009170",
+          "FUN_14000e410",
+          "FUN_1400180b0",
+          "FUN_140006180",
+          "FUN_1400067c0"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140001a20",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "1400137e0",
+      "name": "FUN_1400137e0",
+      "instruction_count": 100,
+      "size": 354,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14001f280",
+          "FUN_140005940",
+          "FUN_14001c1b0",
+          "FUN_140021240",
+          "FUN_140021ad0",
+          "FUN_14001fc00"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140001a20",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "140013950",
+      "name": "FUN_140013950",
+      "instruction_count": 112,
+      "size": 415,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000f0d0",
+          "FUN_140003260",
+          "FUN_14000f3b0",
+          "FUN_14000e850"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140031e00",
+          "FUN_140001a20",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "140013af0",
+      "name": "FUN_140013af0",
+      "instruction_count": 110,
+      "size": 396,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140010800"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140001a20",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "140013c80",
+      "name": "FUN_140013c80",
+      "instruction_count": 82,
+      "size": 317,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140010c50",
+          "FUN_140011ce0",
+          "FUN_1400144b0",
+          "FUN_140011360"
+        ],
+        "callees": [
+          "_guard_dispatch_icall",
+          "FUN_1400025d0",
+          "_Facet_Register",
+          "~_Lockit",
+          "FUN_14002d9b4",
+          "FUN_14002f160",
+          "_Lockit",
+          "FUN_140002320"
+        ]
+      }
+    },
+    {
+      "addr": "140013dc0",
+      "name": "FUN_140013dc0",
+      "instruction_count": 128,
+      "size": 494,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140010c50",
+          "FUN_140011360"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140001a20",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "140013fd0",
+      "name": "FUN_140013fd0",
+      "instruction_count": 172,
+      "size": 698,
+      "strings": [
+        "false",
+        "bad locale name"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_1400134e0"
+        ],
+        "callees": [
+          "FUN_14002d6b4",
+          "_Locinfo_ctor",
+          "~_Lockit",
+          "FUN_140035e08",
+          "_calloc_base",
+          "_Lockit",
+          "FUN_1400024c0",
+          "_Locinfo_dtor",
+          "FUN_14002d73c",
+          "operator_new",
+          "_Mbrtowc",
+          "_Getcvt",
+          "FUN_140035ac0",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "140014290",
+      "name": "FUN_140014290",
+      "instruction_count": 100,
+      "size": 372,
+      "strings": [
+        "bad locale name"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140012ef0"
+        ],
+        "callees": [
+          "_Locinfo_dtor",
+          "_Locinfo_ctor",
+          "FUN_14002d73c",
+          "operator_new",
+          "~_Lockit",
+          "FUN_140035ac0",
+          "_Lockit"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_012"
+}

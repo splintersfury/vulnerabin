@@ -1,0 +1,271 @@
+{
+  "functions": [
+    {
+      "addr": "140057bd0",
+      "name": "FUN_140057bd0",
+      "instruction_count": 8,
+      "size": 29,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140057f50",
+      "name": "FUN_140057f50",
+      "instruction_count": 14,
+      "size": 45,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000e3c0"
+        ]
+      }
+    },
+    {
+      "addr": "140058010",
+      "name": "FUN_140058010",
+      "instruction_count": 9,
+      "size": 29,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "140058080",
+      "name": "FUN_140058080",
+      "instruction_count": 13,
+      "size": 38,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_Tidy_deallocate"
+        ]
+      }
+    },
+    {
+      "addr": "140058120",
+      "name": "FUN_140058120",
+      "instruction_count": 13,
+      "size": 38,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000e8f0"
+        ]
+      }
+    },
+    {
+      "addr": "140058270",
+      "name": "FUN_140058270",
+      "instruction_count": 9,
+      "size": 32,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "1400588c0",
+      "name": "FUN_1400588c0",
+      "instruction_count": 9,
+      "size": 32,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "140058950",
+      "name": "FUN_140058950",
+      "instruction_count": 13,
+      "size": 38,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000eaa0"
+        ]
+      }
+    },
+    {
+      "addr": "140058b50",
+      "name": "FUN_140058b50",
+      "instruction_count": 13,
+      "size": 38,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000e8f0"
+        ]
+      }
+    },
+    {
+      "addr": "140058ed0",
+      "name": "FUN_140058ed0",
+      "instruction_count": 14,
+      "size": 45,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000e3c0"
+        ]
+      }
+    },
+    {
+      "addr": "140058f20",
+      "name": "FUN_140058f20",
+      "instruction_count": 14,
+      "size": 45,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000e3c0"
+        ]
+      }
+    },
+    {
+      "addr": "140058ff0",
+      "name": "FUN_140058ff0",
+      "instruction_count": 21,
+      "size": 87,
+      "strings": [
+        "key '",
+        "' not found"
+      ],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140021890",
+          "FUN_1400219f0",
+          "FUN_1400192b0",
+          "_CxxThrowException"
+        ]
+      }
+    },
+    {
+      "addr": "140059170",
+      "name": "FUN_140059170",
+      "instruction_count": 13,
+      "size": 41,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000e8f0"
+        ]
+      }
+    },
+    {
+      "addr": "140059220",
+      "name": "FUN_140059220",
+      "instruction_count": 13,
+      "size": 38,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000e8f0"
+        ]
+      }
+    },
+    {
+      "addr": "1400597e0",
+      "name": "FUN_1400597e0",
+      "instruction_count": 13,
+      "size": 48,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140026150",
+          "_CxxThrowException",
+          "deallocate"
+        ]
+      }
+    },
+    {
+      "addr": "140059b6c",
+      "name": "FUN_140059b6c",
+      "instruction_count": 14,
+      "size": 43,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__ArrayUnwind"
+        ]
+      }
+    },
+    {
+      "addr": "140059bf7",
+      "name": "FUN_140059bf7",
+      "instruction_count": 11,
+      "size": 29,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_seh_filter_exe"
+        ]
+      }
+    },
+    {
+      "addr": "140059df9",
+      "name": "FUN_140059df9",
+      "instruction_count": 11,
+      "size": 36,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "ExFilterRethrow"
+        ]
+      }
+    },
+    {
+      "addr": "140059e96",
+      "name": "FUN_140059e96",
+      "instruction_count": 12,
+      "size": 46,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "ExFilterRethrowFH4"
+        ]
+      }
+    },
+    {
+      "addr": "140059f48",
+      "name": "FUN_140059f48",
+      "instruction_count": 8,
+      "size": 21,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__FrameUnwindFilter"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_035"
+}

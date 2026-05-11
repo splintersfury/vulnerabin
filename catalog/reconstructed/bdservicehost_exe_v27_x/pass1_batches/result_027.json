@@ -1,0 +1,84 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_027",
+  "renames": [
+    {
+      "addr": "14002f2d0",
+      "to": "vb_cleanup_critsect_and_handle",
+      "confidence": "medium",
+      "rationale": "Tiny leaf calling CloseHandle then DeleteCriticalSection — typical paired teardown of a synchronized handle owner."
+    },
+    {
+      "addr": "14002f790",
+      "to": "vb_scrt_common_main_seh_wide",
+      "confidence": "high",
+      "rationale": "MSVC scrt_common_main_seh variant: _configthreadlocale, _configure_wide_argv, common_initialize_environment_nolock<wchar_t>, __scrt_initialize_onexit_tables, _set_fmode, atexit."
+    },
+    {
+      "addr": "14002f850",
+      "to": "vb_scrt_initialize_default_local_stdio_options",
+      "confidence": "medium",
+      "rationale": "Tiny thunk into FUN_1400302f8 which itself initialises stdio table; matches MSVC scrt_initialize_default_local_stdio_options shape."
+    },
+    {
+      "addr": "14002f860",
+      "to": "vb_scrt_dllmain_crt_thunk",
+      "confidence": "low",
+      "rationale": "Small wrapper invoking the same atexit-registration helper (FUN_14000df40) plus FUN_140030008; resembles a CRT init/dllmain shim."
+    },
+    {
+      "addr": "14002f87c",
+      "to": "vb_scrt_common_main_seh",
+      "confidence": "high",
+      "rationale": "Called by entry; uses __scrt_initialize_crt, _initterm/_initterm_e, _get_wide_winmain_command_line, __scrt_acquire/release_startup_lock, _cexit — MSVC wWinMainCRTStartup body."
+    },
+    {
+      "addr": "14002fba0",
+      "to": "vb_seh_failfast_buffer_overrun",
+      "confidence": "high",
+      "rationale": "Calls capture_previous_context, IsProcessorFeaturePresent, __raise_securityfailure — matches __report_gsfailure / __report_securityfailure pattern."
+    },
+    {
+      "addr": "14002fc88",
+      "to": "vb_report_rangecheckfailure_impl",
+      "confidence": "high",
+      "rationale": "Caller is __report_rangecheckfailure; uses capture_current_context, IsProcessorFeaturePresent, __raise_securityfailure — body of range-check failfast."
+    },
+    {
+      "addr": "14002fe08",
+      "to": "vb_operator_new_thunk",
+      "confidence": "medium",
+      "rationale": "5-instruction leaf whose sole callee is operator_new — minimal new() forwarder/thunk."
+    },
+    {
+      "addr": "14002fe1c",
+      "to": "vb_acrt_reportfault_tail",
+      "confidence": "low",
+      "rationale": "2-instr stub called from __acrt_call_reportfault and FUN_14002fe24 (UEF); likely the tail/terminate stub after fault reporting."
+    },
+    {
+      "addr": "14002fe24",
+      "to": "vb_unhandled_exception_filter",
+      "confidence": "high",
+      "rationale": "RtlCaptureContext + RtlLookupFunctionEntry + RtlVirtualUnwind + UnhandledExceptionFilter + IsDebuggerPresent + SetUnhandledExceptionFilter — canonical MSVC __scrt_unhandled_exception_filter."
+    },
+    {
+      "addr": "1400302f8",
+      "to": "vb_initialize_default_stdio_options",
+      "confidence": "medium",
+      "rationale": "Called only by FUN_14002f850; invokes FUN_140015230 (likely _setmode/stdio helper) plus a tiny init thunk — stdio defaults initializer."
+    },
+    {
+      "addr": "140030330",
+      "to": "vb_invoke_guarded_callback",
+      "confidence": "low",
+      "rationale": "17-instr helper whose only callee is _guard_dispatch_icall — Control-Flow-Guarded indirect-call trampoline."
+    },
+    {
+      "addr": "140030370",
+      "to": "vb_invoke_guarded_callback_b",
+      "confidence": "low",
+      "rationale": "Identical shape to FUN_140030330 (17 instr, only _guard_dispatch_icall); a second CFG indirect-call trampoline with no resolved callers."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_020",
+  "renames": [
+    {
+      "addr": "14001e680",
+      "to": "json_parser_parse",
+      "confidence": "high",
+      "rationale": "Strings 'syntax error', 'while parsing', 'last read', 'unexpected', 'expected' are nlohmann/json parser error messages; 572 insn parse driver."
+    },
+    {
+      "addr": "14001ef90",
+      "to": "json_parse_value_dispatch",
+      "confidence": "high",
+      "rationale": "Strings 'invalid BOM; must be 0xEF 0xBB 0xBF', 'false', 'invalid literal' match nlohmann/json scanner literal/BOM dispatch."
+    },
+    {
+      "addr": "14001f280",
+      "to": "json_escape_unicode_u4hex",
+      "confidence": "high",
+      "rationale": "Format string '<U+%.4X>' is nlohmann/json's unicode-escape rendering for token strings."
+    },
+    {
+      "addr": "14001f6d0",
+      "to": "json_token_type_to_string",
+      "confidence": "high",
+      "rationale": "Returns literal names ('true literal','false literal','null literal','string literal','number literal','<parse error>','end of input','unknown token'): nlohmann::detail::lexer::token_type_name."
+    },
+    {
+      "addr": "14001f960",
+      "to": "json_scan_literal_true",
+      "confidence": "medium",
+      "rationale": "Called from json_parse_value_dispatch alongside scan_number/string; no strings but sibling of scan_false (fb20) which has 'invalid literal'."
+    },
+    {
+      "addr": "14001fb20",
+      "to": "json_scan_literal_false_null",
+      "confidence": "high",
+      "rationale": "'invalid literal' x2 + called from json_parse_value_dispatch; matches nlohmann lexer scan_literal for false/null tokens."
+    },
+    {
+      "addr": "14001fc00",
+      "to": "json_scan_number",
+      "confidence": "high",
+      "rationale": "Strings 'invalid number; expected digit after -/+/./exponent' and callees _strtoi64/strtoull match nlohmann::detail::lexer::scan_number."
+    },
+    {
+      "addr": "140020640",
+      "to": "json_scan_string_utf8_check",
+      "confidence": "high",
+      "rationale": "'invalid string: ill-formed UTF-8 byte' is nlohmann lexer's UTF-8 validator inside scan_string."
+    },
+    {
+      "addr": "140021240",
+      "to": "json_scan_string_utf8_check_variant",
+      "confidence": "medium",
+      "rationale": "Same 'invalid string: ill-formed UTF-8 byte' strings; no callers in batch but mirrors 140020640 sibling lexer routine."
+    },
+    {
+      "addr": "140021870",
+      "to": "throw_vector_bool_too_long",
+      "confidence": "high",
+      "rationale": "Single string 'vector<bool> too long', tiny stub (4 insn) that calls a throw helper: MSVC STL _Xlength for vector<bool>."
+    }
+  ]
+}

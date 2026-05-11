@@ -1,0 +1,108 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_029",
+  "renames": [
+    {
+      "addr": "140032dc4",
+      "to": "vcrt_FrameHandler3_internal",
+      "confidence": "high",
+      "rationale": "Called by FrameHandler3 wrapper; uses TypeMatchHelper<__FrameHandler3>, CatchIt, GetEstablisherFrame, GetHandlerSearchState, ExecutionInCatch — core __CxxFrameHandler3 dispatch routine."
+    },
+    {
+      "addr": "14003328c",
+      "to": "vcrt_FrameHandler4_internal",
+      "confidence": "high",
+      "rationale": "Mirror of 140032dc4 but for FrameHandler4 (TryBlockMap4, HandlerMap4, DecompHandler, TypeMatchHelper<__FrameHandler4>) — core __CxxFrameHandler4 dispatcher."
+    },
+    {
+      "addr": "140033788",
+      "to": "vcrt_FH3_CallSETranslator",
+      "confidence": "medium",
+      "rationale": "Helper of FrameHandler3 path; calls _CallSETranslator<>, EncodePointer, CatchIt<__FrameHandler3> — likely SEH-to-C++ translator bridge for FH3."
+    },
+    {
+      "addr": "1400339a0",
+      "to": "vcrt_FH4_CallSETranslator",
+      "confidence": "medium",
+      "rationale": "FH4 counterpart to 140033788; uses _CallSETranslator<>, TryBlockMap4, HandlerMap4, DecompHandler, CatchIt<__FrameHandler4>."
+    },
+    {
+      "addr": "140033f14",
+      "to": "vcrt_CxxFrameHandler3_dispatch",
+      "confidence": "high",
+      "rationale": "Called directly from __CxxFrameHandler3; uses _guard_dispatch_icall, FrameUnwindToEmptyState, StateFromIp, __except_validate_context_record — top-level FH3 dispatcher."
+    },
+    {
+      "addr": "14003414c",
+      "to": "vcrt_CxxFrameHandler4_dispatch",
+      "confidence": "high",
+      "rationale": "Called from __CxxFrameHandler4; uses TryBlockMap4, StateFromIp, _guard_dispatch_icall, FrameUnwindToEmptyState — top-level FH4 dispatcher."
+    },
+    {
+      "addr": "140034570",
+      "to": "vcrt_throw_bad_exception",
+      "confidence": "high",
+      "rationale": "Tiny (7 insn) leaf with literal 'bad exception' strings; called from both FH3 and FH4 dispatchers — emits std::bad_exception."
+    },
+    {
+      "addr": "140034780",
+      "to": "vcrt_unwind_destroy_frame",
+      "confidence": "medium",
+      "rationale": "Calls _FindAndUnlinkFrame, _CreateFrameInfo, __DestructExceptionObject, _IsExceptionObjectToBeDestroyed — frame unwind + exception object teardown."
+    },
+    {
+      "addr": "140034c10",
+      "to": "vcrt_FH3_unwind_to_state",
+      "confidence": "medium",
+      "rationale": "Reached via FrameUnwindToEmptyState and FH3 dispatcher; calls _CallSettingFrame, GetCurrentState, SetState — FH3 frame-unwind state iterator."
+    },
+    {
+      "addr": "140034d9c",
+      "to": "vcrt_FH4_unwind_to_state",
+      "confidence": "medium",
+      "rationale": "FH4 counterpart of 140034c10; calls ReadEntry, _CallSettingFrame(Encoded), getStateFromIterators, SetState — FH4 unwind state iterator."
+    },
+    {
+      "addr": "14003511c",
+      "to": "vcrt_TypeMatch_FH3_wrapper",
+      "confidence": "medium",
+      "rationale": "Called from both FH3 and FH4 internal dispatchers; uses TypeMatchHelper<__FrameHandler3>, _GetThrowImageBase, _GetImageBase — type-match thunk."
+    },
+    {
+      "addr": "140035350",
+      "to": "vcrt_FH4_ReadEntry_helper",
+      "confidence": "low",
+      "rationale": "Only callee is ReadEntry; sole caller is FH4 unwind iterator — small helper resolving FH4 unwind/handler table entries."
+    },
+    {
+      "addr": "140035570",
+      "to": "vcrt_seh_filter_stub",
+      "confidence": "low",
+      "rationale": "Tiny (6 insn) leaf invoked from _CallSettingFrame, _CallSettingFrameEncoded, and __C_specific_handler — SEH filter trampoline stub."
+    },
+    {
+      "addr": "1400355dc",
+      "to": "vcrt_load_apims_proc",
+      "confidence": "high",
+      "rationale": "Uses LoadLibraryExW + GetProcAddress + FreeLibrary + wcsncmp on 'api-ms-' string; called from __vcrt_FlsAlloc/Free/Get/Set and InitializeCriticalSectionEx — apiset resolver."
+    },
+    {
+      "addr": "140035920",
+      "to": "vcrt_unwind_helper_a",
+      "confidence": "low",
+      "rationale": "Small thunk in 140034780 unwind chain; calls two SEH filter stubs (FUN_1400355a0/FUN_140035570) — frame teardown helper."
+    },
+    {
+      "addr": "140035950",
+      "to": "vcrt_unwind_helper_b",
+      "confidence": "low",
+      "rationale": "Sibling of FUN_140035920 under FUN_140034780; calls SEH filter stub FUN_140035570 — secondary frame teardown helper."
+    },
+    {
+      "addr": "1400359c8",
+      "to": "crt_fp_init_state",
+      "confidence": "medium",
+      "rationale": "Calls _ctrlfp, _sptype, __doserrno from CRT startup callers FUN_14000f0d0/FUN_14000f3b0 — FPU/control-word and errno initialization during CRT init."
+    }
+  ]
+}

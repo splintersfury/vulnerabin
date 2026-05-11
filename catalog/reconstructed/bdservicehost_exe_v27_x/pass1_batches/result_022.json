@@ -1,0 +1,36 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_022",
+  "renames": [
+    {
+      "addr": "1400261e0",
+      "to": "unordered_map_reserve_or_rehash",
+      "confidence": "medium",
+      "rationale": "Single caller, allocates via operator_new, uses ceilf (load-factor math), throws 'unordered_map/set too long' length_error. Classic MSVC unordered container rehash/reserve helper."
+    },
+    {
+      "addr": "140026490",
+      "to": "unordered_map_emplace_or_insert",
+      "confidence": "medium",
+      "rationale": "Two callers, calls memcmp+ceilf+operator_new and emits 'unordered_map/set too long'. MSVC unordered_map emplace/insert with hash-bucket growth (ceilf for max_load_factor)."
+    },
+    {
+      "addr": "140026df0",
+      "to": "container_erase_with_iterator_check",
+      "confidence": "medium",
+      "rationale": "Throws 'cannot use erase() with', 'iterator does not fit current value', 'iterator out of range' via _CxxThrowException. MSVC checked erase(iterator) implementation."
+    },
+    {
+      "addr": "140025b90",
+      "to": "shared_state_lookup_helper",
+      "confidence": "low",
+      "rationale": "Tiny (42 ins) hot leaf called by 10 sibling functions (FUN_140026af0..140028190 family); each is a dispatch handler. Likely a shared lookup/get-state helper for that handler family."
+    },
+    {
+      "addr": "140025c20",
+      "to": "recursive_tree_node_builder",
+      "confidence": "low",
+      "rationale": "Self-recursive (calls FUN_140025c20), allocates via operator_new, mutually recursive with FUN_14002a4c0. Pattern of recursive tree/graph node construction."
+    }
+  ]
+}

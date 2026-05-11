@@ -1,0 +1,573 @@
+{
+  "functions": [
+    {
+      "addr": "14000a330",
+      "name": "FUN_14000a330",
+      "instruction_count": 110,
+      "size": 412,
+      "strings": [
+        "Desktop"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000bfe0"
+        ],
+        "callees": [
+          "FUN_140010340",
+          "FUN_140009170",
+          "FUN_14000a2b0",
+          "FUN_14000d470",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_14000e750",
+          "FUN_14002f160",
+          "__std_fs_get_file_id"
+        ]
+      }
+    },
+    {
+      "addr": "14000a4d0",
+      "name": "FUN_14000a4d0",
+      "instruction_count": 11,
+      "size": 36,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140057850"
+        ],
+        "callees": [
+          "CloseServiceHandle"
+        ]
+      }
+    },
+    {
+      "addr": "14000a500",
+      "name": "FUN_14000a500",
+      "instruction_count": 55,
+      "size": 247,
+      "strings": [
+        "OpenSCManager failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000a600"
+        ],
+        "callees": [
+          "FUN_140003760",
+          "FUN_14002f160",
+          "_CxxThrowException",
+          "OpenSCManagerW",
+          "GetLastError"
+        ]
+      }
+    },
+    {
+      "addr": "14000a600",
+      "name": "FUN_14000a600",
+      "instruction_count": 123,
+      "size": 499,
+      "strings": [
+        "common",
+        "NoRestrictBDAppsOnUpdate",
+        ".DEFAULT\\Software\\SetID\\bd.update.configure",
+        "UPDATESRV"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000bfe0"
+        ],
+        "callees": [
+          "FUN_140009170",
+          "FUN_14000d470",
+          "FUN_14000a500",
+          "RegOpenKeyExW",
+          "RegCloseKey",
+          "CloseServiceHandle",
+          "OpenServiceW",
+          "QueryServiceStatus",
+          "FUN_14002f160",
+          "GetLastError",
+          "RegGetValueW"
+        ]
+      }
+    },
+    {
+      "addr": "14000a810",
+      "name": "FUN_14000a810",
+      "instruction_count": 44,
+      "size": 185,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000b390",
+          "FUN_14000a900"
+        ],
+        "callees": [
+          "FUN_140010340"
+        ]
+      }
+    },
+    {
+      "addr": "14000a8d0",
+      "name": "FUN_14000a8d0",
+      "instruction_count": 8,
+      "size": 35,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "14000a900",
+      "name": "FUN_14000a900",
+      "instruction_count": 167,
+      "size": 773,
+      "strings": [
+        "bdch.dll",
+        "enable_crash_handler",
+        "GetModuleHandleExW failed.",
+        "load crash handler failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000ac10"
+        ],
+        "callees": [
+          "FUN_140002e10",
+          "FUN_140035d28",
+          "FUN_140012a30",
+          "FUN_1400089c0",
+          "GetModuleHandleExW",
+          "FUN_14002f160",
+          "FUN_140001ab0",
+          "FUN_140003090",
+          "FUN_14002f180",
+          "FUN_14000a810",
+          "operator_new",
+          "_guard_dispatch_icall",
+          "FreeLibrary",
+          "FUN_140015110",
+          "_CxxThrowException",
+          "FUN_14000e630",
+          "FUN_1400038c0"
+        ]
+      }
+    },
+    {
+      "addr": "14000ac10",
+      "name": "FUN_14000ac10",
+      "instruction_count": 186,
+      "size": 907,
+      "strings": [
+        "start",
+        "check_intentional_crash",
+        "crash interval: "
+      ],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140002e10",
+          "FUN_1400100a0",
+          "FUN_14000d640",
+          "FUN_1400147e0",
+          "FUN_1400159d0",
+          "FUN_140011e70",
+          "FUN_140035d28",
+          "FUN_140012a30",
+          "FUN_140008d90",
+          "CloseHandle",
+          "FUN_140015360",
+          "FUN_14002f160",
+          "FUN_140008fd0",
+          "FUN_140003090",
+          "FUN_140031e00",
+          "FUN_14002f180",
+          "FUN_14000a900",
+          "FUN_14000e200",
+          "_guard_dispatch_icall",
+          "FreeLibrary",
+          "FUN_140004010",
+          "FUN_140008b00"
+        ]
+      }
+    },
+    {
+      "addr": "14000afb0",
+      "name": "FUN_14000afb0",
+      "instruction_count": 140,
+      "size": 735,
+      "strings": [
+        "service::run_as_executable",
+        "service::run_as_executable",
+        "-> %s",
+        "-> %s",
+        "Run as executable: Press 'x' to exit.\n"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "wcsncpy_s",
+          "FUN_140011e70",
+          "FUN_14000eb20",
+          "AllocConsole",
+          "CloseHandle",
+          "FUN_140015360",
+          "FUN_14002f160",
+          "FUN_140015270",
+          "wcscat_s",
+          "FreeConsole",
+          "FUN_1400019c0",
+          "_getwch",
+          "Sleep",
+          "_guard_dispatch_icall",
+          "_kbhit",
+          "FreeLibrary",
+          "timeGetTime",
+          "FUN_1400178b0"
+        ]
+      }
+    },
+    {
+      "addr": "14000b2a0",
+      "name": "FUN_14000b2a0",
+      "instruction_count": 49,
+      "size": 233,
+      "strings": [
+        "start_service_dispatcher",
+        "StartServiceCtrlDispatcherW failed with error "
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "FUN_140002e10",
+          "StartServiceCtrlDispatcherW",
+          "FUN_140012a30",
+          "FUN_140035ac0",
+          "_wcsdup",
+          "FUN_14002f160",
+          "GetLastError",
+          "FUN_140014c60",
+          "FUN_140003090"
+        ]
+      }
+    },
+    {
+      "addr": "14000b390",
+      "name": "FUN_14000b390",
+      "instruction_count": 131,
+      "size": 586,
+      "strings": [
+        "set_current_dir",
+        "Failed to set current directory, err: "
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "FUN_140002e10",
+          "FUN_14002f180",
+          "FUN_14000a810",
+          "FUN_140035d28",
+          "FUN_140012a30",
+          "FUN_1400060a0",
+          "SetCurrentDirectoryW",
+          "FUN_14002f160",
+          "GetLastError",
+          "FUN_140014c60",
+          "FUN_140003090"
+        ]
+      }
+    },
+    {
+      "addr": "14000b620",
+      "name": "FUN_14000b620",
+      "instruction_count": 86,
+      "size": 292,
+      "strings": [
+        "remove",
+        "symlink_status",
+        "create_directory"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000b750",
+          "FUN_14000baf0"
+        ],
+        "callees": [
+          "__std_fs_get_stats",
+          "FUN_14002e910",
+          "FUN_140005ed0",
+          "__std_fs_create_directory",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "14000b750",
+      "name": "FUN_14000b750",
+      "instruction_count": 217,
+      "size": 921,
+      "strings": [
+        "bdservicehost",
+        "BDLogging"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "FUN_140010340",
+          "SHGetKnownFolderPath",
+          "FUN_1400054f0",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_14000e750",
+          "FUN_14000b620",
+          "CoTaskMemFree",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "14000baf0",
+      "name": "FUN_14000baf0",
+      "instruction_count": 310,
+      "size": 1255,
+      "strings": [
+        "\\BDLogging\\",
+        "\\bdservicehost"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "SHGetKnownFolderPath",
+          "FUN_140011e70",
+          "FUN_14000eb20",
+          "FUN_140035d28",
+          "FUN_14000b620",
+          "FUN_14002f160",
+          "FUN_140001670",
+          "FUN_140010340",
+          "FUN_14002f180",
+          "operator_new",
+          "CoTaskMemFree",
+          "_guard_dispatch_icall",
+          "FUN_140001a20",
+          "FUN_14000e630",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "14000bfe0",
+      "name": "FUN_14000bfe0",
+      "instruction_count": 43,
+      "size": 171,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "FUN_140009410",
+          "FUN_14000a2b0",
+          "FUN_14000d470",
+          "FUN_14000a600",
+          "FUN_140009b30",
+          "FUN_14000e750",
+          "FUN_14000a330",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "14000c090",
+      "name": "FUN_14000c090",
+      "instruction_count": 890,
+      "size": 4418,
+      "strings": [
+        "dll_dirs-{F67BB3AD-7B5E-4C2D-A22B-747BC163AB78}",
+        "dll_dirs-{F67BB3AD-7B5E-4C2D-A22B-747BC163AB78}",
+        "dll_dirs-{F67BB3AD-7B5E-4C2D-A22B-747BC163AB78}",
+        "kernel32.dll",
+        "SetDefaultDllDirectories",
+        "OPENSSL_CONF",
+        "OPENSSL_WIN32_UTF8",
+        "First log",
+        "First log",
+        "wWinMain",
+        "wWinMain",
+        "wWinMain",
+        "wWinMain",
+        "cmd line arguments: ",
+        "wWinMain",
+        "Config file is missing.",
+        "wWinMain",
+        "config path: ",
+        "install",
+        "uninstall",
+        "service_manager::uninstall_service",
+        "Could not delete the service. Deleting registry key instead.",
+        "SYSTEM\\CurrentControlSet\\Services\\",
+        "uninstall does nothing at this time. Returning.",
+        "uninstall does nothing at this time. Returning.",
+        "service_additional_configuration::uninstall",
+        "service_additional_configuration::uninstall",
+        "enable",
+        "disable",
+        "start",
+        "stop",
+        "#terminate#",
+        "debug",
+        "wWinMain",
+        "Starting service with crash/abort/terminate param",
+        "RegDeleteKey failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002f87c"
+        ],
+        "callees": [
+          "LocalFree",
+          "FUN_140038420",
+          "FID_conflict:_putenv_s",
+          "FUN_14002b840",
+          "FUN_14002f160",
+          "GetProcAddress",
+          "CheckTokenMembership",
+          "GetModuleHandleW",
+          "FUN_14002f180",
+          "GetCommandLineW",
+          "CommandLineToArgvW",
+          "FUN_140017910",
+          "FUN_14000d240",
+          "FUN_14000afb0",
+          "FUN_140012a30",
+          "FUN_140010340",
+          "FUN_14000b750",
+          "FUN_14000b2a0",
+          "FUN_14002cd20",
+          "FUN_1400019c0",
+          "_guard_dispatch_icall",
+          "FUN_1400144b0",
+          "FUN_14001b1c0",
+          "FUN_14002aeb0",
+          "FUN_140002e10",
+          "FUN_140011e70",
+          "FUN_14000eb20",
+          "FUN_14002d150",
+          "FUN_140031398",
+          "FUN_14002a6a0",
+          "FUN_140003090",
+          "FUN_14002a810",
+          "FUN_140031e00",
+          "FUN_14000bfe0",
+          "operator_new",
+          "FUN_14002d1c0",
+          "FreeLibrary",
+          "FUN_14002d0a0",
+          "FUN_140001a40",
+          "RegDeleteKeyW",
+          "FUN_140003760",
+          "FUN_14000b390",
+          "FUN_1400108b0",
+          "FUN_140035d28",
+          "FUN_14000e6b0",
+          "FreeSid",
+          "FUN_14002c690",
+          "FUN_14000d470",
+          "FUN_140012980",
+          "AllocateAndInitializeSid",
+          "FUN_140006b60",
+          "_CxxThrowException",
+          "FUN_14000e630",
+          "FUN_14002b4e0",
+          "FUN_14000baf0",
+          "FUN_140009c70"
+        ]
+      }
+    },
+    {
+      "addr": "14000d210",
+      "name": "FUN_14000d210",
+      "instruction_count": 15,
+      "size": 46,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140008b00"
+        ]
+      }
+    },
+    {
+      "addr": "14000d240",
+      "name": "FUN_14000d240",
+      "instruction_count": 157,
+      "size": 551,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "FUN_140014f60",
+          "PathAddBackslashW",
+          "PathRemoveFileSpecW",
+          "GetModuleFileNameW",
+          "_CxxThrowException"
+        ]
+      }
+    },
+    {
+      "addr": "14000d470",
+      "name": "FUN_14000d470",
+      "instruction_count": 29,
+      "size": 103,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090",
+          "FUN_14005a3a0",
+          "FUN_14000bfe0",
+          "FUN_14000a600",
+          "FUN_14000a330",
+          "FUN_140007f90",
+          "FUN_140009c70",
+          "FUN_1400083c0"
+        ],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "14000d4e0",
+      "name": "FUN_14000d4e0",
+      "instruction_count": 52,
+      "size": 182,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14005a390"
+        ],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "_guard_dispatch_icall"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_007"
+}

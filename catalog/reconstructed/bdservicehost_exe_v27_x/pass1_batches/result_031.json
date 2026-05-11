@@ -1,0 +1,13 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_031",
+  "renames": [
+    {"addr": "140042fcc", "to": "abort_via_common_exit", "confidence": "high", "rationale": "Called from abort/raise, tail-calls common_exit; classic MSVC abort terminator thunk."},
+    {"addr": "140043014", "to": "exit_common_thunk", "confidence": "medium", "rationale": "3-insn thunk into common_exit; CRT exit wrapper sibling of abort_via_common_exit."},
+    {"addr": "140043c90", "to": "onexit_register_thunk", "confidence": "high", "rationale": "Called from _onexit, tail-calls _register_onexit_function; standard CRT onexit shim."},
+    {"addr": "140043d70", "to": "initialize_onexit_table_wrapper", "confidence": "high", "rationale": "Single callee _initialize_onexit_table; CRT onexit table init wrapper."},
+    {"addr": "140043da0", "to": "dcrt_uninitialize_environments_wrapper", "confidence": "high", "rationale": "Wraps __dcrt_uninitialize_environments_nolock; CRT env teardown shim."},
+    {"addr": "140043df0", "to": "vcrt_uninitialize_thunk", "confidence": "high", "rationale": "2-insn tail-call to __vcrt_uninitialize; vcruntime teardown thunk."},
+    {"addr": "140043e9c", "to": "execute_crt_initializers", "confidence": "high", "rationale": "Caller __scrt_initialize_crt, callee __acrt_execute_initializers; CRT init-table executor wrapper."}
+  ]
+}

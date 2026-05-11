@@ -1,0 +1,96 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_007",
+  "renames": [
+    {
+      "addr": "14000a4d0",
+      "to": "vb_close_service_handle_wrapper",
+      "confidence": "high",
+      "rationale": "11-insn thin wrapper whose only callee is CloseServiceHandle."
+    },
+    {
+      "addr": "14000a500",
+      "to": "vb_open_scm_or_throw",
+      "confidence": "high",
+      "rationale": "String 'OpenSCManager failed' + calls OpenSCManagerW, GetLastError, _CxxThrowException."
+    },
+    {
+      "addr": "14000a600",
+      "to": "vb_query_updatesrv_service_state",
+      "confidence": "high",
+      "rationale": "Strings UPDATESRV, NoRestrictBDAppsOnUpdate, '.DEFAULT\\Software\\SetID\\bd.update.configure'; calls OpenServiceW, QueryServiceStatus, RegGetValueW via SCM-open helper."
+    },
+    {
+      "addr": "14000a900",
+      "to": "vb_load_bdch_crash_handler",
+      "confidence": "high",
+      "rationale": "Strings 'bdch.dll', 'enable_crash_handler', 'load crash handler failed'; calls GetModuleHandleExW, FreeLibrary."
+    },
+    {
+      "addr": "14000ac10",
+      "to": "vb_service_start_and_check_intentional_crash",
+      "confidence": "high",
+      "rationale": "Strings 'start', 'check_intentional_crash', 'crash interval: '; calls load_bdch_crash_handler (14000a900)."
+    },
+    {
+      "addr": "14000afb0",
+      "to": "vb_service_run_as_executable",
+      "confidence": "high",
+      "rationale": "Strings 'service::run_as_executable', 'Run as executable: Press x to exit'; calls AllocConsole/FreeConsole/_kbhit/_getwch."
+    },
+    {
+      "addr": "14000b2a0",
+      "to": "vb_start_service_dispatcher",
+      "confidence": "high",
+      "rationale": "Strings 'start_service_dispatcher', 'StartServiceCtrlDispatcherW failed with error'; calls StartServiceCtrlDispatcherW."
+    },
+    {
+      "addr": "14000b390",
+      "to": "vb_set_current_dir_or_log",
+      "confidence": "high",
+      "rationale": "Strings 'set_current_dir', 'Failed to set current directory, err: '; calls SetCurrentDirectoryW, GetLastError."
+    },
+    {
+      "addr": "14000b620",
+      "to": "vb_ensure_directory_exists",
+      "confidence": "high",
+      "rationale": "Strings 'remove', 'symlink_status', 'create_directory'; calls __std_fs_get_stats and __std_fs_create_directory."
+    },
+    {
+      "addr": "14000b750",
+      "to": "vb_init_bdservicehost_log_dir",
+      "confidence": "high",
+      "rationale": "Strings 'bdservicehost', 'BDLogging'; calls SHGetKnownFolderPath then ensure_directory_exists (14000b620)."
+    },
+    {
+      "addr": "14000baf0",
+      "to": "vb_build_bdlogging_path",
+      "confidence": "high",
+      "rationale": "Strings '\\BDLogging\\', '\\bdservicehost'; calls SHGetKnownFolderPath + ensure_directory_exists; path-composition helper."
+    },
+    {
+      "addr": "14000c090",
+      "to": "vb_wWinMain",
+      "confidence": "high",
+      "rationale": "Massive 890-insn entry: strings 'wWinMain', 'cmd line arguments:', 'install'/'uninstall'/'enable'/'disable'/'start'/'stop'/'debug', SetDefaultDllDirectories, CommandLineToArgvW."
+    },
+    {
+      "addr": "14000d240",
+      "to": "vb_get_module_dir_with_backslash",
+      "confidence": "high",
+      "rationale": "Calls GetModuleFileNameW, PathRemoveFileSpecW, PathAddBackslashW; throws on failure."
+    },
+    {
+      "addr": "14000a330",
+      "to": "vb_resolve_desktop_path",
+      "confidence": "medium",
+      "rationale": "Sole string 'Desktop' and call to __std_fs_get_file_id; likely resolves/validates a Desktop directory path."
+    },
+    {
+      "addr": "14000bfe0",
+      "to": "vb_init_update_environment",
+      "confidence": "medium",
+      "rationale": "Called only by wWinMain; fans out to query_updatesrv_service_state (14000a600) and resolve_desktop_path (14000a330); coordinator before service start."
+    }
+  ]
+}

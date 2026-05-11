@@ -1,0 +1,24 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_008",
+  "renames": [
+    {
+      "addr": "14000d5f0",
+      "to": "vb_unload_module_wrapper",
+      "confidence": "medium",
+      "rationale": "Small 18-instr leaf calls FreeLibrary plus FUN_14002f180 helper; classic module unload/cleanup shape with no other side effects."
+    },
+    {
+      "addr": "14000e180",
+      "to": "vb_invoke_de30_thunk",
+      "confidence": "medium",
+      "rationale": "24-instr thunk whose sole non-trivial callee is FUN_14000de30; called from two distinct sites (FUN_14000ef10, FUN_140003090) indicating shared adapter."
+    },
+    {
+      "addr": "14000e3c0",
+      "to": "vb_ios_base_dtor_thunk",
+      "confidence": "high",
+      "rationale": "7-instr leaf whose only callee is _Ios_base_dtor; invoked from 4 sites — canonical MSVC std::ios_base destructor trampoline."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "hard_gate_pass": true,
+  "soft_gate_pass": true,
+  "recommended_status": "complete",
+  "totals": {
+    "user_defined_functions": 1254,
+    "external_imports_skipped": 0,
+    "thunks_skipped": 5
+  },
+  "named": {
+    "total_named": 1254,
+    "from_pass0": 0
+  },
+  "low_confidence_named_addresses": []
+}

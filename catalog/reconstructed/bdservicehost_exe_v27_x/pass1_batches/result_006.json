@@ -1,0 +1,108 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_006",
+  "renames": [
+    {
+      "addr": "140007d80",
+      "to": "load_iservconfig_dll",
+      "confidence": "medium",
+      "rationale": "String 'iservconfig.dll' present; called by config-loading parent FUN_140007f90 ('common'); 120 insns suggest LoadLibrary+resolve flow."
+    },
+    {
+      "addr": "140007f90",
+      "to": "load_common_config_module",
+      "confidence": "medium",
+      "rationale": "String 'common'; calls load_iservconfig_dll and shared helpers; dispatched via _guard_dispatch_icall; sits between bdch.template.json reader and iservconfig loader."
+    },
+    {
+      "addr": "140008220",
+      "to": "load_bdch_template_json",
+      "confidence": "high",
+      "rationale": "Sole string 'bdch.template.json' and short size (53 insns) consistent with a template-file open/load wrapper; called by FUN_1400083c0 (bdch handler)."
+    },
+    {
+      "addr": "140008300",
+      "to": "init_thread_local_once",
+      "confidence": "high",
+      "rationale": "Calls _Init_thread_header, atexit, _Init_thread_footer — canonical MSVC thread-safe static init pattern; 21 insns."
+    },
+    {
+      "addr": "140008370",
+      "to": "thread_init_dispatch_wrapper",
+      "confidence": "low",
+      "rationale": "Calls init_thread_local_once then _guard_dispatch_icall; thin wrapper around a thread-safe-once callback dispatch."
+    },
+    {
+      "addr": "1400083c0",
+      "to": "load_or_create_bdch_json",
+      "confidence": "high",
+      "rationale": "Strings 'bdch-{35312C50-...}', 'bdch.json', 'dch.json.bkp'; 1522 bytes; calls FreeLibrary, signal, template loader — bdch config load with backup fallback."
+    },
+    {
+      "addr": "1400089c0",
+      "to": "bdch_config_init_wrapper",
+      "confidence": "medium",
+      "rationale": "Thin wrapper (88 insns) calling load_or_create_bdch_json via guard_dispatch_icall; single caller from higher init chain."
+    },
+    {
+      "addr": "140008d20",
+      "to": "sleep_stub",
+      "confidence": "low",
+      "rationale": "11 insns, only callee is Sleep; isolated leaf."
+    },
+    {
+      "addr": "140008d50",
+      "to": "sleep_then_abort",
+      "confidence": "high",
+      "rationale": "6 insns; calls Sleep then abort — canonical delayed-abort termination handler."
+    },
+    {
+      "addr": "140008d70",
+      "to": "sleep_then_terminate",
+      "confidence": "high",
+      "rationale": "7 insns; calls Sleep then terminate — delayed std::terminate handler companion to sleep_then_abort."
+    },
+    {
+      "addr": "140008d90",
+      "to": "handle_terminate_marker",
+      "confidence": "medium",
+      "rationale": "Strings '#terminate#' (x2); 166 insns; called from FUN_14000ac10 (crash/abort dispatcher); appears to be terminate-token processor."
+    },
+    {
+      "addr": "140008fd0",
+      "to": "init_internal_crash_handler",
+      "confidence": "high",
+      "rationale": "Reads 'Software\\Bitdefender\\InternalCrashEnabled' via RegOpenKeyExW, spawns CreateThread with 'crash#'/'abort#' tokens; classic crash-handler bootstrap."
+    },
+    {
+      "addr": "140009410",
+      "to": "load_log_and_iservconfig_dlls",
+      "confidence": "high",
+      "rationale": "Strings 'log.dll' + 'iservconfig.dll'; calls LoadLibraryW, GetLastError, FreeLibrary; 443 insns — module loader for logging + iservconfig."
+    },
+    {
+      "addr": "140009b30",
+      "to": "module_unload_wrapper",
+      "confidence": "medium",
+      "rationale": "30 insns; calls FreeLibrary via guard_dispatch_icall; counterpart unloader to load_log_and_iservconfig_dlls (same parent FUN_14000bfe0)."
+    },
+    {
+      "addr": "140009ba0",
+      "to": "san_path_env_helper",
+      "confidence": "low",
+      "rationale": "Called by san_path_env builder; 50 insns of generic accessor helpers (FUN_14002f180/35d28/2f160) — likely string/buffer helper for PATH sanitiser."
+    },
+    {
+      "addr": "140009c70",
+      "to": "sanitize_path_env_var",
+      "confidence": "high",
+      "rationale": "Strings 'san_path_env-{7D9669CE-...}', 'PATH' (x2); calls GetSystemDirectoryW, SetEnvironmentVariableW, _wdupenv_s — rewrites PATH env to a sanitised value."
+    },
+    {
+      "addr": "14000a2b0",
+      "to": "san_path_env_once_init",
+      "confidence": "medium",
+      "rationale": "Calls san_path_env_helper plus _Init_thread_header/atexit/_Init_thread_footer — thread-safe one-time initializer for PATH sanitiser state."
+    }
+  ]
+}

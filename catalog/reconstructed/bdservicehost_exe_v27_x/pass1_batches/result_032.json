@@ -1,0 +1,102 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_032",
+  "renames": [
+    {
+      "addr": "1400447d8",
+      "to": "acrt_locale_ref_add_helper",
+      "confidence": "medium",
+      "rationale": "Called from a 3-lambda operator() composition, callee is __acrt_add_locale_ref; thin wrapper that bumps a locale ref count inside a CRT locale-update helper."
+    },
+    {
+      "addr": "140045ad8",
+      "to": "crt_errno_from_doserrno_set",
+      "confidence": "medium",
+      "rationale": "Calls __doserrno then FUN_140035d08 (errno mapper); classic CRT _dosmaperr-style helper that translates a DOS error code into errno."
+    },
+    {
+      "addr": "140045cd4",
+      "to": "crt_fp_raise_or_set_errno",
+      "confidence": "medium",
+      "rationale": "Branches to _raise_exc_ex / _set_errno_from_matherr / _ctrlfp / _errcode; FP exception dispatch wrapper deciding between raising SIGFPE or setting errno."
+    },
+    {
+      "addr": "140045dc8",
+      "to": "crt_fp_statfp_apply",
+      "confidence": "medium",
+      "rationale": "158-instr helper called only from FUN_140045cd4, calls _set_statfp via FUN_140046498; applies the FP status word for the FP exception path."
+    },
+    {
+      "addr": "1400463c4",
+      "to": "crt_fp_matherr_set_errno",
+      "confidence": "medium",
+      "rationale": "Calls _set_errno_from_matherr and _ctrlfp from the FP exception dispatcher; sets errno from a matherr-style code."
+    },
+    {
+      "addr": "140046498",
+      "to": "crt_fp_statfp_writeback",
+      "confidence": "low",
+      "rationale": "Shared helper of the _set_statfp path called by the FP exception apply routine and a higher-level math wrapper."
+    },
+    {
+      "addr": "140046950",
+      "to": "crt_ptd_array_release",
+      "confidence": "high",
+      "rationale": "Calls destroy_ptd_array then _free_base; per-thread-data array destructor releasing the PTD slot table."
+    },
+    {
+      "addr": "140046d84",
+      "to": "crt_ctype_lookup_helper",
+      "confidence": "medium",
+      "rationale": "Called from islower/isupper/__pctype_func/___mb_cur_max_func/___lc_codepage_func/___lc_locale_name_func; the shared per-thread ctype/locale lookup."
+    },
+    {
+      "addr": "140047044",
+      "to": "ansi_translate_mbtowc_thunk",
+      "confidence": "medium",
+      "rationale": "Two-instruction tail-call to _mbtowc_l from write_double_translated_ansi_nolock; thin wrapper invoking the locale-aware mbtowc on a translated ANSI char."
+    },
+    {
+      "addr": "140047994",
+      "to": "fp_format_dispatch_fe",
+      "confidence": "medium",
+      "rationale": "Calls __acrt_fltout, fp_format_f_internal, fp_format_e_internal; subroutine of FUN_140047bf4 that dispatches between %f and %e formatting."
+    },
+    {
+      "addr": "140047bf4",
+      "to": "fp_format_dispatch_full",
+      "confidence": "high",
+      "rationale": "Caller is type_case_a; calls fp_format_a/fp_format_e/fp_format_f_internal/__acrt_fltout/strcpy_s — top-level %a/%e/%f/%g printf FP formatter."
+    },
+    {
+      "addr": "140048478",
+      "to": "env_find_wchar_entry",
+      "confidence": "high",
+      "rationale": "Called from common_getenv_nolock<wchar_t> and common_set_variable_in_environment_nolock<wchar_t>; uses __ascii_wcsnicmp + __acrt_CompareStringW to locate a wide env var."
+    },
+    {
+      "addr": "1400485b8",
+      "to": "env_find_ansi_entry",
+      "confidence": "high",
+      "rationale": "Called from common_set_variable_in_environment_nolock<char>; uses _strnicmp_l + __acrt_CompareStringA — ANSI-side env var lookup counterpart of env_find_wchar_entry."
+    },
+    {
+      "addr": "140049ec0",
+      "to": "close_handle_thunk",
+      "confidence": "low",
+      "rationale": "Seven-instruction wrapper that calls CloseHandle; orphan tiny thunk with no captured callers in this slice."
+    },
+    {
+      "addr": "14004dac0",
+      "to": "fp_double_handle_special",
+      "confidence": "medium",
+      "rationale": "Calls _handle_nan plus FUN_1400553ec; double-precision FP special-case dispatcher (NaN / infinity handling)."
+    },
+    {
+      "addr": "14004dbf0",
+      "to": "fp_float_handle_special",
+      "confidence": "medium",
+      "rationale": "Calls _handle_nanf and FUN_140055514; single-precision counterpart of fp_double_handle_special for float NaN/inf handling."
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_030",
+  "renames": [
+    {
+      "addr": "140035ac0",
+      "to": "vb_free_wrapper",
+      "confidence": "high",
+      "rationale": "3-instruction thunk whose only callee is _free_base; >20 diverse callers across CRT/CAtl destructors confirm generic deallocation thunk."
+    },
+    {
+      "addr": "140035d08",
+      "to": "vb_crt_invalid_parameter_thunk",
+      "confidence": "high",
+      "rationale": "Tiny function called from nearly every CRT stdio/locale/strtox routine, sole callee is _invalid_parameter. Classic CRT invalid-parameter forwarder."
+    },
+    {
+      "addr": "140035d28",
+      "to": "vb_crt_invalid_parameter_watson_thunk",
+      "confidence": "high",
+      "rationale": "Tiny function with callees _invalid_parameter + _invoke_watson and a huge fan-in across STL containers/_Tidy_deallocate/deallocate. Standard MSVC invalid-parameter/watson forwarder."
+    },
+    {
+      "addr": "140035e08",
+      "to": "vb_acrt_getptd_helper",
+      "confidence": "medium",
+      "rationale": "Small helper invoking __acrt_getptd then FUN_140046d84; pattern matches CRT per-thread-data fetch + downstream init/check helper."
+    },
+    {
+      "addr": "1400378b0",
+      "to": "vb_printf_type_n_or_integer_helper",
+      "confidence": "medium",
+      "rationale": "Only callers are type_case_n and type_case_integer (printf %n and integer-conversion handlers); 17-insn helper shared by both code paths."
+    },
+    {
+      "addr": "140038420",
+      "to": "vb_locale_wcsicmp_helper",
+      "confidence": "medium",
+      "rationale": "Callees _LocaleUpdate, __ascii_wcsicmp, _towlower_l, __doserrno; callers include ProcessCodePage and TranslateName. Locale-aware wide case-insensitive comparison helper."
+    },
+    {
+      "addr": "1400385f0",
+      "to": "vb_acrt_locked_dispatch",
+      "confidence": "medium",
+      "rationale": "40-insn routine that acquires __acrt_lock, invokes _guard_dispatch_icall (indirect CFG-guarded call), then __acrt_unlock. Standard CRT locked indirect-call dispatcher."
+    },
+    {
+      "addr": "1400398e4",
+      "to": "vb_stdio_stream_lock_helper",
+      "confidence": "medium",
+      "rationale": "2-insn helper called by every stdio op (fseek/fgetc/fputc/fclose/fread_s/ftell/ungetc/find_or_allocate_unused_stream_nolock); pattern matches FILE* lock acquire helper."
+    },
+    {
+      "addr": "1400398f0",
+      "to": "vb_stdio_stream_unlock_helper",
+      "confidence": "medium",
+      "rationale": "2-insn sibling of 1400398e4; same stdio callers plus unwind funclets FUN_14005a*. Matches FILE* lock-release helper."
+    },
+    {
+      "addr": "14003e064",
+      "to": "vb_strtod_l_thunk",
+      "confidence": "high",
+      "rationale": "2-insn 8-byte tail-call thunk; sole callee is common_strtod_l<>. Standard locale-aware strtod forwarder."
+    },
+    {
+      "addr": "14003f950",
+      "to": "vb_acrt_mbstowcs_via_lcmapstring",
+      "confidence": "medium",
+      "rationale": "Large CRT routine calling __acrt_GetLocaleInfoA, GetCPInfo, __acrt_LCMapStringA, __acrt_GetStringTypeA with calloc/free. Matches MSVC narrow->wide conversion via LCMapString."
+    },
+    {
+      "addr": "140042610",
+      "to": "vb_printf_type_s_narrow_helper",
+      "confidence": "medium",
+      "rationale": "Only caller is printf-formatter type_case_s; 108-insn helper handling %s formatting (likely narrow/MBCS branch)."
+    },
+    {
+      "addr": "140042760",
+      "to": "vb_locale_name_helper",
+      "confidence": "medium",
+      "rationale": "Callers are __acrt_LCMapStringW, __acrt_CompareStringW, __crtLCMapStringW, __acrt_copy_locale_name, __acrt_DownlevelLCIDToLocaleName, create_environment_string<wchar_t>, type_case_s. Shared locale-name normalisation helper."
+    }
+  ]
+}

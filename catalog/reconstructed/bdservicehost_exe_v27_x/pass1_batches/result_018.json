@@ -1,0 +1,36 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_018",
+  "renames": [
+    {
+      "addr": "14001cdf0",
+      "to": "vb_map_at_lookup_or_throw",
+      "confidence": "high",
+      "rationale": "Strings 'invalid map<K, T> key' and 'cannot use at() with ' plus memcmp + _CxxThrowException match std::map::at()-style keyed lookup that throws on missing key."
+    },
+    {
+      "addr": "14001d350",
+      "to": "vb_std_exception_init_copy",
+      "confidence": "high",
+      "rationale": "Only callee is __std_exception_copy and it has 5 callers that look like throw helpers (14001d320/490/4c0, 14001e0d0, 14001f3f0); classic exception-object ctor copying message."
+    },
+    {
+      "addr": "14001d320",
+      "to": "vb_throw_helper_a",
+      "confidence": "medium",
+      "rationale": "Tiny 33-byte wrapper whose sole callee is the std::exception copy ctor (vb_std_exception_init_copy); paired with 14001d490 and called from 14001e410/14001e2a0 throw sites."
+    },
+    {
+      "addr": "14001d490",
+      "to": "vb_throw_helper_b",
+      "confidence": "medium",
+      "rationale": "Mirror of 14001d320: 33-byte wrapper, sole callee is std::exception copy ctor, same two callers (14001e410, 14001e2a0); second of paired throw helpers for distinct exception types."
+    },
+    {
+      "addr": "14001d3d0",
+      "to": "vb_invoke_14001c7b0_via_guard",
+      "confidence": "low",
+      "rationale": "16-instr trampoline calling FUN_14001c7b0 and FUN_14002f180 (likely __security_check_cookie); no strings, no callers — pass1 placeholder marking the bridge to 14001c7b0."
+    }
+  ]
+}

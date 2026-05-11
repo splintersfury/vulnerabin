@@ -1,0 +1,102 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_014",
+  "renames": [
+    {
+      "addr": "1400151d0",
+      "to": "log_format_vsprintf",
+      "confidence": "medium",
+      "rationale": "Wraps __stdio_common_vsprintf_s; called by many logging stubs (FUN_14000f0d0/f8f0/f7c0/fa20/f690/f020/f3b0) to format log message buffers."
+    },
+    {
+      "addr": "140015270",
+      "to": "log_trace_exit",
+      "confidence": "high",
+      "rationale": "Format strings '<- %s [%d]' indicate function-exit trace logging. Called by every service:: method as the exit logger; uses timeGetTime for timestamp."
+    },
+    {
+      "addr": "140015360",
+      "to": "service__ctor",
+      "confidence": "high",
+      "rationale": "Strings 'service::service','CreateServiceImplementation','DestroyServiceImplementation','Can't load service dll.' Loads service DLL via LoadLibraryW + GetProcAddress; service constructor."
+    },
+    {
+      "addr": "140015750",
+      "to": "service__dtor",
+      "confidence": "medium",
+      "rationale": "Called only by FUN_140015710 (likely dtor thunk); invokes guard_dispatch_icall + CloseHandle + FreeLibrary, mirror of service__ctor cleanup path."
+    },
+    {
+      "addr": "140015710",
+      "to": "service__dtor_thunk",
+      "confidence": "medium",
+      "rationale": "Tiny 16-instr wrapper that calls FUN_14002f180 then service__dtor; matches destructor thunk pattern for service object."
+    },
+    {
+      "addr": "140015820",
+      "to": "service__StopService",
+      "confidence": "high",
+      "rationale": "String 'service::StopService' + SetEvent call to signal service stop; entry trace via log_trace_exit pair pattern."
+    },
+    {
+      "addr": "1400159d0",
+      "to": "service__run_as_service",
+      "confidence": "high",
+      "rationale": "String 'service::run_as_service','Failed to register control handler.' Calls RegisterServiceCtrlHandlerExW + GetMessageW/DispatchMessageW + MsgWaitForMultipleObjectsEx; SCM main loop."
+    },
+    {
+      "addr": "140015ca0",
+      "to": "service__on_control_handler",
+      "confidence": "high",
+      "rationale": "Strings 'service::on_control_handler','service_manager::unprotect_service'. SCM control-handler callback dispatching control codes; called by FUN_140016eb0 (control handler thunk)."
+    },
+    {
+      "addr": "140015fc0",
+      "to": "service__uninit",
+      "confidence": "high",
+      "rationale": "String 'service::uninit'; CloseHandle of service handles and final report_status call. Service teardown."
+    },
+    {
+      "addr": "140016190",
+      "to": "service__report_status",
+      "confidence": "high",
+      "rationale": "String 'service::report_status' + SetServiceStatus call; SCM status reporter used by run_as_service and uninit."
+    },
+    {
+      "addr": "140016380",
+      "to": "service__register_service_events",
+      "confidence": "high",
+      "rationale": "String 'service::register_service_events','events map is empty'; iterates an events map registering service event sinks."
+    },
+    {
+      "addr": "140016620",
+      "to": "service__unregister_service_events",
+      "confidence": "high",
+      "rationale": "String 'service::unregister_service_events'; mirror of register_service_events using same FUN_140016ed0 helper. Called by run_as_service on shutdown."
+    },
+    {
+      "addr": "140016820",
+      "to": "service__is_command_trusted",
+      "confidence": "high",
+      "rationale": "Strings 'service::is_command_trusted','bdservicehost.'; uses __std_fs_get_stats — checks command file/path against trust policy for SCM control."
+    },
+    {
+      "addr": "140016b80",
+      "to": "service__remove_trust_command_file",
+      "confidence": "high",
+      "rationale": "Strings 'service::remove_trust_command_file','bdservicehost.','Failed to remove file: '; deletes trust-command file used by IPC. Called from run_as_service."
+    },
+    {
+      "addr": "140016eb0",
+      "to": "service__control_handler_thunk",
+      "confidence": "medium",
+      "rationale": "10-instr stub whose sole callee is on_control_handler; matches the trampoline registered via RegisterServiceCtrlHandlerExW."
+    },
+    {
+      "addr": "140016ed0",
+      "to": "service_events_map_iter_helper",
+      "confidence": "low",
+      "rationale": "Called by both register_service_events and unregister_service_events; uses operator_new + FUN_140017180/16fb0 — likely event-map element constructor/iterator."
+    }
+  ]
+}

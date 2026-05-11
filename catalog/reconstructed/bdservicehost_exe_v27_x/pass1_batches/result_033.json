@@ -1,0 +1,102 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_033",
+  "renames": [
+    {
+      "addr": "14004e414",
+      "to": "vb_mbctype_init_thread_data",
+      "confidence": "medium",
+      "rationale": "Locked CRT helper called from __acrt_initialize_multibyte path (via 14004e8c4); allocates/frees thread mbc data, sets doserrno; classic _setmbcp helper."
+    },
+    {
+      "addr": "14004e8c4",
+      "to": "vb_acrt_initialize_multibyte_impl",
+      "confidence": "high",
+      "rationale": "Sole callee of __acrt_initialize_multibyte; calls _setmbcp_nolock, getSystemCP, _malloc_base; the multibyte init body."
+    },
+    {
+      "addr": "14004ea84",
+      "to": "vb_acrt_update_multibyte_thread_data",
+      "confidence": "high",
+      "rationale": "Called by __acrt_update_thread_multibyte_data and the init body; lock/free/abort pattern matches per-thread mbc data refresh."
+    },
+    {
+      "addr": "14004ee80",
+      "to": "vb_get_command_line_tchar",
+      "confidence": "high",
+      "rationale": "Tiny wrapper that calls GetCommandLineW and GetCommandLineA; classic CRT _acmdln/_wcmdln initializer."
+    },
+    {
+      "addr": "14004f050",
+      "to": "vb_get_process_heap_wrapper",
+      "confidence": "high",
+      "rationale": "7-instruction wrapper around GetProcessHeap; CRT heap-handle accessor."
+    },
+    {
+      "addr": "14004f790",
+      "to": "vb_acrt_get_locale_monetary",
+      "confidence": "high",
+      "rationale": "Calls __acrt_GetLocaleInfoA, _calloc_base, __acrt_locale_free_monetary; builds monetary lconv block (CRT lconv init)."
+    },
+    {
+      "addr": "14004fd30",
+      "to": "vb_acrt_get_locale_numeric",
+      "confidence": "high",
+      "rationale": "Calls __acrt_GetLocaleInfoA and __acrt_locale_free_numeric; numeric counterpart to 14004f790, builds numeric lconv block."
+    },
+    {
+      "addr": "140050a04",
+      "to": "vb_update_thread_locale_info",
+      "confidence": "high",
+      "rationale": "Called by _wsetlocale; uses __acrt_getptd/_updatetlocinfoEx_nolock under lock — per-thread locale update helper."
+    },
+    {
+      "addr": "140050cf0",
+      "to": "vb_init_locale_country",
+      "confidence": "high",
+      "rationale": "Calls __acrt_GetLocaleInfoEx, TestDefaultCountry, wcsncpy_s; populates locale country string with fallback test."
+    },
+    {
+      "addr": "140050fe0",
+      "to": "vb_init_locale_codepage",
+      "confidence": "medium",
+      "rationale": "Same shape as country init (GetLocaleInfoEx + wcsncpy_s) but smaller and no TestDefaultCountry; likely codepage/locale-name field init."
+    },
+    {
+      "addr": "140051500",
+      "to": "vb_resolve_lcid_from_locale",
+      "confidence": "high",
+      "rationale": "Calls LcidFromHexString + GetLocaleInfoW + __acrt_getptd; converts locale string to LCID."
+    },
+    {
+      "addr": "140051750",
+      "to": "vb_init_locale_language",
+      "confidence": "high",
+      "rationale": "LcidFromHexString + TestDefaultLanguage + GetLocaleInfoW; CRT language-field initialization with default-language fallback."
+    },
+    {
+      "addr": "1400519a0",
+      "to": "vb_init_locale_country_from_lcid",
+      "confidence": "medium",
+      "rationale": "LcidFromHexString + GetLocaleInfoW + TestDefaultLanguage (smaller variant); secondary locale-field initializer."
+    },
+    {
+      "addr": "140051fe0",
+      "to": "vb_fpu_control_stub",
+      "confidence": "medium",
+      "rationale": "Tiny 3-instruction helper called by _set_statfp, _control87, _ctrlfp; FPU control-word read/return stub."
+    },
+    {
+      "addr": "140052290",
+      "to": "vb_fp_format_helper",
+      "confidence": "high",
+      "rationale": "Called by fp_format_e (and two siblings); uses fegetround + __doserrno; floating-point formatting rounding helper."
+    },
+    {
+      "addr": "140053824",
+      "to": "vb_locale_wcsnicmp_helper",
+      "confidence": "high",
+      "rationale": "Used by __acrt_stdio_parse_mode<wchar_t> and locale-init paths; calls __ascii_wcsnicmp + _towlower_l + _LocaleUpdate."
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_019",
+  "renames": [
+    {
+      "addr": "14001ddd0",
+      "to": "vb_json_type_name",
+      "confidence": "high",
+      "rationale": "Returns one of {object,array,string,boolean,discarded,number} string literals; matches nlohmann::json::type_name() signature. Called from many JSON helpers in this module."
+    },
+    {
+      "addr": "14001de50",
+      "to": "vb_json_throw_exception",
+      "confidence": "high",
+      "rationale": "Embeds nlohmann/json 3.7.0 commit hash '961c151d...3.7.0' and calls _CxxThrowException; classic json::exception::create/parse_error builder."
+    },
+    {
+      "addr": "14001d7d0",
+      "to": "vb_fstream_write_helper",
+      "confidence": "medium",
+      "rationale": "Calls fwrite via guard_dispatch_icall; wrapped by callers that subsequently call fclose (FUN_14001d9d0). File-stream write helper."
+    },
+    {
+      "addr": "14001d9d0",
+      "to": "vb_fstream_close_flush",
+      "confidence": "medium",
+      "rationale": "Calls FUN_14001d7d0 (fwrite helper) then fclose; matches close-and-flush pattern for buffered output stream wrapper."
+    },
+    {
+      "addr": "14001d8d0",
+      "to": "vb_fstream_buffer_access",
+      "confidence": "medium",
+      "rationale": "Calls _get_stream_buffer_pointers (MSVC CRT internal for stream buffer state); file-stream buffer peek/access helper."
+    }
+  ]
+}

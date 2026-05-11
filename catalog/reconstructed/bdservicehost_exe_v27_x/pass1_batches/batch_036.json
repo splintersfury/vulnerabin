@@ -1,0 +1,266 @@
+{
+  "functions": [
+    {
+      "addr": "140059f5e",
+      "name": "FUN_140059f5e",
+      "instruction_count": 11,
+      "size": 34,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__vcrt_getptd"
+        ]
+      }
+    },
+    {
+      "addr": "140059f81",
+      "name": "FUN_140059f81",
+      "instruction_count": 8,
+      "size": 21,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__FrameUnwindFilter"
+        ]
+      }
+    },
+    {
+      "addr": "140059fba",
+      "name": "FUN_140059fba",
+      "instruction_count": 8,
+      "size": 26,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400398f0"
+        ]
+      }
+    },
+    {
+      "addr": "140059fd5",
+      "name": "FUN_140059fd5",
+      "instruction_count": 8,
+      "size": 25,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_unlock"
+        ]
+      }
+    },
+    {
+      "addr": "140059fef",
+      "name": "FUN_140059fef",
+      "instruction_count": 7,
+      "size": 24,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_unlock"
+        ]
+      }
+    },
+    {
+      "addr": "14005a008",
+      "name": "FUN_14005a008",
+      "instruction_count": 11,
+      "size": 32,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_unlock"
+        ]
+      }
+    },
+    {
+      "addr": "14005a029",
+      "name": "FUN_14005a029",
+      "instruction_count": 7,
+      "size": 24,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_unlock"
+        ]
+      }
+    },
+    {
+      "addr": "14005a042",
+      "name": "FUN_14005a042",
+      "instruction_count": 7,
+      "size": 24,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_unlock"
+        ]
+      }
+    },
+    {
+      "addr": "14005a05b",
+      "name": "FUN_14005a05b",
+      "instruction_count": 7,
+      "size": 24,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_unlock"
+        ]
+      }
+    },
+    {
+      "addr": "14005a074",
+      "name": "FUN_14005a074",
+      "instruction_count": 9,
+      "size": 24,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__dcrt_set_input_console_mode"
+        ]
+      }
+    },
+    {
+      "addr": "14005a08d",
+      "name": "FUN_14005a08d",
+      "instruction_count": 9,
+      "size": 25,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400398f0"
+        ]
+      }
+    },
+    {
+      "addr": "14005a0a7",
+      "name": "FUN_14005a0a7",
+      "instruction_count": 9,
+      "size": 25,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400398f0"
+        ]
+      }
+    },
+    {
+      "addr": "14005a0c1",
+      "name": "FUN_14005a0c1",
+      "instruction_count": 7,
+      "size": 23,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400398f0"
+        ]
+      }
+    },
+    {
+      "addr": "14005a0d9",
+      "name": "FUN_14005a0d9",
+      "instruction_count": 8,
+      "size": 28,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_unlock"
+        ]
+      }
+    },
+    {
+      "addr": "14005a0f6",
+      "name": "FUN_14005a0f6",
+      "instruction_count": 7,
+      "size": 23,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400398f0"
+        ]
+      }
+    },
+    {
+      "addr": "14005a10e",
+      "name": "FUN_14005a10e",
+      "instruction_count": 7,
+      "size": 23,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400398f0"
+        ]
+      }
+    },
+    {
+      "addr": "14005a126",
+      "name": "FUN_14005a126",
+      "instruction_count": 14,
+      "size": 42,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400398f0",
+          "__acrt_stdio_free_stream"
+        ]
+      }
+    },
+    {
+      "addr": "14005a151",
+      "name": "FUN_14005a151",
+      "instruction_count": 7,
+      "size": 21,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_unlock"
+        ]
+      }
+    },
+    {
+      "addr": "14005a167",
+      "name": "FUN_14005a167",
+      "instruction_count": 10,
+      "size": 26,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140042e34"
+        ]
+      }
+    },
+    {
+      "addr": "14005a182",
+      "name": "FUN_14005a182",
+      "instruction_count": 8,
+      "size": 25,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_unlock"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_036"
+}

@@ -1,0 +1,18 @@
+{
+  "functions": [
+    {
+      "addr": "14005a5d0",
+      "name": "FUN_14005a5d0",
+      "instruction_count": 2,
+      "size": 12,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "~CAtlBaseModule"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_038"
+}

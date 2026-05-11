@@ -1,0 +1,84 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_005",
+  "renames": [
+    {
+      "addr": "1400060a0",
+      "to": "vb_get_module_filename_or_throw",
+      "confidence": "high",
+      "rationale": "Calls GetModuleFileNameW, on failure calls GetLastError and _CxxThrowException with string 'GetModuleFileName failed'."
+    },
+    {
+      "addr": "140006670",
+      "to": "vb_get_module_path_validated",
+      "confidence": "high",
+      "rationale": "GetModuleFileNameW wrapper that also throws on 'GetModuleFileName returned an unexpected path' (path-shape validation) and 'GetModuleFileName failed'."
+    },
+    {
+      "addr": "140007040",
+      "to": "vb_load_bdch_dll_resolve_exports",
+      "confidence": "high",
+      "rationale": "Loads bdch.dll via GetModuleHandleExW, resolves ~17 exports (GetAPIVersion, EnableBdch, SubmitDump, ListDumps, SignalHandler, etc.) via GetProcAddress with error logging."
+    },
+    {
+      "addr": "140006fc0",
+      "to": "vb_bdch_loader_new",
+      "confidence": "high",
+      "rationale": "operator_new then calls FUN_140007040 (bdch loader); classic ctor that heap-allocates the bdch wrapper object then initializes it."
+    },
+    {
+      "addr": "140006b60",
+      "to": "vb_init_log_dll_for_session",
+      "confidence": "high",
+      "rationale": "References 'log.dll' string; calls GetCurrentProcessId, ProcessIdToSessionId, FreeLibrary — session-aware log.dll loader/init."
+    },
+    {
+      "addr": "140006180",
+      "to": "vb_get_module_path_silent",
+      "confidence": "medium",
+      "rationale": "GetModuleFileNameW + GetLastError but no throw string; sibling of 1400060a0 that returns error code instead of throwing (called by 140006460/140006b60/140009410)."
+    },
+    {
+      "addr": "1400067c0",
+      "to": "vb_get_exe_path_cached",
+      "confidence": "medium",
+      "rationale": "Large GetModuleFileNameW wrapper (194 insns) called from 5 sites including service init paths; likely cached/normalised exe-path getter."
+    },
+    {
+      "addr": "140006460",
+      "to": "vb_init_once_module_path",
+      "confidence": "medium",
+      "rationale": "Uses _Init_thread_header/_Init_thread_footer + atexit around FUN_140006180 (module path getter); classic one-shot init of cached module path."
+    },
+    {
+      "addr": "140006e00",
+      "to": "vb_module_handle_dtor",
+      "confidence": "medium",
+      "rationale": "Tiny (16 insns) wrapper calling FreeLibrary then FUN_140011e70; shape of an HMODULE-holding object destructor."
+    },
+    {
+      "addr": "140006f20",
+      "to": "vb_dll_holder_release",
+      "confidence": "medium",
+      "rationale": "Calls FreeLibrary plus allocator helpers (FUN_14002f180/FUN_140035d28); release/cleanup of a dynamically loaded DLL wrapper."
+    },
+    {
+      "addr": "140006e40",
+      "to": "vb_alloc_thunk_malloc",
+      "confidence": "medium",
+      "rationale": "Two-instruction tailcall to _malloc_base; allocator thunk passed to FUN_140014f60 (caller is likely allocator-table consumer)."
+    },
+    {
+      "addr": "140006e50",
+      "to": "vb_alloc_thunk_realloc",
+      "confidence": "medium",
+      "rationale": "Three-instruction tailcall to _realloc_base; sibling of 140006e40, same allocator-table pattern."
+    },
+    {
+      "addr": "140006ea0",
+      "to": "vb_guarded_icall_thunk",
+      "confidence": "low",
+      "rationale": "Calls _guard_dispatch_icall (CFG-guarded indirect call dispatcher); 30-insn thunk that forwards through a function pointer."
+    }
+  ]
+}

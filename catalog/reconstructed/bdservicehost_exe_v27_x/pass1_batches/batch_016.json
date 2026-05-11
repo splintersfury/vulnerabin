@@ -1,0 +1,352 @@
+{
+  "functions": [
+    {
+      "addr": "140018ed0",
+      "name": "FUN_140018ed0",
+      "instruction_count": 128,
+      "size": 487,
+      "strings": [
+        "invalid_iterator"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14001a250",
+          "FUN_1400250e0",
+          "FUN_140021b50",
+          "FUN_140026df0",
+          "FUN_14001a7f0"
+        ],
+        "callees": [
+          "FUN_140010800",
+          "FUN_140018380",
+          "FUN_1400106a0",
+          "FUN_14002f180",
+          "FUN_14002f160",
+          "__std_exception_copy",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "1400190c0",
+      "name": "FUN_1400190c0",
+      "instruction_count": 128,
+      "size": 487,
+      "strings": [
+        "type_error"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14001cdf0",
+          "FUN_140019eb0",
+          "FUN_14001a250",
+          "FUN_140021b50",
+          "FUN_14001a110",
+          "FUN_140026df0",
+          "FUN_14001a7f0"
+        ],
+        "callees": [
+          "FUN_140010800",
+          "FUN_140018380",
+          "FUN_1400106a0",
+          "FUN_14002f180",
+          "FUN_14002f160",
+          "__std_exception_copy",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "1400192b0",
+      "name": "FUN_1400192b0",
+      "instruction_count": 128,
+      "size": 487,
+      "strings": [
+        "out_of_range"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_1400220b0",
+          "FUN_140058ff0",
+          "FUN_140023770"
+        ],
+        "callees": [
+          "FUN_140010800",
+          "FUN_140018380",
+          "FUN_1400106a0",
+          "FUN_14002f180",
+          "FUN_14002f160",
+          "__std_exception_copy",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "1400194a0",
+      "name": "FUN_1400194a0",
+      "instruction_count": 125,
+      "size": 497,
+      "strings": [
+        "other_error"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14001de50"
+        ],
+        "callees": [
+          "FUN_140010800",
+          "FUN_140018380",
+          "FUN_1400106a0",
+          "FUN_14002f180",
+          "FUN_14002f160",
+          "__std_exception_copy",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "1400196a0",
+      "name": "FUN_1400196a0",
+      "instruction_count": 2,
+      "size": 6,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14002f790"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "1400196b0",
+      "name": "FUN_1400196b0",
+      "instruction_count": 106,
+      "size": 396,
+      "strings": [
+        "bad locale name"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14001f7c0"
+        ],
+        "callees": [
+          "_Locinfo_dtor",
+          "_Locinfo_ctor",
+          "FUN_14002dc94",
+          "FUN_14002d73c",
+          "operator_new",
+          "~_Lockit",
+          "FUN_140035ac0",
+          "_Lockit"
+        ]
+      }
+    },
+    {
+      "addr": "140019850",
+      "name": "FUN_140019850",
+      "instruction_count": 23,
+      "size": 72,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_Tolower"
+        ]
+      }
+    },
+    {
+      "addr": "1400198b0",
+      "name": "FUN_1400198b0",
+      "instruction_count": 23,
+      "size": 72,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_Toupper"
+        ]
+      }
+    },
+    {
+      "addr": "140019900",
+      "name": "FUN_140019900",
+      "instruction_count": 2,
+      "size": 4,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140019910",
+      "name": "FUN_140019910",
+      "instruction_count": 10,
+      "size": 29,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "140019930",
+      "name": "FUN_140019930",
+      "instruction_count": 10,
+      "size": 31,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "1400199c0",
+      "name": "FUN_1400199c0",
+      "instruction_count": 42,
+      "size": 136,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_guard_dispatch_icall",
+          "FUN_140002cd0"
+        ]
+      }
+    },
+    {
+      "addr": "140019a50",
+      "name": "FUN_140019a50",
+      "instruction_count": 30,
+      "size": 101,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140002cd0",
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "140019ac0",
+      "name": "FUN_140019ac0",
+      "instruction_count": 68,
+      "size": 290,
+      "strings": [
+        "RegisterPowerSettingNotification GUID_ACDC_POWER_SOURCE failed err=%d",
+        "RegisterPowerSettingNotification GUID_ACDC_POWER_SOURCE failed err=%d",
+        "CBdServicePowerSourceEvent::Register",
+        "CBdServicePowerSourceEvent::Register"
+      ],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000eb20",
+          "GetLastError",
+          "RegisterPowerSettingNotification",
+          "FUN_1400019c0",
+          "FUN_140011e70"
+        ]
+      }
+    },
+    {
+      "addr": "140019bf0",
+      "name": "FUN_140019bf0",
+      "instruction_count": 5,
+      "size": 17,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140019c10",
+      "name": "FUN_140019c10",
+      "instruction_count": 13,
+      "size": 43,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "140019c40",
+      "name": "FUN_140019c40",
+      "instruction_count": 68,
+      "size": 290,
+      "strings": [
+        "RegisterPowerSettingNotification GUID_BATTERY_PERCENTAGE_REMAINING failed err=%d",
+        "RegisterPowerSettingNotification GUID_BATTERY_PERCENTAGE_REMAINING failed err=%d",
+        "CBdServiceBatteryPercentageEvent::Register",
+        "CBdServiceBatteryPercentageEvent::Register"
+      ],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000eb20",
+          "GetLastError",
+          "RegisterPowerSettingNotification",
+          "FUN_1400019c0",
+          "FUN_140011e70"
+        ]
+      }
+    },
+    {
+      "addr": "140019d70",
+      "name": "FUN_140019d70",
+      "instruction_count": 13,
+      "size": 43,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "140019da0",
+      "name": "FUN_140019da0",
+      "instruction_count": 30,
+      "size": 110,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14005a4b0",
+          "FUN_14005a4c0"
+        ],
+        "callees": [
+          "FUN_140022010",
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140019e10",
+      "name": "FUN_140019e10",
+      "instruction_count": 29,
+      "size": 149,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14001d410"
+        ],
+        "callees": [
+          "_Ios_base_dtor",
+          "FUN_14001c7b0"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_016"
+}

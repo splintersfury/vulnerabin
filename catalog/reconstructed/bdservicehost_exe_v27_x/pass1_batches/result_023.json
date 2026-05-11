@@ -1,0 +1,24 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_023",
+  "renames": [
+    {
+      "addr": "140028bc0",
+      "to": "vb_hash_bucket_init",
+      "confidence": "medium",
+      "rationale": "String 'invalid hash bucket count' anchors this as a hash-table constructor/initializer validating bucket count param."
+    },
+    {
+      "addr": "140029e80",
+      "to": "vb_shared_object_helper",
+      "confidence": "low",
+      "rationale": "Hot leaf called by 8 sibling FUN_14002xxx constructors after operator_new+FUN_140014450+FUN_140001670+FUN_140035d28; likely shared-state/refcount init helper."
+    },
+    {
+      "addr": "140029be0",
+      "to": "vb_intrusive_list_node_recurse",
+      "confidence": "low",
+      "rationale": "Self-recursive 30-instr leaf calling sibling FUN_140029e10; classic intrusive-list/tree node walk releasing nodes."
+    }
+  ]
+}

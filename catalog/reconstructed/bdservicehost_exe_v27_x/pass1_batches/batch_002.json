@@ -1,0 +1,297 @@
+{
+  "functions": [
+    {
+      "addr": "1400021e0",
+      "name": "FUN_1400021e0",
+      "instruction_count": 2,
+      "size": 8,
+      "strings": [
+        "system"
+      ],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "1400021f0",
+      "name": "FUN_1400021f0",
+      "instruction_count": 38,
+      "size": 148,
+      "strings": [
+        "unknown error"
+      ],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f160",
+          "__std_system_error_allocate_message",
+          "LocalFree",
+          "FUN_1400106a0"
+        ]
+      }
+    },
+    {
+      "addr": "140002290",
+      "name": "FUN_140002290",
+      "instruction_count": 25,
+      "size": 82,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002d7f8"
+        ]
+      }
+    },
+    {
+      "addr": "1400022f0",
+      "name": "FUN_1400022f0",
+      "instruction_count": 7,
+      "size": 33,
+      "strings": [
+        "bad cast",
+        "bad cast"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140002320"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140002320",
+      "name": "FUN_140002320",
+      "instruction_count": 6,
+      "size": 31,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14001f7c0",
+          "FUN_1400134e0",
+          "FUN_140021ed0",
+          "FUN_140012ef0",
+          "FUN_140013c80"
+        ],
+        "callees": [
+          "FUN_1400022f0",
+          "_CxxThrowException"
+        ]
+      }
+    },
+    {
+      "addr": "140002340",
+      "name": "FUN_140002340",
+      "instruction_count": 17,
+      "size": 60,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__std_exception_copy"
+        ]
+      }
+    },
+    {
+      "addr": "140002380",
+      "name": "FUN_140002380",
+      "instruction_count": 13,
+      "size": 43,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "1400023b0",
+      "name": "FUN_1400023b0",
+      "instruction_count": 41,
+      "size": 146,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140035ac0",
+          "_Locinfo_dtor",
+          "~_Lockit"
+        ]
+      }
+    },
+    {
+      "addr": "140002450",
+      "name": "FUN_140002450",
+      "instruction_count": 2,
+      "size": 5,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140002460",
+      "name": "FUN_140002460",
+      "instruction_count": 4,
+      "size": 15,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140002480",
+      "name": "FUN_140002480",
+      "instruction_count": 18,
+      "size": 64,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_guard_dispatch_icall"
+        ]
+      }
+    },
+    {
+      "addr": "1400024c0",
+      "name": "FUN_1400024c0",
+      "instruction_count": 80,
+      "size": 270,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140013fd0"
+        ],
+        "callees": [
+          "FUN_14002d6b4",
+          "FUN_14002f160",
+          "_calloc_base",
+          "_Mbrtowc"
+        ]
+      }
+    },
+    {
+      "addr": "1400025d0",
+      "name": "FUN_1400025d0",
+      "instruction_count": 116,
+      "size": 436,
+      "strings": [
+        "bad locale name"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140013c80"
+        ],
+        "callees": [
+          "FUN_14002d73c",
+          "operator_new",
+          "FUN_14002dc94",
+          "FUN_140035ac0",
+          "_Locinfo_dtor",
+          "~_Lockit",
+          "_Locinfo_ctor",
+          "_Lockit",
+          "_Getcvt"
+        ]
+      }
+    },
+    {
+      "addr": "1400027c0",
+      "name": "FUN_1400027c0",
+      "instruction_count": 8,
+      "size": 27,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_Getwctypes"
+        ]
+      }
+    },
+    {
+      "addr": "1400027e0",
+      "name": "FUN_1400027e0",
+      "instruction_count": 30,
+      "size": 84,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_guard_dispatch_icall"
+        ]
+      }
+    },
+    {
+      "addr": "140002840",
+      "name": "FUN_140002840",
+      "instruction_count": 30,
+      "size": 84,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_guard_dispatch_icall"
+        ]
+      }
+    },
+    {
+      "addr": "1400028b0",
+      "name": "FUN_1400028b0",
+      "instruction_count": 23,
+      "size": 74,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_Towlower"
+        ]
+      }
+    },
+    {
+      "addr": "140002910",
+      "name": "FUN_140002910",
+      "instruction_count": 23,
+      "size": 74,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_Towupper"
+        ]
+      }
+    },
+    {
+      "addr": "140002960",
+      "name": "FUN_140002960",
+      "instruction_count": 23,
+      "size": 104,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f160",
+          "_Mbrtowc"
+        ]
+      }
+    },
+    {
+      "addr": "1400029d0",
+      "name": "FUN_1400029d0",
+      "instruction_count": 48,
+      "size": 193,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f160",
+          "_Mbrtowc"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_002"
+}

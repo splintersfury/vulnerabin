@@ -1,0 +1,60 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_016",
+  "renames": [
+    {
+      "addr": "140018ed0",
+      "to": "json_throw_invalid_iterator",
+      "confidence": "high",
+      "rationale": "Builds and throws nlohmann::json invalid_iterator exception; string 'invalid_iterator' + std::exception copy ctor pattern shared with sibling throw helpers."
+    },
+    {
+      "addr": "1400190c0",
+      "to": "json_throw_type_error",
+      "confidence": "high",
+      "rationale": "nlohmann::json type_error throw helper; identical shape (487 bytes, exception_copy callee, 128 insns) to invalid_iterator/out_of_range throwers."
+    },
+    {
+      "addr": "1400192b0",
+      "to": "json_throw_out_of_range",
+      "confidence": "high",
+      "rationale": "nlohmann::json out_of_range throw helper; string literal + std::exception_copy + identical sibling shape."
+    },
+    {
+      "addr": "1400194a0",
+      "to": "json_throw_other_error",
+      "confidence": "high",
+      "rationale": "nlohmann::json other_error throw helper; string 'other_error' + __std_exception_copy callee."
+    },
+    {
+      "addr": "1400196b0",
+      "to": "locale_ctor_from_name",
+      "confidence": "high",
+      "rationale": "Constructs std::locale from name; calls _Locinfo_ctor/_Lockit/operator_new and throws runtime_error with 'bad locale name' on failure."
+    },
+    {
+      "addr": "140019850",
+      "to": "ctype_tolower_thunk",
+      "confidence": "medium",
+      "rationale": "Thin 23-insn wrapper around CRT _Tolower; classic std::ctype<char>::tolower virtual implementation shape."
+    },
+    {
+      "addr": "1400198b0",
+      "to": "ctype_toupper_thunk",
+      "confidence": "medium",
+      "rationale": "Thin 23-insn wrapper around CRT _Toupper; std::ctype<char>::toupper virtual implementation."
+    },
+    {
+      "addr": "140019ac0",
+      "to": "CBdServicePowerSourceEvent_Register",
+      "confidence": "high",
+      "rationale": "Strings name CBdServicePowerSourceEvent::Register and log RegisterPowerSettingNotification GUID_ACDC_POWER_SOURCE failure with GetLastError."
+    },
+    {
+      "addr": "140019c40",
+      "to": "CBdServiceBatteryPercentageEvent_Register",
+      "confidence": "high",
+      "rationale": "Strings name CBdServiceBatteryPercentageEvent::Register; registers GUID_BATTERY_PERCENTAGE_REMAINING power-setting notification, logs failure."
+    }
+  ]
+}

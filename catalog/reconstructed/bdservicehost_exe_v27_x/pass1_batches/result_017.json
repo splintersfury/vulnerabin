@@ -1,0 +1,96 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_017",
+  "renames": [
+    {
+      "addr": "140019eb0",
+      "to": "parse_config_version",
+      "confidence": "high",
+      "rationale": "Strings 'version', 'The JSON version is not accepted', 'type must be number' + called from main config parser FUN_14001b450; validates the 'version' JSON field as numeric."
+    },
+    {
+      "addr": "14001a110",
+      "to": "parse_config_string_field",
+      "confidence": "medium",
+      "rationale": "Only string 'type must be string, but is '; small helper called from config parser FUN_14001b450; throws on non-string JSON values. Generic string-field extractor."
+    },
+    {
+      "addr": "14001a250",
+      "to": "parse_config_accepted_controls",
+      "confidence": "high",
+      "rationale": "Strings 'acceptedControls', 'The accepted control is not recognized', 'type must be string'; called from FUN_14001b450; validates a list of accepted service control names."
+    },
+    {
+      "addr": "14001a7f0",
+      "to": "parse_config_registered_events",
+      "confidence": "high",
+      "rationale": "Strings 'registeredEvents', 'The registered event is not recognized', 'type must be string'; called from FUN_14001b450; parses registered-event list, allocates entries via operator_new."
+    },
+    {
+      "addr": "14001b1c0",
+      "to": "load_service_config_file",
+      "confidence": "high",
+      "rationale": "String 'Could not open the configuration file.'; uses _Ios_base_dtor (fstream); calls FUN_14001b450 (config parser) after open. Top-level config loader."
+    },
+    {
+      "addr": "14001b450",
+      "to": "parse_service_config_json",
+      "confidence": "high",
+      "rationale": "Strings 'serviceName','serviceDisplayName','serviceGroup','serviceDescription','relativeDllPath','runProtected'; dispatches to version/controls/events sub-parsers; Windows version check via VerifyVersionInfoW."
+    },
+    {
+      "addr": "14001bc20",
+      "to": "stdio_flush_thunk",
+      "confidence": "medium",
+      "rationale": "Tiny wrapper calling fflush via _guard_dispatch_icall; CFG-guarded vtable thunk over fflush."
+    },
+    {
+      "addr": "14001bc70",
+      "to": "stdio_setvbuf_wrapper",
+      "confidence": "medium",
+      "rationale": "Wraps setvbuf with FUN_14001d8d0 helper; small stdio buffer-mode adapter."
+    },
+    {
+      "addr": "14001bcd0",
+      "to": "stdio_fsetpos_wrapper",
+      "confidence": "medium",
+      "rationale": "Calls fsetpos via thunk; stream seek wrapper used by stream abstraction layer."
+    },
+    {
+      "addr": "14001bdb0",
+      "to": "stdio_seek_wrapper",
+      "confidence": "medium",
+      "rationale": "Calls common_fseek + fgetpos; combined seek/tell adapter over CRT FILE*."
+    },
+    {
+      "addr": "14001bec0",
+      "to": "stream_write_buffer",
+      "confidence": "medium",
+      "rationale": "Calls fwrite via _guard_dispatch_icall; size validation via FUN_1400316b0; output write adapter."
+    },
+    {
+      "addr": "14001bff0",
+      "to": "stream_read_buffer",
+      "confidence": "medium",
+      "rationale": "Calls fread via _guard_dispatch_icall with size validation; counterpart to stream_write_buffer."
+    },
+    {
+      "addr": "14001c1b0",
+      "to": "stream_getc_unget",
+      "confidence": "medium",
+      "rationale": "Calls fgetc + ungetc via guard dispatch; character-level stream read with pushback support."
+    },
+    {
+      "addr": "14001c4e0",
+      "to": "stream_ungetc_wrapper",
+      "confidence": "medium",
+      "rationale": "Calls ungetc; pushback adapter for the stream abstraction layer."
+    },
+    {
+      "addr": "14001c5c0",
+      "to": "stream_putc_write",
+      "confidence": "medium",
+      "rationale": "Calls fputc and fwrite via guard dispatch; character/buffer write adapter."
+    }
+  ]
+}

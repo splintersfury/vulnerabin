@@ -1,0 +1,516 @@
+{
+  "functions": [
+    {
+      "addr": "14002a5d0",
+      "name": "FUN_14002a5d0",
+      "instruction_count": 3,
+      "size": 12,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FID_conflict:`scalar_deleting_destructor'"
+        ]
+      }
+    },
+    {
+      "addr": "14002a5e0",
+      "name": "FUN_14002a5e0",
+      "instruction_count": 29,
+      "size": 91,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14001f280"
+        ],
+        "callees": [
+          "common_vsprintf<class___crt_stdio_output::standard_base,char>",
+          "FUN_140015230"
+        ]
+      }
+    },
+    {
+      "addr": "14002a640",
+      "name": "FUN_14002a640",
+      "instruction_count": 25,
+      "size": 90,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140018020"
+        ],
+        "callees": [
+          "common_vsprintf<class___crt_stdio_output::standard_base,char>",
+          "FUN_140015230"
+        ]
+      }
+    },
+    {
+      "addr": "14002a6a0",
+      "name": "FUN_14002a6a0",
+      "instruction_count": 79,
+      "size": 306,
+      "strings": [
+        "Description: ",
+        "; ec: "
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002d0a0",
+          "FUN_14000c090",
+          "FUN_14002c690",
+          "FUN_14002cd20",
+          "FUN_140015ca0"
+        ],
+        "callees": [
+          "FUN_140013390",
+          "FUN_140010800",
+          "FUN_14002f180",
+          "FUN_140017f40",
+          "FUN_140035d28",
+          "FUN_1400106a0",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "14002a7e0",
+      "name": "FUN_14002a7e0",
+      "instruction_count": 10,
+      "size": 33,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14002aeb0"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "14002a810",
+      "name": "FUN_14002a810",
+      "instruction_count": 163,
+      "size": 637,
+      "strings": [
+        "delete_service",
+        "Failed to open sc_manager, err: ",
+        "delete_service",
+        "Failed to open service, err: "
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "FUN_140002e10",
+          "OpenServiceW",
+          "OpenSCManagerW",
+          "DeleteService",
+          "CloseServiceHandle",
+          "FUN_14000ec80",
+          "FUN_140012a30",
+          "FUN_140003090",
+          "GetLastError",
+          "FUN_140014c60",
+          "FUN_14002f160",
+          "_CxxThrowException"
+        ]
+      }
+    },
+    {
+      "addr": "14002aaa0",
+      "name": "FUN_14002aaa0",
+      "instruction_count": 54,
+      "size": 241,
+      "strings": [
+        "ControlService failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002cd20",
+          "FUN_14002b350"
+        ],
+        "callees": [
+          "ControlService",
+          "FUN_1400106a0",
+          "GetLastError",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "14002aba0",
+      "name": "FUN_14002aba0",
+      "instruction_count": 26,
+      "size": 96,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14002aeb0"
+        ],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "14002ac10",
+      "name": "FUN_14002ac10",
+      "instruction_count": 133,
+      "size": 581,
+      "strings": [
+        "start_service",
+        "start_service",
+        "-> %s",
+        "-> %s",
+        "wait_service_to_stop failed",
+        "StartServiceW failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002aeb0"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "FUN_140011e70",
+          "FUN_1400019c0",
+          "FUN_14002c1f0",
+          "wcscat_s",
+          "FUN_140015270",
+          "timeGetTime",
+          "FUN_1400106a0",
+          "GetLastError",
+          "wcsncpy_s",
+          "StartServiceW",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "14002ae60",
+      "name": "FUN_14002ae60",
+      "instruction_count": 19,
+      "size": 69,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14002aeb0"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "14002aeb0",
+      "name": "FUN_14002aeb0",
+      "instruction_count": 281,
+      "size": 1174,
+      "strings": [
+        "start_service",
+        "start_service",
+        "-> %s",
+        "-> %s",
+        "open_sc_manager failed",
+        "open_service failed",
+        "wait_service_to_stop failed",
+        "wait_service_to_start failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002d0a0",
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "FUN_14002ac10",
+          "FUN_14002aba0",
+          "CloseServiceHandle",
+          "wcscat_s",
+          "FUN_14002d390",
+          "wcsncpy_s",
+          "FUN_14002f160",
+          "OpenServiceW",
+          "FUN_140011e70",
+          "FUN_14000ec80",
+          "FUN_14002c1f0",
+          "FUN_14002c000",
+          "FUN_1400106a0",
+          "FUN_14002ae60",
+          "_CxxThrowException",
+          "FUN_14002d150",
+          "FUN_14000eb20",
+          "OpenSCManagerW",
+          "FUN_14002a7e0",
+          "FUN_140015270",
+          "FUN_14002d3d0",
+          "FUN_14002d280",
+          "FUN_1400019c0",
+          "timeGetTime",
+          "GetLastError"
+        ]
+      }
+    },
+    {
+      "addr": "14002b350",
+      "name": "FUN_14002b350",
+      "instruction_count": 100,
+      "size": 392,
+      "strings": [
+        "query_service_status failed",
+        "wait_service_to_stop failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002b4e0"
+        ],
+        "callees": [
+          "FUN_14002d150",
+          "FUN_14002aaa0",
+          "FUN_14002c1f0",
+          "QueryServiceStatus",
+          "FUN_1400106a0",
+          "GetLastError",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "14002b4e0",
+      "name": "FUN_14002b4e0",
+      "instruction_count": 156,
+      "size": 606,
+      "strings": [
+        "open_sc_manager failed",
+        "open_service failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "OpenServiceW",
+          "OpenSCManagerW",
+          "CloseServiceHandle",
+          "FUN_14000ec80",
+          "FUN_1400106a0",
+          "GetLastError",
+          "FUN_14002b350",
+          "FUN_14002f160",
+          "_CxxThrowException"
+        ]
+      }
+    },
+    {
+      "addr": "14002b740",
+      "name": "FUN_14002b740",
+      "instruction_count": 58,
+      "size": 255,
+      "strings": [
+        "ChangeServiceConfigW failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002cd20",
+          "FUN_14002b840"
+        ],
+        "callees": [
+          "FUN_1400106a0",
+          "GetLastError",
+          "ChangeServiceConfigW"
+        ]
+      }
+    },
+    {
+      "addr": "14002b840",
+      "name": "FUN_14002b840",
+      "instruction_count": 204,
+      "size": 857,
+      "strings": [
+        "enable_service_autostart",
+        "enable_service_autostart",
+        "-> %s",
+        "-> %s",
+        "open_sc_manager failed",
+        "open_service failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "wcscat_s",
+          "FUN_140011e70",
+          "FUN_1400106a0",
+          "FUN_14000ec80",
+          "CloseServiceHandle",
+          "wcsncpy_s",
+          "timeGetTime",
+          "_CxxThrowException",
+          "OpenServiceW",
+          "FUN_140015270",
+          "FUN_14002f160",
+          "FUN_1400019c0",
+          "OpenSCManagerW",
+          "GetLastError",
+          "FUN_14002b740"
+        ]
+      }
+    },
+    {
+      "addr": "14002bba0",
+      "name": "FUN_14002bba0",
+      "instruction_count": 54,
+      "size": 252,
+      "strings": [
+        "ChangeServiceConfig2W failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002c690",
+          "FUN_14002bca0"
+        ],
+        "callees": [
+          "FUN_1400106a0",
+          "FUN_14002f160",
+          "ChangeServiceConfig2W",
+          "GetLastError"
+        ]
+      }
+    },
+    {
+      "addr": "14002bca0",
+      "name": "FUN_14002bca0",
+      "instruction_count": 204,
+      "size": 854,
+      "strings": [
+        "set_service_launch_type",
+        "set_service_launch_type",
+        "-> %s",
+        "-> %s",
+        "open_sc_manager failed",
+        "open_service failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140015ca0"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "wcscat_s",
+          "FUN_140011e70",
+          "FUN_1400106a0",
+          "FUN_14000ec80",
+          "CloseServiceHandle",
+          "wcsncpy_s",
+          "timeGetTime",
+          "FUN_14002bba0",
+          "_CxxThrowException",
+          "OpenServiceW",
+          "FUN_140015270",
+          "FUN_14002f160",
+          "FUN_1400019c0",
+          "OpenSCManagerW",
+          "GetLastError"
+        ]
+      }
+    },
+    {
+      "addr": "14002c000",
+      "name": "FUN_14002c000",
+      "instruction_count": 128,
+      "size": 481,
+      "strings": [
+        "wait_service_to_start",
+        "Failed to get service status, err: ",
+        "wait_service_to_start",
+        "Failed to get service status, err: "
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002aeb0"
+        ],
+        "callees": [
+          "FUN_140012a30",
+          "FUN_14002f160",
+          "FUN_140002e10",
+          "FUN_140014c60",
+          "Sleep",
+          "GetTickCount",
+          "GetLastError",
+          "QueryServiceStatus",
+          "FUN_140003090"
+        ]
+      }
+    },
+    {
+      "addr": "14002c1f0",
+      "name": "FUN_14002c1f0",
+      "instruction_count": 139,
+      "size": 511,
+      "strings": [
+        "wait_service_to_stop",
+        "Failed to get service status, err: ",
+        "wait_service_to_stop",
+        "Failed to get service status, err: "
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002aeb0",
+          "FUN_14002ac10",
+          "FUN_14002b350"
+        ],
+        "callees": [
+          "FUN_140012a30",
+          "FUN_14002f160",
+          "FUN_140002e10",
+          "FUN_140014c60",
+          "Sleep",
+          "GetTickCount",
+          "GetLastError",
+          "QueryServiceStatus",
+          "FUN_140003090"
+        ]
+      }
+    },
+    {
+      "addr": "14002c3f0",
+      "name": "FUN_14002c3f0",
+      "instruction_count": 148,
+      "size": 657,
+      "strings": [
+        "\\drivers\\bdelam.sys",
+        "kernel32.dll",
+        "InstallELAMCertificateInfo",
+        "GetProcAddress failed",
+        "Error getting the system folder.",
+        "Error opening BDELAM file.",
+        "Error installing ELAM certificate info."
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14002c690"
+        ],
+        "callees": [
+          "SHGetKnownFolderPath",
+          "FUN_140010340",
+          "FUN_14000e630",
+          "CreateFileW",
+          "FUN_140001ab0",
+          "FUN_14002f180",
+          "FUN_140003760",
+          "_CxxThrowException",
+          "FreeLibrary",
+          "FUN_14002f160",
+          "FUN_1400038c0",
+          "CloseHandle",
+          "CoTaskMemFree",
+          "_guard_dispatch_icall",
+          "GetLastError",
+          "FUN_140035d28",
+          "GetProcAddress"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_024"
+}

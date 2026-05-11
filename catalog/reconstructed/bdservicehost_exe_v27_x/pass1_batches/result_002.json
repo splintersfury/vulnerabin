@@ -1,0 +1,102 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_002",
+  "renames": [
+    {
+      "addr": "1400021f0",
+      "to": "FormatSystemErrorMessage",
+      "confidence": "high",
+      "rationale": "Calls __std_system_error_allocate_message and LocalFree with 'unknown error' fallback string; classic system_category::message() implementation"
+    },
+    {
+      "addr": "1400022f0",
+      "to": "ThrowBadCast",
+      "confidence": "high",
+      "rationale": "Sole caller is FUN_140002320 (CxxThrowException wrapper) and references 'bad cast' string twice; constructs std::bad_cast exception object"
+    },
+    {
+      "addr": "140002320",
+      "to": "ThrowBadCastException",
+      "confidence": "high",
+      "rationale": "Calls FUN_1400022f0 (ThrowBadCast ctor) then _CxxThrowException; invoked from 5 sites doing dynamic_cast-style checks"
+    },
+    {
+      "addr": "140002340",
+      "to": "CopyStdException",
+      "confidence": "high",
+      "rationale": "Only callee is __std_exception_copy; matches std::exception copy-constructor thunk pattern"
+    },
+    {
+      "addr": "140002380",
+      "to": "DestroyStdException",
+      "confidence": "medium",
+      "rationale": "Calls FUN_14002f180 (likely __std_exception_destroy); 13-instruction exception-object dtor shape"
+    },
+    {
+      "addr": "1400023b0",
+      "to": "LocaleFacetCtorScalar",
+      "confidence": "medium",
+      "rationale": "Calls _Locinfo_dtor and ~_Lockit; matches MSVC std::locale facet constructor scaffolding using _Lockit guard"
+    },
+    {
+      "addr": "140002480",
+      "to": "InvokeGuardedIcall",
+      "confidence": "low",
+      "rationale": "Only callee is _guard_dispatch_icall; small CFG-guarded indirect call thunk"
+    },
+    {
+      "addr": "1400024c0",
+      "to": "WidenMbStringWithFacet",
+      "confidence": "medium",
+      "rationale": "Calls _calloc_base and _Mbrtowc in a loop; converts a multibyte buffer to wide chars using a locale facet"
+    },
+    {
+      "addr": "1400025d0",
+      "to": "CtypeFacetCtorFromLocale",
+      "confidence": "high",
+      "rationale": "Calls _Locinfo_ctor, _Lockit, _Getcvt, operator_new with 'bad locale name' xref; std::ctype facet constructor from locale name"
+    },
+    {
+      "addr": "1400027c0",
+      "to": "GetCtypeTable_wrapper",
+      "confidence": "high",
+      "rationale": "8-instruction forwarder whose only callee is _Getwctypes; thin wrapper exposing the ctype<wchar_t> table fetch"
+    },
+    {
+      "addr": "1400027e0",
+      "to": "CtypeWideDoIs",
+      "confidence": "medium",
+      "rationale": "30-insn function with sole callee _guard_dispatch_icall; size and shape match ctype<wchar_t>::do_is virtual dispatch"
+    },
+    {
+      "addr": "140002840",
+      "to": "CtypeWideDoScanIs",
+      "confidence": "low",
+      "rationale": "Twin of 1400027e0 (same size/insns/callee _guard_dispatch_icall); likely sibling ctype<wchar_t> virtual (do_scan_is/do_scan_not)"
+    },
+    {
+      "addr": "1400028b0",
+      "to": "CtypeWideDoToLower",
+      "confidence": "high",
+      "rationale": "Sole callee _Towlower; std::ctype<wchar_t>::do_tolower implementation"
+    },
+    {
+      "addr": "140002910",
+      "to": "CtypeWideDoToUpper",
+      "confidence": "high",
+      "rationale": "Sole callee _Towupper; std::ctype<wchar_t>::do_toupper implementation"
+    },
+    {
+      "addr": "140002960",
+      "to": "CtypeWideDoNarrow",
+      "confidence": "medium",
+      "rationale": "Calls _Mbrtowc; 23-insn ctype<wchar_t>::do_narrow-style routine converting a wide char via locale facet"
+    },
+    {
+      "addr": "1400029d0",
+      "to": "CtypeWideDoNarrowRange",
+      "confidence": "medium",
+      "rationale": "Calls _Mbrtowc in a 48-insn loop; matches std::ctype<wchar_t>::do_narrow range-overload narrowing a wide buffer"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_011",
+  "renames": [
+    {
+      "addr": "140011df0",
+      "to": "vb_throw_invalid_string_position",
+      "confidence": "high",
+      "rationale": "4-instruction thunk holding the literal 'invalid string position' and calling FUN_14002d718 (std::_Xout_of_range/std::_Xran). Classic STL out-of-range helper inlined per TU."
+    },
+    {
+      "addr": "140011e70",
+      "to": "vb_clogdll_deinit_freelibrary",
+      "confidence": "high",
+      "rationale": "Holds strings 'LogDeinit' and 'logging::CLogDLL::~CLogDLL'; calls GetProcAddress, FreeLibrary, Sleep. Logging-DLL destructor that resolves and calls LogDeinit before unloading."
+    }
+  ]
+}

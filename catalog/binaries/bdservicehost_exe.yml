@@ -16,7 +16,8 @@ versions:
   sha256: ''
   eng: bitdefender-total-security-2026-04-11
   seen: '2026-04-11'
-  notes: 'Auto-seeded from bitdefender-total-security-2026-04-11/scope.json (target: Bitdefender Total Security)'
+  notes: 'Auto-seeded from bitdefender-total-security-2026-04-11/scope.json (target:
+    Bitdefender Total Security)'
 sources: []
 sinks: []
 chains: []
@@ -355,3 +356,7 @@ class_coverage:
     sources: []
     chains: []
   last_checked_version: ''
+reconstruction:
+  ref: catalog/reconstructed/bdservicehost_exe_v27_x
+  version_tag: v27_x
+  status: partial

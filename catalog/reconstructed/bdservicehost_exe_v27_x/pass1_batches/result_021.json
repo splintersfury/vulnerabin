@@ -1,0 +1,54 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_021",
+  "renames": [
+    {
+      "addr": "140021b50",
+      "to": "vb_json_value_get_bool",
+      "confidence": "high",
+      "rationale": "Strings 'cannot get value', 'cannot use value() with ', 'type must be boolean, but is ' + _CxxThrowException; classic nlohmann::json get<bool>() accessor that throws type_error when stored type != boolean."
+    },
+    {
+      "addr": "1400220b0",
+      "to": "vb_json_parse_dispatch_a",
+      "confidence": "high",
+      "rationale": "1353 insns, 35 callees, error strings 'object separator', 'object key', 'number overflow parsing', 'value', 'array', 'object'; JSON parser state machine (likely nlohmann::detail::parser::parse variant A)."
+    },
+    {
+      "addr": "140023770",
+      "to": "vb_json_parse_dispatch_b",
+      "confidence": "high",
+      "rationale": "1340 insns mirroring 1400220b0 with same JSON parser error strings but disjoint callee set; sibling parse() instantiation (different value-type template arg) from nlohmann::json detail::parser."
+    },
+    {
+      "addr": "140024ff0",
+      "to": "vb_json_parser_helper_a",
+      "confidence": "medium",
+      "rationale": "Only called from JSON parser 1400220b0; calls _guard_dispatch_icall + small helpers (FUN_140025870, FUN_140025c20); likely token/iterator step helper used during parse."
+    },
+    {
+      "addr": "1400250e0",
+      "to": "vb_json_iter_compare_or_get",
+      "confidence": "high",
+      "rationale": "Strings 'cannot get value' and 'cannot compare iterators of different containers' + _CxxThrowException; nlohmann::json iterator compare / value() accessor throwing invalid_iterator/type_error."
+    },
+    {
+      "addr": "140025440",
+      "to": "vb_json_parser_emit_value",
+      "confidence": "medium",
+      "rationale": "Sole caller is JSON parser 1400220b0; uses operator_new + many parser helpers (FUN_1400214b0, FUN_140025800, FUN_140025c20); constructs/emits a json value node during parse."
+    },
+    {
+      "addr": "140025680",
+      "to": "vb_locale_ctor_from_name",
+      "confidence": "high",
+      "rationale": "String 'bad locale name' + _Locinfo_ctor / _Locinfo_dtor / _Lockit calls; MSVC std::locale constructor from name (_Locinfo bootstrap throwing runtime_error on invalid)."
+    },
+    {
+      "addr": "140024fb0",
+      "to": "vb_json_parser_short_helper_b",
+      "confidence": "low",
+      "rationale": "Sole caller JSON parser 140023770; 16-insn shim into FUN_140028680; thin parser dispatch helper specific to the b-variant parse loop."
+    }
+  ]
+}

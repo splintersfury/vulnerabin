@@ -1,0 +1,72 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_015",
+  "renames": [
+    {
+      "addr": "140016f80",
+      "to": "log_error_prefix",
+      "confidence": "low",
+      "rationale": "Tiny 11-insn fn with sole string 'Error: ' calling a formatter/logger helper; likely emits the 'Error: ' prefix into a log line."
+    },
+    {
+      "addr": "140017180",
+      "to": "unordered_map_reserve_or_rehash",
+      "confidence": "medium",
+      "rationale": "Throws 'unordered_map/set too long', calls bucket-init helper (FUN_140017450) and ceilf for load-factor math; STL-style rehash/reserve."
+    },
+    {
+      "addr": "140017450",
+      "to": "unordered_map_init_buckets",
+      "confidence": "medium",
+      "rationale": "Throws 'invalid hash bucket count' and allocates via operator_new; called by the rehash fn — classic STL unordered_map bucket allocator."
+    },
+    {
+      "addr": "1400178b0",
+      "to": "fprintf_to_stdio_stream",
+      "confidence": "medium",
+      "rationale": "22-insn wrapper around __stdio_common_vfwprintf with __acrt_iob_func resolving the target FILE*; small fwprintf-style helper."
+    },
+    {
+      "addr": "140017900",
+      "to": "get_iservice_additional_config_iid_str",
+      "confidence": "high",
+      "rationale": "2-insn leaf returning the literal 'IServiceAdditionalConfiguration.1'; an interface-id string getter used by the install dispatcher."
+    },
+    {
+      "addr": "140017910",
+      "to": "service_additional_configuration_install",
+      "confidence": "high",
+      "rationale": "Strings name 'service_additional_configuration::install'; LoadLibraryW+GetProcAddress('SvcGetObject') then calls IServiceAdditionalConfiguration::Install and logs result."
+    },
+    {
+      "addr": "1400180b0",
+      "to": "multibyte_to_widechar_convert",
+      "confidence": "high",
+      "rationale": "Calls MultiByteToWideChar twice (size probe then convert), throws on 'MultiByteToWideChar failed'/'for size failed'; canonical MB->W converter."
+    },
+    {
+      "addr": "140018340",
+      "to": "throw_map_set_too_long",
+      "confidence": "medium",
+      "rationale": "4-insn helper containing 'map/set too long' string and calling FUN_14002d6f4 (exception thrower); STL length_error trampoline."
+    },
+    {
+      "addr": "140018380",
+      "to": "json_exception_ctor",
+      "confidence": "medium",
+      "rationale": "Holds '[json.exception.' literal, called by parse_error/type_error/etc builders; nlohmann::json exception base constructor."
+    },
+    {
+      "addr": "1400186d0",
+      "to": "json_throw_parse_error",
+      "confidence": "high",
+      "rationale": "Strings 'parse_error'/'parse error', calls json_exception_ctor (FUN_140018380) and exception copy; nlohmann::json parse_error builder."
+    },
+    {
+      "addr": "140018aa0",
+      "to": "json_format_position_at_line_column",
+      "confidence": "high",
+      "rationale": "Strings ' at line ' and ', column '; called only from json_throw_parse_error to format position suffix on the parse-error message."
+    }
+  ]
+}

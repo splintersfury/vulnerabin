@@ -1,0 +1,66 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_025",
+  "renames": [
+    {
+      "addr": "14002c690",
+      "to": "service_manager_install_service",
+      "confidence": "high",
+      "rationale": "Calls OpenSCManagerW/OpenServiceW/CreateServiceW/ChangeServiceConfig2W; error strings open_sc_manager failed, open_service failed; large install/configure routine."
+    },
+    {
+      "addr": "14002cd20",
+      "to": "service_manager_disable_service",
+      "confidence": "high",
+      "rationale": "Strings literally name service_manager::disable_service; uses OpenSCManagerW/OpenServiceW + CloseServiceHandle; logs Failed to send custom control / open service / open service manager."
+    },
+    {
+      "addr": "14002d4fc",
+      "to": "throw_bad_alloc",
+      "confidence": "high",
+      "rationale": "Tiny 7-instruction stub, only string is bad allocation (duplicated); called from operator_new helper FUN_14002d6b4; matches std::bad_alloc throw thunk."
+    },
+    {
+      "addr": "14002d6b4",
+      "to": "operator_new_or_throw",
+      "confidence": "medium",
+      "rationale": "6-instruction wrapper called from operator_new and other allocators; on failure calls throw_bad_alloc (FUN_14002d4fc) via _CxxThrowException; classic operator_new fallback path."
+    },
+    {
+      "addr": "14002d51c",
+      "to": "std_exception_ctor_copy_a",
+      "confidence": "medium",
+      "rationale": "17-instruction constructor calling __std_exception_copy; no callers in batch; matches MSVC std::exception/runtime_error copy-ctor pattern."
+    },
+    {
+      "addr": "14002d570",
+      "to": "std_exception_ctor_copy_b",
+      "confidence": "medium",
+      "rationale": "Same shape as 14002d51c: 17-instr __std_exception_copy wrapper, no in-batch callers; MSVC stdexception-derived ctor."
+    },
+    {
+      "addr": "14002d5ac",
+      "to": "std_exception_ctor_copy_c",
+      "confidence": "medium",
+      "rationale": "19-instr __std_exception_copy wrapper called from FUN_14002d6f4; MSVC stdexception-derived class ctor (likely runtime_error/logic_error subtype)."
+    },
+    {
+      "addr": "14002d5f4",
+      "to": "std_exception_ctor_copy_d",
+      "confidence": "medium",
+      "rationale": "17-instr __std_exception_copy wrapper; matches MSVC stdexception-derived copy ctor pattern."
+    },
+    {
+      "addr": "14002d66c",
+      "to": "std_exception_ctor_copy_e",
+      "confidence": "medium",
+      "rationale": "19-instr __std_exception_copy wrapper called from FUN_14002d718; MSVC stdexception-derived class ctor."
+    },
+    {
+      "addr": "14002d48c",
+      "to": "critical_section_dtor_wrapper",
+      "confidence": "medium",
+      "rationale": "Small wrapper calling DeleteCriticalSection; called from two siblings (FUN_14005a5c0, FUN_14005a4d0); destructor for object owning a CRITICAL_SECTION."
+    }
+  ]
+}

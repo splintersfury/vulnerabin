@@ -1,0 +1,433 @@
+{
+  "functions": [
+    {
+      "addr": "140016f80",
+      "name": "FUN_140016f80",
+      "instruction_count": 11,
+      "size": 39,
+      "strings": [
+        "Error: "
+      ],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140012a30"
+        ]
+      }
+    },
+    {
+      "addr": "140016fb0",
+      "name": "FUN_140016fb0",
+      "instruction_count": 92,
+      "size": 318,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140028bc0",
+          "FUN_14001d2a0",
+          "FUN_140017450",
+          "FUN_140016ed0",
+          "FUN_140001020",
+          "FUN_14001a7f0",
+          "FUN_140001390"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140001670",
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "1400170f0",
+      "name": "FUN_1400170f0",
+      "instruction_count": 39,
+      "size": 132,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140017620"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140017180",
+      "name": "FUN_140017180",
+      "instruction_count": 185,
+      "size": 678,
+      "strings": [
+        "unordered_map/set too long"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140016ed0"
+        ],
+        "callees": [
+          "FUN_140017450",
+          "operator_new",
+          "FUN_14002d6f4",
+          "ceilf"
+        ]
+      }
+    },
+    {
+      "addr": "140017450",
+      "name": "FUN_140017450",
+      "instruction_count": 121,
+      "size": 459,
+      "strings": [
+        "invalid hash bucket count"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140017180",
+          "FUN_1400261e0"
+        ],
+        "callees": [
+          "FUN_140016fb0",
+          "FUN_14002d6f4"
+        ]
+      }
+    },
+    {
+      "addr": "140017620",
+      "name": "FUN_140017620",
+      "instruction_count": 162,
+      "size": 637,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14001b450"
+        ],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_1400170f0"
+        ]
+      }
+    },
+    {
+      "addr": "1400178b0",
+      "name": "FUN_1400178b0",
+      "instruction_count": 22,
+      "size": 80,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000afb0"
+        ],
+        "callees": [
+          "FID_conflict:__stdio_common_vfwprintf",
+          "__acrt_iob_func",
+          "FUN_140015230"
+        ]
+      }
+    },
+    {
+      "addr": "140017900",
+      "name": "FUN_140017900",
+      "instruction_count": 2,
+      "size": 8,
+      "strings": [
+        "IServiceAdditionalConfiguration.1"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140017910"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140017910",
+      "name": "FUN_140017910",
+      "instruction_count": 366,
+      "size": 1572,
+      "strings": [
+        "SvcGetObject",
+        "SvcGetObject is not exported. This is not an error.",
+        "SvcGetObject is not exported. This is not an error.",
+        "service_additional_configuration::install",
+        "service_additional_configuration::install",
+        "SvcReleaseObject",
+        "IServiceAdditionalConfiguration.1",
+        "IServiceAdditionalConfiguration.1",
+        "IServiceAdditionalConfiguration.1",
+        "The interface %hs is not supported.",
+        "The interface %hs is not supported.",
+        "service_additional_configuration::install",
+        "service_additional_configuration::install",
+        "IServiceAdditionalConfiguration::Install completed with success. Code: %d.",
+        "IServiceAdditionalConfiguration::Install completed with success. Code: %d.",
+        "service_additional_configuration::install",
+        "service_additional_configuration::install",
+        "IServiceAdditionalConfiguration::Install failed with code %d.",
+        "IServiceAdditionalConfiguration::Install failed with code %d.",
+        "service_additional_configuration::install",
+        "service_additional_configuration::install",
+        "IServiceAdditionalConfiguration::Install has failed.",
+        "Can't load service dll %s",
+        "Can't load service dll %s",
+        "service_additional_configuration::install",
+        "service_additional_configuration::install",
+        "Can't load service dll.",
+        "Global service configuration is null or the relative dll path is empty. This is an error.",
+        "Global service configuration is null or the relative dll path is empty. This is an error.",
+        "service_additional_configuration::install",
+        "service_additional_configuration::install",
+        "Can't determine service dll relative path.",
+        "SvcGetObject cannot create object %hs although it supports the interface. This is an error.",
+        "SvcGetObject cannot create object %hs although it supports the interface. This is an error.",
+        "service_additional_configuration::install",
+        "service_additional_configuration::install",
+        "Can't create IServiceAdditionalConfiguration object."
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "_guard_dispatch_icall",
+          "FUN_140001ab0",
+          "FUN_14000e4a0",
+          "GetProcAddress",
+          "FUN_14000ea70",
+          "FUN_14001b440",
+          "FUN_14000eb10",
+          "FUN_140011e70",
+          "FUN_140017900",
+          "FUN_14000eaa0",
+          "GetLastError",
+          "FUN_14000d630",
+          "LoadLibraryW",
+          "FreeLibrary",
+          "FUN_14000eae0",
+          "FUN_1400019c0",
+          "FUN_14002f160",
+          "_CxxThrowException"
+        ]
+      }
+    },
+    {
+      "addr": "140017f40",
+      "name": "FUN_140017f40",
+      "instruction_count": 64,
+      "size": 211,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140018380",
+          "FUN_14002a6a0"
+        ],
+        "callees": [
+          "FUN_1400106a0",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "140018020",
+      "name": "FUN_140018020",
+      "instruction_count": 34,
+      "size": 130,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140019eb0"
+        ],
+        "callees": [
+          "FUN_1400151d0",
+          "FUN_14002a640",
+          "FUN_140010530"
+        ]
+      }
+    },
+    {
+      "addr": "1400180b0",
+      "name": "FUN_1400180b0",
+      "instruction_count": 160,
+      "size": 639,
+      "strings": [
+        "MultiByteToWideChar failed",
+        "MultiByteToWideChar failed",
+        "MultiByteToWideChar for size failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14001a110"
+        ],
+        "callees": [
+          "GetLastError",
+          "FUN_1400101a0",
+          "FUN_140013620",
+          "MultiByteToWideChar",
+          "FUN_1400036f0",
+          "FUN_14002f160",
+          "_CxxThrowException",
+          "FUN_14000e4b0",
+          "FUN_140003760"
+        ]
+      }
+    },
+    {
+      "addr": "140018340",
+      "name": "FUN_140018340",
+      "instruction_count": 4,
+      "size": 17,
+      "strings": [
+        "map/set too long"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140028680"
+        ],
+        "callees": [
+          "FUN_14002d6f4"
+        ]
+      }
+    },
+    {
+      "addr": "140018360",
+      "name": "FUN_140018360",
+      "instruction_count": 8,
+      "size": 27,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_guard_dispatch_icall"
+        ]
+      }
+    },
+    {
+      "addr": "140018380",
+      "name": "FUN_140018380",
+      "instruction_count": 198,
+      "size": 747,
+      "strings": [
+        "[json.exception."
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_1400192b0",
+          "FUN_140018ed0",
+          "FUN_1400194a0",
+          "FUN_1400186d0",
+          "FUN_1400190c0"
+        ],
+        "callees": [
+          "FUN_140010800",
+          "operator_new",
+          "FUN_140001670",
+          "FUN_140001a20",
+          "FUN_14002f180",
+          "FUN_140025910",
+          "FUN_140035d28",
+          "FUN_1400316b0",
+          "FUN_140017f40"
+        ]
+      }
+    },
+    {
+      "addr": "140018670",
+      "name": "FUN_140018670",
+      "instruction_count": 24,
+      "size": 89,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__std_exception_destroy",
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "1400186d0",
+      "name": "FUN_1400186d0",
+      "instruction_count": 242,
+      "size": 973,
+      "strings": [
+        "parse_error",
+        "parse error"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_1400220b0",
+          "FUN_140023770"
+        ],
+        "callees": [
+          "FUN_140010800",
+          "FUN_140018aa0",
+          "FUN_140018380",
+          "FUN_1400106a0",
+          "FUN_14002f180",
+          "FUN_140025910",
+          "FUN_14002f160",
+          "__std_exception_copy",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140018aa0",
+      "name": "FUN_140018aa0",
+      "instruction_count": 239,
+      "size": 910,
+      "strings": [
+        " at line ",
+        " at line ",
+        " at line ",
+        ", column "
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_1400186d0"
+        ],
+        "callees": [
+          "FUN_140010800",
+          "FUN_140014ae0",
+          "FUN_1400106a0",
+          "FUN_14002f180",
+          "FUN_140025910",
+          "FUN_14002f160",
+          "FUN_140035d28",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "140018e30",
+      "name": "FUN_140018e30",
+      "instruction_count": 14,
+      "size": 55,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_1400220b0",
+          "FUN_140023770"
+        ],
+        "callees": [
+          "__std_exception_destroy"
+        ]
+      }
+    },
+    {
+      "addr": "140018e70",
+      "name": "FUN_140018e70",
+      "instruction_count": 24,
+      "size": 89,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__std_exception_destroy",
+          "FUN_14002f180"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_015"
+}

@@ -1,0 +1,25 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_001",
+  "renames": [
+    {"addr": "140001a40", "to": "vb_exception_ctor_variant_a", "confidence": "medium", "rationale": "Calls __std_exception_copy with many varied callers; classic C++ std::exception-derived constructor copying message string."},
+    {"addr": "140001ab0", "to": "vb_exception_ctor_variant_b", "confidence": "medium", "rationale": "Second std::exception-style constructor (calls __std_exception_copy + FUN_14002f160) with distinct caller set from 140001a40, likely different derived class."},
+    {"addr": "140001b20", "to": "vb_exception_copy_ctor", "confidence": "medium", "rationale": "Small leaf calling only __std_exception_copy; shape of an exception copy constructor."},
+    {"addr": "140001b60", "to": "vb_trivial_inline_stub", "confidence": "low", "rationale": "4-instruction leaf, no callers/callees, no strings; likely a tiny inline accessor or stub."},
+    {"addr": "140001b70", "to": "vb_indirect_dispatch_thunk", "confidence": "medium", "rationale": "Sole callee is _guard_dispatch_icall; CFG-guarded indirect call thunk pattern."},
+    {"addr": "140001be0", "to": "vb_helper_called_by_throw_site", "confidence": "low", "rationale": "Tiny 5-instruction leaf invoked by FUN_140001fc0 (a _CxxThrowException site); likely a small param-setup helper for the throw."},
+    {"addr": "140001c00", "to": "vb_small_accessor_140001c00", "confidence": "low", "rationale": "5-instruction leaf with single caller FUN_140002cd0; no strings; insufficient signal for semantic name."},
+    {"addr": "140001c20", "to": "vb_core_object_method_109i", "confidence": "low", "rationale": "Large 109-instruction method called via vtable (guard_dispatch_icall) by several wrappers (140001ee0/140001e20); likely a virtual method but no string anchor."},
+    {"addr": "140001dd0", "to": "vb_exception_dtor", "confidence": "medium", "rationale": "Calls __std_exception_destroy; canonical std::exception-derived destructor."},
+    {"addr": "140001e20", "to": "vb_invoke_core_method_140001c20_a", "confidence": "medium", "rationale": "Forwards into FUN_140001c20 with setup via FUN_14002f180/FUN_1400106a0; thin invocation wrapper used at throw site FUN_140001fc0."},
+    {"addr": "140001ee0", "to": "vb_invoke_core_method_140001c20_b", "confidence": "medium", "rationale": "Second wrapper around FUN_140001c20 with identical callee set as 140001e20 but different caller pair, sibling invocation path."},
+    {"addr": "140001fc0", "to": "vb_throw_exception_via_140001e20", "confidence": "high", "rationale": "Builds object via FUN_140001e20 and FUN_140001be0 then calls _CxxThrowException; canonical C++ throw helper."},
+    {"addr": "140002000", "to": "vb_exception_ctor_variant_c", "confidence": "medium", "rationale": "Standalone routine whose only library call is __std_exception_copy; another std::exception-derived constructor."},
+    {"addr": "140002060", "to": "vb_exception_ctor_variant_d", "confidence": "medium", "rationale": "Same shape as 140002000 (calls only __std_exception_copy), distinct address/size suggests another derived-exception constructor."},
+    {"addr": "1400020c0", "to": "vb_get_category_name_generic", "confidence": "high", "rationale": "Two-instruction leaf returning literal string \"generic\"; MSVC std::generic_category::name() override."},
+    {"addr": "1400020d0", "to": "vb_format_message_helper_140002", "confidence": "low", "rationale": "Calls FUN_14002d7d0 and FUN_1400106a0 (same pair used by iostream-error builder 140002160); likely a sibling message-formatting helper."},
+    {"addr": "140002120", "to": "vb_thunk_to_14002f180", "confidence": "low", "rationale": "Small 11-instruction routine whose only callee is FUN_14002f180; likely a thin forwarder/initializer."},
+    {"addr": "140002150", "to": "vb_get_category_name_iostream", "confidence": "high", "rationale": "Two-instruction leaf returning literal string \"iostream\"; MSVC std::iostream_category::name() override."},
+    {"addr": "140002160", "to": "vb_iostream_category_message", "confidence": "high", "rationale": "References string \"iostream stream error\" and calls the same helpers as 1400020d0; std::iostream_category::message() implementation."}
+  ]
+}

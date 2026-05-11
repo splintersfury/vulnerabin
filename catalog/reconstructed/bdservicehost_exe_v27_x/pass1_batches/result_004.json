@@ -1,0 +1,78 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_004",
+  "renames": [
+    {
+      "addr": "1400038c0",
+      "to": "load_library_or_throw",
+      "confidence": "high",
+      "rationale": "Calls LoadLibraryW + GetLastError; on failure references 'LoadLibrary failed' string and invokes _CxxThrowException."
+    },
+    {
+      "addr": "1400039c0",
+      "to": "close_handle_wrapper",
+      "confidence": "medium",
+      "rationale": "Tiny 11-instr leaf that only calls CloseHandle; classic RAII handle closer."
+    },
+    {
+      "addr": "140003b00",
+      "to": "throw_bad_optional_access",
+      "confidence": "high",
+      "rationale": "2-instruction stub holding the 'Bad optional access' string; matches std::bad_optional_access throw helper."
+    },
+    {
+      "addr": "140003b60",
+      "to": "std_exception_copy_ctor",
+      "confidence": "medium",
+      "rationale": "Sole callee is __std_exception_copy; 17-instr exception-object copy constructor wrapper."
+    },
+    {
+      "addr": "140003ba0",
+      "to": "cert_get_subject_name_string",
+      "confidence": "high",
+      "rationale": "Calls CertGetNameStringW + GetLastError; sole caller is the cert-verify pipeline at FUN_1400042c0."
+    },
+    {
+      "addr": "140004110",
+      "to": "crypt_query_signed_object",
+      "confidence": "high",
+      "rationale": "Calls CryptQueryObject + GetLastError; called by the signature-verify driver FUN_1400045c0."
+    },
+    {
+      "addr": "1400042c0",
+      "to": "verify_signer_cert_chain",
+      "confidence": "medium",
+      "rationale": "Invokes cert_get_subject_name (140003ba0) and FUN_140003ef0/0039f0; orchestrates signer cert validation within signature pipeline."
+    },
+    {
+      "addr": "1400045c0",
+      "to": "verify_authenticode_signature",
+      "confidence": "high",
+      "rationale": "Calls CryptMsgGetParam, CryptMsgClose, CertFindCertificateInStore, CertCloseStore, CertFreeCertificateContext; classic Authenticode/CMS verify driver."
+    },
+    {
+      "addr": "140004ee0",
+      "to": "verify_file_via_catalog",
+      "confidence": "high",
+      "rationale": "Calls CryptCATAdminAcquireContext/CalcHashFromFileHandle/EnumCatalogFromHash/CatalogInfoFromContext + WinVerifyTrust; catalog-based file trust verification."
+    },
+    {
+      "addr": "140005250",
+      "to": "verify_file_trust",
+      "confidence": "high",
+      "rationale": "Calls WinVerifyTrust directly and delegates to verify_file_via_catalog (FUN_140004ee0); top-level trust verifier."
+    },
+    {
+      "addr": "140005390",
+      "to": "throw_bad_expected_access",
+      "confidence": "high",
+      "rationale": "2-instr stub anchored on 'bad expected access' string; std::expected access throw helper."
+    },
+    {
+      "addr": "1400053c0",
+      "to": "throw_if_null_or_invalid",
+      "confidence": "low",
+      "rationale": "Calls _CxxThrowException after invoking FUN_140001e20; tiny validate-or-throw helper. Naming heuristic."
+    }
+  ]
+}

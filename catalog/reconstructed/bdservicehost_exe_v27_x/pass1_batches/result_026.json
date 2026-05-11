@@ -1,0 +1,48 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_026",
+  "renames": [
+    {
+      "addr": "14002d760",
+      "to": "throw_bad_function_call",
+      "confidence": "high",
+      "rationale": "Tiny 2-instruction stub containing only the literal string 'bad function call' — matches std::bad_function_call throw helper emitted by std::function call operator."
+    },
+    {
+      "addr": "14002d7d0",
+      "to": "addr_family_error_message",
+      "confidence": "medium",
+      "rationale": "Small leaf returning one of {'address family not supported','unknown error'}; classic std::system_category socket error-message lookup. Two callers in net init region."
+    },
+    {
+      "addr": "14002dc94",
+      "to": "locale_ctype_table_init",
+      "confidence": "high",
+      "rationale": "51 insns, calls __lc_locale_name_func, __lc_codepage_func, __pctype_func, _wcsdup, _calloc_base — CRT _Getctype-style locale ctype table builder."
+    },
+    {
+      "addr": "14002e3c0",
+      "to": "wide_to_multibyte_convert",
+      "confidence": "high",
+      "rationale": "53 insns, callees are WideCharToMultiByte + GetLastError; single caller wrapper that converts a UTF-16 buffer to a narrow string with error reporting."
+    },
+    {
+      "addr": "14002e910",
+      "to": "fs_set_file_attributes_by_path",
+      "confidence": "high",
+      "rationale": "Calls __std_fs_open_handle, SetFileInformationByHandle, CloseHandle, GetLastError, terminate — STL <filesystem> permission/attribute mutator (e.g. fs::permissions or last_write_time backend)."
+    },
+    {
+      "addr": "14002eb60",
+      "to": "fs_open_wide_file_stream",
+      "confidence": "medium",
+      "rationale": "Calls common_fsopen<wchar_t> and fclose; mid-size routine likely the wide-char file-open wrapper used by STL filesystem helpers."
+    },
+    {
+      "addr": "14002f200",
+      "to": "init_condvar_fallback_table",
+      "confidence": "high",
+      "rationale": "Strings 'api-ms-win-core-synch-l1-2-0.dll','kernel32.dll','SleepConditionVariableCS','WakeAllConditionVariable'; GetModuleHandleW+GetProcAddress+CreateEventW+InitializeCriticalSectionAndSpinCount — CRT condvar emulation init on pre-Vista."
+    }
+  ]
+}

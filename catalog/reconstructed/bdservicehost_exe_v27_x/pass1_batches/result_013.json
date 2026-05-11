@@ -1,0 +1,84 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_013",
+  "renames": [
+    {
+      "addr": "140014450",
+      "to": "throw_vector_too_long",
+      "confidence": "high",
+      "rationale": "Single string 'vector too long' + 4 instructions + 12 callers across container ops = std::vector::_Xlength throw helper."
+    },
+    {
+      "addr": "1400144b0",
+      "to": "vb_dispatch_icall_with_seh_a",
+      "confidence": "low",
+      "rationale": "225 insns, callers in init/setup region, callees include _guard_dispatch_icall + __uncaught_exception; SEH-wrapped indirect dispatcher. Distinct from 1400147e0/140014c60 variants."
+    },
+    {
+      "addr": "1400147e0",
+      "to": "vb_dispatch_icall_with_seh_b",
+      "confidence": "low",
+      "rationale": "164 insns, single caller FUN_14000ac10, same _guard_dispatch_icall+__uncaught_exception pattern as 1400144b0; SEH-protected indirect call wrapper variant."
+    },
+    {
+      "addr": "140014c60",
+      "to": "vb_dispatch_icall_with_seh_c",
+      "confidence": "low",
+      "rationale": "103 insns, 5 callers, same _guard_dispatch_icall+FUN_140012ef0+__uncaught_exception template; another SEH indirect-dispatch wrapper sibling."
+    },
+    {
+      "addr": "140014ae0",
+      "to": "vb_alloc_and_construct",
+      "confidence": "medium",
+      "rationale": "104 insns, callees include operator_new + FUN_140001670 (likely ctor) + FUN_1400316b0 (release/exit handler); allocates and constructs an object."
+    },
+    {
+      "addr": "140015120",
+      "to": "ret_zero_stub",
+      "confidence": "medium",
+      "rationale": "2 insns / 5 bytes, no callers/callees: minimal stub, almost certainly `xor eax,eax; ret` returning 0/false."
+    },
+    {
+      "addr": "140015130",
+      "to": "ret_const_stub_8b",
+      "confidence": "low",
+      "rationale": "2 insns / 8 bytes, no edges: tiny constant-return stub (likely mov eax,imm; ret)."
+    },
+    {
+      "addr": "140015140",
+      "to": "ret_const_stub_11b",
+      "confidence": "low",
+      "rationale": "2 insns / 11 bytes, no edges: tiny constant-return stub (likely mov rax,imm64; ret or lea + ret)."
+    },
+    {
+      "addr": "140015170",
+      "to": "thunk_to_FUN_14000ece0",
+      "confidence": "medium",
+      "rationale": "3 insns / 12 bytes, no callers, single callee FUN_14000ece0: classic jmp-thunk forwarder."
+    },
+    {
+      "addr": "140015180",
+      "to": "thunk_to_FUN_14000ef10",
+      "confidence": "medium",
+      "rationale": "3 insns / 12 bytes, no callers, single callee FUN_14000ef10: classic jmp-thunk forwarder."
+    },
+    {
+      "addr": "140015190",
+      "to": "thunk_to_FUN_14000ed20",
+      "confidence": "medium",
+      "rationale": "3 insns / 12 bytes, no callers, single callee FUN_14000ed20: classic jmp-thunk forwarder."
+    },
+    {
+      "addr": "1400151a0",
+      "to": "scalar_deleting_dtor_thunk_a",
+      "confidence": "medium",
+      "rationale": "3 insns / 12 bytes, callee FID_conflict:`scalar_deleting_destructor': MSVC vftable scalar-deleting-destructor thunk."
+    },
+    {
+      "addr": "1400151b0",
+      "to": "scalar_deleting_dtor_thunk_b",
+      "confidence": "medium",
+      "rationale": "3 insns / 12 bytes, callee FID_conflict:`scalar_deleting_destructor': sibling scalar-deleting-destructor thunk for another class vftable slot."
+    }
+  ]
+}

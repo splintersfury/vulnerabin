@@ -11,7 +11,8 @@ versions:
   sha256: ''
   eng: afd-sys-2026-04-28
   seen: '2026-04-28'
-  notes: 'Auto-seeded from afd-sys-2026-04-28/scope.json (target: Windows Ancillary Function Driver for WinSock (afd.sys))'
+  notes: 'Auto-seeded from afd-sys-2026-04-28/scope.json (target: Windows Ancillary
+    Function Driver for WinSock (afd.sys))'
 sources: []
 sinks: []
 chains: []
@@ -77,3 +78,7 @@ class_coverage:
     sources: []
     chains: []
   last_checked_version: ''
+reconstruction:
+  ref: catalog/reconstructed/afd_26100_8246_post_sys_v26100_8246_post
+  version_tag: v26100_8246_post
+  status: complete

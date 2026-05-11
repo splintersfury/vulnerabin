@@ -1,0 +1,48 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_010",
+  "renames": [
+    {
+      "addr": "14000ef10",
+      "to": "ios_stream_wrapper_dtor_14000ef10",
+      "confidence": "low",
+      "rationale": "Small (24 insns) function calling _Ios_base_dtor then FUN_14000e180; shape of an iostream-derived object destructor wrapper. Single caller FUN_140015180."
+    },
+    {
+      "addr": "14000efe0",
+      "to": "ios_base_dtor_thunk_14000efe0",
+      "confidence": "low",
+      "rationale": "19-insn leaf calling _Ios_base_dtor and FUN_14002f180 (likely __security_check_cookie/cleanup). Classic ios_base destructor thunk shape."
+    },
+    {
+      "addr": "140010340",
+      "to": "alloc_construct_object_140010340",
+      "confidence": "medium",
+      "rationale": "Called by 21 sites; calls operator_new plus two constructor-helpers (FUN_140001a20, FUN_140001670) and FUN_1400316b0 (likely registry/list insert). Object-allocator factory."
+    },
+    {
+      "addr": "1400106a0",
+      "to": "alloc_construct_object_variant_1400106a0",
+      "confidence": "medium",
+      "rationale": "Called by 40 sites with identical callee signature to FUN_140010340 (operator_new + ctor helpers + FUN_1400316b0). Sibling allocator factory, possibly different type/size."
+    },
+    {
+      "addr": "1400101a0",
+      "to": "alloc_construct_object_small_1400101a0",
+      "confidence": "medium",
+      "rationale": "5 callers, same operator_new + FUN_140001a20 + FUN_140001670 callee shape (without FUN_1400316b0). Smaller-arity allocator helper in same family as 140010340/1400106a0."
+    },
+    {
+      "addr": "140010530",
+      "to": "alloc_construct_with_init_140010530",
+      "confidence": "medium",
+      "rationale": "Same ctor-helper family but additionally calls FUN_140031e00 (likely string/buffer init or copy). Variant with initialised content; 2 callers."
+    },
+    {
+      "addr": "14000ff70",
+      "to": "guarded_recursive_dispatch_14000ff70",
+      "confidence": "low",
+      "rationale": "Self-recursive, calls _guard_dispatch_icall and __uncaught_exception. CFG-guarded virtual dispatch with EH; shared by 5 unrelated callers. Likely tree/visitor recursion."
+    }
+  ]
+}

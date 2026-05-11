@@ -1,0 +1,1 @@
+{"pass":"pass1","batch_id":"batch_038","renames":[{"addr":"14005a5d0","to":"atl_base_module_dtor_thunk","confidence":"medium","rationale":"12-byte function with single callee ~CAtlBaseModule; likely a thunk/wrapper invoking the ATL base module destructor (compiler-generated cleanup stub)."}]}

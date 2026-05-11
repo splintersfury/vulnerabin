@@ -1,0 +1,30 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_009",
+  "renames": [
+    {
+      "addr": "14000eb20",
+      "to": "logging_CLogDLL_dtor",
+      "confidence": "high",
+      "rationale": "Strings 'LogDeinit' + 'logging::CLogDLL::~CLogDLL' embedded; calls FreeLibrary/GetProcAddress/atexit consistent with logging DLL teardown destructor."
+    },
+    {
+      "addr": "14000ea70",
+      "to": "logging_CLogDLL_dtor_thunk_a",
+      "confidence": "medium",
+      "rationale": "Tiny 17-insn thunk whose only callee is FUN_14000eb20 (logging::CLogDLL::~CLogDLL); caller is FUN_140017910. Likely vtable/dtor thunk wrapping the log-DLL destructor."
+    },
+    {
+      "addr": "14000eae0",
+      "to": "logging_CLogDLL_dtor_thunk_b",
+      "confidence": "medium",
+      "rationale": "11-insn thunk; sole callee FUN_14000eb20 (logging::CLogDLL::~CLogDLL); called from FUN_140017910. Second dtor adjustor thunk variant for the logging singleton."
+    },
+    {
+      "addr": "14000eca0",
+      "to": "std_exception_copy_wrapper",
+      "confidence": "medium",
+      "rationale": "17-insn leaf whose only callee is __std_exception_copy; no callers in batch — pattern matches MSVC std::exception copy ctor/assign helper."
+    }
+  ]
+}

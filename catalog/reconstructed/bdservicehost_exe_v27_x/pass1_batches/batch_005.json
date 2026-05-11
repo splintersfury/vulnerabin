@@ -1,0 +1,430 @@
+{
+  "functions": [
+    {
+      "addr": "140005930",
+      "name": "FUN_140005930",
+      "instruction_count": 5,
+      "size": 15,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140005940",
+      "name": "FUN_140005940",
+      "instruction_count": 175,
+      "size": 650,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140005810"
+        ],
+        "callees": [
+          "FUN_1400120c0",
+          "_Become_small",
+          "FUN_14002f180",
+          "FUN_14002f160",
+          "__std_fs_code_page",
+          "FUN_140013390",
+          "FUN_1400137e0",
+          "FUN_140010800",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140005bd0",
+      "name": "FUN_140005bd0",
+      "instruction_count": 78,
+      "size": 322,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "__std_exception_destroy"
+        ]
+      }
+    },
+    {
+      "addr": "140005d20",
+      "name": "FUN_140005d20",
+      "instruction_count": 68,
+      "size": 287,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "__std_exception_destroy"
+        ]
+      }
+    },
+    {
+      "addr": "140005ed0",
+      "name": "FUN_140005ed0",
+      "instruction_count": 22,
+      "size": 97,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000b620"
+        ],
+        "callees": [
+          "FUN_140005810",
+          "FUN_14000e950",
+          "_CxxThrowException",
+          "FUN_1400053a0"
+        ]
+      }
+    },
+    {
+      "addr": "140005f40",
+      "name": "FUN_140005f40",
+      "instruction_count": 83,
+      "size": 322,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140009410",
+          "FUN_140006b60"
+        ],
+        "callees": [
+          "FUN_140010340",
+          "FUN_14000ec80",
+          "FUN_14002f160",
+          "FUN_14002f180",
+          "FUN_140012190",
+          "_CxxThrowException",
+          "FUN_140003820",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "1400060a0",
+      "name": "FUN_1400060a0",
+      "instruction_count": 53,
+      "size": 213,
+      "strings": [
+        "GetModuleFileName failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000b390",
+          "FUN_14002c690"
+        ],
+        "callees": [
+          "GetModuleFileNameW",
+          "FUN_1400036f0",
+          "FUN_1400101a0",
+          "_CxxThrowException",
+          "GetLastError",
+          "FUN_14000e410",
+          "FUN_14000e4b0",
+          "FUN_140003730"
+        ]
+      }
+    },
+    {
+      "addr": "140006180",
+      "name": "FUN_140006180",
+      "instruction_count": 152,
+      "size": 660,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140009410",
+          "FUN_140006b60",
+          "FUN_140006460"
+        ],
+        "callees": [
+          "GetModuleFileNameW",
+          "FUN_140013620",
+          "FUN_14002f180",
+          "FUN_14002f160",
+          "GetLastError",
+          "FUN_14000e4b0",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140006460",
+      "name": "FUN_140006460",
+      "instruction_count": 110,
+      "size": 524,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140009410",
+          "FUN_140006b60"
+        ],
+        "callees": [
+          "FUN_1400045c0",
+          "FUN_14002f180",
+          "FUN_14002f160",
+          "FUN_1400039f0",
+          "_Init_thread_footer",
+          "_Init_thread_header",
+          "FUN_140006180",
+          "FUN_140035d28",
+          "atexit"
+        ]
+      }
+    },
+    {
+      "addr": "140006670",
+      "name": "FUN_140006670",
+      "instruction_count": 76,
+      "size": 323,
+      "strings": [
+        "GetModuleFileName returned an unexpected path",
+        "GetModuleFileName failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140007040"
+        ],
+        "callees": [
+          "GetModuleFileNameW",
+          "FUN_1400036d0",
+          "FUN_1400036f0",
+          "_CxxThrowException",
+          "FUN_14000e410",
+          "GetLastError",
+          "FUN_14000e4b0",
+          "FUN_140003760",
+          "FUN_14003126c",
+          "FUN_140003730"
+        ]
+      }
+    },
+    {
+      "addr": "1400067c0",
+      "name": "FUN_1400067c0",
+      "instruction_count": 194,
+      "size": 854,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_1400083c0",
+          "FUN_140006b60",
+          "FUN_140007d80",
+          "FUN_140009ba0",
+          "FUN_140008b00"
+        ],
+        "callees": [
+          "GetModuleFileNameW",
+          "FUN_140013620",
+          "FUN_14002f180",
+          "FUN_14002f160",
+          "GetLastError",
+          "FUN_14000e4b0",
+          "FUN_140035d28",
+          "FUN_14003126c"
+        ]
+      }
+    },
+    {
+      "addr": "140006b60",
+      "name": "FUN_140006b60",
+      "instruction_count": 167,
+      "size": 658,
+      "strings": [
+        "log.dll"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090"
+        ],
+        "callees": [
+          "GetCurrentProcessId",
+          "FUN_14002f160",
+          "FUN_140006460",
+          "FUN_140005250",
+          "FUN_14000eb20",
+          "FUN_140005f40",
+          "FUN_14002f180",
+          "ProcessIdToSessionId",
+          "FUN_1400067c0",
+          "FUN_14000e630",
+          "FreeLibrary",
+          "FUN_140006180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140006e00",
+      "name": "FUN_140006e00",
+      "instruction_count": 16,
+      "size": 55,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FreeLibrary",
+          "FUN_140011e70"
+        ]
+      }
+    },
+    {
+      "addr": "140006e40",
+      "name": "FUN_140006e40",
+      "instruction_count": 2,
+      "size": 8,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140014f60"
+        ],
+        "callees": [
+          "_malloc_base"
+        ]
+      }
+    },
+    {
+      "addr": "140006e50",
+      "name": "FUN_140006e50",
+      "instruction_count": 3,
+      "size": 11,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140014f60"
+        ],
+        "callees": [
+          "_realloc_base"
+        ]
+      }
+    },
+    {
+      "addr": "140006e60",
+      "name": "FUN_140006e60",
+      "instruction_count": 2,
+      "size": 8,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140035ac0"
+        ]
+      }
+    },
+    {
+      "addr": "140006ea0",
+      "name": "FUN_140006ea0",
+      "instruction_count": 30,
+      "size": 127,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_guard_dispatch_icall"
+        ]
+      }
+    },
+    {
+      "addr": "140006f20",
+      "name": "FUN_140006f20",
+      "instruction_count": 42,
+      "size": 157,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180",
+          "FreeLibrary",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140006fc0",
+      "name": "FUN_140006fc0",
+      "instruction_count": 30,
+      "size": 108,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_1400083c0",
+          "FUN_140008b00"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140007040"
+        ]
+      }
+    },
+    {
+      "addr": "140007040",
+      "name": "FUN_140007040",
+      "instruction_count": 791,
+      "size": 3370,
+      "strings": [
+        "bdch.dll",
+        "GetAPIVersion",
+        "EnableBdch",
+        "UninitBdch",
+        "SetWerText",
+        "AddExtraFilesToDump",
+        "GetSettings",
+        "SetSettings",
+        "SyncSettings",
+        "ListDumps",
+        "FreeDumpResponse",
+        "SubmitDump",
+        "DeleteDump",
+        "SignalHandler",
+        "GetSettingsFromFile",
+        "SaveSettingsToFile",
+        "ConvertOldConfigToNewConfig",
+        "ReleaseBdchSettings",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed",
+        "GetProcAddress failed"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140006fc0"
+        ],
+        "callees": [
+          "FUN_140006670",
+          "FUN_1400054f0",
+          "FUN_140003760",
+          "FUN_140035d28",
+          "GetModuleHandleExW",
+          "FUN_14002f160",
+          "GetLastError",
+          "GetProcAddress",
+          "FUN_140010340",
+          "FUN_14002f180",
+          "FUN_14000e750",
+          "FreeLibrary",
+          "_CxxThrowException",
+          "FUN_1400038c0"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_005"
+}

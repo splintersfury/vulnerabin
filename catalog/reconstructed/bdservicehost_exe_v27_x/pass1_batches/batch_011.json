@@ -1,0 +1,388 @@
+{
+  "functions": [
+    {
+      "addr": "140010800",
+      "name": "FUN_140010800",
+      "instruction_count": 38,
+      "size": 128,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140018ed0",
+          "FUN_14001e680",
+          "FUN_14001f280",
+          "FUN_140021a50",
+          "FUN_140023770",
+          "FUN_1400194a0",
+          "FUN_14002a6a0",
+          "FUN_140001c20",
+          "FUN_1400220b0",
+          "FUN_140018380",
+          "FUN_1400219f0",
+          "FUN_1400186d0",
+          "FUN_140018aa0",
+          "FUN_140005940",
+          "FUN_1400192b0",
+          "FUN_1400190c0"
+        ],
+        "callees": [
+          "FUN_140013af0",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "140010880",
+      "name": "FUN_140010880",
+      "instruction_count": 13,
+      "size": 43,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "1400108b0",
+      "name": "FUN_1400108b0",
+      "instruction_count": 103,
+      "size": 449,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000c090",
+          "FUN_14005a3b0"
+        ],
+        "callees": [
+          "FUN_140010a90",
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140010a90",
+      "name": "FUN_140010a90",
+      "instruction_count": 44,
+      "size": 163,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14001a7f0",
+          "FUN_1400108b0",
+          "FUN_14001b450",
+          "FUN_140016380",
+          "FUN_140016620"
+        ],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140010b40",
+      "name": "FUN_140010b40",
+      "instruction_count": 20,
+      "size": 75,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140010340"
+        ]
+      }
+    },
+    {
+      "addr": "140010b90",
+      "name": "FUN_140010b90",
+      "instruction_count": 20,
+      "size": 75,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140010340"
+        ]
+      }
+    },
+    {
+      "addr": "140010be0",
+      "name": "FUN_140010be0",
+      "instruction_count": 19,
+      "size": 65,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_1400106a0"
+        ]
+      }
+    },
+    {
+      "addr": "140010c30",
+      "name": "FUN_140010c30",
+      "instruction_count": 2,
+      "size": 5,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140010c40",
+      "name": "FUN_140010c40",
+      "instruction_count": 2,
+      "size": 5,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140010c50",
+      "name": "FUN_140010c50",
+      "instruction_count": 513,
+      "size": 1802,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000f690",
+          "FUN_14000f7c0",
+          "FUN_14000f8f0",
+          "FUN_14000fa20",
+          "FUN_14000f020"
+        ],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_140011df0",
+          "FUN_1400101a0",
+          "_guard_dispatch_icall",
+          "FUN_14002f160",
+          "FUN_1400134e0",
+          "FUN_1400316b0",
+          "FUN_140013dc0",
+          "FUN_140013c80"
+        ]
+      }
+    },
+    {
+      "addr": "140011360",
+      "name": "FUN_140011360",
+      "instruction_count": 542,
+      "size": 1918,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000f0d0",
+          "FUN_14000f3b0"
+        ],
+        "callees": [
+          "FUN_140039240",
+          "FUN_14002f180",
+          "FUN_140035d28",
+          "FUN_140011df0",
+          "FUN_1400101a0",
+          "_guard_dispatch_icall",
+          "FUN_140035e08",
+          "FUN_14002f160",
+          "FUN_1400134e0",
+          "FUN_1400316b0",
+          "FUN_140013dc0",
+          "FUN_140013c80"
+        ]
+      }
+    },
+    {
+      "addr": "140011b10",
+      "name": "FUN_140011b10",
+      "instruction_count": 27,
+      "size": 89,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_guard_dispatch_icall"
+        ]
+      }
+    },
+    {
+      "addr": "140011bc0",
+      "name": "FUN_140011bc0",
+      "instruction_count": 26,
+      "size": 86,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140011c20",
+      "name": "FUN_140011c20",
+      "instruction_count": 24,
+      "size": 92,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180"
+        ]
+      }
+    },
+    {
+      "addr": "140011c80",
+      "name": "FUN_140011c80",
+      "instruction_count": 26,
+      "size": 84,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14000ff70",
+          "FUN_1400147e0",
+          "FUN_14000e200",
+          "FUN_140012a30",
+          "FUN_1400144b0",
+          "FUN_14000ff20",
+          "FUN_140014c60"
+        ],
+        "callees": [
+          "FUN_140002cd0",
+          "_guard_dispatch_icall"
+        ]
+      }
+    },
+    {
+      "addr": "140011ce0",
+      "name": "FUN_140011ce0",
+      "instruction_count": 71,
+      "size": 264,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140002e10",
+          "FUN_14000d640"
+        ],
+        "callees": [
+          "FUN_140002cd0",
+          "operator_new",
+          "_Init",
+          "_guard_dispatch_icall",
+          "FUN_140013c80"
+        ]
+      }
+    },
+    {
+      "addr": "140011df0",
+      "name": "FUN_140011df0",
+      "instruction_count": 4,
+      "size": 17,
+      "strings": [
+        "invalid string position"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_1400054f0",
+          "FUN_140011360",
+          "FUN_140010c50"
+        ],
+        "callees": [
+          "FUN_14002d718"
+        ]
+      }
+    },
+    {
+      "addr": "140011e10",
+      "name": "FUN_140011e10",
+      "instruction_count": 25,
+      "size": 94,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035ac0"
+        ]
+      }
+    },
+    {
+      "addr": "140011e70",
+      "name": "FUN_140011e70",
+      "instruction_count": 70,
+      "size": 292,
+      "strings": [
+        "LogDeinit",
+        "logging::CLogDLL::~CLogDLL"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140002e10",
+          "FUN_14000eaa0",
+          "FUN_140006e00",
+          "FUN_14002b840",
+          "FUN_140016190",
+          "FUN_140016380",
+          "FUN_140003090",
+          "FUN_14002bca0",
+          "FUN_140016b80",
+          "FUN_14000c090",
+          "FUN_140017910",
+          "FUN_1400159d0",
+          "FUN_14000afb0",
+          "FUN_140019c40",
+          "FUN_140015360",
+          "FUN_14000ac10",
+          "FUN_140015ca0",
+          "FUN_140015270",
+          "FUN_140016620",
+          "FUN_140016820",
+          "FUN_140015fc0",
+          "FUN_140015750",
+          "FUN_140019ac0",
+          "FUN_140015820",
+          "FUN_14002aeb0",
+          "FUN_14002ac10",
+          "FUN_14000baf0"
+        ],
+        "callees": [
+          "FUN_14002f180",
+          "Sleep",
+          "_guard_dispatch_icall",
+          "FreeLibrary",
+          "GetProcAddress"
+        ]
+      }
+    },
+    {
+      "addr": "140011fa0",
+      "name": "FUN_140011fa0",
+      "instruction_count": 83,
+      "size": 288,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140019eb0",
+          "FUN_14001a7f0",
+          "FUN_14001cdf0",
+          "FUN_14001a110",
+          "FUN_14001a250",
+          "FUN_140026df0",
+          "FUN_140021b50"
+        ],
+        "callees": [
+          "FUN_140014ae0",
+          "FUN_1400316b0"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_011"
+}

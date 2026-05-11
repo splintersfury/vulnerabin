@@ -1,0 +1,522 @@
+{
+  "functions": [
+    {
+      "addr": "1400151c0",
+      "name": "FUN_1400151c0",
+      "instruction_count": 3,
+      "size": 12,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140003050"
+        ]
+      }
+    },
+    {
+      "addr": "1400151d0",
+      "name": "FUN_1400151d0",
+      "instruction_count": 28,
+      "size": 87,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140018020",
+          "FUN_14000f0d0",
+          "FUN_14000f8f0",
+          "FUN_14000f7c0",
+          "FUN_14000fa20",
+          "FUN_14000f690",
+          "FUN_14000f020",
+          "FUN_14000f3b0"
+        ],
+        "callees": [
+          "FUN_140015230",
+          "__stdio_common_vsprintf_s"
+        ]
+      }
+    },
+    {
+      "addr": "140015230",
+      "name": "FUN_140015230",
+      "instruction_count": 2,
+      "size": 8,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_1400151d0",
+          "FUN_14002a640",
+          "FUN_1400178b0",
+          "FUN_14002a5e0",
+          "FUN_1400302f8"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140015270",
+      "name": "FUN_140015270",
+      "instruction_count": 51,
+      "size": 226,
+      "strings": [
+        "<- %s [%d]",
+        "<- %s [%d]"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140015fc0",
+          "FUN_1400159d0",
+          "FUN_14002ac10",
+          "FUN_140016b80",
+          "FUN_140016820",
+          "FUN_14002b840",
+          "FUN_140015ca0",
+          "FUN_140016190",
+          "FUN_140015820",
+          "FUN_14000afb0",
+          "FUN_140015360",
+          "FUN_140016380",
+          "FUN_14002bca0",
+          "FUN_140016620",
+          "FUN_14002aeb0"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "FUN_1400019c0",
+          "FUN_140011e70",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140015360",
+      "name": "FUN_140015360",
+      "instruction_count": 183,
+      "size": 932,
+      "strings": [
+        "service::service",
+        "service::service",
+        "-> %s",
+        "-> %s",
+        "CreateServiceImplementation",
+        "DestroyServiceImplementation",
+        "Can't load service dll.",
+        "Can't load CreateServiceImplementation function.",
+        "Can't load ReleaseServiceImplementation function.",
+        "Null exported service object.",
+        "Invalid interface."
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000afb0",
+          "FUN_14000ac10"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "_guard_dispatch_icall",
+          "FUN_140001ab0",
+          "CreateEventW",
+          "GetProcAddress",
+          "FUN_140011e70",
+          "wcscat_s",
+          "GetLastError",
+          "FUN_140015270",
+          "LoadLibraryW",
+          "FreeLibrary",
+          "FUN_1400019c0",
+          "wcsncpy_s",
+          "FUN_14002f160",
+          "_CxxThrowException",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140015710",
+      "name": "FUN_140015710",
+      "instruction_count": 16,
+      "size": 52,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140015750"
+        ]
+      }
+    },
+    {
+      "addr": "140015750",
+      "name": "FUN_140015750",
+      "instruction_count": 42,
+      "size": 150,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140015710"
+        ],
+        "callees": [
+          "_guard_dispatch_icall",
+          "CloseHandle",
+          "FreeLibrary",
+          "FUN_140011e70"
+        ]
+      }
+    },
+    {
+      "addr": "1400157f0",
+      "name": "FUN_1400157f0",
+      "instruction_count": 10,
+      "size": 38,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140015820",
+      "name": "FUN_140015820",
+      "instruction_count": 78,
+      "size": 389,
+      "strings": [
+        "service::StopService",
+        "service::StopService",
+        "-> %s",
+        "-> %s"
+      ],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000eb20",
+          "FUN_140015270",
+          "FUN_1400019c0",
+          "FUN_140011e70",
+          "wcsncpy_s",
+          "SetEvent",
+          "FUN_14002f160",
+          "wcscat_s",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "1400159b0",
+      "name": "FUN_1400159b0",
+      "instruction_count": 4,
+      "size": 24,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "1400159d0",
+      "name": "FUN_1400159d0",
+      "instruction_count": 162,
+      "size": 717,
+      "strings": [
+        "service::run_as_service",
+        "service::run_as_service",
+        "-> %s",
+        "-> %s",
+        "Failed to register control handler."
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_14000ac10"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "_guard_dispatch_icall",
+          "DispatchMessageW",
+          "FUN_140001ab0",
+          "FUN_140016b80",
+          "FUN_140011e70",
+          "wcscat_s",
+          "FUN_140015270",
+          "RegisterServiceCtrlHandlerExW",
+          "FUN_140016190",
+          "GetMessageW",
+          "FUN_1400019c0",
+          "FUN_140016380",
+          "MsgWaitForMultipleObjectsEx",
+          "FUN_140016620",
+          "wcsncpy_s",
+          "FUN_14002f160",
+          "_CxxThrowException",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140015ca0",
+      "name": "FUN_140015ca0",
+      "instruction_count": 185,
+      "size": 790,
+      "strings": [
+        "service::on_control_handler",
+        "service::on_control_handler",
+        "-> %s",
+        "-> %s",
+        "service_manager::unprotect_service"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140016eb0"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "_guard_dispatch_icall",
+          "FUN_14002d150",
+          "FUN_140016820",
+          "FUN_14000ec80",
+          "FUN_14002f180",
+          "FUN_140011e70",
+          "FUN_140002e10",
+          "FUN_1400144b0",
+          "wcscat_s",
+          "FUN_140035d28",
+          "FUN_140003090",
+          "FUN_140015270",
+          "FUN_1400019c0",
+          "FUN_14002bca0",
+          "wcsncpy_s",
+          "SetEvent",
+          "FUN_14002f160",
+          "_CxxThrowException",
+          "FUN_14002a6a0",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140015fc0",
+      "name": "FUN_140015fc0",
+      "instruction_count": 100,
+      "size": 457,
+      "strings": [
+        "service::uninit",
+        "service::uninit",
+        "-> %s",
+        "-> %s"
+      ],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14000eb20",
+          "_guard_dispatch_icall",
+          "FUN_140015270",
+          "CloseHandle",
+          "FUN_140016190",
+          "FUN_1400019c0",
+          "FUN_140011e70",
+          "wcsncpy_s",
+          "FUN_14002f160",
+          "wcscat_s",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140016190",
+      "name": "FUN_140016190",
+      "instruction_count": 113,
+      "size": 482,
+      "strings": [
+        "service::report_status",
+        "service::report_status",
+        "-> %s",
+        "-> %s"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140015fc0",
+          "FUN_1400159d0"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "FUN_140015270",
+          "FUN_1400019c0",
+          "FUN_140011e70",
+          "wcsncpy_s",
+          "FUN_14002f160",
+          "wcscat_s",
+          "SetServiceStatus",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140016380",
+      "name": "FUN_140016380",
+      "instruction_count": 156,
+      "size": 670,
+      "strings": [
+        "service::register_service_events",
+        "service::register_service_events",
+        "service::register_service_events",
+        "-> %s",
+        "-> %s",
+        "events map is empty",
+        "events map is empty",
+        "service::register_service_events"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_1400159d0"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "_guard_dispatch_icall",
+          "FUN_140015270",
+          "FUN_140016ed0",
+          "FUN_1400019c0",
+          "FUN_140011e70",
+          "FUN_140010a90",
+          "wcsncpy_s",
+          "FUN_14002f160",
+          "wcscat_s",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140016620",
+      "name": "FUN_140016620",
+      "instruction_count": 113,
+      "size": 504,
+      "strings": [
+        "service::unregister_service_events",
+        "service::unregister_service_events",
+        "-> %s",
+        "-> %s"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_1400159d0"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "_guard_dispatch_icall",
+          "FUN_140015270",
+          "FUN_140016ed0",
+          "FUN_1400019c0",
+          "FUN_140011e70",
+          "FUN_140010a90",
+          "wcsncpy_s",
+          "FUN_14002f160",
+          "wcscat_s",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140016820",
+      "name": "FUN_140016820",
+      "instruction_count": 189,
+      "size": 852,
+      "strings": [
+        "service::is_command_trusted",
+        "service::is_command_trusted",
+        "-> %s",
+        "-> %s",
+        "bdservicehost."
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140015ca0"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "_guard_dispatch_icall",
+          "__std_fs_get_stats",
+          "FUN_14002f180",
+          "FUN_140011e70",
+          "wcscat_s",
+          "FUN_140035d28",
+          "FUN_14000e630",
+          "FUN_140015270",
+          "FUN_1400019c0",
+          "FUN_140010340",
+          "wcsncpy_s",
+          "FUN_14002f160",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140016b80",
+      "name": "FUN_140016b80",
+      "instruction_count": 175,
+      "size": 809,
+      "strings": [
+        "service::remove_trust_command_file",
+        "service::remove_trust_command_file",
+        "-> %s",
+        "-> %s",
+        "bdservicehost.",
+        "service::remove_trust_command_file",
+        "Failed to remove file: "
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_1400159d0"
+        ],
+        "callees": [
+          "FUN_14000eb20",
+          "_guard_dispatch_icall",
+          "FUN_140012a30",
+          "FUN_14002f180",
+          "FUN_140011e70",
+          "FUN_140002e10",
+          "wcscat_s",
+          "FUN_140035d28",
+          "FUN_140003090",
+          "FUN_14000e630",
+          "FUN_140015270",
+          "FUN_14000e200",
+          "FUN_14002e910",
+          "FUN_1400019c0",
+          "FUN_140010340",
+          "wcsncpy_s",
+          "FUN_14002f160",
+          "timeGetTime"
+        ]
+      }
+    },
+    {
+      "addr": "140016eb0",
+      "name": "FUN_140016eb0",
+      "instruction_count": 10,
+      "size": 29,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_140015ca0"
+        ]
+      }
+    },
+    {
+      "addr": "140016ed0",
+      "name": "FUN_140016ed0",
+      "instruction_count": 49,
+      "size": 175,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140016380",
+          "FUN_140016620"
+        ],
+        "callees": [
+          "FUN_140017180",
+          "operator_new",
+          "FUN_140016fb0"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_014"
+}

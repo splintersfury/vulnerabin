@@ -1,0 +1,332 @@
+{
+  "functions": [
+    {
+      "addr": "1400447d8",
+      "name": "FUN_1400447d8",
+      "instruction_count": 46,
+      "size": 190,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "operator()<class_<lambda_1d892b297fdedeee07ed8124eeb2f2fa>,class_<lambda_ffc046909424fd52df0ac47e64813305>&___ptr64,class_<lambda_01a7098693036236037e7cdb9bca3d73>_>"
+        ],
+        "callees": [
+          "__acrt_add_locale_ref"
+        ]
+      }
+    },
+    {
+      "addr": "140045ad0",
+      "name": "FUN_140045ad0",
+      "instruction_count": 2,
+      "size": 7,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "_realloc_base",
+          "_malloc_base",
+          "_calloc_base"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140045ad8",
+      "name": "FUN_140045ad8",
+      "instruction_count": 12,
+      "size": 43,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14002f860"
+        ],
+        "callees": [
+          "__doserrno",
+          "FUN_140035d08"
+        ]
+      }
+    },
+    {
+      "addr": "140045b04",
+      "name": "FUN_140045b04",
+      "instruction_count": 2,
+      "size": 8,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14002f790"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140045c78",
+      "name": "FUN_140045c78",
+      "instruction_count": 5,
+      "size": 21,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_1400359c8"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140045cd4",
+      "name": "FUN_140045cd4",
+      "instruction_count": 68,
+      "size": 241,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_1400359c8"
+        ],
+        "callees": [
+          "FUN_140045dc8",
+          "_errcode",
+          "_raise_exc_ex",
+          "FUN_1400463c4",
+          "FUN_14002f160",
+          "_set_errno_from_matherr",
+          "FUN_140043ef8",
+          "_ctrlfp"
+        ]
+      }
+    },
+    {
+      "addr": "140045dc8",
+      "name": "FUN_140045dc8",
+      "instruction_count": 158,
+      "size": 615,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140045cd4"
+        ],
+        "callees": [
+          "FUN_140046498",
+          "_set_statfp"
+        ]
+      }
+    },
+    {
+      "addr": "1400463c4",
+      "name": "FUN_1400463c4",
+      "instruction_count": 54,
+      "size": 212,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140045cd4"
+        ],
+        "callees": [
+          "FUN_140043f20",
+          "_set_errno_from_matherr",
+          "_ctrlfp"
+        ]
+      }
+    },
+    {
+      "addr": "140046498",
+      "name": "FUN_140046498",
+      "instruction_count": 76,
+      "size": 302,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140045dc8",
+          "FUN_1400359c8"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140046950",
+      "name": "FUN_140046950",
+      "instruction_count": 11,
+      "size": 32,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "destroy_ptd_array",
+          "_free_base"
+        ]
+      }
+    },
+    {
+      "addr": "140046d84",
+      "name": "FUN_140046d84",
+      "instruction_count": 14,
+      "size": 49,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "_LocaleUpdate",
+          "islower",
+          "___mb_cur_max_func",
+          "___lc_codepage_func",
+          "___lc_locale_name_func",
+          "FUN_140035e08",
+          "__pctype_func",
+          "isupper"
+        ],
+        "callees": [
+          "FUN_140050a04"
+        ]
+      }
+    },
+    {
+      "addr": "140047044",
+      "name": "FUN_140047044",
+      "instruction_count": 2,
+      "size": 8,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "write_double_translated_ansi_nolock"
+        ],
+        "callees": [
+          "_mbtowc_l"
+        ]
+      }
+    },
+    {
+      "addr": "140047994",
+      "name": "FUN_140047994",
+      "instruction_count": 78,
+      "size": 325,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140047bf4"
+        ],
+        "callees": [
+          "__acrt_fltout",
+          "fp_format_f_internal",
+          "FUN_140052290",
+          "fp_format_e_internal"
+        ]
+      }
+    },
+    {
+      "addr": "140047bf4",
+      "name": "FUN_140047bf4",
+      "instruction_count": 218,
+      "size": 822,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "type_case_a"
+        ],
+        "callees": [
+          "__acrt_fltout",
+          "_invoke_watson",
+          "strcpy_s",
+          "fp_format_f_internal",
+          "__doserrno",
+          "FUN_140047994",
+          "FUN_140035d08",
+          "fp_format_e",
+          "FUN_140052290",
+          "fp_format_a"
+        ]
+      }
+    },
+    {
+      "addr": "140048478",
+      "name": "FUN_140048478",
+      "instruction_count": 84,
+      "size": 319,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "common_getenv_nolock<wchar_t>",
+          "common_set_variable_in_environment_nolock<wchar_t>"
+        ],
+        "callees": [
+          "_LocaleUpdate",
+          "__ascii_wcsnicmp",
+          "__doserrno",
+          "__acrt_CompareStringW",
+          "FUN_140035d08"
+        ]
+      }
+    },
+    {
+      "addr": "1400485b8",
+      "name": "FUN_1400485b8",
+      "instruction_count": 120,
+      "size": 429,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "common_set_variable_in_environment_nolock<char>"
+        ],
+        "callees": [
+          "_strnicmp_l",
+          "_LocaleUpdate",
+          "__doserrno",
+          "FUN_140035d08",
+          "__acrt_CompareStringA"
+        ]
+      }
+    },
+    {
+      "addr": "140049010",
+      "name": "FUN_140049010",
+      "instruction_count": 10,
+      "size": 40,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140049ec0",
+      "name": "FUN_140049ec0",
+      "instruction_count": 7,
+      "size": 28,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "CloseHandle"
+        ]
+      }
+    },
+    {
+      "addr": "14004dac0",
+      "name": "FUN_14004dac0",
+      "instruction_count": 57,
+      "size": 292,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_handle_nan",
+          "FUN_1400553ec"
+        ]
+      }
+    },
+    {
+      "addr": "14004dbf0",
+      "name": "FUN_14004dbf0",
+      "instruction_count": 80,
+      "size": 395,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140041730"
+        ],
+        "callees": [
+          "FUN_140055514",
+          "_handle_nanf"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_032"
+}

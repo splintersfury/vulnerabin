@@ -1,0 +1,19 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_000",
+  "renames": [
+    {"addr": "140001020", "to": "RegisterServiceControlEventHandlers", "confidence": "high", "rationale": "Strings list every SERVICE_CONTROL_* notification token (NETBINDCHANGE, PRESHUTDOWN, SESSIONCHANGE, POWEREVENT, TRIGGEREVENT); uses operator_new + vector-destructor, looks like construction of a service-control event handler registry."},
+    {"addr": "140001390", "to": "RegisterPowerEventHandlers", "confidence": "high", "rationale": "Only strings are ACDC_POWER_SOURCE and BATTERY_PERCENTAGE (PBT_POWERSETTINGCHANGE GUID names); same construction pattern as 140001020 (operator_new + vector destructor) — registers power-event sub-handlers."},
+    {"addr": "1400014e0", "to": "CrtInitLocksTu1", "confidence": "medium", "rationale": "Tiny CRT init thunk calling _Init_locks then atexit — classic per-TU C++ runtime locale/locks initializer."},
+    {"addr": "140001520", "to": "CrtInitLocksTu2", "confidence": "medium", "rationale": "Identical shape to 1400014e0 (calls _Init_locks then atexit); second-TU duplicate CRT lock initializer."},
+    {"addr": "140001550", "to": "AtlBaseModuleInit", "confidence": "high", "rationale": "Constructs a CAtlBaseModule and registers atexit; canonical ATL global-module per-TU initializer."},
+    {"addr": "1400015d0", "to": "StdExceptionDestructor", "confidence": "high", "rationale": "Single callee is __std_exception_destroy; this is the standard C++ exception-object destructor stub for a derived exception class."},
+    {"addr": "140001640", "to": "ThrowBadArrayNewLength_Inner", "confidence": "high", "rationale": "Contains the literal 'bad array new length' twice and is called only by 140001670 which itself calls _CxxThrowException — inner helper that builds the std::bad_array_new_length object."},
+    {"addr": "140001670", "to": "ThrowBadArrayNewLength", "confidence": "high", "rationale": "Calls 140001640 (bad-array-new-length constructor) then _CxxThrowException; called from dozens of allocation sites — the canonical __scrt_throw_std_bad_array_new_length helper."},
+    {"addr": "140001690", "to": "StdExceptionCopyCtorA", "confidence": "medium", "rationale": "Sole callee is __std_exception_copy; 17-instruction copy constructor for a std::exception-derived type."},
+    {"addr": "1400016d0", "to": "StdExceptionCopyCtorB", "confidence": "medium", "rationale": "Same shape as 140001690 (single __std_exception_copy call, 17 insns) — copy constructor for a sibling exception class."},
+    {"addr": "140001710", "to": "LoadLogDllAndResolveExports", "confidence": "high", "rationale": "Strings 'log.dll', '\\log.dll' plus the full LogInit/LogApplySettings/LogSetSettingsFile/LogEnable/LogWrite/LogTrackEvent export list; callees LoadLibraryW + GetProcAddress + GetModuleFileNameW — dynamically loads log.dll and binds its function pointers."},
+    {"addr": "1400019c0", "to": "InvokeVTableMethodGuarded", "confidence": "medium", "rationale": "Tiny (20 insns) wrapper whose only callee is _guard_dispatch_icall; called from 20+ different functions — looks like a small CFG-guarded indirect-call thunk for a virtual-method dispatch."},
+    {"addr": "140001a20", "to": "ThrowLengthErrorStringTooLong", "confidence": "high", "rationale": "Only string is 'string too long' and the function tail-calls FUN_14002d6f4 — canonical std::_Xlength_error('string too long') throw helper called from string/container length checks."}
+  ]
+}

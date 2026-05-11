@@ -1,0 +1,108 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_028",
+  "renames": [
+    {
+      "addr": "14003078c",
+      "to": "vb_eh_frame_unwind_helper",
+      "confidence": "medium",
+      "rationale": "Mid-size EH helper; calls abort + StateFromIp wrapper (FUN_140032534); siblings of FrameUnwindToEmptyState/GetEstablisherFrame. Likely an internal unwind step in __FrameHandler3."
+    },
+    {
+      "addr": "1400308cc",
+      "to": "vb_eh_catch_dispatch_helper",
+      "confidence": "low",
+      "rationale": "Called from FUN_14003328c (EH dispatcher cluster); chains into FUN_140030c58. Shape matches an MSVC catch-block dispatch/transition helper."
+    },
+    {
+      "addr": "140030a34",
+      "to": "vb_catchit_fh3_unwind",
+      "confidence": "high",
+      "rationale": "Called by CatchIt<class___FrameHandler3>; invokes RtlUnwindEx via FUN_14002f160 wrapper. Classic __FrameHandler3 CatchIt unwind invoker."
+    },
+    {
+      "addr": "140030b38",
+      "to": "vb_catchit_fh4_unwind",
+      "confidence": "high",
+      "rationale": "Called exclusively by CatchIt<class___FrameHandler4>; invokes RtlUnwindEx via FUN_14002f160. __FrameHandler4 sibling of 140030a34."
+    },
+    {
+      "addr": "140030c58",
+      "to": "vb_eh_catch_dispatch_inner",
+      "confidence": "low",
+      "rationale": "Sole callee of FUN_1400308cc (catch-dispatch helper); leaf with no callees. Likely the inner state-transition step of the catch dispatcher."
+    },
+    {
+      "addr": "140030ed0",
+      "to": "vb_vcrt_getptd_thunk_a",
+      "confidence": "medium",
+      "rationale": "Tiny 8-instr thunk over __vcrt_getptd; called from CRT helpers FUN_140034c10/FUN_140034d9c. Per-thread data accessor wrapper."
+    },
+    {
+      "addr": "140030ee8",
+      "to": "vb_vcrt_getptd_thunk_b",
+      "confidence": "medium",
+      "rationale": "Sibling of 140030ed0: tiny __vcrt_getptd thunk used by EH dispatcher cluster (FUN_14003328c, FUN_140032dc4)."
+    },
+    {
+      "addr": "14003126c",
+      "to": "vb_crt_initterm_helper",
+      "confidence": "low",
+      "rationale": "Mid-size leaf called from very early init functions FUN_140001710/FUN_1400067c0/FUN_140006670 (matches MSVC CRT bootstrap region). Resembles _initterm-style table walker."
+    },
+    {
+      "addr": "14003131c",
+      "to": "vb_environ_table_helper",
+      "confidence": "high",
+      "rationale": "Callers: common_set_variable_in_environment_nolock<wchar_t>, create_environment_string<wchar_t>, __acrt_get_qualified_locale, FUN_140008d90. UCRT environment-table maintenance helper."
+    },
+    {
+      "addr": "140031398",
+      "to": "vb_locale_string_parse_helper",
+      "confidence": "low",
+      "rationale": "Mid-size (155 ins) leaf called from FUN_14000c090 + FUN_140008d90, which sit in the locale/environ neighbourhood. Best guess: locale or env-string parser."
+    },
+    {
+      "addr": "1400316b0",
+      "to": "vb_acrt_locale_update",
+      "confidence": "medium",
+      "rationale": "Large hub (312 ins, 60+ callers spanning fp_format_*, write_string, _fread_nolock_s, __dcrt_get_wide_environment_from_os, _Locimp, _Init, signal, write_double_translated_ansi_nolock). Looks like the ACRT per-thread/per-call locale/state update routine."
+    },
+    {
+      "addr": "140031e00",
+      "to": "vb_acrt_mbcp_table_init",
+      "confidence": "medium",
+      "rationale": "Hub (108 ins) reached from setSBCS, _setmbcp_nolock, parse_bcp47, __lc_wcstolc, __acrt_GetStringTypeA, _wctomb_s_l, fp_format_a, __acrt_fltout. Locale/code-page table initialiser."
+    },
+    {
+      "addr": "1400322e0",
+      "to": "vb_unreached_tls_or_init_thunk",
+      "confidence": "low",
+      "rationale": "Tiny orphan (no callers in this batch) that tail-calls FUN_140035ac0; resembles a TLS callback or module-init thunk."
+    },
+    {
+      "addr": "140032534",
+      "to": "vb_eh_state_from_ip_fh3",
+      "confidence": "high",
+      "rationale": "Single-line wrapper over StateFromIp; callers are FrameUnwindToEmptyState, GetEstablisherFrame, GetHandlerSearchState, ExecutionInCatch — the __FrameHandler3 family."
+    },
+    {
+      "addr": "14003253c",
+      "to": "vb_eh_state_from_ip_fh4",
+      "confidence": "high",
+      "rationale": "Twin of 140032534: tiny StateFromIp wrapper used by FUN_14003328c + FUN_140034d9c (the FrameHandler4 dispatch cluster)."
+    },
+    {
+      "addr": "140032694",
+      "to": "vb_build_catch_object_fh3_inner",
+      "confidence": "high",
+      "rationale": "Sole caller BuildCatchObjectInternal<class___FrameHandler3>; calls __AdjustPointer, _guard_dispatch_icall, _GetThrowImageBase, _GetImageBase. Inner copy-ctor invoker for FrameHandler3 catch object."
+    },
+    {
+      "addr": "140032894",
+      "to": "vb_build_catch_object_fh4_inner",
+      "confidence": "high",
+      "rationale": "Twin of 140032694 under BuildCatchObjectInternal<class___FrameHandler4>; same callees (__AdjustPointer, _guard_dispatch_icall, _GetThrowImageBase, _GetImageBase). FH4 catch-object copy-ctor invoker."
+    }
+  ]
+}

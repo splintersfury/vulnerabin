@@ -1,0 +1,371 @@
+{
+  "functions": [
+    {
+      "addr": "140028680",
+      "name": "FUN_140028680",
+      "instruction_count": 130,
+      "size": 457,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140024fb0",
+          "FUN_140025440",
+          "FUN_140023770"
+        ],
+        "callees": [
+          "memcmp",
+          "operator_new",
+          "FUN_14001de50",
+          "FUN_140028900",
+          "FUN_14000e990",
+          "FUN_140018340"
+        ]
+      }
+    },
+    {
+      "addr": "140028870",
+      "name": "FUN_140028870",
+      "instruction_count": 36,
+      "size": 133,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140028900",
+      "name": "FUN_140028900",
+      "instruction_count": 183,
+      "size": 637,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140028680"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140028bc0",
+      "name": "FUN_140028bc0",
+      "instruction_count": 164,
+      "size": 636,
+      "strings": [
+        "invalid hash bucket count"
+      ],
+      "neighbors": {
+        "callers": [
+          "FUN_140026490"
+        ],
+        "callees": [
+          "memcmp",
+          "FUN_14002d6f4",
+          "FUN_140016fb0"
+        ]
+      }
+    },
+    {
+      "addr": "140028e40",
+      "name": "FUN_140028e40",
+      "instruction_count": 149,
+      "size": 546,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140023770"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_14001de50",
+          "FUN_140014450",
+          "FUN_140001670",
+          "FUN_140035d28",
+          "FUN_140029e80"
+        ]
+      }
+    },
+    {
+      "addr": "140029070",
+      "name": "FUN_140029070",
+      "instruction_count": 167,
+      "size": 616,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140026960"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140014450",
+          "FUN_14000e990",
+          "FUN_140001670",
+          "FUN_140035d28",
+          "FUN_140029e80",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "1400292e0",
+      "name": "FUN_1400292e0",
+      "instruction_count": 133,
+      "size": 463,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140023770"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140014450",
+          "FUN_140001670",
+          "FUN_140035d28",
+          "FUN_140029e80"
+        ]
+      }
+    },
+    {
+      "addr": "1400294b0",
+      "name": "FUN_1400294b0",
+      "instruction_count": 133,
+      "size": 464,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140023770"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140014450",
+          "FUN_140001670",
+          "FUN_140035d28",
+          "FUN_140029e80"
+        ]
+      }
+    },
+    {
+      "addr": "140029680",
+      "name": "FUN_140029680",
+      "instruction_count": 133,
+      "size": 464,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140023770"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140014450",
+          "FUN_140001670",
+          "FUN_140035d28",
+          "FUN_140029e80"
+        ]
+      }
+    },
+    {
+      "addr": "140029850",
+      "name": "FUN_140029850",
+      "instruction_count": 134,
+      "size": 464,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140023770"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140014450",
+          "FUN_140001670",
+          "FUN_140035d28",
+          "FUN_140029e80"
+        ]
+      }
+    },
+    {
+      "addr": "140029a20",
+      "name": "FUN_140029a20",
+      "instruction_count": 132,
+      "size": 443,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140023770"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_14001de50",
+          "FUN_140014450",
+          "FUN_140001670",
+          "FUN_140035d28",
+          "FUN_140029e80"
+        ]
+      }
+    },
+    {
+      "addr": "140029be0",
+      "name": "FUN_140029be0",
+      "instruction_count": 30,
+      "size": 94,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140025800",
+          "FUN_14002a3f0",
+          "FUN_140029be0"
+        ],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140029e10",
+          "FUN_140029be0"
+        ]
+      }
+    },
+    {
+      "addr": "140029c40",
+      "name": "FUN_140029c40",
+      "instruction_count": 133,
+      "size": 464,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140026af0",
+          "FUN_1400270e0",
+          "FUN_140027e40",
+          "FUN_1400277a0",
+          "FUN_140027450",
+          "FUN_140027af0",
+          "FUN_140028190"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_140014450",
+          "FUN_140001670",
+          "FUN_140035d28",
+          "FUN_140029e80"
+        ]
+      }
+    },
+    {
+      "addr": "140029e10",
+      "name": "FUN_140029e10",
+      "instruction_count": 28,
+      "size": 103,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140025800",
+          "FUN_140026df0",
+          "FUN_14002a3f0",
+          "FUN_140029be0"
+        ],
+        "callees": [
+          "FUN_14001cf70",
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140029e80",
+      "name": "FUN_140029e80",
+      "instruction_count": 54,
+      "size": 181,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_1400292e0",
+          "FUN_140029680",
+          "FUN_140029850",
+          "FUN_140029a20",
+          "FUN_140028e40",
+          "FUN_140029070",
+          "FUN_1400294b0",
+          "FUN_140029c40"
+        ],
+        "callees": [
+          "FUN_14001cf70",
+          "FUN_14002f180",
+          "FUN_140035d28"
+        ]
+      }
+    },
+    {
+      "addr": "140029f50",
+      "name": "FUN_140029f50",
+      "instruction_count": 336,
+      "size": 1172,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140026df0"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "14002a3f0",
+      "name": "FUN_14002a3f0",
+      "instruction_count": 36,
+      "size": 131,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14002f180",
+          "FUN_140029e10",
+          "FUN_140029be0"
+        ]
+      }
+    },
+    {
+      "addr": "14002a480",
+      "name": "FUN_14002a480",
+      "instruction_count": 16,
+      "size": 50,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14001cf70"
+        ]
+      }
+    },
+    {
+      "addr": "14002a4c0",
+      "name": "FUN_14002a4c0",
+      "instruction_count": 65,
+      "size": 245,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14002a4c0",
+          "FUN_140025c20"
+        ],
+        "callees": [
+          "operator_new",
+          "FUN_14000e990",
+          "FUN_14002a4c0",
+          "FUN_140025c20"
+        ]
+      }
+    },
+    {
+      "addr": "14002a5c0",
+      "name": "FUN_14002a5c0",
+      "instruction_count": 3,
+      "size": 12,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "FUN_14001d410"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_023"
+}

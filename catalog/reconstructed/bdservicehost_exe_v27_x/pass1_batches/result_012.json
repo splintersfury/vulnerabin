@@ -1,0 +1,54 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_012",
+  "renames": [
+    {
+      "addr": "140012520",
+      "to": "bd_load_productinfo_module",
+      "confidence": "high",
+      "rationale": "Strings 'BdCreateObject'/'BdDestroyObject'/'productinfo' x4, calls LoadLibraryExW+LoadLibraryW+GetProcAddress+FreeLibrary: dynamic-loads productinfo plugin and resolves Bd object factory exports."
+    },
+    {
+      "addr": "140012190",
+      "to": "bd_open_file_with_cleanup",
+      "confidence": "medium",
+      "rationale": "Calls CreateFileW, CloseHandle, FreeLibrary, GetLastError: opens a file handle with module-load lifecycle; cleanup branch on failure."
+    },
+    {
+      "addr": "140013fd0",
+      "to": "std_locale_ctor_from_name",
+      "confidence": "high",
+      "rationale": "Strings 'false','bad locale name'; calls _Locinfo_ctor/_Locinfo_dtor/_Lockit/_Mbrtowc/_Getcvt: STL std::locale constructor from a named locale string."
+    },
+    {
+      "addr": "140014290",
+      "to": "std_locale_name_validate",
+      "confidence": "high",
+      "rationale": "String 'bad locale name'; calls _Locinfo_ctor/_Locinfo_dtor/_Lockit: helper that validates a locale name and constructs Locinfo, throwing on failure."
+    },
+    {
+      "addr": "140012ef0",
+      "to": "std_facet_register_locked",
+      "confidence": "medium",
+      "rationale": "Calls _Facet_Register, _Lockit/~_Lockit pair: STL facet registration under the global locale lock."
+    },
+    {
+      "addr": "1400134e0",
+      "to": "std_locale_init_via_FUN140013fd0",
+      "confidence": "medium",
+      "rationale": "Calls _Facet_Register, _Lockit pair, and FUN_140013fd0 (std_locale_ctor_from_name): wrapper that initialises a named locale facet under lock."
+    },
+    {
+      "addr": "140013c80",
+      "to": "std_facet_register_via_FUN1400025d0",
+      "confidence": "medium",
+      "rationale": "Same shape as 134e0/12ef0 (_Facet_Register + _Lockit/~_Lockit + _guard_dispatch_icall) but routes through FUN_1400025d0; per-facet registration wrapper."
+    },
+    {
+      "addr": "140012a30",
+      "to": "shared_exception_thrower",
+      "confidence": "low",
+      "rationale": "11 callers from disparate dispatchers; calls __uncaught_exception and _guard_dispatch_icall: shared throw/rethrow or error-propagation helper invoked from many sites."
+    }
+  ]
+}

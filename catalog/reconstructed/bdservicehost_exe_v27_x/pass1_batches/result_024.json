@@ -1,0 +1,90 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_024",
+  "renames": [
+    {
+      "addr": "14002a6a0",
+      "to": "format_exception_description",
+      "confidence": "medium",
+      "rationale": "Builds 'Description: ...; ec: ...' diagnostic string; widely called by error paths in service/install code."
+    },
+    {
+      "addr": "14002a810",
+      "to": "delete_service",
+      "confidence": "high",
+      "rationale": "String tag 'delete_service'; opens SCM, OpenServiceW, DeleteService, CloseServiceHandle with err logging."
+    },
+    {
+      "addr": "14002aaa0",
+      "to": "control_service_send",
+      "confidence": "high",
+      "rationale": "Calls ControlService; logs 'ControlService failed'; helper for stop/pause via SCM control codes."
+    },
+    {
+      "addr": "14002ac10",
+      "to": "start_service_inner",
+      "confidence": "high",
+      "rationale": "Inner helper: StartServiceW + wait_service_to_stop + logs 'StartServiceW failed' under 'start_service' tag."
+    },
+    {
+      "addr": "14002aeb0",
+      "to": "start_service",
+      "confidence": "high",
+      "rationale": "Top-level 'start_service' orchestrator: open_sc_manager, open_service, wait_to_stop/start, calls start_service_inner."
+    },
+    {
+      "addr": "14002b350",
+      "to": "stop_service_inner",
+      "confidence": "high",
+      "rationale": "QueryServiceStatus + ControlService (via 14002aaa0) + wait_service_to_stop; logs 'query_service_status failed'."
+    },
+    {
+      "addr": "14002b4e0",
+      "to": "stop_service",
+      "confidence": "high",
+      "rationale": "Top-level stop_service: open_sc_manager/open_service then calls stop_service_inner; matching error log strings."
+    },
+    {
+      "addr": "14002b740",
+      "to": "change_service_config_inner",
+      "confidence": "high",
+      "rationale": "Wraps ChangeServiceConfigW; logs 'ChangeServiceConfigW failed'."
+    },
+    {
+      "addr": "14002b840",
+      "to": "enable_service_autostart",
+      "confidence": "high",
+      "rationale": "String tag 'enable_service_autostart'; opens SCM/service then ChangeServiceConfigW via 14002b740."
+    },
+    {
+      "addr": "14002bba0",
+      "to": "change_service_config2_inner",
+      "confidence": "high",
+      "rationale": "Wraps ChangeServiceConfig2W with err logging 'ChangeServiceConfig2W failed'."
+    },
+    {
+      "addr": "14002bca0",
+      "to": "set_service_launch_type",
+      "confidence": "high",
+      "rationale": "String tag 'set_service_launch_type'; opens SCM/service then ChangeServiceConfig2W via 14002bba0."
+    },
+    {
+      "addr": "14002c000",
+      "to": "wait_service_to_start",
+      "confidence": "high",
+      "rationale": "String tag 'wait_service_to_start'; QueryServiceStatus polling loop with Sleep/GetTickCount."
+    },
+    {
+      "addr": "14002c1f0",
+      "to": "wait_service_to_stop",
+      "confidence": "high",
+      "rationale": "String tag 'wait_service_to_stop'; QueryServiceStatus polling loop with Sleep/GetTickCount."
+    },
+    {
+      "addr": "14002c3f0",
+      "to": "install_bdelam_certificate",
+      "confidence": "high",
+      "rationale": "Reads \\drivers\\bdelam.sys via SHGetKnownFolderPath, GetProcAddress(InstallELAMCertificateInfo) from kernel32.dll."
+    }
+  ]
+}

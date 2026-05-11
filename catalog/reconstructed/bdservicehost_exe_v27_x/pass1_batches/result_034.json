@@ -1,0 +1,72 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_034",
+  "renames": [
+    {
+      "addr": "140054290",
+      "to": "close_handle_thunk",
+      "confidence": "medium",
+      "rationale": "Tiny 7-instr leaf wrapping CloseHandle; classic thunk/forwarder shape with no other callees."
+    },
+    {
+      "addr": "140054eac",
+      "to": "lowio_open_file",
+      "confidence": "high",
+      "rationale": "Called from common_sopen_dispatch<>; uses CreateFileW + __acrt_lowio_set_os_handle + _alloc_osfhnd + configure_text_mode + truncate_ctrl_z_if_present. CRT lowio open implementation."
+    },
+    {
+      "addr": "1400552c8",
+      "to": "fpe_set_errno_helper",
+      "confidence": "medium",
+      "rationale": "Shared helper of fp exception handlers; calls _ctrlfp and _set_errno_from_matherr. Used by both float and double exception raisers."
+    },
+    {
+      "addr": "1400553ec",
+      "to": "raise_fp_exception_double",
+      "confidence": "high",
+      "rationale": "Calls _exception_enabled, _raise_exc (double variant), _set_errno_from_matherr, _ctrlfp; mirror of float variant at 140055514. CRT _fdtest/_except1-style double FPE raiser."
+    },
+    {
+      "addr": "140055514",
+      "to": "raise_fp_exception_float",
+      "confidence": "high",
+      "rationale": "Same shape as 1400553ec but calls _raise_excf (float). CRT float FPE raiser."
+    },
+    {
+      "addr": "140055a20",
+      "to": "initialize_multibyte_thunk",
+      "confidence": "medium",
+      "rationale": "Tiny wrapper around __acrt_initialize_multibyte; CRT mbcs init forwarder."
+    },
+    {
+      "addr": "140055f90",
+      "to": "fltout_format_core",
+      "confidence": "high",
+      "rationale": "Called from __acrt_fltout; 1386-byte float-to-string conversion core that drives log10-based digit formatter at 140056a90."
+    },
+    {
+      "addr": "140056a90",
+      "to": "compute_log10_for_fltout",
+      "confidence": "high",
+      "rationale": "Strings 'log10' x2 indicate libm log10 call site; called by fltout core and forwards to fp helper. Computes exponent via log10."
+    },
+    {
+      "addr": "140056ab0",
+      "to": "log10_with_fpe_handling",
+      "confidence": "medium",
+      "rationale": "Bridges log10 call site to raise_fp_exception_double; handles domain/range errors for log10."
+    },
+    {
+      "addr": "140056d28",
+      "to": "set_env_var_nolock_helper",
+      "confidence": "medium",
+      "rationale": "Sole caller is common_set_variable_in_environment_nolock<char>; helper for environment variable mutation."
+    },
+    {
+      "addr": "140056dd4",
+      "to": "fp_format_a_helper",
+      "confidence": "medium",
+      "rationale": "Sole caller fp_format_a; assistive routine for %a hex-float formatting."
+    }
+  ]
+}

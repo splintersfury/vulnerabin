@@ -1,0 +1,338 @@
+{
+  "functions": [
+    {
+      "addr": "14004dd80",
+      "name": "FUN_14004dd80",
+      "instruction_count": 12,
+      "size": 79,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "14004dea0",
+      "name": "FUN_14004dea0",
+      "instruction_count": 8,
+      "size": 18,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "14004e414",
+      "name": "FUN_14004e414",
+      "instruction_count": 118,
+      "size": 442,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14004e8c4"
+        ],
+        "callees": [
+          "__acrt_unlock",
+          "FUN_140031e00",
+          "FUN_140035d08",
+          "__doserrno",
+          "_free_base",
+          "__acrt_lock"
+        ]
+      }
+    },
+    {
+      "addr": "14004e8c4",
+      "name": "FUN_14004e8c4",
+      "instruction_count": 119,
+      "size": 446,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "__acrt_initialize_multibyte"
+        ],
+        "callees": [
+          "_setmbcp_nolock",
+          "getSystemCP",
+          "_malloc_base",
+          "FUN_14004e414",
+          "__doserrno",
+          "_free_base",
+          "FUN_140044524",
+          "FUN_14004ea84"
+        ]
+      }
+    },
+    {
+      "addr": "14004ea84",
+      "name": "FUN_14004ea84",
+      "instruction_count": 47,
+      "size": 183,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_14004e8c4",
+          "__acrt_update_thread_multibyte_data"
+        ],
+        "callees": [
+          "__acrt_unlock",
+          "_free_base",
+          "__acrt_lock",
+          "abort"
+        ]
+      }
+    },
+    {
+      "addr": "14004ee80",
+      "name": "FUN_14004ee80",
+      "instruction_count": 8,
+      "size": 37,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "GetCommandLineW",
+          "GetCommandLineA"
+        ]
+      }
+    },
+    {
+      "addr": "14004f050",
+      "name": "FUN_14004f050",
+      "instruction_count": 7,
+      "size": 28,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "GetProcessHeap"
+        ]
+      }
+    },
+    {
+      "addr": "14004f070",
+      "name": "FUN_14004f070",
+      "instruction_count": 3,
+      "size": 11,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "14004f660",
+      "name": "FUN_14004f660",
+      "instruction_count": 7,
+      "size": 25,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "addr": "14004f790",
+      "name": "FUN_14004f790",
+      "instruction_count": 335,
+      "size": 1330,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_GetLocaleInfoA",
+          "_free_base",
+          "_calloc_base",
+          "__acrt_locale_free_monetary"
+        ]
+      }
+    },
+    {
+      "addr": "14004fd30",
+      "name": "FUN_14004fd30",
+      "instruction_count": 193,
+      "size": 743,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "_malloc_base",
+          "__acrt_GetLocaleInfoA",
+          "_free_base",
+          "_calloc_base",
+          "__acrt_locale_free_numeric"
+        ]
+      }
+    },
+    {
+      "addr": "140050a04",
+      "name": "FUN_140050a04",
+      "instruction_count": 29,
+      "size": 109,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "_wsetlocale",
+          "FUN_140046d84"
+        ],
+        "callees": [
+          "__acrt_unlock",
+          "__acrt_getptd",
+          "__acrt_lock",
+          "abort",
+          "_updatetlocinfoEx_nolock"
+        ]
+      }
+    },
+    {
+      "addr": "140050cf0",
+      "name": "FUN_140050cf0",
+      "instruction_count": 205,
+      "size": 745,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_GetLocaleInfoEx",
+          "__acrt_getptd",
+          "wcsncpy_s",
+          "TestDefaultCountry",
+          "FUN_140053824",
+          "FUN_140038420",
+          "_invoke_watson",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "140050fe0",
+      "name": "FUN_140050fe0",
+      "instruction_count": 61,
+      "size": 233,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "__acrt_GetLocaleInfoEx",
+          "__acrt_getptd",
+          "wcsncpy_s",
+          "FUN_140038420",
+          "_invoke_watson",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "140051500",
+      "name": "FUN_140051500",
+      "instruction_count": 60,
+      "size": 232,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "LcidFromHexString",
+          "GetLocaleInfoW",
+          "__acrt_getptd",
+          "FUN_140038420",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "140051750",
+      "name": "FUN_140051750",
+      "instruction_count": 169,
+      "size": 586,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "LcidFromHexString",
+          "GetLocaleInfoW",
+          "__acrt_getptd",
+          "FUN_140053824",
+          "FUN_140038420",
+          "TestDefaultLanguage",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "1400519a0",
+      "name": "FUN_1400519a0",
+      "instruction_count": 70,
+      "size": 264,
+      "strings": [],
+      "neighbors": {
+        "callers": [],
+        "callees": [
+          "LcidFromHexString",
+          "GetLocaleInfoW",
+          "__acrt_getptd",
+          "FUN_140038420",
+          "TestDefaultLanguage",
+          "FUN_14002f160"
+        ]
+      }
+    },
+    {
+      "addr": "140051fe0",
+      "name": "FUN_140051fe0",
+      "instruction_count": 3,
+      "size": 10,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "_set_statfp",
+          "_control87",
+          "_ctrlfp"
+        ],
+        "callees": []
+      }
+    },
+    {
+      "addr": "140052290",
+      "name": "FUN_140052290",
+      "instruction_count": 119,
+      "size": 347,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "FUN_140047bf4",
+          "FUN_140047994",
+          "fp_format_e"
+        ],
+        "callees": [
+          "fegetround",
+          "FUN_140035d08",
+          "__doserrno",
+          "FUN_1400316b0"
+        ]
+      }
+    },
+    {
+      "addr": "140053824",
+      "name": "FUN_140053824",
+      "instruction_count": 108,
+      "size": 406,
+      "strings": [],
+      "neighbors": {
+        "callers": [
+          "__acrt_stdio_parse_mode<wchar_t>",
+          "FUN_140050cf0",
+          "FUN_140051750"
+        ],
+        "callees": [
+          "__ascii_wcsnicmp",
+          "_towlower_l",
+          "FUN_140035d08",
+          "__doserrno",
+          "_LocaleUpdate"
+        ]
+      }
+    }
+  ],
+  "batch_id": "batch_033"
+}

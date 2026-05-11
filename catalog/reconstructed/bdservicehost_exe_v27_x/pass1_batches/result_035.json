@@ -1,0 +1,54 @@
+{
+  "pass": "pass1",
+  "batch_id": "batch_035",
+  "renames": [
+    {
+      "addr": "140058080",
+      "to": "vb_container_tidy_dealloc_thunk_140058080",
+      "confidence": "low",
+      "rationale": "13-insn thunk calling MSVC STL _Tidy_deallocate; likely container destructor/cleanup wrapper. No strings, no callers visible."
+    },
+    {
+      "addr": "140058ff0",
+      "to": "vb_map_lookup_key_not_found_throw",
+      "confidence": "high",
+      "rationale": "Strings 'key ' and \"' not found\" plus _CxxThrowException callee match the canonical std::map/unordered_map at()-style 'key not found' throw helper."
+    },
+    {
+      "addr": "1400597e0",
+      "to": "vb_allocator_overflow_throw_dealloc_thunk",
+      "confidence": "low",
+      "rationale": "Calls _CxxThrowException + deallocate; shape matches MSVC allocator length_error/bad_alloc throw helper that frees buffer before throwing."
+    },
+    {
+      "addr": "140059b6c",
+      "to": "vb_array_unwind_cleanup_thunk",
+      "confidence": "medium",
+      "rationale": "Sole callee __ArrayUnwind: SEH/EH cleanup funclet that destroys partially-constructed array on exception. Pure unwind helper."
+    },
+    {
+      "addr": "140059bf7",
+      "to": "vb_seh_filter_exe_thunk",
+      "confidence": "medium",
+      "rationale": "Sole callee _seh_filter_exe: CRT SEH top-level exception filter wrapper used by /EHa to translate SEH into C++."
+    },
+    {
+      "addr": "140059df9",
+      "to": "vb_eh_filter_rethrow_thunk",
+      "confidence": "medium",
+      "rationale": "Sole callee ExFilterRethrow: MSVC C++ EH rethrow filter funclet emitted around rethrow inside a catch block."
+    },
+    {
+      "addr": "140059e96",
+      "to": "vb_eh_filter_rethrow_fh4_thunk",
+      "confidence": "medium",
+      "rationale": "Sole callee ExFilterRethrowFH4: FH4-format C++ EH rethrow filter (newer MSVC funclet variant of ExFilterRethrow)."
+    },
+    {
+      "addr": "140059f48",
+      "to": "vb_frame_unwind_filter_thunk",
+      "confidence": "medium",
+      "rationale": "8-insn funclet whose only callee is __FrameUnwindFilter: stack-frame unwind exception filter for C++ EH."
+    }
+  ]
+}

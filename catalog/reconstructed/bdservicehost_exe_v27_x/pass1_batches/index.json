@@ -1,0 +1,200 @@
+{
+  "batches": [
+    {
+      "batch_id": "batch_000",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_001",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_002",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_003",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_004",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_005",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_006",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_007",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_008",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_009",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_010",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_011",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_012",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_013",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_014",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_015",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_016",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_017",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_018",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_019",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_020",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_021",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_022",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_023",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_024",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_025",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_026",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_027",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_028",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_029",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_030",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_031",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_032",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_033",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_034",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_035",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_036",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_037",
+      "function_count": 20,
+      "status": "applied"
+    },
+    {
+      "batch_id": "batch_038",
+      "function_count": 1,
+      "status": "applied"
+    }
+  ],
+  "survivor_count": 761
+}
