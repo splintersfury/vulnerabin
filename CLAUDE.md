@@ -203,6 +203,9 @@ vb-add feature      --binary <stem> --slug "..." --name "..." --description "...
                     --cwe CWE-78 --severity-ceiling High --user-observable "..."
 vb-add unreachable  --binary <stem> --input INP-001 --feature FEAT-001 \
                     --reason "Input INP-001 is admin-only; feature is for low-priv attackers"
+vb-add reconstruction --binary <stem> --version <tag>
+                                                # Scaffold catalog/reconstructed/<stem>_<tag>/
+                                                # and add reconstruction: block to binary YAML.
 ```
 
 ## Taxonomy Files
