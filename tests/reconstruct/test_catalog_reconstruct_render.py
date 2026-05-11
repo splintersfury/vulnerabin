@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -130,3 +132,48 @@ def test_build_context_handles_no_carryforward(tmp_path):
     cf = ctx["carryforward"]
     assert cf["prior_version_consulted"] is None
     assert cf["renames_ported"] == 0
+
+
+def test_cli_writes_markdown_for_specific_target(tmp_path):
+    """CLI with target arg renders single binary to catalog/pages/reconstructed/."""
+    _seed_recon_dir(tmp_path, stem="samplebin", tag="v1_2_3")
+    env = {**os.environ, "VULNERABIN_ROOT": str(tmp_path)}
+    result = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "catalog_reconstruct_render.py"),
+         "samplebin_v1_2_3"],
+        env=env, capture_output=True, text=True,
+    )
+    assert result.returncode == 0, result.stderr
+    out = tmp_path / "catalog" / "pages" / "reconstructed" / "samplebin_v1_2_3.md"
+    assert out.is_file()
+    text = out.read_text()
+    assert "Reconstruction detail — samplebin @ v1_2_3" in text
+    assert "RtlAllocateHeap_wrapper" in text
+    assert "Carryforward" in text
+
+
+def test_cli_writes_markdown_for_all_targets_when_no_arg(tmp_path):
+    """CLI with no args discovers and renders all binaries."""
+    _seed_recon_dir(tmp_path, stem="bin_a", tag="v1")
+    _seed_recon_dir(tmp_path, stem="bin_b", tag="v2")
+    env = {**os.environ, "VULNERABIN_ROOT": str(tmp_path)}
+    result = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "catalog_reconstruct_render.py")],
+        env=env, capture_output=True, text=True,
+    )
+    assert result.returncode == 0, result.stderr
+    pages = tmp_path / "catalog" / "pages" / "reconstructed"
+    assert (pages / "bin_a_v1.md").is_file()
+    assert (pages / "bin_b_v2.md").is_file()
+
+
+def test_cli_refuses_unknown_target(tmp_path):
+    """CLI with unknown target returns exit code 2 and error message."""
+    env = {**os.environ, "VULNERABIN_ROOT": str(tmp_path)}
+    result = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "catalog_reconstruct_render.py"),
+         "does_not_exist_vfoo"],
+        env=env, capture_output=True, text=True,
+    )
+    assert result.returncode != 0
+    assert "not found" in (result.stderr + result.stdout).lower()
