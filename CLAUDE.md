@@ -232,6 +232,29 @@ Pass 0 produces:
 
 Pass 0 does NOT apply renames to a Ghidra project — they are produced as data. Applying renames to Ghidra (FID/BSim/`.gpr` snapshot/re-emit) is a separate sub-plan once `vendor/bootstrap.sh --install` ships.
 
+### Layer 8 reconstruction detail page
+
+The reconstructed `manifest.json` + `coverage.json` are surfaced in the catalog UI as a Layer 8 page per binary version:
+
+```bash
+# Render the markdown version (catalog/pages/reconstructed/<stem>_<tag>.md)
+python3 scripts/catalog_reconstruct_render.py                 # all
+python3 scripts/catalog_reconstruct_render.py samplebin_v1_2_3  # one
+
+# Render the full site (Layer 8 HTML + reconstruction banner on binary page)
+python3 scripts/catalog_site_render.py
+```
+
+Layer 8 surfaces:
+- Coverage stats (hard/soft gate state, named-vs-total, Pass 0 contribution)
+- Pass log timeline (one row per pass: started_at, duration, tools, renames, tokens)
+- Carryforward summary (prior version consulted, renames ported)
+- Project discovery snapshot (function counts, entrypoints, exports, reachable set)
+- Proposed renames table (addr / from / to / confidence / source / rationale)
+- Renames-by-source totals
+
+The per-binary catalog page (`catalog/site/binaries/<stem>.html`) gains a status banner near the top with a link to Layer 8: green for `complete`, amber for `partial`, info for `in_progress`, red for `not_started`, gray for `opt_out`.
+
 ## Taxonomy Files
 
 Located in `taxonomy/<type>/`:
