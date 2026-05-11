@@ -36,8 +36,14 @@ def _resolve_recon_dir(stem: str, version_tag: str) -> Path:
     return ROOT / "catalog" / "reconstructed" / f"{stem}_{version_tag}"
 
 
-def _load_function_index(engagement: str) -> dict:
-    p = ROOT / "engagements" / engagement / "decomp" / "function_index.json"
+def _load_function_index(engagement: str, decomp_dir: str = "decomp") -> dict:
+    """Load function_index.json from engagements/<eng>/<decomp_dir>/.
+
+    `decomp_dir` defaults to `"decomp"` (the standard layout) but multi-binary
+    engagements often use `decomp-<component>/`. Caller passes the override
+    via --decomp-dir.
+    """
+    p = ROOT / "engagements" / engagement / decomp_dir / "function_index.json"
     if not p.is_file():
         raise SystemExit(f"function_index.json missing: {p}")
     return json.loads(p.read_text())
@@ -70,13 +76,18 @@ def _find_prior_version(stem: str, current_version_tag: str) -> tuple[str | None
 
 
 def _normalize_addr(a: str) -> str:
-    """Canonical lowercase 0x-prefixed hex, no leading-zero padding."""
+    """Canonical lowercase 0x-prefixed hex, no leading-zero padding.
+
+    Accepts both `0x140012a0` and bare-hex `140012a0` (the format real
+    decomp.py output uses). Output is always 0x-prefixed and lowercase.
+    """
     if not a:
         return a
-    s = a.lower()
+    s = a.lower().strip()
     if s.startswith("0x"):
-        s = "0x" + s[2:].lstrip("0") or "0x0"
-    return s
+        s = s[2:]
+    s = s.lstrip("0") or "0"
+    return "0x" + s
 
 
 def _compute_coverage(function_index: dict, proposed_renames: list[dict]) -> dict:
@@ -157,6 +168,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--engagement", required=True, help="Engagement slug under engagements/")
     ap.add_argument("--binary", required=True, help="Binary stem (matches catalog/binaries/<stem>.yml)")
     ap.add_argument("--version", required=True, help="Version tag, e.g. v27_1_1_28")
+    ap.add_argument("--decomp-dir", default="decomp",
+                    help="Decomp subdirectory under engagements/<eng>/ (default: 'decomp'). "
+                         "Multi-binary engagements often use 'decomp-<component>/'.")
     args = ap.parse_args(argv)
 
     stem = args.binary
@@ -183,7 +197,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         _set_status(binary_yaml, "in_progress")
 
-        function_index = _load_function_index(args.engagement)
+        function_index = _load_function_index(args.engagement, args.decomp_dir)
         prior_tag, prior_manifest = _find_prior_version(stem, version_tag)
 
         started_at = _now_utc_iso()

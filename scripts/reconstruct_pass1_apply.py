@@ -22,7 +22,7 @@ from pathlib import Path
 ROOT = Path(os.environ.get("VULNERABIN_ROOT") or Path(__file__).resolve().parent.parent)
 
 _CONFIDENCES = {"high", "medium", "low"}
-_HEX_ADDR_RE = re.compile(r"^0x[0-9a-fA-F]+$")
+_HEX_ADDR_RE = re.compile(r"^(0x)?[0-9a-fA-F]+$")
 
 
 def _now_utc_iso() -> str:
