@@ -1,0 +1,60 @@
+{
+  "binary": {"stem": "samplebin", "version_tag": "v1_2_3", "status": "partial"},
+  "passes": [
+    {
+      "pass": "pass0",
+      "proposed_renames": [],
+      "tools_used": ["iat_wrapper_detection"]
+    },
+    {
+      "pass": "pass1",
+      "proposed_renames": [
+        {"addr": "0x140003000", "from": "FUN_140003000", "to": "DispatchCommand",
+         "confidence": "high", "source": "llm_rename", "rationale": "..."},
+        {"addr": "0x140005000", "from": "FUN_140005000", "to": "ParseHeader",
+         "confidence": "medium", "source": "llm_rename", "rationale": "..."}
+      ],
+      "tools_used": ["llm_rename"]
+    },
+    {
+      "pass": "pass2",
+      "retypes": [
+        {
+          "addr": "0x140003000",
+          "params": [
+            {"index": 0, "from": "undefined4 *", "to": "IPC_REQUEST_HEADER *",
+             "confidence": "high", "source": "llm_retype",
+             "rationale": "Name DispatchCommand + caller pattern"}
+          ],
+          "locals": []
+        },
+        {
+          "addr": "0x140005000",
+          "params": [
+            {"index": 0, "from": "undefined4 *", "to": "IPC_REQUEST_HEADER *",
+             "confidence": "medium", "source": "llm_retype",
+             "rationale": "Calls match header parse pattern"}
+          ],
+          "locals": []
+        },
+        {
+          "addr": "0x140007000",
+          "params": [
+            {"index": 0, "from": "char *", "to": "LPCWSTR",
+             "confidence": "high", "source": "llm_retype",
+             "rationale": "CreateFileW wrapper"}
+          ],
+          "locals": [
+            {"name": "local_18", "from": "DWORD", "to": "NTSTATUS",
+             "confidence": "medium", "source": "llm_retype",
+             "rationale": "Compared with STATUS_* constants"}
+          ]
+        }
+      ],
+      "tools_used": ["llm_retype"]
+    }
+  ],
+  "project_discovery": {
+    "reachable_user_defined": ["0x140003000", "0x140005000", "0x140007000"]
+  }
+}

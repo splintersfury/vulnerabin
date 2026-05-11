@@ -1,0 +1,17 @@
+{
+  "pass": "pass3a",
+  "batch_id": "batch_000",
+  "structs": [
+    {
+      "name": "IPC_REQUEST_HEADER",
+      "supporting_functions": ["0x140003000", "0x140005000"],
+      "fields": [
+        {"offset": 0, "type": "uint32_t", "name": "size", "rationale": "First 4 bytes consistently read as length"},
+        {"offset": 4, "type": "uint32_t", "name": "type_tag", "rationale": "Used as switch discriminator in DispatchCommand"},
+        {"offset": 8, "type": "uint8_t[24]", "name": "payload", "rationale": "Variable-length payload, 24 byte slot"}
+      ],
+      "confidence": "medium",
+      "rationale": "Two callers use identical offset pattern; field types inferred from access width"
+    }
+  ]
+}

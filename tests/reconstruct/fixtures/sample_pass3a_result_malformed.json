@@ -1,0 +1,25 @@
+{
+  "pass": "pass3a",
+  "batch_id": "batch_001",
+  "structs": [
+    {
+      "name": "",
+      "supporting_functions": [],
+      "fields": [
+        {"offset": 0, "type": "uint32_t", "name": "size", "rationale": "r"}
+      ],
+      "confidence": "high",
+      "rationale": "Empty struct name"
+    },
+    {
+      "name": "BAD_STRUCT",
+      "supporting_functions": ["0x100"],
+      "fields": [
+        {"type": "uint32_t", "name": "size", "rationale": "missing offset"},
+        {"offset": "not-int", "type": "uint32_t", "name": "x", "rationale": "non-int offset"}
+      ],
+      "confidence": "ultra",
+      "rationale": "Bogus confidence"
+    }
+  ]
+}
