@@ -82,6 +82,40 @@ If apply rejects a result, the strategist may either fix the worker prompt and r
 - `coverage.json` reflects the cumulative Pass 0 + Pass 1 named count.
 - `catalog/binaries/<stem>.yml#reconstruction.status` is still `partial` (hard gate semantics for `complete` status arrive with the reachability sub-plan).
 
+## Pass 2 sequence
+
+### Step 1 — emit batches
+
+```
+python3 scripts/reconstruct_pass2_batch.py \
+    --engagement <eng-slug> \
+    --binary <stem> \
+    --version <tag>
+```
+
+Identifies user-defined functions with a non-FUN_ name (post-pass0/1 rename or originally exported) and writes `pass2_batches/batch_NNN.json` + `index.json`.
+
+### Step 2 — dispatch one worker per batch
+
+For each pending batch, dispatch a worker using `prompts/workers/reconstruct_retype.md`. Save each worker's JSON output to `pass2_batches/result_NNN.json`.
+
+### Step 3 — apply each result
+
+```
+python3 scripts/reconstruct_pass2_apply.py \
+    --engagement <eng-slug> \
+    --binary <stem> \
+    --version <tag> \
+    --result catalog/reconstructed/<stem>_<tag>/pass2_batches/result_NNN.json
+```
+
+Each apply call validates the result, merges retypes into `manifest.json#passes[].pass2`, and adds a `typed` block to `coverage.json`.
+
+Pass 2 caveats:
+- Without LibGhidra, the worker sees only metadata (no decompiled body). Confidence will be mostly `medium` or `low`. This is expected.
+- Pass 2 does NOT modify Pass 0/1 renames; it ADDS type info to functions that are already named.
+- Struct hypotheses are NOT collected in this MVP. They ship with Pass 3a structify in a follow-on sub-plan.
+
 ## What this phase does NOT do (yet)
 
 - Apply renames to a Ghidra project (`.gpr` mutation requires LibGhidra integration).

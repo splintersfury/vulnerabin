@@ -284,6 +284,33 @@ Pass 1 does NOT override Pass 0 renames at confidence ≥ medium. Pass 0 names w
 
 The worker contract lives at `prompts/workers/reconstruct_rename.md`; the strategist orchestration prompt at `prompts/phases/reconstruct.md`.
 
+### Pass 2 — LLM retype (parameter + local types)
+
+After Pass 0 + Pass 1 give functions semantic names, Pass 2 proposes parameter and local-variable type retypes (`param_1 (LPVOID) → IPC_REQUEST_HEADER *req`, `local_18 (DWORD) → NTSTATUS status`).
+
+```bash
+# 1. Emit per-batch input bundles under catalog/reconstructed/<stem>_<tag>/pass2_batches/
+python3 scripts/reconstruct_pass2_batch.py \
+    --engagement <eng-slug> --binary <stem> --version <tag>
+
+# 2. Strategist dispatches one Agent per batch using prompts/workers/reconstruct_retype.md,
+#    writing each worker's JSON output to pass2_batches/result_<NNN>.json.
+
+# 3. Apply each worker result to manifest.json and recompute coverage.json.
+python3 scripts/reconstruct_pass2_apply.py \
+    --engagement <eng-slug> --binary <stem> --version <tag> \
+    --result catalog/reconstructed/<stem>_<tag>/pass2_batches/result_000.json
+```
+
+Pass 2 produces:
+- `manifest.json#passes[]` gains a `pass2` entry with `retypes` (NOT `proposed_renames` — distinct schema for type info).
+- `coverage.json` gains a `typed` block: `typed.total_typed`, `typed.from_pass2`.
+- `pass2_batches/index.json` tracks batch status (`pending` → `applied`).
+
+Without LibGhidra, the Pass 2 worker sees only function metadata + neighbor names (no decompiled body). Confidence will mostly be `medium`/`low`. Once LibGhidra integration ships, Pass 2 batch input will include real type signatures and quality improves dramatically.
+
+Struct consolidation (turning `IPC_REQUEST_HEADER` hypotheses into a single typedef across all callsites) is Pass 3a — a separate sub-plan.
+
 ## Taxonomy Files
 
 Located in `taxonomy/<type>/`:
