@@ -41,7 +41,10 @@ def test_extracts_exports_excluding_externals_and_thunks(sample_index):
 
 def test_identifies_entrypoint_when_name_is_entry(sample_index):
     d = discovery.extract(sample_index)
-    assert d["entrypoints"] == ["0x140001000"]
+    # The discovery extracts entry plus other well-known entrypoint names
+    # (DllMain in the fixture). Sorted by address.
+    assert "0x140001000" in d["entrypoints"]   # entry
+    assert "0x140006000" in d["entrypoints"]   # DllMain
 
 
 def test_function_counts_distinguish_user_defined_vs_external_vs_thunk(sample_index):

@@ -4,10 +4,25 @@
 Pure-Python; does not require LibGhidra. Reads only the data already produced
 by `scripts/decomp.py`'s headless Ghidra export. The output dict is the same
 shape declared in the reconstruct spec §3.1.
+
+Real-data note: decomp.py output uses bare-hex addresses (`'140001008'`),
+encodes callees as NAMES (e.g. `'atexit'`, `'FUN_140001640'`), and rarely
+flags `is_exported` / `is_external`. Entrypoint detection therefore uses
+name-pattern heuristics; reachability resolves callees through a `by_name`
+index alongside `by_addr`.
 """
 from __future__ import annotations
 
 from typing import Iterable
+
+# Well-known entrypoint names emitted by linkers + Ghidra autonaming.
+_ENTRYPOINT_NAMES = {
+    "entry", "_entry", "_start",
+    "DriverEntry", "_DriverEntry",
+    "DllMain", "_DllMain", "_DllMainCRTStartup",
+    "WinMain", "wWinMain", "wWinMainCRTStartup",
+    "main", "wmain", "mainCRTStartup", "wmainCRTStartup",
+}
 
 
 def _is_user_defined(rec: dict) -> bool:
@@ -15,14 +30,49 @@ def _is_user_defined(rec: dict) -> bool:
 
 
 def _exported(rec: dict) -> bool:
-    return bool(rec.get("is_exported"))
+    """A function is treated as an export if Ghidra flagged it, OR its name
+    matches an ordinal-export pattern, OR its name is a well-known entrypoint.
+    """
+    if rec.get("is_exported"):
+        return True
+    name = rec.get("name") or ""
+    if name in _ENTRYPOINT_NAMES:
+        return True
+    if name.startswith("Ordinal_"):
+        return True
+    return False
+
+
+def _resolve_callee(callee_ref: str, by_addr: dict[str, dict], by_name: dict[str, dict]) -> dict | None:
+    """Resolve a callee reference (which may be a name OR an address) to its
+    function record. Returns None if not found.
+    """
+    if not callee_ref:
+        return None
+    # Direct name lookup (most real data).
+    rec = by_name.get(callee_ref)
+    if rec is not None:
+        return rec
+    # Bare-hex address lookup (real data, some references).
+    rec = by_addr.get(callee_ref)
+    if rec is not None:
+        return rec
+    # 0x-prefixed address lookup (synthetic fixtures).
+    if callee_ref.startswith("0x"):
+        return by_addr.get(callee_ref[2:]) or by_addr.get(callee_ref)
+    # Try with 0x prefix as a last resort.
+    return by_addr.get("0x" + callee_ref)
 
 
 def _reachable_user_defined(records: list[dict]) -> list[str]:
-    """BFS from every exported user-defined function over `callees`,
-    skipping externals and thunks. Returns sorted addresses.
+    """BFS from every exported (or entrypoint-named) user-defined function
+    over `callees`, skipping externals and thunks. Returns sorted addresses.
+
+    Callee references may be names or addresses; both are resolved via
+    `_resolve_callee`.
     """
     by_addr = {r["address"]: r for r in records}
+    by_name = {r.get("name"): r for r in records if r.get("name")}
     roots = [
         r["address"]
         for r in records
@@ -38,32 +88,29 @@ def _reachable_user_defined(records: list[dict]) -> list[str]:
         if rec is None or not _is_user_defined(rec):
             continue
         seen.add(addr)
-        for callee_addr in rec.get("callees", []):
-            if callee_addr not in seen:
-                stack.append(callee_addr)
+        for callee_ref in rec.get("callees", []) or []:
+            target = _resolve_callee(callee_ref, by_addr, by_name)
+            if target is None or not _is_user_defined(target):
+                continue
+            target_addr = target["address"]
+            if target_addr not in seen:
+                stack.append(target_addr)
     return sorted(seen)
 
 
 def _entrypoints(records: Iterable[dict]) -> list[str]:
-    """Canonical entrypoint names produced by Ghidra: `entry` for PE main.
-
-    Returns a sorted list of addresses for any user-defined function whose
-    name is `entry`. (Other entrypoint kinds — exports, DllMain — surface
-    through the `exports` list separately.)
+    """Returns addresses of user-defined functions whose name is a well-known
+    entrypoint (entry, DriverEntry, DllMain, main, …).
     """
     return sorted(
         r["address"]
         for r in records
-        if _is_user_defined(r) and r.get("name") == "entry"
+        if _is_user_defined(r) and r.get("name") in _ENTRYPOINT_NAMES
     )
 
 
 def extract(function_index: dict) -> dict:
-    """Compute the `project_discovery` block for `manifest.json`.
-
-    Input: parsed `function_index.json` from `scripts/decomp.py`.
-    Output: dict suitable for `manifest.json#project_discovery`.
-    """
+    """Compute the `project_discovery` block for `manifest.json`."""
     records = function_index.get("functions", [])
     user_defined = [r for r in records if _is_user_defined(r)]
 

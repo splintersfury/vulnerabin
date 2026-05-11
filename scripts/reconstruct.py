@@ -90,7 +90,8 @@ def _normalize_addr(a: str) -> str:
     return "0x" + s
 
 
-def _compute_coverage(function_index: dict, proposed_renames: list[dict]) -> dict:
+def _compute_coverage(function_index: dict, proposed_renames: list[dict],
+                       project_discovery: dict | None = None) -> dict:
     fns = function_index.get("functions", [])
     user_defined = [r for r in fns if not r.get("is_external") and not r.get("is_thunk")]
     import re
@@ -99,11 +100,17 @@ def _compute_coverage(function_index: dict, proposed_renames: list[dict]) -> dic
     sys.path.insert(0, str(ROOT / "scripts"))
     import reconstruct_gates as gates  # type: ignore
 
+    # Prefer the project_discovery just computed by reconstruct_pass0 (uses the
+    # name-pattern entrypoint heuristic + by_name callee resolution); fall back
+    # to the legacy is_exported-based walk only if not supplied.
+    if project_discovery is None:
+        reachable = _reachable_from_exports(fns)
+    else:
+        reachable = project_discovery.get("reachable_user_defined", [])
+
     synthetic_manifest = {
         "passes": [{"pass": "pass0", "proposed_renames": proposed_renames}],
-        "project_discovery": {
-            "reachable_user_defined": _reachable_from_exports(fns),
-        },
+        "project_discovery": {"reachable_user_defined": list(reachable)},
     }
     gate_state = gates.compute_gate_state(function_index, synthetic_manifest)
 
@@ -241,7 +248,11 @@ def main(argv: list[str] | None = None) -> int:
         manifest["pcode_hashes_by_addr"] = pcode_hashes_by_addr
         manifest_path.write_text(json.dumps(manifest, indent=2))
 
-        coverage = _compute_coverage(function_index, pass0_result["proposed_renames"])
+        coverage = _compute_coverage(
+            function_index,
+            pass0_result["proposed_renames"],
+            project_discovery=pass0_result.get("project_discovery"),
+        )
         (recon_dir / "coverage.json").write_text(json.dumps(coverage, indent=2))
 
         _set_status(binary_yaml, coverage.get("recommended_status", "partial"))
