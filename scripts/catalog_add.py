@@ -43,6 +43,7 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -50,7 +51,7 @@ from pathlib import Path
 
 import yaml
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(os.environ.get("VULNERABIN_ROOT") or Path(__file__).resolve().parents[1])
 BINARIES = ROOT / "catalog" / "binaries"
 
 
@@ -274,6 +275,50 @@ def cmd_unreachable(args):
     print(f"marked {args.input} × {args.feature} unreachable")
 
 
+def cmd_reconstruction(args):
+    """Scaffold a reconstruction catalog dir + add `reconstruction:` block."""
+    import json as _json
+    stem = args.binary
+    version_tag = args.version
+    yml = ROOT / "catalog" / "binaries" / f"{stem}.yml"
+    if not yml.is_file():
+        print(f"error: catalog/binaries/{stem}.yml not found", file=sys.stderr)
+        sys.exit(2)
+
+    recon_dir = ROOT / "catalog" / "reconstructed" / f"{stem}_{version_tag}"
+    already = recon_dir.is_dir()
+
+    recon_dir.mkdir(parents=True, exist_ok=True)
+    manifest = recon_dir / "manifest.json"
+    if not manifest.is_file():
+        manifest.write_text(_json.dumps({
+            "binary": {
+                "stem": stem,
+                "version_tag": version_tag,
+                "status": "not_started",
+            },
+            "passes": [],
+        }, indent=2))
+    lock = recon_dir / ".lock"
+    if not lock.is_file():
+        lock.touch()
+
+    # Update binary YAML in place: add `reconstruction:` block if absent.
+    data = yaml.safe_load(yml.read_text()) or {}
+    if "reconstruction" not in data:
+        data["reconstruction"] = {
+            "ref": f"catalog/reconstructed/{stem}_{version_tag}",
+            "version_tag": version_tag,
+            "status": "not_started",
+        }
+        yml.write_text(yaml.safe_dump(data, sort_keys=False))
+
+    if already:
+        print(f"no-op: {recon_dir.relative_to(ROOT)} already exists")
+    else:
+        print(f"scaffolded {recon_dir.relative_to(ROOT)} and updated {yml.relative_to(ROOT)}")
+
+
 # ---------------------------------------------------------------------------
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -352,6 +397,11 @@ def main() -> int:
     p_unreach.add_argument("--feature", required=True)
     p_unreach.add_argument("--reason", default="")
     p_unreach.set_defaults(func=cmd_unreachable)
+
+    p_recon = sp.add_parser("reconstruction", parents=[common],
+                            help="Scaffold a catalog/reconstructed/<stem>_<tag>/ dir and add reconstruction: block.")
+    p_recon.add_argument("--version", required=True, help="Version tag, e.g. v27_1_1_28")
+    p_recon.set_defaults(func=cmd_reconstruction)
 
     args = ap.parse_args()
     args.func(args)
