@@ -164,6 +164,10 @@ def recompute_coverage(function_index: dict, manifest: dict) -> dict:
     Pass 2 adds a `typed` block to the existing coverage data so the Layer 8
     page can surface how many functions have type info.
     """
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "scripts"))
+    import reconstruct_gates as gates  # type: ignore
+
     fns = function_index.get("functions", [])
     user_defined = [r for r in fns if not r.get("is_external") and not r.get("is_thunk")]
     renamed_addrs: set[str] = set()
@@ -192,9 +196,12 @@ def recompute_coverage(function_index: dict, manifest: dict) -> dict:
         if not fun_re.match(r.get("name", "")) or r["address"] in renamed_addrs
     )
 
+    gate_state = gates.compute_gate_state(function_index, manifest)
+
     return {
-        "hard_gate_pass": False,
-        "soft_gate_pass": False,
+        "hard_gate_pass": gate_state["hard_gate_pass"],
+        "soft_gate_pass": gate_state["soft_gate_pass"],
+        "recommended_status": gate_state["recommended_status"],
         "totals": {
             "user_defined_functions": len(user_defined),
             "external_imports_skipped": sum(1 for r in fns if r.get("is_external")),
@@ -273,6 +280,15 @@ def main(argv: list[str] | None = None) -> int:
 
     coverage = recompute_coverage(function_index, new_manifest)
     (recon_dir / "coverage.json").write_text(json.dumps(coverage, indent=2))
+
+    binary_yaml = ROOT / "catalog" / "binaries" / f"{args.binary}.yml"
+    if binary_yaml.is_file():
+        import yaml as _y  # type: ignore
+        data = _y.safe_load(binary_yaml.read_text()) or {}
+        data.setdefault("reconstruction", {})["status"] = coverage.get(
+            "recommended_status", "partial"
+        )
+        binary_yaml.write_text(_y.safe_dump(data, sort_keys=False))
 
     batch_id = result.get("batch_id")
     if batch_id:

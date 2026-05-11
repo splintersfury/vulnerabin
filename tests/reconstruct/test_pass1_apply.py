@@ -233,3 +233,33 @@ def test_cli_refuses_malformed_result(tmp_path):
     )
     assert result.returncode != 0
     assert "validation failed" in (result.stdout + result.stderr).lower()
+
+
+def test_pass1_apply_recompute_coverage_uses_real_gates():
+    """When pass1 renames cover all reachable functions, gates should flip true."""
+    fi = {
+        "binary": "t.exe",
+        "functions": [
+            {"address": "0x100", "name": "FUN_100",
+             "callees": [], "callers": [], "is_external": False,
+             "is_thunk": False, "is_exported": False, "code_hash": "h",
+             "instruction_count": 10, "size": 32, "strings": []},
+            {"address": "0x101", "name": "entry",
+             "callees": ["0x100"], "callers": [], "is_external": False,
+             "is_thunk": False, "is_exported": True, "code_hash": "h",
+             "instruction_count": 10, "size": 32, "strings": []},
+        ],
+    }
+    manifest = {
+        "binary": {"stem": "t", "version_tag": "v1", "status": "partial"},
+        "project_discovery": {"reachable_user_defined": ["0x100", "0x101"]},
+        "passes": [
+            {"pass": "pass1", "proposed_renames": [
+                {"addr": "0x100", "to": "Wrapped", "confidence": "high",
+                 "source": "llm_rename", "from": "FUN_100", "rationale": "..."}
+            ]},
+        ],
+    }
+    cov = apply_mod.recompute_coverage(fi, manifest)
+    assert cov["hard_gate_pass"] is True
+    assert cov["soft_gate_pass"] is True

@@ -260,3 +260,39 @@ def test_cli_refuses_malformed(tmp_path):
     )
     assert r.returncode != 0
     assert "validation failed" in (r.stdout + r.stderr).lower()
+
+
+def test_pass2_apply_recompute_coverage_uses_real_gates():
+    """Pass 2 doesn't add new names; gates reflect Pass 0/1 state."""
+    fi = {
+        "binary": "t.exe",
+        "functions": [
+            {"address": "0x100", "name": "RenamedByPass1",
+             "callees": [], "callers": [], "is_external": False,
+             "is_thunk": False, "is_exported": False, "code_hash": "h",
+             "instruction_count": 10, "size": 32, "strings": []},
+            {"address": "0x101", "name": "entry",
+             "callees": ["0x100"], "callers": [], "is_external": False,
+             "is_thunk": False, "is_exported": True, "code_hash": "h",
+             "instruction_count": 10, "size": 32, "strings": []},
+        ],
+    }
+    manifest = {
+        "binary": {"stem": "t", "version_tag": "v1", "status": "partial"},
+        "project_discovery": {"reachable_user_defined": ["0x100", "0x101"]},
+        "passes": [
+            {"pass": "pass1", "proposed_renames": [
+                {"addr": "0x100", "to": "RenamedByPass1", "confidence": "high",
+                 "source": "llm_rename", "from": "FUN_100", "rationale": "..."}
+            ]},
+            {"pass": "pass2", "retypes": [
+                {"addr": "0x100", "params": [
+                    {"index": 0, "to": "DWORD", "confidence": "high",
+                     "rationale": "...", "source": "llm_retype", "from": ""}
+                ], "locals": []}
+            ]},
+        ],
+    }
+    cov = apply_mod.recompute_coverage(fi, manifest)
+    assert cov["hard_gate_pass"] is True
+    assert cov["soft_gate_pass"] is True
