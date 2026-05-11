@@ -311,6 +311,18 @@ Without LibGhidra, the Pass 2 worker sees only function metadata + neighbor name
 
 Struct consolidation (turning `IPC_REQUEST_HEADER` hypotheses into a single typedef across all callsites) is Pass 3a — a separate sub-plan.
 
+### Reachability gates
+
+`coverage.json` carries two gate verdicts derived from `manifest.json#project_discovery.reachable_user_defined` × the union of all-pass `proposed_renames`:
+
+- **`hard_gate_pass`** — 100% of entrypoint-reachable user-defined functions are named (either originally semantic-named in Ghidra, or renamed by Pass 0 at confidence ≥ medium, or renamed by any LLM pass at any confidence).
+- **`soft_gate_pass`** — ≥80% of the **tail** (user-defined functions NOT in the reachable set) are named by the same predicate.
+- **`recommended_status`** — `"complete"` iff both gates pass, else `"partial"`.
+
+The Pass 0 orchestrator (`reconstruct.py`) and the Pass 1/2 apply scripts both call `scripts/reconstruct_gates.py:compute_gate_state` to derive these values. After each apply, the binary YAML's `reconstruction.status` is updated to match `recommended_status`. A reconstruction becomes `complete` when both gates pass; otherwise it stays `partial` and the strategist can decide whether to run more passes or accept the current state.
+
+**Predicate details:** Pass 0 deterministic low-confidence renames (e.g., from `string_xref` heuristics) do NOT count toward gate satisfaction — they're noisy. LLM renames count at any confidence level because the LLM's signal is more reliable than a regex on a single string xref. See `prompts/phases/reconstruct.md` for the full spec.
+
 ## Taxonomy Files
 
 Located in `taxonomy/<type>/`:
