@@ -45,8 +45,8 @@ from typing import Iterator
 ROOT = Path(__file__).resolve().parent.parent
 ENG_ROOT = ROOT / "engagements"
 
-PHASES = {"acquisition", "preparation", "triage", "deep", "validation",
-          "exec", "report", "kb", "meta"}
+PHASES = {"acquisition", "preparation", "reconstruct", "triage", "deep",
+          "validation", "exec", "report", "kb", "meta"}
 EVENTS = {"phase_start", "phase_end", "artifact", "finding", "decision",
           "exec_result", "note"}
 SUMMARY_MAX = 240

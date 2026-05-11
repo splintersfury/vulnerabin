@@ -53,3 +53,8 @@ def test_reconstruct_reachability_roots_declared_at_top_level():
     # Each kind must declare a non-empty list of root identifiers.
     for kind, root_list in roots.items():
         assert isinstance(root_list, list) and root_list, f"{kind} must be a non-empty list"
+
+
+def test_journal_allows_reconstruct_phase():
+    import journal  # type: ignore
+    assert "reconstruct" in journal.PHASES
