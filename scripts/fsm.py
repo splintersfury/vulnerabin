@@ -313,6 +313,118 @@ def gate_status(eng: str, eng_dir: Path, phase_name: str, phase_def: dict) -> li
                                             t = cov.get("tail", {})
                                             evidence = f"tail named {t.get('named', '?')}/{t.get('function_count', '?')}"
 
+        elif gid == "primary_binary_reconstructed":
+            # Pre-gate for comprehend: scope.json#binary's reconstruction.status
+            # must be complete or partial.
+            import json as _json
+            try:
+                import yaml as _y  # type: ignore
+            except Exception as e:
+                ok, evidence = False, f"PyYAML unavailable: {e}"
+            else:
+                scope = eng_dir / "scope.json"
+                stem = ""
+                if scope.is_file():
+                    try:
+                        stem = _json.loads(scope.read_text()).get("binary", "")
+                    except Exception:
+                        stem = ""
+                if not stem:
+                    ok, evidence = False, "scope.json#binary not set"
+                else:
+                    yml = CATALOG_BINARIES / f"{stem}.yml"
+                    if not yml.is_file():
+                        ok, evidence = False, f"catalog/binaries/{stem}.yml missing"
+                    else:
+                        try:
+                            ydata = _y.safe_load(yml.read_text()) or {}
+                        except Exception as e:
+                            ok, evidence = False, f"parse error on {yml.name}: {e}"
+                        else:
+                            status = (ydata.get("reconstruction") or {}).get("status", "not_started")
+                            ok = status in ("complete", "partial")
+                            evidence = f"reconstruction.status={status}"
+
+        elif gid == "narrative_present":
+            # Post-gate for comprehend: product YAML has architecture_narrative.
+            import json as _json
+            try:
+                import yaml as _y  # type: ignore
+            except Exception as e:
+                ok, evidence = False, f"PyYAML unavailable: {e}"
+            else:
+                scope = eng_dir / "scope.json"
+                stem = ""
+                if scope.is_file():
+                    try:
+                        stem = _json.loads(scope.read_text()).get("binary", "")
+                    except Exception:
+                        stem = ""
+                if not stem:
+                    ok, evidence = False, "scope.json#binary not set"
+                else:
+                    bin_yml = CATALOG_BINARIES / f"{stem}.yml"
+                    product_slug = ""
+                    if bin_yml.is_file():
+                        try:
+                            product_slug = (_y.safe_load(bin_yml.read_text()) or {}).get("product", "")
+                        except Exception:
+                            pass
+                    if not product_slug:
+                        ok, evidence = False, "binary YAML has no product field"
+                    else:
+                        prod_yml = ROOT / "catalog" / "products" / f"{product_slug}.yml"
+                        if not prod_yml.is_file():
+                            ok, evidence = False, f"catalog/products/{product_slug}.yml missing"
+                        else:
+                            try:
+                                pdata = _y.safe_load(prod_yml.read_text()) or {}
+                            except Exception as e:
+                                ok, evidence = False, f"parse error on product YAML: {e}"
+                            else:
+                                nar = pdata.get("architecture_narrative") or {}
+                                ok = bool(nar.get("summary"))
+                                evidence = (
+                                    f"architecture_narrative.summary present"
+                                    if ok else "architecture_narrative absent"
+                                )
+
+        elif gid == "binary_summaries_present":
+            # Post-gate for comprehend: every reconstructed binary in the
+            # product has summary + full_picture in its YAML.
+            import json as _json
+            try:
+                import yaml as _y  # type: ignore
+            except Exception as e:
+                ok, evidence = False, f"PyYAML unavailable: {e}"
+            else:
+                scope = eng_dir / "scope.json"
+                stem = ""
+                if scope.is_file():
+                    try:
+                        stem = _json.loads(scope.read_text()).get("binary", "")
+                    except Exception:
+                        stem = ""
+                if not stem:
+                    ok, evidence = False, "scope.json#binary not set"
+                else:
+                    bin_yml = CATALOG_BINARIES / f"{stem}.yml"
+                    if not bin_yml.is_file():
+                        ok, evidence = False, f"catalog/binaries/{stem}.yml missing"
+                    else:
+                        try:
+                            bdata = _y.safe_load(bin_yml.read_text()) or {}
+                        except Exception as e:
+                            ok, evidence = False, f"parse error on binary YAML: {e}"
+                        else:
+                            has_summary = bool(bdata.get("summary"))
+                            has_fp = bool(bdata.get("full_picture"))
+                            ok = has_summary and has_fp
+                            evidence = (
+                                "summary + full_picture present" if ok
+                                else f"summary={has_summary}, full_picture={has_fp}"
+                            )
+
         elif gid == "exec_required_or_justified":
             findings_dir = eng_dir / "findings"
             confirmed: list[str] = []

@@ -27,6 +27,61 @@
   {% endif %}
 </div>
 
+{% if architecture_narrative %}
+<section class="mx-lg mt-md bg-primary-container/[0.06] border-l-4 border-primary rounded">
+  <div class="px-md py-sm border-b border-outline-variant">
+    <h2 class="font-label-caps uppercase tracking-wider text-primary flex items-center gap-2">
+      <span class="material-symbols-outlined text-[14px]">map</span>How this product works
+    </h2>
+    <div class="text-ui-sans-xs text-on-surface-variant mt-1">
+      Synthesized from {{ architecture_narrative.binaries_comprehended | length }} of
+      {{ (architecture_narrative.binaries_comprehended | length) + (architecture_narrative.binaries_pending_reconstruction | length) }} binaries
+      &nbsp;·&nbsp;
+      <span class="font-data-mono-sm">{{ architecture_narrative.last_synthesized | default('') }}</span>
+    </div>
+  </div>
+  <div class="p-md space-y-md">
+    <div>
+      <div class="text-on-surface-variant uppercase font-label-caps text-ui-sans-xs mb-1">Summary</div>
+      <p class="text-on-surface text-ui-sans-sm">{{ architecture_narrative.summary }}</p>
+    </div>
+    <div>
+      <div class="text-on-surface-variant uppercase font-label-caps text-ui-sans-xs mb-1">Data flow</div>
+      <p class="text-on-surface text-ui-sans-sm">{{ architecture_narrative.data_flow_prose }}</p>
+    </div>
+    <div>
+      <div class="text-on-surface-variant uppercase font-label-caps text-ui-sans-xs mb-1">What each binary does</div>
+      <ul class="list-disc list-inside text-ui-sans-sm space-y-1">
+        {% for r in architecture_narrative.binary_roles %}
+        <li>
+          <span class="font-data-mono-sm text-secondary">{{ r.stem }}</span>
+          {% if 'unknown' in (r.role|lower) %}
+          <span class="text-on-surface-variant italic">— {{ r.role }}</span>
+          {% else %}
+          — {{ r.role }}
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% if architecture_narrative.trust_boundaries %}
+    <div>
+      <div class="text-on-surface-variant uppercase font-label-caps text-ui-sans-xs mb-1">Trust boundaries</div>
+      <ul class="list-disc list-inside text-ui-sans-sm space-y-1">
+        {% for tb in architecture_narrative.trust_boundaries %}
+        <li class="font-data-mono-sm text-tertiary">{{ tb }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    <div class="bg-error-container/[0.05] border border-error/30 rounded p-sm">
+      <div class="text-error uppercase font-label-caps text-ui-sans-xs mb-1">Primary attack surface</div>
+      <p class="text-on-surface text-ui-sans-sm">{{ architecture_narrative.attack_surface_primary }}</p>
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <div class="p-lg space-y-lg max-w-[1600px] mx-auto w-full">
 
   <!-- Layer 4: Topology -->

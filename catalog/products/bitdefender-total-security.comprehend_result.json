@@ -1,0 +1,28 @@
+{
+  "product": "bitdefender-total-security",
+  "summary": "Bitdefender Total Security is a Windows consumer endpoint security suite built as a multi-process system: a SYSTEM service host (bdservicehost.exe) loading service DLLs, kernel drivers (bdprivmon.sys, bddci4.sys, trufos.sys) for self-protection and AV enforcement, and Admin/user-context UI processes (bdagent.exe, seccenter.exe, bduserhost.exe). Components talk to each other over the msgbus named pipe `local\\msgbus\\bdappsrv`, with application-layer auth rules (same_sign, trusted_client_process, trusted_client_path, trusted_parent_process, admin_client, admin_write_client_folder) gating who can call what.",
+  "data_flow_prose": "An external attacker reaches the suite by either (a) connecting to the msgbus named pipe `local\\msgbus\\bdappsrv` from a low-privileged process and sending a message that an application-layer auth rule misclassifies as trusted, or (b) issuing SCM control codes that bdservicehost.exe dispatches through service__on_control_handler. From there, control flows into bdservicehost.exe's privileged dispatch surface, which can install services, mutate service configs, start arbitrary services as SYSTEM, load DLLs into the SYSTEM process, and write files from SYSTEM context. The kernel drivers sit underneath and are reached either by IOCTL from user-mode peers or by file-system / process-callback hooks they install at boot.",
+  "binary_roles": [
+    {"stem": "bdservicehost.exe", "role": "SYSTEM-context Bitdefender service host that receives control commands, verifies signed callers, and dispatches service installs, process starts, and DLL loads."},
+    {"stem": "safeelevatedrun.dll", "role": "unknown — not yet reconstructed"},
+    {"stem": "bdappservice.dll", "role": "unknown — not yet reconstructed"},
+    {"stem": "bdprivmon.sys", "role": "unknown — not yet reconstructed"},
+    {"stem": "bddci4.sys", "role": "unknown — not yet reconstructed"},
+    {"stem": "trufos.sys", "role": "unknown — not yet reconstructed"},
+    {"stem": "bdappsrv", "role": "unknown — not yet reconstructed"},
+    {"stem": "bdagent.exe", "role": "unknown — not yet reconstructed"},
+    {"stem": "seccenter.exe", "role": "unknown — not yet reconstructed"},
+    {"stem": "bduserhost.exe", "role": "unknown — not yet reconstructed"},
+    {"stem": "msgbus.dll", "role": "unknown — not yet reconstructed"},
+    {"stem": "watchdog.exe", "role": "unknown — not yet reconstructed"},
+    {"stem": "productagentservice.exe", "role": "unknown — not yet reconstructed"}
+  ],
+  "trust_boundaries": [
+    "Standard user (AU) → SYSTEM via named pipe `local\\msgbus\\bdappsrv` (msgbus application-layer auth rules: same_sign / trusted_client_process / trusted_client_path / trusted_parent_process / admin_client / admin_write_client_folder)",
+    "Standard user (AU) → SYSTEM via SCM control codes dispatched through bdservicehost.exe!service__on_control_handler (SCM ACL on the service)",
+    "User-mode (any principal) → kernel via IOCTLs to bdprivmon.sys / bddci4.sys / trufos.sys (device DACL — not yet audited)",
+    "SYSTEM service host → on-disk DLLs via LoadLibraryByName / vb_load_bdch_dll_resolve_exports (Authenticode + catalog verification through verify_authenticode_signature / verify_file_trust / verify_file_via_catalog)",
+    "SYSTEM service host → installed services via service_manager_install_service / change_service_config2_inner / set_service_launch_type (no boundary — already SYSTEM, but reachable from the IPC entry above)"
+  ],
+  "attack_surface_primary": "The highest-leverage entry point is bdservicehost.exe's SCM control handler `service__on_control_handler` and the parallel msgbus listener it backs: a standard user who can either send an SCM control code or get a message past the msgbus auth rules reaches a dispatch surface that calls service_manager_install_service, change_service_config2_inner, set_service_launch_type / start_service, install_bdelam_certificate, and LoadLibraryByName from SYSTEM context. End-to-end, that means a low-privileged attacker with one accepted message can install an arbitrary Windows service, flip an existing service's launch config, install an ELAM certificate, or load a chosen DLL into the SYSTEM process — full LPE in a single hop. The signed-caller verification path (verify_authenticode_signature / verify_file_trust / verify_file_via_catalog) is the load-bearing defense for both the DLL-load and the IPC-trust decisions, so any TOCTOU, catalog confusion, or hardlink-swap weakness in those checks collapses the whole boundary."
+}

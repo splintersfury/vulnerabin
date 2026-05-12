@@ -82,7 +82,29 @@ phases:
           Soft gate: ≥80% of non-reachable user-defined functions must be
           named. Below threshold, downstream analysis still proceeds with a
           degraded mental model — warns but does not block.
+    next: [comprehend, walk]
+
+  comprehend:
+    prompt: prompts/phases/comprehend.md
+    requires_artifacts_any: [decomp/, extracted/, firmware/]
+    produces_artifacts: []
+    gates:
+      - id: primary_binary_reconstructed
+        kind: pre
+        check: "engagement's primary binary has reconstruction.status in {complete, partial}"
+        rationale: |
+          Comprehension needs at least the primary binary's reconstructed
+          name set to produce useful per-binary ELI5 + Full Picture.
+      - id: narrative_present
+        kind: post
+        check: "catalog/products/<product>.yml#architecture_narrative populated"
+        rationale: |
+          Walk strategist consumes this narrative for orientation.
+      - id: binary_summaries_present
+        kind: post
+        check: "every reconstructed binary in the product has summary + full_picture"
     next: [walk]
+    opt_out_flag: "--no-comprehend"
 
   walk:
     prompt: prompts/phases/walk.md

@@ -360,3 +360,32 @@ reconstruction:
   ref: catalog/reconstructed/bdservicehost_exe_v27_x
   version_tag: v27_x
   status: partial
+summary: SYSTEM-context Bitdefender service host that receives control commands, verifies
+  signed callers, and dispatches service installs, process starts, and DLL loads.
+full_picture:
+  loaded_by:
+  - Windows Service Control Manager (auto-start)
+  start_trigger:
+  - boot (SCM auto-start)
+  - SCM control codes via service__on_control_handler
+  ipc_peers: []
+  accepted_inputs:
+  - SCM service control codes dispatched through service__on_control_handler
+  - Files presented to verify_authenticode_signature / verify_file_trust / verify_file_via_catalog
+  - DLLs resolved by name through LoadLibraryByName / vb_load_bdch_dll_resolve_exports
+  - Path-shaped strings flowing through sanitize_path_env_var / set_env_var_nolock_helper
+  dangerous_operations_reachable:
+  - service_manager_install_service (install arbitrary Windows service)
+  - change_service_config2_inner / change_service_config_inner (mutate any service
+    config)
+  - set_service_launch_type / start_service / vb_start_service_dispatcher (start services
+    as SYSTEM)
+  - service__register_service_events / service__unregister_service_events (register
+    privileged event handlers)
+  - install_bdelam_certificate (install ELAM certificate trust)
+  - LoadLibraryByName / load_library_or_throw / vb_load_bdch_dll_resolve_exports (load
+    DLLs into SYSTEM process)
+  - fs_set_file_attributes_by_path / fwrite (write/modify files from SYSTEM)
+  defense_gaps_observed: []
+summary_fingerprint: 8406575edd8c65cd8acf388b4a11814669c55567090896c63de7b9e1b86eacfb
+last_comprehended: '2026-05-11T23:46:50Z'

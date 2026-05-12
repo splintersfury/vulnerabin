@@ -1,124 +1,242 @@
 product: bitdefender-total-security
 display_name: Bitdefender Total Security
 vendor: Bitdefender
-description: >
-  Consumer endpoint security suite. Multi-process architecture: SYSTEM-context
-  service host (bdservicehost.exe) loading multiple service DLLs (bdappsrv,
-  bdappservice, etc.); kernel drivers (bdprivmon, bddci4, trufos) for
-  self-protection and AV operations; Admin / user-context UI processes
-  (bdagent, seccenter, bduserhost). IPC backbone is msgbus (named pipe
-  `local\msgbus\bdappsrv`) with application-layer auth rules
-  (same_sign, trusted_client_process, trusted_client_path,
-  trusted_parent_process, admin_client, admin_write_client_folder).
+description: 'Consumer endpoint security suite. Multi-process architecture: SYSTEM-context
+  service host (bdservicehost.exe) loading multiple service DLLs (bdappsrv, bdappservice,
+  etc.); kernel drivers (bdprivmon, bddci4, trufos) for self-protection and AV operations;
+  Admin / user-context UI processes (bdagent, seccenter, bduserhost). IPC backbone
+  is msgbus (named pipe `local\msgbus\bdappsrv`) with application-layer auth rules
+  (same_sign, trusted_client_process, trusted_client_path, trusted_parent_process,
+  admin_client, admin_write_client_folder).
 
+  '
 versions_seen:
-  - version: "27"
-    eng: bitdefender-total-security-2026-04-11
-    seen: 2026-04-11
-  - version: "27.1"
-    eng: bitdefender-2026-05-02
-    seen: 2026-05-02
-
-# Binaries in this product (catalog YAML refs)
+- version: '27'
+  eng: bitdefender-total-security-2026-04-11
+  seen: '2026-04-11'
+- version: '27.1'
+  eng: bitdefender-2026-05-02
+  seen: '2026-05-02'
 binaries:
-  - safeelevatedrun.dll               # SYSTEM-context, the BDTS 005 surface
-  - bdappservice.dll                  # SYSTEM-context, dispatcher
-  - bdprivmon.sys                     # kernel, self-protection
-  - bddci4.sys                        # kernel, ObRegisterCallbacks
-  - trufos.sys                        # kernel, minifilter
-  - bdservicehost.exe                 # SYSTEM-context host
-  - bdappsrv                          # alias / hosted in bdservicehost
-  - bdagent.exe                       # Admin integrity, no PPL
-  - seccenter.exe                     # logged-in user
-  - bduserhost.exe                    # logged-in user
-  - msgbus.dll                        # the IPC backbone
-  - watchdog.exe                      # SYSTEM-context, has BDLogging junction surface
-  - productagentservice.exe           # SYSTEM-context (paid 2026-03 PAS finding lives here)
-
-# Process / IPC topology — used to render Layer 2 + Layer 4 diagrams
+- safeelevatedrun.dll
+- bdappservice.dll
+- bdprivmon.sys
+- bddci4.sys
+- trufos.sys
+- bdservicehost.exe
+- bdappsrv
+- bdagent.exe
+- seccenter.exe
+- bduserhost.exe
+- msgbus.dll
+- watchdog.exe
+- productagentservice.exe
 topology:
   trust_zones:
     SYSTEM:
-      - bdservicehost.exe
-      - bdappsrv (in bdservicehost)
-      - bdappservice.dll (loaded by bdappsrv)
-      - safeelevatedrun.dll (loaded by bdappsrv)
-      - watchdog.exe
-      - productagentservice.exe
-      - bdprivmon.sys
-      - bddci4.sys
-      - trufos.sys
+    - bdservicehost.exe
+    - bdappsrv (in bdservicehost)
+    - bdappservice.dll (loaded by bdappsrv)
+    - safeelevatedrun.dll (loaded by bdappsrv)
+    - watchdog.exe
+    - productagentservice.exe
+    - bdprivmon.sys
+    - bddci4.sys
+    - trufos.sys
     Admin_no_PPL:
-      - bdagent.exe
+    - bdagent.exe
     LoggedInUser:
-      - seccenter.exe
-      - bduserhost.exe
+    - seccenter.exe
+    - bduserhost.exe
     Standard_user_attacker:
-      - "(any standard-user process)"
-
+    - (any standard-user process)
   ipc_edges:
-    - { src: bdagent.exe, dst: bdappsrv, via: msgbus pipe local\msgbus\bdappsrv, auth: same_sign + trusted_client_process }
-    - { src: seccenter.exe, dst: bdappsrv, via: msgbus pipe local\msgbus\bdappsrv, auth: same_sign + trusted_client_process }
-    - { src: bduserhost.exe, dst: bdappsrv, via: msgbus pipe local\msgbus\bdappsrv, auth: same_sign + trusted_client_process }
-    - { src: bdappsrv, dst: bdappservice.dll, via: in-process call, auth: process-internal }
-    - { src: bdappsrv, dst: safeelevatedrun.dll, via: in-process call, auth: process-internal }
-    - { src: bdappsrv, dst: CreateProcessAsUserW, via: SYSTEM-token process spawn, auth: ExePath::IsTrusted (BDTS 005 bug) + WinVerifyTrust }
-
+  - src: bdagent.exe
+    dst: bdappsrv
+    via: msgbus pipe local\msgbus\bdappsrv
+    auth: same_sign + trusted_client_process
+  - src: seccenter.exe
+    dst: bdappsrv
+    via: msgbus pipe local\msgbus\bdappsrv
+    auth: same_sign + trusted_client_process
+  - src: bduserhost.exe
+    dst: bdappsrv
+    via: msgbus pipe local\msgbus\bdappsrv
+    auth: same_sign + trusted_client_process
+  - src: bdappsrv
+    dst: bdappservice.dll
+    via: in-process call
+    auth: process-internal
+  - src: bdappsrv
+    dst: safeelevatedrun.dll
+    via: in-process call
+    auth: process-internal
+  - src: bdappsrv
+    dst: CreateProcessAsUserW
+    via: SYSTEM-token process spawn
+    auth: ExePath::IsTrusted (BDTS 005 bug) + WinVerifyTrust
   defenses:
     bdprivmon.sys:
-      - "ObRegisterCallbacks strips PROCESS_VM_OPERATION/WRITE/DUP_HANDLE on cross-process handles to BD processes"
-      - "NtAllocateVirtualMemory / NtWriteVirtualMemory hooks against hardcoded BD-process list"
-      - "VAD-tree scan kills BD process containing unsigned IMAGE-type VAD"
-      - "GAP: ProductAgentService.exe NOT in the protected-process list (paid 2026-05-03 P3 in flight)"
+    - ObRegisterCallbacks strips PROCESS_VM_OPERATION/WRITE/DUP_HANDLE on cross-process
+      handles to BD processes
+    - NtAllocateVirtualMemory / NtWriteVirtualMemory hooks against hardcoded BD-process
+      list
+    - VAD-tree scan kills BD process containing unsigned IMAGE-type VAD
+    - 'GAP: ProductAgentService.exe NOT in the protected-process list (paid 2026-05-03
+      P3 in flight)'
     bddci4.sys:
-      - "ObRegisterCallbacks for Process and Thread objects, strips access rights from any handle to BD process regardless of caller privilege"
+    - ObRegisterCallbacks for Process and Thread objects, strips access rights from
+      any handle to BD process regardless of caller privilege
     msgbus_application_rules:
-      - "same_sign — caller must be co-signed by Bitdefender"
-      - "trusted_client_process — caller image path must be in BD install dir (uses kernel image path query, not PEB)"
-      - "trusted_client_path — variant of trusted_client_process"
-      - "trusted_parent_process — caller's parent must be a trusted SYSTEM process"
-      - "admin_client / admin_write_client_folder — admin-only operations"
-
-# Vulnerabilities surfaced in this product (links to findings)
+    - "same_sign \u2014 caller must be co-signed by Bitdefender"
+    - "trusted_client_process \u2014 caller image path must be in BD install dir (uses\
+      \ kernel image path query, not PEB)"
+    - "trusted_client_path \u2014 variant of trusted_client_process"
+    - "trusted_parent_process \u2014 caller's parent must be a trusted SYSTEM process"
+    - "admin_client / admin_write_client_folder \u2014 admin-only operations"
 vulnerabilities:
-  - finding_ref: bitdefender-total-security-2026-04-11/findings/005-safeelevatedrun-path-traversal.md
-    binary: safeelevatedrun.dll
-    classes: [T-005, I-002, T-006]
-    severity: P3
-    status: submitted
-    submission_ref: bugcrowd:59aada4c-64d7-4215-851f-03ebde5d0629
-  - finding_ref: bitdefender-total-security-2026-04-11/findings/004-trufos-kernel-infoleak.md
-    binary: trufos.sys
-    classes: [K-002]
-    severity: P3
-    status: submitted_dropped
-    submission_ref: bugcrowd:c100b59d (P3 Not Applicable)
-  - finding_ref: prior-engagement/findings/bd-pas-config-injection.md
-    binary: productagentservice.exe
-    classes: [F-001, F-002]
-    severity: P3
-    status: submitted_paid
-    submission_ref: bugcrowd:791bd4d8 ($1,000)
-  - finding_ref: bitdefender-2026-05-02/findings/001-msgbus-trusted-process-bypass.md
-    binary: bdappsrv
-    classes: [I-002, T-004]
-    severity: TBD
-    status: in_progress
-  - finding_ref: bitdefender-2026-05-02/findings/002-safeelevatedrun-wvt-toctou.md
-    binary: safeelevatedrun.dll
-    classes: [I-002, T-001]
-    severity: TBD
-    status: in_progress
-  - finding_ref: bitdefender-total-security-2026-04-11/findings/006-seccenter-safeelevatedrun-relay-lpe.md
-    binary: safeelevatedrun.dll
-    classes: [T-006, I-002]
-    severity: TBD
-    status: not_submitted
-
-# Open angles flagged for vendor / future investigation
+- finding_ref: bitdefender-total-security-2026-04-11/findings/005-safeelevatedrun-path-traversal.md
+  binary: safeelevatedrun.dll
+  classes:
+  - T-005
+  - I-002
+  - T-006
+  severity: P3
+  status: submitted
+  submission_ref: bugcrowd:59aada4c-64d7-4215-851f-03ebde5d0629
+- finding_ref: bitdefender-total-security-2026-04-11/findings/004-trufos-kernel-infoleak.md
+  binary: trufos.sys
+  classes:
+  - K-002
+  severity: P3
+  status: submitted_dropped
+  submission_ref: bugcrowd:c100b59d (P3 Not Applicable)
+- finding_ref: prior-engagement/findings/bd-pas-config-injection.md
+  binary: productagentservice.exe
+  classes:
+  - F-001
+  - F-002
+  severity: P3
+  status: submitted_paid
+  submission_ref: bugcrowd:791bd4d8 ($1,000)
+- finding_ref: bitdefender-2026-05-02/findings/001-msgbus-trusted-process-bypass.md
+  binary: bdappsrv
+  classes:
+  - I-002
+  - T-004
+  severity: TBD
+  status: in_progress
+- finding_ref: bitdefender-2026-05-02/findings/002-safeelevatedrun-wvt-toctou.md
+  binary: safeelevatedrun.dll
+  classes:
+  - I-002
+  - T-001
+  severity: TBD
+  status: in_progress
+- finding_ref: bitdefender-total-security-2026-04-11/findings/006-seccenter-safeelevatedrun-relay-lpe.md
+  binary: safeelevatedrun.dll
+  classes:
+  - T-006
+  - I-002
+  severity: TBD
+  status: not_submitted
 open_angles:
-  - "msgbus wire-protocol auth check beyond PEB ImagePathName (predicate bodies not yet reversed)"
-  - "seccenter.exe COM activation flow — CLSID surface not enumerated"
-  - "BD user-launchable tools (bdfvwiz, bdfvcl, agentcontroller, installer) — CLI argument paths not enumerated"
-  - "updcenter.exe update mechanism — package signing + extract-then-execute path"
-  - "executable_args field in run_elevated_async — not investigated for CLI injection (CHAIN-002 in safeelevatedrun_dll.yml)"
+- msgbus wire-protocol auth check beyond PEB ImagePathName (predicate bodies not yet
+  reversed)
+- "seccenter.exe COM activation flow \u2014 CLSID surface not enumerated"
+- "BD user-launchable tools (bdfvwiz, bdfvcl, agentcontroller, installer) \u2014 CLI\
+  \ argument paths not enumerated"
+- "updcenter.exe update mechanism \u2014 package signing + extract-then-execute path"
+- "executable_args field in run_elevated_async \u2014 not investigated for CLI injection\
+  \ (CHAIN-002 in safeelevatedrun_dll.yml)"
+architecture_narrative:
+  summary: 'Bitdefender Total Security is a Windows consumer endpoint security suite
+    built as a multi-process system: a SYSTEM service host (bdservicehost.exe) loading
+    service DLLs, kernel drivers (bdprivmon.sys, bddci4.sys, trufos.sys) for self-protection
+    and AV enforcement, and Admin/user-context UI processes (bdagent.exe, seccenter.exe,
+    bduserhost.exe). Components talk to each other over the msgbus named pipe `local\msgbus\bdappsrv`,
+    with application-layer auth rules (same_sign, trusted_client_process, trusted_client_path,
+    trusted_parent_process, admin_client, admin_write_client_folder) gating who can
+    call what.'
+  data_flow_prose: An external attacker reaches the suite by either (a) connecting
+    to the msgbus named pipe `local\msgbus\bdappsrv` from a low-privileged process
+    and sending a message that an application-layer auth rule misclassifies as trusted,
+    or (b) issuing SCM control codes that bdservicehost.exe dispatches through service__on_control_handler.
+    From there, control flows into bdservicehost.exe's privileged dispatch surface,
+    which can install services, mutate service configs, start arbitrary services as
+    SYSTEM, load DLLs into the SYSTEM process, and write files from SYSTEM context.
+    The kernel drivers sit underneath and are reached either by IOCTL from user-mode
+    peers or by file-system / process-callback hooks they install at boot.
+  binary_roles:
+  - stem: bdservicehost.exe
+    role: SYSTEM-context Bitdefender service host that receives control commands,
+      verifies signed callers, and dispatches service installs, process starts, and
+      DLL loads.
+  - stem: safeelevatedrun.dll
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: bdappservice.dll
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: bdprivmon.sys
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: bddci4.sys
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: trufos.sys
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: bdappsrv
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: bdagent.exe
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: seccenter.exe
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: bduserhost.exe
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: msgbus.dll
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: watchdog.exe
+    role: "unknown \u2014 not yet reconstructed"
+  - stem: productagentservice.exe
+    role: "unknown \u2014 not yet reconstructed"
+  trust_boundaries:
+  - "Standard user (AU) \u2192 SYSTEM via named pipe `local\\msgbus\\bdappsrv` (msgbus\
+    \ application-layer auth rules: same_sign / trusted_client_process / trusted_client_path\
+    \ / trusted_parent_process / admin_client / admin_write_client_folder)"
+  - "Standard user (AU) \u2192 SYSTEM via SCM control codes dispatched through bdservicehost.exe!service__on_control_handler\
+    \ (SCM ACL on the service)"
+  - "User-mode (any principal) \u2192 kernel via IOCTLs to bdprivmon.sys / bddci4.sys\
+    \ / trufos.sys (device DACL \u2014 not yet audited)"
+  - "SYSTEM service host \u2192 on-disk DLLs via LoadLibraryByName / vb_load_bdch_dll_resolve_exports\
+    \ (Authenticode + catalog verification through verify_authenticode_signature /\
+    \ verify_file_trust / verify_file_via_catalog)"
+  - "SYSTEM service host \u2192 installed services via service_manager_install_service\
+    \ / change_service_config2_inner / set_service_launch_type (no boundary \u2014\
+    \ already SYSTEM, but reachable from the IPC entry above)"
+  attack_surface_primary: "The highest-leverage entry point is bdservicehost.exe's\
+    \ SCM control handler `service__on_control_handler` and the parallel msgbus listener\
+    \ it backs: a standard user who can either send an SCM control code or get a message\
+    \ past the msgbus auth rules reaches a dispatch surface that calls service_manager_install_service,\
+    \ change_service_config2_inner, set_service_launch_type / start_service, install_bdelam_certificate,\
+    \ and LoadLibraryByName from SYSTEM context. End-to-end, that means a low-privileged\
+    \ attacker with one accepted message can install an arbitrary Windows service,\
+    \ flip an existing service's launch config, install an ELAM certificate, or load\
+    \ a chosen DLL into the SYSTEM process \u2014 full LPE in a single hop. The signed-caller\
+    \ verification path (verify_authenticode_signature / verify_file_trust / verify_file_via_catalog)\
+    \ is the load-bearing defense for both the DLL-load and the IPC-trust decisions,\
+    \ so any TOCTOU, catalog confusion, or hardlink-swap weakness in those checks\
+    \ collapses the whole boundary."
+  fingerprint: b6c26aed80d81595079eea4f30950992493e9db58db5647c263fd23cba78b0e7
+  last_synthesized: '2026-05-11T23:51:26Z'
+  binaries_comprehended:
+  - bdservicehost.exe
+  binaries_pending_reconstruction:
+  - safeelevatedrun.dll
+  - bdappservice.dll
+  - bdprivmon.sys
+  - bddci4.sys
+  - trufos.sys
+  - bdappsrv
+  - bdagent.exe
+  - seccenter.exe
+  - bduserhost.exe
+  - msgbus.dll
+  - watchdog.exe
+  - productagentservice.exe

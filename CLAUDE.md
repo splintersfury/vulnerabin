@@ -346,6 +346,39 @@ Pass 3a produces:
 
 Pass 3a does NOT affect coverage gates — structs are enrichment, not naming. Windows builtin types (`LPCWSTR`, `HANDLE`, `NTSTATUS`, `DWORD`, …) are intentionally NOT clustered as candidate structs.
 
+## Comprehend phase
+
+The comprehend phase (between `reconstruct` and `walk`) synthesizes a plain-language **mental model** of the product so a researcher entering an unfamiliar codebase has orientation BEFORE touching source. Two artifacts:
+
+1. **Per-binary `summary` + `full_picture`** in `catalog/binaries/<stem>.yml` (TL;DR sentence + structured Full Picture: loaded_by / start_trigger / ipc_peers / accepted_inputs / dangerous_operations_reachable / defense_gaps_observed). Renders as a TL;DR banner on the binary catalog page.
+2. **Product `architecture_narrative`** in `catalog/products/<slug>.yml` (summary + data_flow_prose + binary_roles + trust_boundaries + attack_surface_primary). Renders as the "How this product works" section on the product page above Layer 4 topology.
+
+```bash
+# Per-binary: bundle context, dispatch worker, apply
+python3 scripts/comprehend_binary_batch.py --binary <stem> [--version <tag>]
+# (strategist) dispatch Agent with prompts/workers/comprehend_binary.md
+#   reading <reconstruction.ref>/comprehend_input.json -> <reconstruction.ref>/comprehend_result.json
+python3 scripts/comprehend_binary_apply.py --binary <stem> --result <path/to/result.json>
+
+# Per-product: bundle, dispatch narrative worker, apply
+python3 scripts/comprehend_product_batch.py --product <slug>
+# (strategist) dispatch Agent with prompts/workers/comprehend_narrative.md
+#   reading catalog/products/<slug>.comprehend_input.json -> .comprehend_result.json
+python3 scripts/comprehend_product_apply.py --product <slug> \
+    --bundle catalog/products/<slug>.comprehend_input.json \
+    --result catalog/products/<slug>.comprehend_result.json
+
+# Render — TL;DR banner appears on every binary page; "How this product works"
+# appears on every product page that has architecture_narrative.
+python3 scripts/catalog_site_render.py
+```
+
+Carryforward via fingerprints (`scripts/comprehend_fingerprint.py`): if a binary's YAML hasn't changed since its last comprehension, `is_binary_summary_stale` returns False and the strategist skips re-dispatching its worker. Same for products. In a 30-binary product where one binary updated, the typical incremental run is 2 worker dispatches, not 31.
+
+The full strategist prompt is at `prompts/phases/comprehend.md`. Per-binary worker contract: `prompts/workers/comprehend_binary.md`. Product narrative worker contract: `prompts/workers/comprehend_narrative.md`.
+
+`pipeline.yml` declares the `comprehend` phase between `reconstruct` and `walk` with three gates: `primary_binary_reconstructed` (pre), `narrative_present` (post), `binary_summaries_present` (post). Opt-out flag `--no-comprehend` if you want walk to run without comprehension.
+
 ## Taxonomy Files
 
 Located in `taxonomy/<type>/`:

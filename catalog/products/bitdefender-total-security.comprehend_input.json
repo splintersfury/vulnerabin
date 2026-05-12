@@ -1,0 +1,71 @@
+{
+  "product": {
+    "slug": "bitdefender-total-security",
+    "display_name": "Bitdefender Total Security",
+    "vendor": "Bitdefender",
+    "description": "Consumer endpoint security suite. Multi-process architecture: SYSTEM-context service host (bdservicehost.exe) loading multiple service DLLs (bdappsrv, bdappservice, etc.); kernel drivers (bdprivmon, bddci4, trufos) for self-protection and AV operations; Admin / user-context UI processes (bdagent, seccenter, bduserhost). IPC backbone is msgbus (named pipe `local\\msgbus\\bdappsrv`) with application-layer auth rules (same_sign, trusted_client_process, trusted_client_path, trusted_parent_process, admin_client, admin_write_client_folder).",
+    "binaries_listed": [
+      "safeelevatedrun.dll",
+      "bdappservice.dll",
+      "bdprivmon.sys",
+      "bddci4.sys",
+      "trufos.sys",
+      "bdservicehost.exe",
+      "bdappsrv",
+      "bdagent.exe",
+      "seccenter.exe",
+      "bduserhost.exe",
+      "msgbus.dll",
+      "watchdog.exe",
+      "productagentservice.exe"
+    ]
+  },
+  "binaries_comprehended": [
+    {
+      "stem": "bdservicehost.exe",
+      "summary": "SYSTEM-context Bitdefender service host that receives control commands, verifies signed callers, and dispatches service installs, process starts, and DLL loads.",
+      "full_picture": {
+        "loaded_by": [
+          "Windows Service Control Manager (auto-start)"
+        ],
+        "start_trigger": [
+          "boot (SCM auto-start)",
+          "SCM control codes via service__on_control_handler"
+        ],
+        "ipc_peers": [],
+        "accepted_inputs": [
+          "SCM service control codes dispatched through service__on_control_handler",
+          "Files presented to verify_authenticode_signature / verify_file_trust / verify_file_via_catalog",
+          "DLLs resolved by name through LoadLibraryByName / vb_load_bdch_dll_resolve_exports",
+          "Path-shaped strings flowing through sanitize_path_env_var / set_env_var_nolock_helper"
+        ],
+        "dangerous_operations_reachable": [
+          "service_manager_install_service (install arbitrary Windows service)",
+          "change_service_config2_inner / change_service_config_inner (mutate any service config)",
+          "set_service_launch_type / start_service / vb_start_service_dispatcher (start services as SYSTEM)",
+          "service__register_service_events / service__unregister_service_events (register privileged event handlers)",
+          "install_bdelam_certificate (install ELAM certificate trust)",
+          "LoadLibraryByName / load_library_or_throw / vb_load_bdch_dll_resolve_exports (load DLLs into SYSTEM process)",
+          "fs_set_file_attributes_by_path / fwrite (write/modify files from SYSTEM)"
+        ],
+        "defense_gaps_observed": []
+      }
+    }
+  ],
+  "binaries_pending": [
+    "safeelevatedrun.dll",
+    "bdappservice.dll",
+    "bdprivmon.sys",
+    "bddci4.sys",
+    "trufos.sys",
+    "bdappsrv",
+    "bdagent.exe",
+    "seccenter.exe",
+    "bduserhost.exe",
+    "msgbus.dll",
+    "watchdog.exe",
+    "productagentservice.exe"
+  ],
+  "process_model": {},
+  "ipc_edges": []
+}

@@ -1,0 +1,84 @@
+{
+  "binary": {
+    "stem": "bdservicehost.exe",
+    "binary_kind": "exe",
+    "platform": "",
+    "product": "",
+    "description": "(Auto-seeded; replace this description.) Catalogued in 2 engagement(s).",
+    "principal": "SYSTEM"
+  },
+  "catalog_yaml_excerpt": {
+    "process_model": {
+      "loaded_by": "",
+      "principal": "SYSTEM",
+      "start_trigger": "",
+      "parent_processes": [],
+      "ipc_peers": [],
+      "impersonation_seen": false,
+      "ppl_protected": false
+    }
+  },
+  "reconstruction": {
+    "status": "partial",
+    "version_tag": "v27_x",
+    "named_total": 1002,
+    "user_defined_functions": 1368,
+    "named_pct": 73.2
+  },
+  "vuln_surface_summary": {
+    "trust_boundary": 6,
+    "ipc_source": 20,
+    "file_source": 7,
+    "defense": 8,
+    "crypto": 2,
+    "process_sink": 4,
+    "file_write_sink": 3,
+    "dll_load_sink": 4,
+    "privilege_sink": 11,
+    "path_handling": 2
+  },
+  "vuln_surface_examples": {
+    "trust_boundary": [
+      "verify_authenticode_signature",
+      "__except_validate_context_record",
+      "validate_stream_is_ansi_if_required",
+      "verify_file_trust",
+      "verify_file_via_catalog"
+    ],
+    "ipc_source": [
+      "service__on_control_handler",
+      "DecompHandler",
+      "__C_specific_handler",
+      "__acrt_get_sigabrt_handler",
+      "_guard_dispatch_icall"
+    ],
+    "process_sink": [
+      "set_service_launch_type",
+      "start_service",
+      "start_service_inner",
+      "vb_start_service_dispatcher"
+    ],
+    "file_write_sink": [
+      "fs_set_file_attributes_by_path",
+      "_fwrite_nolock",
+      "fwrite"
+    ],
+    "dll_load_sink": [
+      "LoadLibraryByName",
+      "load_library_or_throw",
+      "vb_load_bdch_dll_resolve_exports",
+      "vb_unload_module_wrapper"
+    ],
+    "privilege_sink": [
+      "service__register_service_events",
+      "service__unregister_service_events",
+      "service_manager_install_service",
+      "change_service_config2_inner",
+      "change_service_config_inner"
+    ],
+    "path_handling": [
+      "sanitize_path_env_var",
+      "set_env_var_nolock_helper"
+    ]
+  }
+}

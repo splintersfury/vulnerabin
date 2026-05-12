@@ -623,9 +623,14 @@ def render_binaries(env: Environment, binaries: list[dict], lib: dict):
                 "ref": recon_block.get("ref"),
                 "page_relative": f"../reconstructed/{Path(recon_block.get('ref', '')).name}.html",
             }
+        # Comprehend ELI5 + full_picture if present on the binary YAML.
+        ctx_comprehend_summary = b.get("summary")
+        ctx_comprehend_full_picture = b.get("full_picture")
         out = bdir / f"{b['page_stem']}.html"
         out.write_text(tpl.render(binary=b, class_coverage_grouped=grouped, coverage_stats=cov_stats,
                                   root="../", reconstruction=ctx_reconstruction,
+                                  comprehend_summary=ctx_comprehend_summary,
+                                  comprehend_full_picture=ctx_comprehend_full_picture,
                                   **re_ctx, **matrix_ctx))
         print(f"wrote {out.relative_to(ROOT)}")
 
@@ -665,12 +670,16 @@ def render_products(env: Environment, products: list[dict], binaries: list[dict]
             heatmap_rows.append({"binary": b_token, "counts": counts})
         heatmap_classes = sorted(all_classes)
 
+        # Pull architecture_narrative if present on product YAML.
+        ctx_architecture_narrative = prod.get("architecture_narrative")
+
         out = pdir / f"{prod['slug']}.html"
         out.write_text(tpl.render(
             product=prod,
             heatmap_classes=heatmap_classes,
             heatmap_rows=heatmap_rows,
             known_binaries=known_binaries,
+            architecture_narrative=ctx_architecture_narrative,
             root="../",
         ))
         print(f"wrote {out.relative_to(ROOT)}")

@@ -61,6 +61,64 @@
   {% endif %}
 </div>
 
+{% if comprehend_summary %}
+<div class="border-l-4 border-primary bg-primary-container/10 px-md py-sm mx-lg mt-md">
+  <div class="text-ui-sans-xs text-on-surface-variant uppercase font-medium mb-1">TL;DR</div>
+  <div class="font-ui-sans-sm text-on-surface">{{ comprehend_summary }}</div>
+  {% if comprehend_full_picture %}
+  <details class="mt-sm">
+    <summary class="text-ui-sans-xs text-primary cursor-pointer hover:underline">Full picture</summary>
+    <div class="mt-sm text-ui-sans-sm space-y-2">
+      {% if comprehend_full_picture.loaded_by %}
+      <div><span class="text-on-surface-variant uppercase text-ui-sans-xs">Loaded by:</span>
+        {{ comprehend_full_picture.loaded_by | join(', ') }}</div>
+      {% endif %}
+      {% if comprehend_full_picture.start_trigger %}
+      <div><span class="text-on-surface-variant uppercase text-ui-sans-xs">Start trigger:</span>
+        {{ comprehend_full_picture.start_trigger | join(', ') }}</div>
+      {% endif %}
+      {% if comprehend_full_picture.ipc_peers %}
+      <div><span class="text-on-surface-variant uppercase text-ui-sans-xs">IPC peers:</span>
+        <ul class="list-disc list-inside ml-2">
+        {% for p in comprehend_full_picture.ipc_peers %}
+          <li><code>{{ p.name }}</code> via <code>{{ p.transport }}</code> ({{ p.direction }})</li>
+        {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if comprehend_full_picture.accepted_inputs %}
+      <div><span class="text-on-surface-variant uppercase text-ui-sans-xs">Accepted inputs:</span>
+        <ul class="list-disc list-inside ml-2">
+        {% for s in comprehend_full_picture.accepted_inputs %}
+          <li>{{ s }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if comprehend_full_picture.dangerous_operations_reachable %}
+      <div><span class="text-on-surface-variant uppercase text-ui-sans-xs">Dangerous ops reachable:</span>
+        <ul class="list-disc list-inside ml-2">
+        {% for s in comprehend_full_picture.dangerous_operations_reachable %}
+          <li class="text-tertiary">{{ s }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if comprehend_full_picture.defense_gaps_observed %}
+      <div><span class="text-on-surface-variant uppercase text-ui-sans-xs">Defense gaps observed:</span>
+        <ul class="list-disc list-inside ml-2">
+        {% for s in comprehend_full_picture.defense_gaps_observed %}
+          <li class="text-error">{{ s }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </details>
+  {% endif %}
+</div>
+{% endif %}
+
 {% if reconstruction %}
 {% set _rs = reconstruction.status %}
 {% set _classes = {
