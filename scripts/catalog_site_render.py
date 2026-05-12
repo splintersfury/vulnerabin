@@ -594,10 +594,18 @@ def build_re_context(b: dict) -> dict:
 
 
 def render_binaries(env: Environment, binaries: list[dict], lib: dict):
+    import shutil
     tpl = env.get_template("binary.html.j2")
     bdir = SITE / "binaries"
     bdir.mkdir(exist_ok=True)
+    src_binaries_dir = ROOT / "catalog" / "binaries"
     for b in binaries:
+        # Copy the source YAML alongside the HTML so the "YAML" button on
+        # the binary page resolves (it points to <page_stem>.yml relative
+        # to the served site dir).
+        src_yml = src_binaries_dir / f"{b['page_stem']}.yml"
+        if src_yml.is_file():
+            shutil.copy(src_yml, bdir / f"{b['page_stem']}.yml")
         # Add status_badge per source for the L1 map
         chains = b.get("chains") or []
         src_status: dict[str, str] = {}

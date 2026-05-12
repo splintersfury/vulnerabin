@@ -1,0 +1,79 @@
+binary: storvsp_26100.7019_oct2025_pre-cve-2025-60708.sys
+display_name: storvsp_26100.7019_oct2025_pre-cve-2025-60708.sys
+description: (Auto-seeded; replace this description.) Catalogued in 1 engagement(s).
+canonical_path: ''
+arch: ''
+platform: ''
+binary_kind: sys
+trust_boundary: ''
+versions:
+- version: PRE 10.0.26100.7462 (Dec 2025) / POST 10.0.26100.7705 (Jan 2026, KB5074105)
+  sha256: ''
+  eng: storvsp-2026-05-05
+  seen: '2026-05-05'
+  notes: 'Auto-seeded from storvsp-2026-05-05/scope.json (target: storvsp.sys (Hyper-V Storage VSP))'
+sources: []
+sinks: []
+chains: []
+_seed_meta:
+  decomp_dirs: []
+  findings_seen: []
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: ''
+  principal: kernel
+  start_trigger: ''
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+class_coverage:
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''

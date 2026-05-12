@@ -1,0 +1,84 @@
+binary: afd_26100.8246_post.sys
+display_name: afd_26100.8246_post.sys
+description: (Auto-seeded; replace this description.) Catalogued in 1 engagement(s).
+canonical_path: ''
+arch: ''
+platform: ''
+binary_kind: sys
+trust_boundary: ''
+versions:
+- version: 10.0.26100.8115 (PRE) and 10.0.26100.8246 (POST)
+  sha256: ''
+  eng: afd-sys-2026-04-28
+  seen: '2026-04-28'
+  notes: 'Auto-seeded from afd-sys-2026-04-28/scope.json (target: Windows Ancillary
+    Function Driver for WinSock (afd.sys))'
+sources: []
+sinks: []
+chains: []
+_seed_meta:
+  decomp_dirs: []
+  findings_seen: []
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: ''
+  principal: kernel
+  start_trigger: ''
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+class_coverage:
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+reconstruction:
+  ref: catalog/reconstructed/afd_26100_8246_post_sys_v26100_8246_post
+  version_tag: v26100_8246_post
+  status: complete

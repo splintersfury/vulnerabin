@@ -194,6 +194,151 @@ tailwind.config = {
   
 </div>
 
+
+<section class="mx-lg mt-md bg-primary-container/[0.06] border-l-4 border-primary rounded">
+  <div class="px-md py-sm border-b border-outline-variant">
+    <h2 class="font-label-caps uppercase tracking-wider text-primary flex items-center gap-2">
+      <span class="material-symbols-outlined text-[14px]">map</span>How this product works
+    </h2>
+    <div class="text-ui-sans-xs text-on-surface-variant mt-1">
+      Synthesized from 1 of
+      13 binaries
+      &nbsp;·&nbsp;
+      <span class="font-data-mono-sm">2026-05-11T23:51:26Z</span>
+    </div>
+  </div>
+  <div class="p-md space-y-md">
+    <div>
+      <div class="text-on-surface-variant uppercase font-label-caps text-ui-sans-xs mb-1">Summary</div>
+      <p class="text-on-surface text-ui-sans-sm">Bitdefender Total Security is a Windows consumer endpoint security suite built as a multi-process system: a SYSTEM service host (bdservicehost.exe) loading service DLLs, kernel drivers (bdprivmon.sys, bddci4.sys, trufos.sys) for self-protection and AV enforcement, and Admin/user-context UI processes (bdagent.exe, seccenter.exe, bduserhost.exe). Components talk to each other over the msgbus named pipe `local\msgbus\bdappsrv`, with application-layer auth rules (same_sign, trusted_client_process, trusted_client_path, trusted_parent_process, admin_client, admin_write_client_folder) gating who can call what.</p>
+    </div>
+    <div>
+      <div class="text-on-surface-variant uppercase font-label-caps text-ui-sans-xs mb-1">Data flow</div>
+      <p class="text-on-surface text-ui-sans-sm">An external attacker reaches the suite by either (a) connecting to the msgbus named pipe `local\msgbus\bdappsrv` from a low-privileged process and sending a message that an application-layer auth rule misclassifies as trusted, or (b) issuing SCM control codes that bdservicehost.exe dispatches through service__on_control_handler. From there, control flows into bdservicehost.exe's privileged dispatch surface, which can install services, mutate service configs, start arbitrary services as SYSTEM, load DLLs into the SYSTEM process, and write files from SYSTEM context. The kernel drivers sit underneath and are reached either by IOCTL from user-mode peers or by file-system / process-callback hooks they install at boot.</p>
+    </div>
+    <div>
+      <div class="text-on-surface-variant uppercase font-label-caps text-ui-sans-xs mb-1">What each binary does</div>
+      <ul class="list-disc list-inside text-ui-sans-sm space-y-1">
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">bdservicehost.exe</span>
+          
+          — SYSTEM-context Bitdefender service host that receives control commands, verifies signed callers, and dispatches service installs, process starts, and DLL loads.
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">safeelevatedrun.dll</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">bdappservice.dll</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">bdprivmon.sys</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">bddci4.sys</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">trufos.sys</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">bdappsrv</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">bdagent.exe</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">seccenter.exe</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">bduserhost.exe</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">msgbus.dll</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">watchdog.exe</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+        <li>
+          <span class="font-data-mono-sm text-secondary">productagentservice.exe</span>
+          
+          <span class="text-on-surface-variant italic">— unknown — not yet reconstructed</span>
+          
+        </li>
+        
+      </ul>
+    </div>
+    
+    <div>
+      <div class="text-on-surface-variant uppercase font-label-caps text-ui-sans-xs mb-1">Trust boundaries</div>
+      <ul class="list-disc list-inside text-ui-sans-sm space-y-1">
+        
+        <li class="font-data-mono-sm text-tertiary">Standard user (AU) → SYSTEM via named pipe `local\msgbus\bdappsrv` (msgbus application-layer auth rules: same_sign / trusted_client_process / trusted_client_path / trusted_parent_process / admin_client / admin_write_client_folder)</li>
+        
+        <li class="font-data-mono-sm text-tertiary">Standard user (AU) → SYSTEM via SCM control codes dispatched through bdservicehost.exe!service__on_control_handler (SCM ACL on the service)</li>
+        
+        <li class="font-data-mono-sm text-tertiary">User-mode (any principal) → kernel via IOCTLs to bdprivmon.sys / bddci4.sys / trufos.sys (device DACL — not yet audited)</li>
+        
+        <li class="font-data-mono-sm text-tertiary">SYSTEM service host → on-disk DLLs via LoadLibraryByName / vb_load_bdch_dll_resolve_exports (Authenticode + catalog verification through verify_authenticode_signature / verify_file_trust / verify_file_via_catalog)</li>
+        
+        <li class="font-data-mono-sm text-tertiary">SYSTEM service host → installed services via service_manager_install_service / change_service_config2_inner / set_service_launch_type (no boundary — already SYSTEM, but reachable from the IPC entry above)</li>
+        
+      </ul>
+    </div>
+    
+    <div class="bg-error-container/[0.05] border border-error/30 rounded p-sm">
+      <div class="text-error uppercase font-label-caps text-ui-sans-xs mb-1">Primary attack surface</div>
+      <p class="text-on-surface text-ui-sans-sm">The highest-leverage entry point is bdservicehost.exe's SCM control handler `service__on_control_handler` and the parallel msgbus listener it backs: a standard user who can either send an SCM control code or get a message past the msgbus auth rules reaches a dispatch surface that calls service_manager_install_service, change_service_config2_inner, set_service_launch_type / start_service, install_bdelam_certificate, and LoadLibraryByName from SYSTEM context. End-to-end, that means a low-privileged attacker with one accepted message can install an arbitrary Windows service, flip an existing service's launch config, install an ELAM certificate, or load a chosen DLL into the SYSTEM process — full LPE in a single hop. The signed-caller verification path (verify_authenticode_signature / verify_file_trust / verify_file_via_catalog) is the load-bearing defense for both the DLL-load and the IPC-trust decisions, so any TOCTOU, catalog confusion, or hardlink-swap weakness in those checks collapses the whole boundary.</p>
+    </div>
+  </div>
+</section>
+
+
 <div class="p-lg space-y-lg max-w-[1600px] mx-auto w-full">
 
   <!-- Layer 4: Topology -->

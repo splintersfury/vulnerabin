@@ -1,0 +1,418 @@
+binary: dropbox_offline_installer.exe
+display_name: dropbox_offline_installer.exe
+description: (Auto-seeded; replace this description.) Catalogued in 1 engagement(s).
+canonical_path: ''
+arch: ''
+platform: ''
+binary_kind: exe
+trust_boundary: ''
+versions:
+- version: ''
+  sha256: ''
+  eng: dropbox-2026-04-30
+  seen: '2026-04-30'
+  notes: ''
+sources:
+- id: SRC-001
+  name: HKLM\Software\DropboxUpdate\...\UninstallCmdLine value (writable by BUILTIN\Users by design) feeds CreateProcessW
+    from SYSTEM updater
+  source_class_id: C-001
+  co_class_ids:
+  - UP-005
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: ''
+  last_confirmed_version: ''
+  notes: 'Auto-enriched from dropbox-2026-04-30/003-uninstall-cmd-substring-bypass.md. Mixed: registry-as-source (BUILTIN\Users-writable
+    HKLM key) + updater install class (UP-005).'
+sinks:
+- id: SNK-001
+  name: Privileged action gated by attacker-writable config
+  cwe: CWE-732
+  function: (see finding evidence)
+  impact: privilege transition via config injection
+  first_seen_version: ''
+  notes: Auto-generated stub for group C. Refine with the actual sink function/line as documented in the finding.
+- id: SNK-002
+  name: Updater executes attacker-influenced binary
+  cwe: CWE-494
+  function: (see finding evidence)
+  impact: code execution at updater's privilege
+  first_seen_version: ''
+  notes: Auto-generated stub for group UP. Refine with the actual sink function/line as documented in the finding.
+chains:
+- id: CHAIN-001
+  title: HKLM\Software\DropboxUpdate\...\UninstallCmdLine value (writable by BUILTIN\User
+  source_id: SRC-001
+  sink_id: SNK-001
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: privilege transition via config injection
+  cwe:
+  - CWE-732
+  severity: ''
+  cvss: ''
+  status: unexplored
+  confirmed_in_version: ''
+  finding_ref: dropbox-2026-04-30/findings/003-uninstall-cmd-substring-bypass.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+_seed_meta:
+  decomp_dirs: []
+  findings_seen:
+  - ref: dropbox-2026-04-30/findings/003-uninstall-cmd-substring-bypass.md
+    eng: dropbox-2026-04-30
+    version: ''
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: ''
+  principal: installer-elevated
+  start_trigger: ''
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+defenses:
+- class_id: C-001
+  defense_expected: Admin-only SDDL on the subkey; for HKCU values used by elevated process, validate per-user-context they
+    don't influence cross-user decisions.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+- class_id: UP-005
+  defense_expected: Extract to admin-write-only path; canonicalize before exec; verify signature on extracted binary before
+    running.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+class_coverage:
+- class_id: C-001
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    chains:
+    - CHAIN-001
+  last_checked_version: ''
+- class_id: C-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-008
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-009
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-005
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    chains:
+    - CHAIN-001
+  last_checked_version: ''

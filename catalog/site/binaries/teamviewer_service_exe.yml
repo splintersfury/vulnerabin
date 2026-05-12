@@ -1,0 +1,529 @@
+binary: teamviewer_service.exe
+display_name: teamviewer_service.exe
+description: (Auto-seeded; replace this description.) Catalogued in 1 engagement(s).
+canonical_path: ''
+arch: ''
+platform: ''
+binary_kind: exe
+trust_boundary: ''
+versions:
+- version: 15.76.3
+  sha256: ''
+  eng: teamviewer-2026-03-31
+  seen: '2026-03-31'
+  notes: ''
+sources:
+- id: SRC-001
+  name: Multiple process-creation IPC handlers reachable via auth bypass on localhost:5939
+  source_class_id: I-002
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: 15.76.3
+  last_confirmed_version: 15.76.3
+  notes: Auto-enriched from teamviewer-2026-03-31/002-ipc-process-creation-surface.md. I-002-style IPC.
+- id: SRC-002
+  name: TeamViewer log files in install dir have Everyone:RW permissions
+  source_class_id: F-006
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: 15.76.3
+  last_confirmed_version: 15.76.3
+  notes: Auto-enriched from teamviewer-2026-03-31/004-logfile-weak-permissions.md. F-006 world-writable file/log.
+- id: SRC-003
+  name: Replace Everyone:RW log file with NTFS hardlink to privileged target
+  source_class_id: F-003
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: 15.76.3
+  last_confirmed_version: 15.76.3
+  notes: Auto-enriched from teamviewer-2026-03-31/005-arbitrary-system-write-hardlink.md. F-003 NTFS-hardlink-substitution.
+- id: SRC-004
+  name: Updated writeup of IPC auth bypass via unchanged hardcoded MD5 secret + process spawn
+  source_class_id: I-002
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: 15.76.3
+  last_confirmed_version: 15.76.3
+  notes: Auto-enriched from teamviewer-2026-03-31/008-ipc-system-process-creation.md. I-002 / localhost IPC; updated.
+sinks:
+- id: SNK-001
+  name: Elevated file operation (write / set_acl / read)
+  cwe: CWE-269
+  function: (see finding evidence)
+  impact: arbitrary file access at privileged principal's level
+  first_seen_version: ''
+  notes: Auto-generated stub for group F. Refine with the actual sink function/line as documented in the finding.
+- id: SNK-002
+  name: IPC handler executes privileged operation
+  cwe: CWE-862
+  function: (see finding evidence)
+  impact: arbitrary command execution as listening service
+  first_seen_version: ''
+  notes: Auto-generated stub for group I. Refine with the actual sink function/line as documented in the finding.
+chains:
+- id: CHAIN-001
+  title: Multiple process-creation IPC handlers reachable via auth bypass on localhost:59
+  source_id: SRC-001
+  sink_id: SNK-002
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: arbitrary command execution as listening service
+  cwe:
+  - CWE-862
+  severity: ''
+  cvss: ''
+  status: partial
+  confirmed_in_version: ''
+  finding_ref: teamviewer-2026-03-31/findings/002-ipc-process-creation-surface.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+- id: CHAIN-002
+  title: TeamViewer log files in install dir have Everyone:RW permissions
+  source_id: SRC-002
+  sink_id: SNK-001
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: arbitrary file access at privileged principal's level
+  cwe:
+  - CWE-269
+  severity: ''
+  cvss: ''
+  status: partial
+  confirmed_in_version: ''
+  finding_ref: teamviewer-2026-03-31/findings/002-ipc-process-creation-surface.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+- id: CHAIN-003
+  title: Replace Everyone:RW log file with NTFS hardlink to privileged target
+  source_id: SRC-003
+  sink_id: SNK-001
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: arbitrary file access at privileged principal's level
+  cwe:
+  - CWE-269
+  severity: ''
+  cvss: ''
+  status: partial
+  confirmed_in_version: ''
+  finding_ref: teamviewer-2026-03-31/findings/002-ipc-process-creation-surface.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+- id: CHAIN-004
+  title: 'Updated writeup of IPC auth bypass via unchanged hardcoded MD5 secret + process '
+  source_id: SRC-004
+  sink_id: SNK-002
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: arbitrary command execution as listening service
+  cwe:
+  - CWE-862
+  severity: ''
+  cvss: ''
+  status: partial
+  confirmed_in_version: ''
+  finding_ref: teamviewer-2026-03-31/findings/002-ipc-process-creation-surface.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+_seed_meta:
+  decomp_dirs: []
+  findings_seen:
+  - ref: teamviewer-2026-03-31/findings/002-ipc-process-creation-surface.md
+    eng: teamviewer-2026-03-31
+    version: 15.76.3
+  - ref: teamviewer-2026-03-31/findings/004-logfile-weak-permissions.md
+    eng: teamviewer-2026-03-31
+    version: 15.76.3
+  - ref: teamviewer-2026-03-31/findings/005-arbitrary-system-write-hardlink.md
+    eng: teamviewer-2026-03-31
+    version: 15.76.3
+  - ref: teamviewer-2026-03-31/findings/008-ipc-system-process-creation.md
+    eng: teamviewer-2026-03-31
+    version: 15.76.3
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: ''
+  principal: SYSTEM
+  start_trigger: ''
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+defenses:
+- class_id: F-003
+  defense_expected: Open with FILE_FLAG_OPEN_REPARSE_POINT, verify nNumberOfLinks == 1 via GetFileInformationByHandle; or
+    use FILE_DISPOSITION_POSIX_SEMANTICS for delete operations.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+- class_id: F-006
+  defense_expected: Apply protected DACL on file creation; rotate logs to admin-only directories; redact sensitive content
+    before logging.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+- class_id: I-002
+  defense_expected: Explicit SDDL; authenticate caller via ImpersonateNamedPipeClient + group membership check, OR GetNamedPipeClientProcessId
+    + image-path allowlist.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+class_coverage:
+- class_id: C-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: C-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: CR-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-003
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-003
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+    - CHAIN-003
+    - CHAIN-004
+  last_checked_version: 15.76.3
+- class_id: F-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: F-006
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-002
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+    - CHAIN-003
+    - CHAIN-004
+  last_checked_version: 15.76.3
+- class_id: F-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-002
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    - SRC-004
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+    - CHAIN-003
+    - CHAIN-004
+  last_checked_version: 15.76.3
+- class_id: I-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-008
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: I-009
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: N-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: T-007
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: U-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: UP-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''

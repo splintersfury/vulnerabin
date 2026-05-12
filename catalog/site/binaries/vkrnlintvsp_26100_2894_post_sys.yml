@@ -1,0 +1,79 @@
+binary: vkrnlintvsp_26100.2894_post.sys
+display_name: vkrnlintvsp_26100.2894_post.sys
+description: (Auto-seeded; replace this description.) Catalogued in 1 engagement(s).
+canonical_path: ''
+arch: ''
+platform: ''
+binary_kind: sys
+trust_boundary: ''
+versions:
+- version: PRE 10.0.22621.2506 / POST 10.0.22621.4751 (Jan 2025 KB5050021)
+  sha256: ''
+  eng: vkrnlintvsp-2026-05-04
+  seen: '2026-05-04'
+  notes: 'Auto-seeded from vkrnlintvsp-2026-05-04/scope.json (target: vkrnlintvsp.sys (Hyper-V NT Kernel Integration VSP))'
+sources: []
+sinks: []
+chains: []
+_seed_meta:
+  decomp_dirs: []
+  findings_seen: []
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: ''
+  principal: kernel
+  start_trigger: ''
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+class_coverage:
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-001
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''

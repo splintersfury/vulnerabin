@@ -1,0 +1,161 @@
+binary: teamviewervpn.sys
+display_name: teamviewervpn.sys
+description: (Auto-seeded; replace this description.) Catalogued in 1 engagement(s).
+canonical_path: ''
+arch: ''
+platform: ''
+binary_kind: sys
+trust_boundary: ''
+versions:
+- version: 15.76.3
+  sha256: ''
+  eng: teamviewer-2026-03-31
+  seen: '2026-03-31'
+  notes: ''
+sources:
+- id: SRC-001
+  name: TAP device DACL grants Everyone GR/GW/GX; any local user opens device and issues IOCTLs
+  source_class_id: K-001
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: 15.76.3
+  last_confirmed_version: 15.76.3
+  notes: Auto-enriched from teamviewer-2026-03-31/006-tap-device-anyone-can-open.md. K-001 IOCTL surface.
+- id: SRC-002
+  name: IOCTL 0x220024 copies up to 256 bytes user-controlled data into adapter struct without dest-size validation
+  source_class_id: K-001
+  co_class_ids: []
+  via: (see finding)
+  type: (unspecified)
+  attacker_controlled: 'yes'
+  caveat: ''
+  function: ''
+  first_seen_version: 15.76.3
+  last_confirmed_version: 15.76.3
+  notes: Auto-enriched from teamviewer-2026-03-31/007-ioctl-0x220024-kernel-pool-overflow.md. K-001 IOCTL pool overflow.
+sinks:
+- id: SNK-001
+  name: Kernel-mode operation triggered by user-mode IOCTL
+  cwe: CWE-787
+  function: (see finding evidence)
+  impact: kernel memory corruption or privilege escalation
+  first_seen_version: ''
+  notes: Auto-generated stub for group K. Refine with the actual sink function/line as documented in the finding.
+chains:
+- id: CHAIN-001
+  title: TAP device DACL grants Everyone GR/GW/GX; any local user opens device and issues
+  source_id: SRC-001
+  sink_id: SNK-001
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: kernel memory corruption or privilege escalation
+  cwe:
+  - CWE-787
+  severity: ''
+  cvss: ''
+  status: partial
+  confirmed_in_version: ''
+  finding_ref: teamviewer-2026-03-31/findings/006-tap-device-anyone-can-open.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+- id: CHAIN-002
+  title: IOCTL 0x220024 copies up to 256 bytes user-controlled data into adapter struct w
+  source_id: SRC-002
+  sink_id: SNK-001
+  conditions:
+  - '(auto-stub: walk the source through any defenses, list each check that must pass)'
+  impact: kernel memory corruption or privilege escalation
+  cwe:
+  - CWE-787
+  severity: ''
+  cvss: ''
+  status: partial
+  confirmed_in_version: ''
+  finding_ref: teamviewer-2026-03-31/findings/006-tap-device-anyone-can-open.md
+  submission_ref: ''
+  bypasses_required: []
+  notes: Auto-generated chain stub. Fill conditions, severity, submission_ref from the finding.
+_seed_meta:
+  decomp_dirs: []
+  findings_seen:
+  - ref: teamviewer-2026-03-31/findings/006-tap-device-anyone-can-open.md
+    eng: teamviewer-2026-03-31
+    version: 15.76.3
+  - ref: teamviewer-2026-03-31/findings/007-ioctl-0x220024-kernel-pool-overflow.md
+    eng: teamviewer-2026-03-31
+    version: 15.76.3
+  seeded_at: '2026-05-09T13:37:52Z'
+process_model:
+  loaded_by: ''
+  principal: kernel
+  start_trigger: ''
+  parent_processes: []
+  ipc_peers: []
+  impersonation_seen: false
+  ppl_protected: false
+defenses:
+- class_id: K-001
+  defense_expected: IoCreateDeviceSecure with admin-only SDDL; SeAccessCheck per IOCTL; METHOD_BUFFERED default; ProbeForRead/ProbeForWrite
+    for METHOD_NEITHER inside __try/__except; integer-overflow checks on user-supplied lengths.
+  observed: (audit needed; fill from the finding's defense analysis)
+  gap: unknown
+  bypass_attempts: ''
+class_coverage:
+- class_id: I-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-001
+  status: present
+  rationale: ''
+  refs:
+    sources:
+    - SRC-001
+    - SRC-002
+    chains:
+    - CHAIN-001
+    - CHAIN-002
+  last_checked_version: 15.76.3
+- class_id: K-002
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-003
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-004
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-005
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
+- class_id: K-006
+  status: unchecked
+  rationale: ''
+  refs:
+    sources: []
+    chains: []
+  last_checked_version: ''
