@@ -1,12 +1,83 @@
 binary: msgbus.dll
-display_name: msgbus.dll
-description: (Auto-seeded; replace this description.) Catalogued in 2 engagement(s).
-canonical_path: ''
-arch: ''
-platform: ''
+display_name: Bitdefender msgbus IPC Library
+product: bitdefender-total-security
+description: >
+  The IPC backbone for the entire Bitdefender suite. Loaded by bdservicehost.exe (SYSTEM)
+  and by every client that needs to talk to it (bdagent, seccenter, bduserhost). Implements
+  a named-pipe server on \\.\pipe\local\msgbus\bdappsrv with application-layer auth rules.
+  Six auth predicates gate who can send which messages:
+  1. trusted_client_path — DACL/ACE check on caller exe file path
+  2. trusted_client_process — WinVerifyTrust Authenticode check on caller exe (GUID WINTRUST_ACTION_GENERIC_VERIFY_V2)
+  3. same_sign — Authenticode signature comparison between caller and server
+  4. admin_client — Local group membership check (NetLocalGroupGetMembers → Administrators)
+  5. admin_write_client_folder — write-access check on client's folder
+  6. trusted_parent_process — checks parent process Authenticode + PID cache + FILETIME timestamp
+
+  The rule dispatcher is FUN_18003fd10 (security_rule_keys_builder). Each message type
+  can require one or more predicates to pass. The pipe itself is Everyone-accessible (confirmed
+  by finding 001). The critical weakness: trusted_client_process only verifies Authenticode
+  signature of the CALLER, not the HOST — DLL injection into any BD-signed process bypasses it.
+canonical_path: C:\Program Files\Bitdefender\Bitdefender Security App\msgbus.dll
+arch: x64
+platform: windows
 binary_kind: dll
-trust_boundary: ''
-versions:
+trust_boundary: Standard user (AU) → msgbus pipe (Everyone ACL) → bdappsrv (SYSTEM)
+reverse_engineering:
+  entrypoint: "DllMain → msgbus_server_start → pipe listener on \\.\pipe\local\msgbus\bdappsrv"
+  loaded_modules: []
+  inputs:
+    - id: INP-001
+      kind: ipc_pipe
+      path: "\\.\pipe\local\msgbus\bdappsrv"
+      direction: bidirectional
+      attacker_reachable: low_priv_user
+      reachability: >
+        Named pipe with Everyone:Read/Write DACL (confirmed by accesschk64 in finding 001).
+        Any standard user can connect. Application-layer auth rules in msgbus gate which
+        operations each caller can invoke.
+      notes: Discovered via accesschk64 + strings analysis + decompilation of FUN_18003fd10
+    - id: INP-002
+      kind: ipc_pipe
+      path: "\\.\pipe\local\msgbus\bdappsrv"
+      direction: in
+      attacker_reachable: low_priv_user
+      reachability: Same pipe as INP-001 but specifically for IPC message dispatch after handshake
+      notes: Wire-protocol message with fields: method_name, params (JSON-like), auth_context
+  behavior: |
+    msgbus.dll implements a named-pipe IPC server and client for the Bitdefender suite.
+    Server side (in bdservicehost.exe): listens on \\.\pipe\local\msgbus\bdappsrv, accepts
+    connections, performs handshake, then dispatches incoming messages to registered handlers.
+    Client side: connects, sends auth context (process image path, PID, parent PID), then
+    sends/receives messages. Auth predicates are evaluated per-message based on the security
+    rule config. Six predicate types (see description). Critical: the pipe DACL allows
+    Everyone, so any process can connect — the auth rules are the only gate.
+  notable_strings:
+    - "security_rule_keys_builder"
+    - "same_sign"
+    - "trusted_client_process"
+    - "trusted_client_path"
+    - "admin_client"
+    - "admin_write_client_folder"
+    - "trusted_parent_process"
+    - "digitaly_trusted_path_checker"
+    - "process_elevated_checker"
+    - "winapi::crypt::verify_trust failed"
+    - "base::crypt::file::verify_catalog_signature failed"
+    - "GetNamedSecurityInfo failed"
+    - "GetAclInformation for size failed"
+    - "can't validate parent process"
+  rva_anchors:
+    security_rule_keys_builder: '0x18003fd10'
+    trusted_client_path_checker: '0x180043290'
+    digitaly_trusted_path_checker: '0x180040100'
+    same_sign_checker: '0x180040420'
+    process_elevated_checker: '0x180040740'
+    admin_write_folder_checker: '0x180040a60'
+    trusted_parent_process_checker: '0x180040f00'
+    verify_authenticode: '0x180037960'
+    verify_catalog_signature: '0x1800367e0'
+    dacl_ace_checker: '0x1800387d0'
+    add_trusted_paths: '0x18001bbb0'
 - version: ''
   sha256: ''
   eng: bitdefender-2026-05-02
@@ -77,11 +148,26 @@ _seed_meta:
     version: ''
   seeded_at: '2026-05-09T13:37:52Z'
 process_model:
-  loaded_by: ''
-  principal: unknown
-  start_trigger: ''
-  parent_processes: []
-  ipc_peers: []
+  loaded_by: bdservicehost.exe
+  principal: SYSTEM
+  start_trigger: service_start
+  parent_processes:
+    - name: bdservicehost.exe
+      principal: SYSTEM
+      role: SCM-launched host process
+  ipc_peers:
+    - name: bdagent.exe
+      principal: Admin (no PPL)
+      via: "\\.\pipe\local\msgbus\bdappsrv"
+    - name: seccenter.exe
+      principal: loggedInUser
+      via: "\\.\pipe\local\msgbus\bdappsrv"
+    - name: bduserhost.exe
+      principal: loggedInUser
+      via: "\\.\pipe\local\msgbus\bdappsrv"
+    - name: any standard-user process
+      principal: Standard_user
+      via: "\\.\pipe\local\msgbus\bdappsrv (Everyone DACL)"
   impersonation_seen: false
   ppl_protected: false
 defenses:

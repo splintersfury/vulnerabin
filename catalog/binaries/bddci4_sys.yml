@@ -1,8 +1,18 @@
 binary: bddci4.sys
-display_name: Bitdefender bddci4 (kernel handle-strip)
-description: 'Kernel driver providing the handle-strip layer of BD self-protection. Registers ObRegisterCallbacks for both
-  Process and Thread objects and strips ALL access rights from any handle opened to a BD process regardless of caller privilege.
-  Confirmed live: OpenProcess(PROCESS_ALL_ACCESS) on a BD process returns a non-null handle but NtQueryObject reports granted=0x0.'
+display_name: Bitdefender bddci4 (kernel process monitor + CBE + minifilter)
+description: 'CRITICAL CORRECTION (2026-05-14): Full decompilation review (1346 functions, 82695 lines) confirms
+  bddci4.sys does NOT implement ObRegisterCallbacks. The handle protection observed in live testing (granted=0x0)
+  is attributed to PPL (Protected Process Light) with Anti-Malware ELAM signing, enforced by the Windows kernel,
+  not by bddci4.sys.
+
+  bddci4.sys actual capabilities:
+  1. PsSetCreateProcessNotifyRoutineEx2 — process creation/exit monitoring (FUN_140014e90 -> FUN_140014a58)
+  2. CBE (Callback Bypass Evasion) — anti-tampering integrity module checking PsNotify registration integrity
+  3. ClassifyRedirectEngineAuth — minifilter classification engine with SELF-ALLOW/BLOCK/ALLOW rules
+  4. WdmlibIoCreateDeviceSecure — device creation with proper SDDL (not Everyone)
+  5. MmCopyMemory (dynamically resolved) — kernel-mode memory read
+  6. KeStackAttachProcess — kernel-mode memory access
+  7. Device name: \Device\BDDCI4_4_7'
 canonical_path: C:\Windows\System32\drivers\bddci4.sys
 arch: x64
 platform: windows
@@ -90,10 +100,16 @@ product: bitdefender-total-security
 defenses:
 - class_id: K-004
   defense_expected: ObRegisterCallbacks should defend BD process handles
-  observed: Strips access rights on Process + Thread handles. Even SeDebugPrivilege opens get granted=0x0.
-  gap: Only protects what the kernel-mode list says to protect. Same gap as bdprivmon for ProductAgentService.exe.
-  bypass_attempts: Confirmed cross-process handle access blocked at every privilege level tested. Bypassable via injection
-    BEFORE the target process establishes itself, not after.
+  observed: 'CORRECTION: bddci4 does NOT implement ObRegisterCallbacks. Process handle protection (granted=0x0)
+    observed in live testing is from PPL (Anti-Malware ELAM signing), enforced by Windows kernel, not by
+    bddci4. bddci4 provides: process creation monitoring via PsSetCreateProcessNotifyRoutineEx2, CBE anti-tampering,
+    ClassifyRedirectEngineAuth minifilter.'
+  gap: bddci4 monitors process creation but does NOT strip handle access. PPL protection is at the OS level
+    and has known bypass vectors (e.g., Administrator + SeDebugPrivilege can still open PPL-AntiMalware processes
+    from another PPL-AntiMalware process, or via kernel exploits).
+  bypass_attempts: ObRegisterCallbacks bypass is N/A since bddci4 does not implement it. PPL protection
+    blocks standard user injection into BD processes. Alternative attack paths are msgbus IPC relay,
+    COM activation, DLL sideloading, or finding a process that is NOT PPL-protected.
 reverse_engineering:
   entrypoint: ''
   behavior: ''

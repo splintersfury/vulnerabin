@@ -54,6 +54,20 @@ sources:
   first_seen_version: '27'
   last_confirmed_version: '27'
   notes: 'Message fields observed: executable_path, executable_args, session_id, run_as_system.'
+- id: SRC-003
+  name: msgbus.run_service_elevated.service_name
+  source_class_id: I-002
+  co_class_ids: []
+  via: msgbus IPC pipe (\\.\pipe\local\msgbus\bdappsrv)
+  type: wide_string
+  attacker_controlled: yes_with_caveat
+  caveat: Caller must satisfy msgbus same_sign + trusted_client_process + trusted_client_path rules (HIGH_ENHANCED).
+  function: FUN_18001acb0 (CSafeElevatedRun::StartTrustedService, server-side handler)
+  first_seen_version: '27'
+  last_confirmed_version: '27'
+  notes: 'Service name passed to OpenServiceW(hSCManager, service_name, SERVICE_START). NO allowlist on
+    service name. No IsInFolder or WinVerifyTrust equivalent check. Any installed Windows service can
+    be started with attacker-controlled arguments.'
 - id: SRC-002
   name: msgbus.run_elevated_async.executable_args
   source_class_id: I-002
@@ -75,6 +89,15 @@ sinks:
   impact: Arbitrary process spawn as NT AUTHORITY\SYSTEM
   first_seen_version: '27'
   notes: WinVerifyTrust gates this on the resolved exe_path. SYSTEM token comes from bdappsrv's process token.
+- id: SNK-002
+  name: StartServiceW(hSCManager, service_name, SERVICE_START) with attacker-controlled args
+  cwe: CWE-862
+  function: safeelevatedrun.dll FUN_18001acb0 (CSafeElevatedRun::StartTrustedService)
+  impact: Arbitrary service start as NT AUTHORITY\SYSTEM with attacker-controlled arguments
+  first_seen_version: '27'
+  notes: 'OpenSCManagerW(NULL, ServicesActive, SC_MANAGER_CONNECT) → OpenServiceW(hSCManager, service_name, 0x10)
+    → StartServiceW(hService, num_args, args_array). No service name validation. No argument validation.
+    Runs in bdappsrv (SYSTEM) context.'
 chains:
 - id: CHAIN-001
   title: IsInFolder prefix check accepts traversal segments, allows Microsoft-signed cmd.exe spawn
@@ -134,19 +157,55 @@ chains:
   conditions:
   - executable_args is passed unmodified to CreateProcessAsUserW lpCommandLine
   - Target executable parses lpCommandLine in a way that allows shell-style argument injection
+  - Quoting in FUN_180003120 puts executable_path in quotes, so args appear after the quoted exe path
   impact: 'Possibly: SYSTEM-context arg injection into a legitimate BD-signed binary'
   cwe:
   - CWE-78
   - CWE-88
   severity: ''
   cvss: ''
-  status: unexplored
-  confirmed_in_version: ''
+  status: analyzed_static
+  confirmed_in_version: '27'
   finding_ref: ''
   submission_ref: ''
   bypasses_required:
   - Same as CHAIN-001 for reaching the IPC interface (BD-signed peer).
   - 'Plus: identify a SYSTEM-spawned BD binary that reflects executable_args into a shell-relevant operation.'
+  notes: 'DETAILED ANALYSIS (2026-05-14): FUN_180003120 (ExecuteProcessAsUser) constructs cmdline as
+    L"\"{executable_path}\" {executable_args}" (with conditional quoting). CreateProcessAsUserW called with
+    lpApplicationName=NULL, lpCommandLine=cmdline. executable_args is UNSANITIZED — no escaping, validation,
+    or length check beyond buffer capacity. CLI injection possible if target exe interprets args dangerously.
+    Also: quoting logic has subtle bug — if executable_path starts with " but does not end with ", the
+    quoting becomes mismatched, potentially allowing cmdline parsing to escape the intended exe path.'
+  
+- id: CHAIN-003
+  title: Unrestricted service start via run_service_elevated (no allowlist on service_name)
+  source_id: SRC-003
+  sink_id: SNK-002
+  conditions:
+  - Caller passes msgbus auth (HIGH_ENHANCED: same_sign + trusted_client_process + trusted_client_path)
+  - OpenSCManagerW(NULL, ServicesActive, SC_MANAGER_CONNECT) succeeds (runs as SYSTEM in bdappsrv)
+  - OpenServiceW(hSCManager, service_name, SERVICE_START=0x10) — NO allowlist on service_name
+  - StartServiceW(hService, num_args, args_array) — attacker-controlled arguments
+  impact: 'Arbitrary Windows service start as SYSTEM with attacker-controlled arguments. Services with
+    dangerous argument handling (binary path, config files) could be exploited for SYSTEM code execution.'
+  cwe:
+  - CWE-732
+  - CWE-862
+  severity: P1
+  cvss: 7.8 / AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H
+  status: confirmed_static
+  confirmed_in_version: '27'
+  finding_ref: ''
+  submission_ref: ''
+  bypasses_required:
+  - Caller must pass msgbus HIGH_ENHANCED auth (same_sign + trusted_client_path + trusted_client_process)
+  - 'Note: IsInFolder+WinVerifyTrust apply to run_elevated, NOT to run_service_elevated — the service_name
+    has ZERO validation'
+  notes: 'FUN_18001acb0 (StartTrustedService): OpenSCManagerW -> OpenServiceW(service_name, SERVICE_START)
+    -> StartServiceW(args). No IsInFolder, no WinVerifyTrust, no service name allowlist. The "Trusted"
+    in StartTrustedService is aspirational, not enforced. Compare to run_elevated which validates
+    executable_path with IsInFolder+WinVerifyTrust — run_service_elevated has no analogous check.
   notes: 'Not yet investigated. The message field exists per FUN_18001c460 decomp but argument-handling paths in callees were
     not traced. Worth one focused pass on the next BDTS engagement.
 
