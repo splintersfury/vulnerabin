@@ -1,0 +1,10 @@
+int FUN_14000eb10(void)
+
+{
+  return DAT_14007d500 + DAT_14007d504;
+}
+
+
+// FUNCTION_END
+
+// FUNCTION_START: FUN_14000eb20 @ 14000eb20

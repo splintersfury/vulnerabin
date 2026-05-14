@@ -1,0 +1,10 @@
+undefined1 FUN_14001d730(void)
+
+{
+  return 1;
+}
+
+
+// FUNCTION_END
+
+// FUNCTION_START: FUN_14001d740 @ 14001d740

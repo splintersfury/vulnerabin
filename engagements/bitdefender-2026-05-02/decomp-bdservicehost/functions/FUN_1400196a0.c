@@ -1,0 +1,10 @@
+undefined8 FUN_1400196a0(void)
+
+{
+  return 1;
+}
+
+
+// FUNCTION_END
+
+// FUNCTION_START: FUN_1400196b0 @ 1400196b0

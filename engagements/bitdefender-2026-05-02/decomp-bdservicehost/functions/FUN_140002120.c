@@ -1,0 +1,13 @@
+undefined8 FUN_140002120(undefined8 param_1,ulonglong param_2)
+
+{
+  if ((param_2 & 1) != 0) {
+    FUN_14002f180();
+  }
+  return param_1;
+}
+
+
+// FUNCTION_END
+
+// FUNCTION_START: FUN_140002150 @ 140002150

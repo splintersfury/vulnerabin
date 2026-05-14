@@ -1,0 +1,10 @@
+undefined * FUN_10008b80(void)
+
+{
+  return &DAT_1006b620;
+}
+
+
+// FUNCTION_END
+
+// FUNCTION_START: FUN_10008b90 @ 10008b90

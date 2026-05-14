@@ -1,0 +1,11 @@
+void FUN_140001500(void)
+
+{
+  atexit(FUN_14005a540);
+  return;
+}
+
+
+// FUNCTION_END
+
+// FUNCTION_START: FUN_140001510 @ 140001510

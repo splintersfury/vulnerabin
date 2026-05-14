@@ -1,0 +1,143 @@
+void FUN_140001020(void)
+
+{
+  longlong *plVar1;
+  longlong local_1f8 [2];
+  undefined8 local_1e8;
+  undefined8 uStack_1e0;
+  undefined4 local_1d8;
+  longlong local_1d0 [2];
+  undefined8 local_1c0;
+  undefined8 local_1b8;
+  undefined4 local_1b0;
+  longlong local_1a8 [2];
+  undefined8 local_198;
+  undefined8 uStack_190;
+  undefined4 local_188;
+  longlong local_180 [2];
+  undefined8 local_170;
+  undefined8 local_168;
+  undefined4 local_160;
+  longlong local_158 [2];
+  undefined8 local_148;
+  undefined8 uStack_140;
+  undefined4 local_138;
+  longlong local_130 [2];
+  undefined8 local_120;
+  undefined8 local_118;
+  undefined4 local_110;
+  longlong local_108 [2];
+  undefined8 local_f8;
+  undefined8 uStack_f0;
+  undefined4 local_e8;
+  longlong local_e0 [2];
+  undefined8 local_d0;
+  undefined8 local_c8;
+  undefined4 local_c0;
+  longlong local_b8 [2];
+  undefined8 local_a8;
+  undefined8 uStack_a0;
+  undefined4 local_98;
+  longlong local_90 [2];
+  undefined8 local_80;
+  undefined8 local_78;
+  undefined4 local_70;
+  longlong local_68 [2];
+  undefined8 local_58;
+  undefined8 uStack_50;
+  undefined4 local_48;
+  longlong local_40 [2];
+  undefined8 local_30;
+  undefined8 local_28;
+  undefined4 local_20;
+  longlong local_18 [2];
+  
+  local_1e8 = _DAT_14006e190;
+  uStack_1e0 = _UNK_14006e198;
+  local_1f8[0] = 0;
+  FUN_1400106a0(local_1f8,(undefined8 *)"NETBINDCHANGE",0xd);
+  local_1d8 = 0x10;
+  local_1c0 = 0;
+  local_1b8 = 0xf;
+  local_1d0[0] = 0;
+  FUN_1400106a0(local_1d0,(undefined8 *)"PARAMCHANGE",0xb);
+  local_1b0 = 8;
+  local_198 = _DAT_14006e190;
+  uStack_190 = _UNK_14006e198;
+  local_1a8[0] = 0;
+  FUN_1400106a0(local_1a8,(undefined8 *)"PAUSE_CONTINUE",0xe);
+  local_188 = 2;
+  local_170 = 0;
+  local_168 = 0xf;
+  local_180[0] = 0;
+  FUN_1400106a0(local_180,(undefined8 *)"PRESHUTDOWN",0xb);
+  local_160 = 0x100;
+  local_148 = _DAT_14006e190;
+  uStack_140 = _UNK_14006e198;
+  local_158[0] = 0;
+  FUN_1400106a0(local_158,(undefined8 *)"SHUTDOWN",8);
+  local_138 = 4;
+  local_120 = 0;
+  local_118 = 0xf;
+  local_130[0] = 0;
+  FUN_1400106a0(local_130,(undefined8 *)&DAT_14006c694,4);
+  local_110 = 1;
+  local_f8 = _DAT_14006e190;
+  uStack_f0 = _UNK_14006e198;
+  local_108[0] = 0;
+  FUN_1400106a0(local_108,(undefined8 *)"HARDWAREPROFILECHANGE",0x15);
+  local_e8 = 0x20;
+  local_d0 = 0;
+  local_c8 = 0xf;
+  local_e0[0] = 0;
+  FUN_1400106a0(local_e0,(undefined8 *)"POWEREVENT",10);
+  local_c0 = 0x40;
+  local_a8 = _DAT_14006e190;
+  uStack_a0 = _UNK_14006e198;
+  local_b8[0] = 0;
+  FUN_1400106a0(local_b8,(undefined8 *)"SESSIONCHANGE",0xd);
+  local_98 = 0x80;
+  local_80 = 0;
+  local_78 = 0xf;
+  local_90[0] = 0;
+  FUN_1400106a0(local_90,(undefined8 *)"USERMODEREBOOT",0xe);
+  local_70 = 0x40;
+  local_58 = _DAT_14006e190;
+  uStack_50 = _UNK_14006e198;
+  local_68[0] = 0;
+  FUN_1400106a0(local_68,(undefined8 *)"TIMECHANGE",10);
+  local_48 = 0x200;
+  local_30 = 0;
+  local_28 = 0xf;
+  local_40[0] = 0;
+  FUN_1400106a0(local_40,(undefined8 *)"TRIGGEREVENT",0xc);
+  local_20 = 0x400;
+  _DAT_14007d580 = 0;
+  DAT_14007d588 = (void *)0x0;
+  _DAT_14007d590 = 0;
+  DAT_14007d588 = operator_new(0x38);
+  *(void **)DAT_14007d588 = DAT_14007d588;
+  *(void **)((longlong)DAT_14007d588 + 8) = DAT_14007d588;
+  DAT_14007d598 = 0;
+  _DAT_14007d5a0 = 0;
+  uRam000000014007d5a8 = 0;
+  _DAT_14007d5b0 = 7;
+  _DAT_14007d5b8 = 8;
+  _DAT_14007d580 = DAT_14006e158;
+  FUN_140016fb0(&DAT_14007d598,0x10,DAT_14007d588);
+  plVar1 = local_1f8;
+  do {
+    FUN_140026490((float *)&DAT_14007d580,local_18,plVar1);
+    plVar1 = plVar1 + 5;
+  } while (plVar1 != local_18);
+  _eh_vector_destructor_iterator_(local_1f8,0x28,0xc,FUN_14000e8f0);
+  atexit(FUN_14005a4b0);
+  return;
+}
+
+
+// FUNCTION_END
+
+// FUNCTION_START: FUN_140001390 @ 140001390
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
