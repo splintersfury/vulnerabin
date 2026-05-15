@@ -1,0 +1,32 @@
+{
+	"tasks": [		
+		{
+			"id": "{D1AF15A8-B666-4B86-9F88-148272AABFBB}",
+			"path": "{{ InstallPath }}bdfvwiz.exe"
+		},
+		{
+			"id": "{D209558E-F89B-40AB-91CE-548B9E60684D}",
+			"path": "{{ InstallPath }}bdtpwiz.exe"
+		},		
+		{
+			"id": "{278EB6DD-BEAB-4E64-984F-A39EAF35B463}",
+			"path": "{{ InstallPath }}updcenter.exe"
+		},
+        {
+			"id": "{4EB7AE5A-828D-4485-8685-1571B86078F7}",
+			"path": "{{ InstallPath }}updcenter\\updcenter.exe"
+		},
+		{
+			"id": "{B581F4B2-146B-4F1D-BB59-601B5B6317E1}",
+			"path": "{{ InstallPath }}wscfix.exe"
+		},
+		{
+			"id": "{438637D6-D726-4202-81EE-1E2146F87F88}",
+			"path": "{{ InstallPath }}agentcontroller.exe"
+		},
+		{
+			"id": "{6917A0A7-7341-43EB-B354-FC4C103B1EC1}",
+			"path": "{{ InstallPath }}bduserhost.exe"
+		}
+	]
+}
